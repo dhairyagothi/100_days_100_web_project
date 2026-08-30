@@ -475,3 +475,52 @@ audio {
     transform: translateY(0);
   }
 }
+/* ===== Theme Toggle ===== */
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  background: #ffffff;
+  color: #222;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 999;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.05);
+}
+
+/* Dark Theme */
+
+body.dark-theme {
+  background: #121212;
+  color: #ffffff;
+}
+
+body.dark-theme .quote-container {
+  background: rgba(30, 30, 30, 0.95);
+}
+
+body.dark-theme .quote {
+  color: white;
+}
+
+body.dark-theme .author {
+  color: #7CFC98;
+}
+
+body.dark-theme .theme-toggle {
+  background: #333;
+  color: white;
+}
+
+body.dark-theme .music-controls {
+  background: rgba(40,40,40,0.8);
+}

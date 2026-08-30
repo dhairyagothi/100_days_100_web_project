@@ -10,6 +10,22 @@
 
     <title>Jay Hind</title>
 
+ feature/light-dark-theme-indianflag
+    <link href="../indianflag/flag.css" rel="stylesheet" />
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+  </head>
+
+  <body>
+    <button id="theme-toggle" class="theme-toggle">🌙 Dark Mode</button>
+    <div class="background-video">
+      <video autoplay muted loop id="bg-video">
+        <source
+          src="https://media.istockphoto.com/id/1503396346/video/happy-indian-republic-day-creative-flag-design-background.mp4?s=mp4-640x640-is&k=20&c=sScbw69iYMiOdC9_KZ2L12EL43ke3lsggE9aK7StIt4="
+          type="video/mp4"
+        />
+        Your browser does not support HTML5 video.
+      </video>
+
   <link rel="stylesheet" href="flag.css" />
   <link rel="stylesheet" href="flag-history.css" />
 </head>
@@ -44,6 +60,7 @@
 
     <div class="hero-badge">
       Proudly Indian
+ Main
     </div>
 
     <h1>
@@ -230,5 +247,136 @@
   <script src="script.js"></script>
   <script src="flag-history.js"></script>
 
+ feature/light-dark-theme-indianflag
+    <script>
+      // Quotes data
+      const quotes = [
+        {
+          text: '"Give me blood and I will give you freedom."',
+          author: "- Subhas Chandra Bose",
+          image: "./img/subhas_bose.png",
+        },
+        {
+          text: '"Swaraj is my birthright and I shall have it."',
+          author: "- Bal Gangadhar Tilak",
+          image: "./img/bal_tilak.png",
+        },
+        {
+          text: '"Inquilab Zindabad."',
+          author: "- Bhagat Singh",
+          image: "./img/bhagat_singh.jpg",
+        },
+        {
+          text: '"Jai Jawan Jai Kisan."',
+          author: "- Lal Bahadur Shastri",
+          image: "./img/lal_bahadur.png",
+        },
+        {
+          text: '"Jai Hind!"',
+          author: "- Netaji Subhas Chandra Bose",
+          image: "./img/subhas_bose.png",
+        },
+        {
+          text: '"Sarfaroshi ki tamanna ab hamare dil mein hai."',
+          author: "- Ram Prasad Bismil",
+          image: "./img/ram_prasad.png",
+        },
+        {
+          text:
+            '"Dushman ki goliyon ka hum samna karenge, Azad hee rahein hain, azad hee rahenge."',
+          author: "- Chandrashekhar Azad",
+          image: "./img/azad.png",
+        },
+        {
+          text: '"Satyameva Jayate."',
+          author: "- Pandit Madan Mohan Malaviya",
+          image: "./img/pandit_madan_mohan.webp",
+        },
+        {
+          text: '"Sarvodaya, Samaj Sudharak, Samaj Sevak."',
+          author: "- Mahatma Gandhi",
+          image: "./img/gandhi.png",
+        },
+        {
+          text: '"Karo ya maro."',
+          author: "- Mahatma Gandhi",
+          image: "./img/gandhi.png",
+        },
+      ];
+
+      let currentQuoteIndex = 0;
+
+      const quoteText = document.querySelector(".quote");
+      const quoteAuthor = document.querySelector(".author");
+      const patriotImage = document.getElementById("patriot-image");
+
+      function displayQuote() {
+  const currentQuote = quotes[currentQuoteIndex];
+
+  // Preload image first
+  const img = new Image();
+
+  img.onload = () => {
+    patriotImage.src = currentQuote.image;
+    patriotImage.alt = currentQuote.author;
+
+    quoteText.textContent = currentQuote.text;
+    quoteAuthor.textContent = currentQuote.author;
+  };
+
+  img.src = currentQuote.image;
+}
+
+      displayQuote();
+
+      setInterval(() => {
+        currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+        displayQuote();
+      }, 5000);
+
+      document.getElementById("prev-quote").addEventListener("click", () => {
+        currentQuoteIndex =
+          (currentQuoteIndex - 1 + quotes.length) % quotes.length;
+        displayQuote();
+      });
+
+      document.getElementById("next-quote").addEventListener("click", () => {
+        currentQuoteIndex =
+          (currentQuoteIndex + 1) % quotes.length;
+        displayQuote();
+      });
+
+      const music = document.getElementById("bgMusic");
+
+      window.addEventListener("load", () => {
+        music.play().catch(() => {
+          console.log("Autoplay blocked by browser");
+        });
+      });
+      
+    // Theme Toggle
+const toggleBtn = document.getElementById("theme-toggle");
+
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark-theme");
+  toggleBtn.textContent = "☀️";
+}
+
+toggleBtn.addEventListener("click", () => {
+  document.body.classList.toggle("dark-theme");
+
+  if (document.body.classList.contains("dark-theme")) {
+    localStorage.setItem("theme", "dark");
+    toggleBtn.textContent = "☀️";
+  } else {
+    localStorage.setItem("theme", "light");
+    toggleBtn.textContent = "🌙";
+  }
+});
+    </script>
+  </body>
+</html>
+
 </body>
 </html>
+ Main
