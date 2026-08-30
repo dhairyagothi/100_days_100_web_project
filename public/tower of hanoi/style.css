@@ -1,0 +1,219 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    margin: 0;
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+}
+
+.instructions {
+    color: #34495e;
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.instructions ul {
+    padding-left: 20px;
+}
+
+#startGameBtn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/* Game Layout */
+.game-container {
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: 800px;
+    max-width: 95vw;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.stats {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #34495e;
+}
+
+#message {
+    height: 24px;
+    font-size: 1.2em;
+    color: #27ae60;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Game Board */
+.game-board {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 250px;
+    padding-top: 40px;
+}
+
+.tower {
+    position: relative;
+    width: 30%;
+    height: 200px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    transition: background 0.2s;
+}
+
+/* Highlight tower when dragging over */
+.tower.drag-over {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.tower:hover .peg {
+    background-color: #8b5a2b;
+}
+
+/* Pegs and Bases */
+.peg {
+    position: absolute;
+    bottom: 0;
+    width: 12px;
+    height: 200px;
+    background-color: #a0522d;
+    border-radius: 6px 6px 0 0;
+    z-index: 1;
+    transition: background 0.2s;
+    pointer-events: none; /* Let drag events pass through to tower */
+}
+
+.base {
+    position: absolute;
+    bottom: -10px;
+    width: 100%;
+    height: 10px;
+    background-color: #a0522d;
+    border-radius: 5px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Disks */
+.disks {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse; 
+    align-items: center;
+    z-index: 2;
+    pointer-events: none; /* Pass events up to the disk elements */
+}
+
+.disk {
+    height: 24px;
+    border-radius: 12px;
+    margin-bottom: 2px;
+    border: 2px solid rgba(0,0,0,0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    pointer-events: auto; /* Re-enable events specifically for disks */
+}
+
+/* Drag and Drop visual states */
+.disk[draggable="true"] {
+    cursor: grab;
+}
+
+.disk[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+.disk.dragging {
+    opacity: 0.5;
+}
+
+/* Highlight for click-based selection */
+.disk.selected {
+    transform: translateY(-30px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+    border-color: #fff;
+}
