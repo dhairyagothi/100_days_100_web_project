@@ -1,0 +1,509 @@
+:root {
+    --bg-dark: #09090b;
+    --bg-panel: #18181b;
+    --bg-card: #27272a;
+    
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    
+    --accent: #0ea5e9;
+    --accent-hover: #0284c7;
+    
+    --border: #3f3f46;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+/* --- Navbar --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 48px;
+    background-color: rgba(9, 9, 11, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.navbar.compact {
+    padding: 16px 32px;
+}
+
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--accent);
+}
+
+.nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    margin-left: 24px;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--text-main);
+}
+
+/* --- Landing Page --- */
+.landing-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: calc(100vh - 85px);
+    padding: 0 10%;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 600px;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #fff, #a1a1aa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: transform 0.2s, background-color 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    color: #fff;
+}
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    margin-left: 16px;
+}
+.btn-secondary:hover {
+    background-color: var(--border);
+}
+
+.btn-large {
+    padding: 16px 32px;
+    font-size: 1.2rem;
+}
+
+/* CSS Waves for Hero */
+.hero-visual {
+    position: absolute;
+    right: -100px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    width: 600px;
+    height: 600px;
+    opacity: 0.6;
+}
+
+.wave-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.wave {
+    position: absolute;
+    border-radius: 40%;
+    background: transparent;
+    border: 2px solid var(--accent);
+    animation: rotate 15s infinite linear;
+}
+
+.wave1 { width: 400px; height: 400px; top: 100px; left: 100px; opacity: 0.8; }
+.wave2 { width: 500px; height: 500px; top: 50px; left: 50px; opacity: 0.5; animation-duration: 20s; animation-direction: reverse; }
+.wave3 { width: 600px; height: 600px; top: 0; left: 0; opacity: 0.2; animation-duration: 25s; }
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* About Section */
+.about-section {
+    padding: 100px 10%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    background-color: var(--bg-panel);
+    border-top: 1px solid var(--border);
+}
+
+.feature-card {
+    background-color: var(--bg-card);
+    padding: 40px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 24px;
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+}
+
+.feature-card p {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* --- Workspace / Synthesizer --- */
+.workspace {
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    filter: blur(4px); /* Blurred until audio initialized */
+    pointer-events: none;
+    transition: filter 0.5s;
+}
+
+.workspace.active {
+    filter: blur(0);
+    pointer-events: all;
+}
+
+/* Audio Overlay */
+.audio-overlay {
+    position: fixed;
+    top: 70px; /* Below navbar */
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 70px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(9, 9, 11, 0.7);
+    z-index: 100;
+    backdrop-filter: blur(5px);
+    transition: opacity 0.5s;
+}
+
+/* Canvas Panel */
+.visualizer-panel {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.panel-header h2 {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+}
+
+.vis-controls button {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin-left: 8px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+}
+.vis-controls button.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+#visualizer {
+    width: 100%;
+    height: 250px;
+    background-color: #000;
+    border-radius: 8px;
+    border: 1px solid #222;
+}
+
+/* Synth Rack */
+.synth-rack {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+}
+
+.synth-module {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.synth-module h3 {
+    font-size: 1rem;
+    margin-bottom: 24px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.waveform-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.waveform-selector label {
+    cursor: pointer;
+}
+
+.waveform-selector input {
+    display: none;
+}
+
+.wave-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.waveform-selector input:checked + .wave-btn {
+    background-color: rgba(14, 165, 233, 0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.knob-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: var(--bg-card);
+    height: 6px;
+    border-radius: 3px;
+    outline: none;
+    border: 1px solid var(--border);
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid #fff;
+}
+
+#vol-display, #filter-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+
+/* Keyboard */
+.keyboard-panel {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.key-hint {
+    text-align: center;
+    margin-bottom: 24px;
+    color: var(--text-muted);
+}
+
+.piano-keys {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    height: 200px;
+}
+
+.key {
+    width: 60px;
+    height: 100%;
+    background-color: #f4f4f5;
+    border: 1px solid #ccc;
+    border-radius: 0 0 6px 6px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 16px;
+    color: #666;
+    font-weight: bold;
+    user-select: none;
+}
+
+.key.active {
+    background-color: #e4e4e7;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+}
+
+.key.black {
+    width: 40px;
+    height: 60%;
+    background-color: #18181b;
+    color: #a1a1aa;
+    z-index: 2;
+    margin-left: -20px;
+    margin-right: -20px;
+    border-color: #000;
+}
+
+.key.black.active {
+    background-color: #27272a;
+}
+
+
+/* Settings Page */
+.settings-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 32px;
+}
+
+.settings-container h1 {
+    margin-bottom: 32px;
+}
+
+.settings-card {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+}
+
+.settings-card h2 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.settings-card p {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.color-options {
+    display: flex;
+    gap: 16px;
+}
+
+.color-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.color-btn:hover {
+    transform: scale(1.1);
+}
+
+.color-btn.active {
+    border-color: #fff;
+    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+}
+
+.range-group {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+#vol-limit-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
