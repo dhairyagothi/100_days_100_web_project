@@ -1,0 +1,52 @@
+@reference "tailwindcss";
+.container {
+  @apply w-full p-6 relative bg-white;
+}
+
+.headerRow {
+  @apply flex justify-between items-center mb-6;
+}
+
+.monthTitle {
+  @apply text-xl font-serif font-semibold text-neutral-800;
+}
+
+.navButtons {
+  @apply flex space-x-2;
+}
+
+.navButton {
+  @apply p-2 rounded-full transition-colors;
+}
+
+.navButton:hover {
+  background-color: #f5f5f5; 
+}
+
+.navIcon {
+  @apply w-5 h-5;
+  color: #525252; 
+}
+
+.daysHeaderGrid {
+  @apply grid grid-cols-7 mb-2;
+  border-bottom: 1px solid #f5f5f5; 
+}
+
+.dayHeaderCell {
+  @apply text-center font-bold text-sm uppercase tracking-wider py-2;
+  color: #140f0f;
+}
+
+.weekendHeader {
+  @apply text-blue-400; 
+}
+
+.gridContainer {
+  @apply grid;
+}
+
+.gridMotionWrapper {
+  grid-area: 1 / 1;
+  @apply grid grid-cols-7 w-full h-max content-start;
+}

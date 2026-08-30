@@ -107,7 +107,10 @@ dist/
 
 # Gatsby files
 .cache/
-
+ 
+public/*
+!public/CalendarApp/
+!public/CalendarApp/**
 # Storybook build outputs
 .out
 .storybook-out

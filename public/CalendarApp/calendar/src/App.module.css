@@ -1,0 +1,23 @@
+@reference "tailwindcss";
+.appWrapper {
+  @apply min-h-screen py-8 px-4 sm:px-8;
+}
+
+.header {
+  @apply max-w-4xl mx-auto mb-8 text-center;
+}
+
+.title {
+  @apply text-3xl md:text-4xl font-serif text-white tracking-widest font-bold;
+  color: #cc3366 ;
+}
+
+.titleLight {
+  @apply text-neutral-400 font-light;
+  color: #cc3366 ;
+}
+
+.footer {
+  @apply text-center mt-12 text-neutral-800 text-xl tracking-widest pb-12;
+  font-family:Verdana, Geneva, Tahoma, sans-serif
+}

@@ -1,0 +1,24 @@
+@reference "tailwindcss";
+.container {
+  @apply relative w-full h-64 md:h-80 overflow-hidden bg-neutral-800 rounded-t-lg;
+}
+
+.canvasEffect {
+  @apply w-full h-full absolute inset-0 mix-blend-screen;
+}
+
+.gradientOverlay {
+  @apply absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none;
+}
+
+.textContainer {
+  @apply absolute bottom-6 left-8 pointer-events-none;
+}
+
+.monthText {
+  @apply text-white text-5xl md:text-6xl font-serif font-bold tracking-tight drop-shadow-md;
+}
+
+.yearText {
+  @apply text-white/80 text-xl font-sans tracking-widest mt-1 ml-1 uppercase;
+}
