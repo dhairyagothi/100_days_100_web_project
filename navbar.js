@@ -151,12 +151,12 @@
   </a>`;
 
   const githubBtn = `
-  <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+  <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository (opens in a new tab)">
     GitHub
   </a>`;
 
   const readmeBtn = `
-  <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">
+  <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank" rel="noopener noreferrer" aria-label="Generate README (opens in a new tab)">
     Generate README
   </a>`;
 

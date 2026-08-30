@@ -27,10 +27,10 @@
     <div id="navbar-container"></div>
 
     <!-- ── PAGE HEADER ── -->
-    <div class="tracker-page-header">
+    <header class="tracker-page-header">
       <div class="tracker-header-inner">
         <a href="index.html" class="tracker-back-link">
-          <i class="fas fa-arrow-left"></i> Back to Projects
+          <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Projects
         </a>
         <div class="tracker-title-block">
           <p class="section-label">Your Progress Dashboard</p>
@@ -38,7 +38,7 @@
           <p class="tracker-page-sub">Check off projects, earn XP, keep your streak alive.</p>
         </div>
       </div>
-    </div>
+    </header>
 
     <main class="tracker-main">
       <div class="tracker-inner">
@@ -140,14 +140,14 @@
           <div class="completed-header-row">
             <p class="tracker-card-label">All Projects</p>
             <div class="completed-actions">
-              <button id="exportProgressBtn" class="btn btn-ghost btn-sm" title="Export progress to JSON">
-                <i class="fas fa-download"></i> Export Progress
+              <button id="exportProgressBtn" class="btn btn-ghost btn-sm" title="Export progress to JSON" aria-label="Export progress to JSON">
+                <i class="fas fa-download" aria-hidden="true"></i> Export Progress
               </button>
-              <button id="importProgressBtn" class="btn btn-ghost btn-sm" title="Import progress from JSON">
-                <i class="fas fa-upload"></i> Import Progress
+              <button id="importProgressBtn" class="btn btn-ghost btn-sm" title="Import progress from JSON" aria-label="Import progress from JSON">
+                <i class="fas fa-upload" aria-hidden="true"></i> Import Progress
               </button>
-              <button id="clearCompletedBtn" class="btn btn-ghost btn-sm" title="Clear all completed projects">
-                <i class="fas fa-trash"></i> Reset Progress
+              <button id="clearCompletedBtn" class="btn btn-ghost btn-sm" title="Clear all completed projects" aria-label="Clear all completed projects">
+                <i class="fas fa-trash" aria-hidden="true"></i> Reset Progress
               </button>
             </div>
           </div>
@@ -181,9 +181,9 @@
           <div id="paginationBarTop">
             <span id="paginationInfoTop"></span>
             <div style="display:flex;gap:8px;align-items:center;">
-              <button id="prevBtnTop"><i class="fas fa-chevron-left" style="font-size:0.7rem;"></i> Prev</button>
+              <button id="prevBtnTop" aria-label="Previous page"><i class="fas fa-chevron-left" style="font-size:0.7rem;" aria-hidden="true"></i> Prev</button>
               <span id="paginationPageTop"></span>
-              <button id="nextBtnTop">Next <i class="fas fa-chevron-right" style="font-size:0.7rem;"></i></button>
+              <button id="nextBtnTop" aria-label="Next page">Next <i class="fas fa-chevron-right" style="font-size:0.7rem;" aria-hidden="true"></i></button>
             </div>
           </div>
 

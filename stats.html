@@ -119,21 +119,21 @@ body.light-mode {
     <span>100 DAYS · 100 PROJECTS</span>
   </a>
   <div class="nav-actions">
-    <button id="themeToggle" class="theme-btn">☀️ Light</button>
+    <button id="themeToggle" class="theme-btn" aria-label="Toggle theme">☀️ Light</button>
     <a class="nav-btn" href="./index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a class="nav-btn active" href="./stats.html"><i class="fa-solid fa-chart-line"></i> Stats</a>
   </div>
 </nav>
 
-<section class="hero">
+<header class="hero">
   <div class="hero-eyebrow"><span class="live-dot"></span>Live Dashboard</div>
   <h1>Project Stats</h1>
   <p>Real-time breakdown of <strong id="heroCount">…</strong> web projects — categories, technologies and difficulty curve. Auto-refreshes every 10s.</p>
   <div class="hero-status" id="heroStatus" data-state="loading">Loading stats…</div>
   <div class="filter-row" id="filterRow">
-    <div class="pill active" data-filter="all">All Projects</div>
+    <button class="pill active" data-filter="all">All Projects</button>
   </div>
-</section>
+</header>
 
 <main class="main">
   <div class="card metric-card m1">
@@ -329,7 +329,7 @@ function buildFilters(data){
   const row = $('filterRow');
   row.innerHTML = '';
   ['all', ...cats].forEach(c=>{
-    const el = document.createElement('div');
+    const el = document.createElement('button');
     el.className = 'pill' + (c===currentFilter ? ' active' : '');
     el.dataset.filter = c;
     el.textContent = c === 'all' ? 'All Projects' : c;
