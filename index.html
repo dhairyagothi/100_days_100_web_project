@@ -367,7 +367,7 @@
                 >Projects</span
               >
             </button>
-            <button
+            <button                 
               class="chip"
               data-filter="game"
               id="filterGame"
@@ -427,6 +427,17 @@
             >
               &times;
             </button>
+            <button
+              id="shortcutHelpBtn"
+              class="shortcut-help-btn"
+              type="button"
+              aria-label="Show keyboard shortcuts"
+              aria-haspopup="dialog"
+              aria-controls="shortcutHelpModal"
+              aria-expanded="false"
+            >
+              <i class="fas fa-keyboard" aria-hidden="true"></i>
+            </button>
             <select id="sortProjects" aria-label="Sort projects">
               <option value="default">Sort By</option>
               <option value="az">A-Z</option>
@@ -470,6 +481,33 @@
             <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear
             Filters
           </button>
+        </div>
+
+        <div class="shortcut-help-modal" id="shortcutHelpModal" role="dialog" aria-modal="true" aria-labelledby="shortcutHelpTitle" hidden>
+          <div class="shortcut-help-backdrop" data-close-modal="true"></div>
+          <div class="shortcut-help-panel">
+            <div class="shortcut-help-header">
+              <div>
+                <p class="section-label">Keyboard shortcuts</p>
+                <h3 id="shortcutHelpTitle">Navigate the showcase faster</h3>
+              </div>
+              <button
+                id="shortcutHelpCloseBtn"
+                class="view-all-btn"
+                type="button"
+                aria-label="Close keyboard shortcuts"
+              >
+                Close
+              </button>
+            </div>
+            <ul class="shortcut-help-list">
+              <li><span class="shortcut-key">/</span><span>Focus search</span></li>
+              <li><span class="shortcut-key">Esc</span><span>Clear search and remove selection</span></li>
+              <li><span class="shortcut-key">↑</span><span>Move to the previous visible project</span></li>
+              <li><span class="shortcut-key">↓</span><span>Move to the next visible project</span></li>
+              <li><span class="shortcut-key">Enter</span><span>Open the selected project</span></li>
+            </ul>
+          </div>
         </div>
 
         <div class="project-grid" id="projectGrid"></div>
