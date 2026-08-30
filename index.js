@@ -72,7 +72,7 @@ function getCategoryFromTags(tags, name) {
   return "Tools";
 }
 
-let PROJECTS = [];
+let PROJECTS = [];      
 let PROJECTS_BY_NAME = new Map();
 let PROJECTS_BY_DAY = new Map();
 let projectsPromise = null;

@@ -1,123 +1,29 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root{
+  --bg:#f6f7fb; --card:#ffffff; --muted:#6b7280; --accent:#2563eb; --success:#16a34a;
 }
-
-body {
-    font-family: 'Poppins', sans-serif;
-    min-height: 100vh;
-    background: linear-gradient(
-        135deg,
-        #0f172a,
-        #1e293b,
-        #312e81
-    );
-    color: white;
-    overflow-x: hidden;
-}
-
-.background {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at top left,
-            rgba(255,255,255,0.1),
-            transparent);
-    z-index: -1;
-}
-
-.hero {
-    text-align: center;
-    padding: 60px 20px;
-}
-
-.hero h1 {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    background: linear-gradient(90deg,#38bdf8,#a855f7);
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-.hero p {
-    color: #d1d5db;
-    font-size: 1.1rem;
-}
-
-.career-section {
-    width: 90%;
-    max-width: 1200px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-    gap: 25px;
-}
-
-.career-card {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 25px;
-    padding: 40px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.career-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-}
-
-.career-card i {
-    font-size: 3rem;
-    color: #38bdf8;
-    margin-bottom: 20px;
-}
-
-.career-card h2 {
-    font-size: 1.3rem;
-}
-
-.roadmap-section {
-    width: 90%;
-    max-width: 1000px;
-    margin: 60px auto;
-}
-
-#title {
-    text-align: center;
-    margin-bottom: 40px;
-    font-size: 2rem;
-}
-
-#roadmap-container {
-    display: grid;
-    gap: 20px;
-}
-
-.step-card {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    backdrop-filter: blur(20px);
-    padding: 25px;
-    border-radius: 20px;
-    font-size: 1.1rem;
-    transition: 0.3s;
-}
-
-.step-card:hover {
-    transform: scale(1.03);
-}
-
-@media(max-width:768px) {
-
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .career-card {
-        padding: 30px 15px;
-    }
-}
+[data-theme="dark"]{ --bg:#0b1020; --card:#0f1724; --muted:#94a3b8; --accent:#60a5fa; --success:#34d399 }
+*{box-sizing:border-box}
+html,body{height:100%}
+body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--muted); margin:0}
+.app{max-width:1000px;margin:24px auto;padding:18px}
+.app-header{display:flex;flex-direction:column;gap:12px}
+.app-header h1{margin:0;color:var(--accent);font-size:1.4rem}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+select,input[type=search]{padding:8px 10px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);background:var(--card);color:inherit}
+button{padding:8px 10px;border-radius:8px;border:0;background:var(--accent);color:white;cursor:pointer}
+.progress-wrap{margin-top:6px}
+.progress-bar{background:rgba(0,0,0,0.06);height:12px;border-radius:999px;overflow:hidden}
+.progress-fill{background:linear-gradient(90deg,var(--accent),#7c3aed);height:100%;transition:width .45s ease}
+.roadmap{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+.card{background:var(--card);padding:14px;border-radius:10px;border:1px solid rgba(0,0,0,0.04);box-shadow:0 6px 18px rgba(2,6,23,0.04)}
+.stage{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}
+.stage h3{margin:.1rem 0;color:var(--accent)}
+.tasks{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.task{display:flex;gap:10px;align-items:center}
+.task input{width:18px;height:18px}
+.muted{color:var(--muted);font-size:.95rem}
+.expand-btn{background:transparent;border:0;color:var(--accent);cursor:pointer}
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.toast{position:fixed;right:16px;bottom:16px;background:#111;color:#fff;padding:10px 14px;border-radius:8px;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+@media (max-width:720px){.app{padding:12px}.controls{gap:6px} .stage{grid-template-columns:1fr} }
