@@ -3005,14 +3005,22 @@
     "difficulty": "intermediate",
     "projectPath": "./public/FLAVOURLY/index.html"
   },
-    {
-      "projectNo": 237,
-      "projectName": "Whos's That Pokemon Game",
-      "projectType": "Game",
-      "projectDesc": "An interactive classic who's that pokemon game. It comes with classic fonts and a score tracker",
-      "techStack": [
+  {
+    "projectNo": 237,
+    "projectName": "CyberTrack 2077",
+    "projectType": "Tool",
+    "projectDesc": "A cyberpunk-style productivity dashboard that gamifies coding activity with GitHub analytics, streak tracking, dopamine graphs, focus scoring, and achievement systems.",
+    "techStack": [
+        "tool",
+        "javascript",
         "html",
         "css",
+        "chartjs",
+        "github-api"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/cyberpunk-productivity-dashboard/index.html"
+}
         "javascript"
       ],
       "difficulty": "advanced",
