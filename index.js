@@ -118,6 +118,48 @@ function parseProjectsData(payload) {
 function loadProjects() {
   if (!projectsPromise) {
     projectsPromise = (async () => {
+      const isRoot = !window.location.pathname.includes('/contributors/');
+      const base = isRoot ? '' : '../';
+      const projectsUrl = new URL(`${base}projects.json`, window.location.href).toString();
+      const response = await fetch(projectsUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to load projects: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+
+      // Ensure root JSON data is a clean array
+      if (!Array.isArray(data)) {
+        console.error("Root projects.json structural context is completely malformed or empty!");
+        PROJECTS = [];
+        return;
+      }
+
+      PROJECTS = [];
+      data.forEach((project) => {
+        // Defensive Type-Checking Guard: Filter out malformed entries cleanly
+        if (
+          !project ||
+          typeof project !== 'object' ||
+          Array.isArray(project) ||
+          project.projectNo === undefined ||
+          !project.projectName ||
+          !project.projectPath
+        ) {
+          console.error("Skipping malformed or corrupted project entry in projects.json:", project);
+          return; // Skip data array errors without breaking the layout
+        }
+
+        // Structural defensive formatting defaults to guarantee safe down-line loops
+        PROJECTS.push([
+          `Day ${project.projectNo}`,
+          project.projectName,
+          project.projectPath,
+          Array.isArray(project.techStack) ? project.techStack : [], // Array fallbacks protect loops
+          project.difficulty || 'Beginner',
+          project.projectDesc || 'Explore this project to discover interactive functionality.'
+        ]);
+      });
       const preloadedData = getPreloadedProjectsData();
       if (preloadedData) {
         hydrateProjects(preloadedData);
@@ -581,6 +623,13 @@ function buildProjectCardHTML({
 
   const tagsArray = Array.isArray(tags)
     ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
+    : String(tags || '')
+        .split(/\s+/)
+        .filter((t) => t && t !== SOURCE_ONLY_TAG);
+  const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
+  const project = PROJECTS.find(p => p[1] === name);
+
+  const description = getProjectDescription(project);
     : String(tags || "")
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
@@ -812,6 +861,7 @@ function matchesTechStack(projectTags) {
 function removeTechFilter(tech) {
   techStackFilters = techStackFilters.filter((t) => t !== tech);
   updateTechFilterDisplay();
+  currentPage = 1; // FIX: reset page when filter changes
   renderGrid();
 }
 
@@ -823,6 +873,7 @@ function clearAllTechFilters() {
   if (input) input.value = "";
 
   updateTechFilterDisplay();
+  currentPage = 1; // FIX: reset page when filters are cleared
   renderGrid();
 }
 
@@ -1105,6 +1156,10 @@ let techStackFilter = "all";
 let difficultyFilter = "all";
 let currentFilteredProjects = [];
 
+// FIX: Resize debounce timer handle — stored at module level so it can be
+// cleared across multiple rapid resize events without leaking timers.
+let _resizeDebounceTimer = null;
+
 function syncStateToURL() {
   const url = new URL(window.location);
 
@@ -1152,6 +1207,40 @@ function readStateFromURL() {
   }
 }
 
+// FIX: Single entry point for all search input changes.
+// Reads the live DOM value → updates the module-level variable → resets page
+// → re-renders. Must be called from the input's event listener (see
+// initSearchListener below) and NEVER re-registered on resize.
+function handleSearchInput(value) {
+  searchQuery = value;
+  currentPage = 1; // FIX: always reset to page 1 on new search
+  renderGrid();
+}
+
+// FIX: Attaches the search listener exactly ONCE after the DOM is ready.
+// Keeping this separate from renderGrid() guarantees the listener is never
+// duplicated or lost due to grid re-renders or window resize events.
+function initSearchListener() {
+  const searchInput = document.getElementById('searchInput');
+  if (!searchInput) return;
+
+  // Sync the input's displayed value with the current module-level state
+  // (important on orientation-change soft-reloads where the DOM may reset).
+  searchInput.value = searchQuery;
+
+  // Use the 'input' event so filtering is live as the user types.
+  searchInput.addEventListener('input', (e) => {
+    handleSearchInput(e.target.value);
+  });
+
+  // FIX: On focus, re-sync the input value from the module-level variable.
+  // This guards against mobile browsers that visually clear inputs on
+  // orientation change while the JS variable still holds the correct value.
+  searchInput.addEventListener('focus', () => {
+    if (searchInput.value !== searchQuery) {
+      searchInput.value = searchQuery;
+    }
+  });
 function renderSkeletons() {
   const grid = document.getElementById("projectGrid");
   if (!grid) return;
@@ -1194,6 +1283,15 @@ function renderGrid() {
   const noResults = document.getElementById("noResults");
   if (!grid) return;
 
+  // FIX: Always keep the search input's displayed value in sync with the
+  // module-level searchQuery. This prevents the visual "cleared" state that
+  // occurs when the browser reflows the layout on resize/orientation change.
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput && searchInput.value !== searchQuery) {
+    searchInput.value = searchQuery;
+  }
+
+  if (typeof updateClearFiltersBtnVisibility === 'function') {
   if (typeof updateClearFiltersBtnVisibility === "function") {
     updateClearFiltersBtnVisibility();
   }
@@ -1274,6 +1372,22 @@ function renderGrid() {
     });
   }
 
+  // FIX: Clear only the project cards from the grid, leaving the pagination
+  // container untouched during the clear phase. Previously, grid.innerHTML = ''
+  // destroyed the pagination container node and then re-appended a brand new
+  // one on every render. This caused the pagination element to be treated as a
+  // grid column by CSS Grid (because it lived INSIDE #projectGrid), which broke
+  // the auto-fill column layout whenever the container's width changed on
+  // resize. Now we remove only card children and leave pagination in place.
+  const existingCards = grid.querySelectorAll('.project-card');
+  existingCards.forEach(card => card.remove());
+
+  if (filtered.length === 0) {
+    grid.style.display = 'none';
+    if (noResults) noResults.style.display = 'block';
+    // Remove pagination when there are no results
+    const container = document.getElementById('paginationContainer');
+  grid.innerHTML = "";
   grid.replaceChildren();
 
   if (filtered.length === 0) {
@@ -1332,6 +1446,16 @@ function renderGrid() {
 
     fragment.appendChild(card);
   });
+
+  // FIX: Insert cards BEFORE the pagination container so card elements are
+  // always siblings of — not mixed with — the pagination node inside the grid.
+  // This keeps CSS Grid's auto-fill columns working correctly at all widths.
+  const paginationContainer = document.getElementById('paginationContainer');
+  if (paginationContainer) {
+    grid.insertBefore(fragment, paginationContainer);
+  } else {
+    grid.appendChild(fragment);
+  }
 
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
@@ -1395,6 +1519,12 @@ function renderPagination(totalItems, totalPages) {
 
   let container = document.getElementById("paginationContainer");
   if (!container) {
+    container = document.createElement('div');
+    container.id = 'paginationContainer';
+    container.className = 'pagination-container';
+    // FIX: Append pagination ONCE here. renderGrid() will always find it with
+    // getElementById and insert new cards before it, so pagination stays last.
+    grid.appendChild(container);
     container = document.createElement("div");
     container.id = "paginationContainer";
     container.className = "pagination-container";
@@ -1403,9 +1533,7 @@ function renderPagination(totalItems, totalPages) {
   container.innerHTML = "";
 
   if (totalPages <= 1) {
-    if (container.parentElement === grid) {
-      grid.removeChild(container);
-    }
+    container.remove();
     return;
   }
 
@@ -1523,6 +1651,13 @@ function renderPagination(totalItems, totalPages) {
 
   container.appendChild(controlsDiv);
 
+  // FIX: Only append the container if it was detached by the totalPages <= 1
+  // branch above. If it is already in the DOM (the normal path), skip the
+  // append to avoid moving it — which would re-trigger a layout recalculation
+  // and could cause a brief visual flicker at wide viewport widths.
+  if (!container.parentElement) {
+    grid.appendChild(container);
+  }
   grid.appendChild(container);
 }
 
@@ -2026,8 +2161,42 @@ cleanupExpiredRecentProjects();
 renderRecommendationsForLatestRecentProject();
 
 /* ============================================================
-   VIEW ALL TOGGLE
+   RESIZE HANDLER  (FIX — new addition)
    ============================================================ */
+
+/**
+ * On window resize / orientation change the browser may:
+ *  1. Visually reset <input> values (Safari iOS in particular).
+ *  2. Recalculate layout and leave grid columns misaligned.
+ *
+ * Strategy:
+ *  - Debounce so we only act once the resize gesture settles (150 ms).
+ *  - Re-sync the search input value from the module-level variable.
+ *  - Re-render the grid so column widths recalculate against the new
+ *    viewport width (this also re-inserts cards in the correct DOM order
+ *    relative to the pagination container, fixing any overlap).
+ *  - Never re-bind any event listeners here.
+ */
+function _onResize() {
+  clearTimeout(_resizeDebounceTimer);
+  _resizeDebounceTimer = setTimeout(() => {
+    // Step 1: restore the search input's displayed value if the browser
+    // reset it visually (common on iOS orientation change).
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput && searchInput.value !== searchQuery) {
+      searchInput.value = searchQuery;
+    }
+
+    // Step 2: re-render so grid columns recalculate at the new viewport width.
+    // renderGrid() already preserves searchQuery, activeFilter, currentPage etc.
+    renderGrid();
+  }, 150);
+}
+
+window.addEventListener('resize', _onResize);
+// orientationchange fires on mobile before 'resize'; listen to both so the
+// fix runs even on devices that don't always emit a subsequent resize event.
+window.addEventListener('orientationchange', _onResize);
 
 const bookmarkToggleBtn = document.getElementById("bookmarkToggleBtn");
 const recentToggleBtn = document.getElementById("recentToggleBtn");
@@ -2409,8 +2578,28 @@ if (searchInput && clearSearchBtn) {
 }
 
 /* ============================================================
-   NAVBAR — dynamic based on login state
+   INITIALISATION  (FIX — wire up search listener after DOM ready)
    ============================================================ */
+
+/**
+ * Called once after the DOM is ready (and after PROJECTS loads).
+ * Attaches the search input listener exactly once and performs the
+ * initial render. All other module-level listeners (resize, etc.)
+ * are registered at parse time above and do not need to be here.
+ */
+function init() {
+  readStateFromURL();
+  initSearchListener(); // FIX: single, permanent listener for the search input
+  renderGrid();
+}
+
+// Defer init until the DOM is fully parsed so getElementById calls succeed.
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  // Document already parsed (script loaded with defer / at end of body)
+  init();
+}
 function updateNavbar() {
   // The navbar is now managed by navbar.js which creates the dropdowns properly.
   // This function is kept empty to prevent legacy calls from breaking.
@@ -3076,6 +3265,53 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   window.addEventListener("popstate", () => restoreStateFromURL());
 });
+
+/* ============================================================
+   GAMIFIED DEVELOPER TRACKER ENGINE
+
+const LEVEL_THRESHOLDS = [
+  { level: 1, name: "Script Kiddie", xp: 0 },
+  { level: 2, name: "CSS Whisperer", xp: 100 },
+  { level: 3, name: "Frontend Artisan", xp: 250 },
+  { level: 4, name: "DOM Dominator", xp: 500 },
+  { level: 5, name: "Production Ready", xp: 1000 },
+  { level: 6, name: "Full-Stack Magician", xp: 2000 },
+  { level: 7, name: "Software Architect", xp: 4000 }
+];
+
+function getProjectXP(difficulty) {
+  const d = (difficulty || "").toLowerCase().trim();
+  if (d === 'beginner' || d === 'easy') return 10;
+  if (d === 'advanced' || d === 'hard' || d === 'expert') return 50;
+  return 25;
+}
+
+function calculateLevel(xp) {
+  let current = LEVEL_THRESHOLDS[0];
+  for (let t of LEVEL_THRESHOLDS) {
+    if (xp >= t.xp) current = t;
+    else break;
+  }
+  return current;
+}
+
+function updateGamifiedUI() {
+  // Gamified UI elements live on tracker.html, not index.html — no-op here.
+  const elements = {
+    badge: document.getElementById("userLevelBadge"),
+    xpText: document.getElementById("userCurrentXP"),
+    bar: document.getElementById("userXPBarFill")
+  };
+
+  if (!elements.badge && !elements.xpText && !elements.bar) return;
+
+  const totalXP = 0;
+  const currentLevel = calculateLevel(totalXP);
+
+  if (elements.badge) elements.badge.textContent = `Level ${currentLevel.level}: ${currentLevel.name}`;
+  if (elements.xpText) elements.xpText.textContent = `${totalXP} Total XP`;
+  if (elements.bar) elements.bar.style.width = "0%";
+}
 document
   .getElementById("randomProjectBtn")
   ?.addEventListener("click", renderRandomProject);
