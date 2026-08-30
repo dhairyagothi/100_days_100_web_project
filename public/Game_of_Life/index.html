@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conway's Game of Life</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="landing-page">
+    
+    <div class="landing-container">
+        <header class="landing-header">
+            <h1><i class="fa-solid fa-border-all"></i> Game of Life</h1>
+            <p class="subtitle">A cellular automaton devised by the British mathematician John Horton Conway in 1970.</p>
+        </header>
+
+        <div class="rules-section">
+            <h2>The Rules</h2>
+            <p>The universe of the Game of Life is an infinite, two-dimensional orthogonal grid of square cells, each of which is in one of two possible states, live or dead. Every cell interacts with its eight neighbours.</p>
+            
+            <div class="rules-grid">
+                <div class="rule-card">
+                    <div class="rule-icon"><i class="fa-solid fa-skull"></i></div>
+                    <h3>Underpopulation</h3>
+                    <p>Any live cell with fewer than two live neighbours dies, as if by underpopulation.</p>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon"><i class="fa-solid fa-heart"></i></div>
+                    <h3>Survival</h3>
+                    <p>Any live cell with two or three live neighbours lives on to the next generation.</p>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon"><i class="fa-solid fa-users-slash"></i></div>
+                    <h3>Overpopulation</h3>
+                    <p>Any live cell with more than three live neighbours dies, as if by overpopulation.</p>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon"><i class="fa-solid fa-baby"></i></div>
+                    <h3>Reproduction</h3>
+                    <p>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <a href="simulator.html" class="btn btn-primary btn-large">Enter Simulator <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
