@@ -2439,7 +2439,32 @@
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
   },
+{
+  "projectNo": 206,
+  "projectName": "Placement Command Center",
+  "projectType": "Web Application",
+  "projectDesc": "A centralized dashboard for tracking job applications, interview progress, coding preparation, and resume versions with persistent local storage.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/PlacementCommandCenter/index.html"
+},
   {
+  "projectNo": 196,
+  "projectName": "Flipkart Clone",
+  "projectType": "E-Commerce",
+  "projectDesc": "A responsive Flipkart-inspired e-commerce website featuring a modern navbar, product categories, hero carousel, brand spotlight section, promotional banners, home decor showcase, and a fully designed footer.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/Flipkart-Clone/index.html"
+}
     "projectNo": 196,
     "projectName": "AirCast",
     "projectType": "Tool",
