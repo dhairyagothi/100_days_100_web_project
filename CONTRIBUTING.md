@@ -695,6 +695,13 @@ Please ensure your pull request adheres to the following guidelines:
 ## Contribution Guidelines
 
 Thank you for considering contributing to our project! To ensure smooth collaboration and effective contribution management, please adhere to the following guidelines:
+### Repository Standards
+
+When creating or updating projects, please adhere to our repository standards:
+- **Error Handling:** Utilize our [shared error handling utility](tools/error-handler.js) for safe DOM access and consistent errors.
+- **Accessibility:** Follow our [accessibility guidelines](docs/accessibility.md) to ensure your project is usable by everyone.
+- **Performance:** Note that critical branches are monitored with Lighthouse CI. See our [Lighthouse CI workflow example](.github/workflows/lighthouse.yml).
+
 
 ### Issue Creation
 
