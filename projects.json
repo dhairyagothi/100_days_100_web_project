@@ -3138,5 +3138,20 @@
     ],
    "difficulty": "intermediate",
     "projectPath": "./public/WebDevQuizApp/index.html"
-  } 
+  },
+  {
+    "projectNo": 247,
+    "projectName": "Advanced Kanban Board",
+    "projectType": "Tool",
+    "projectDesc": "A multi-page Trello-like task management Kanban board with Drag-and-Drop functionality, custom themes, and LocalStorage data persistence.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "drag-and-drop",
+      "localstorage"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Advanced_Kanban_Board/index.html"
+  }
 ]

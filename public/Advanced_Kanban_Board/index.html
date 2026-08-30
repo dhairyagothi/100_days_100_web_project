@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KanbanFlow - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-layer-group"></i>
+                <h2>KanbanFlow</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active"><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a href="board.html"><i class="fa-solid fa-table-columns"></i> My Board</a></li>
+                <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar">
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search boards, tasks...">
+                </div>
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff" alt="User Profile">
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <h1>Welcome back, Developer! 👋</h1>
+                <p class="subtitle">Here's an overview of your productivity today.</p>
+
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #e0f2fe; color: #0284c7;">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Total Tasks</h3>
+                            <h2 id="stat-total">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #fef9c3; color: #ca8a04;">
+                            <i class="fa-solid fa-spinner"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>In Progress</h3>
+                            <h2 id="stat-progress">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #dcfce7; color: #16a34a;">
+                            <i class="fa-solid fa-check-double"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Completed</h3>
+                            <h2 id="stat-done">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity / Boards -->
+                <div class="recent-section">
+                    <h2>Recent Boards</h2>
+                    <div class="board-cards">
+                        <a href="board.html" class="board-card primary-board">
+                            <div class="board-card-content">
+                                <h3>Main Development</h3>
+                                <p>Track bugs and feature requests</p>
+                            </div>
+                            <div class="board-card-footer">
+                                <span>Updated just now</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                        </a>
+                        <!-- Add more mock boards here if needed -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Dashboard specific script to update stats
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = JSON.parse(localStorage.getItem('kanban_data')) || { todo: [], inProgress: [], done: [] };
+            
+            const total = data.todo.length + data.inProgress.length + data.done.length;
+            
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-progress').innerText = data.inProgress.length;
+            document.getElementById('stat-done').innerText = data.done.length;
+        });
+    </script>
+</body>
+</html>
