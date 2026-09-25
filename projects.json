@@ -3138,5 +3138,18 @@
     ],
    "difficulty": "intermediate",
     "projectPath": "./public/WebDevQuizApp/index.html"
-  } 
+  },
+{
+    "projectNo": 247,
+    "projectName": "Neon Forge",
+    "projectType": "Tool",
+    "projectDesc": "An interactive CSS neon glow effects playground with live preview, presets, generated CSS, copy support, and PNG export.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/NeonForge/index.html"
+}
 ]
