@@ -1068,11 +1068,11 @@ function trackRecentProject(project) {
   // Remove duplicate if exists
   recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
 
-  // Add to front
-  recentProjects = [projectObj, ...recentProjects.slice(0, 3)];
+  // Add to front, keep up to 19 existing entries (total 20)
+  recentProjects = [projectObj, ...recentProjects.slice(0, 19)];
 
-  // Keep only a rigid maximum limit of 4 entries
-  if (recentProjects.length > 4) {
+  // Keep only the 20 most recent entries (not filtered by time yet)
+  if (recentProjects.length > 20) {
     recentProjects.pop();
   }
 
