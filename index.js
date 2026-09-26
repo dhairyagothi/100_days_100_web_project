@@ -2300,3 +2300,9 @@ Remove the stray '});' and ensure initClearAllFilters ends with a single '}'; wr
 Re‑add initClearAllFilters(); after its definition or ensure the button is initialized elsewhere.
 
 Restore original behavior or make the flag configurable based on UI requirements.
+
+Wrap all explanatory text in block comments (/* ... */) or remove them. Ensure each function ends with a single '}'. Remove the stray '});' and keep only one definition of matchesTechStack and trackRecentProject. Export statements should be removed or the file converted to a module.
+
+Define tagsLower before use, e.g., const tagsLower = tags.map(t=>t.toLowerCase()); or revert to the original Set‑based logic.
+
+Align the limit with the product requirement (4) or make it configurable and document the intended default.
