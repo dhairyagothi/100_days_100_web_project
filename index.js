@@ -2215,3 +2215,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   window.addEventListener("popstate", () => restoreStateFromURL());
 });
+
+
+Restore the original closing brace `}` for the function and ensure any surrounding IIFE or listener is correctly structured.
