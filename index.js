@@ -2228,3 +2228,13 @@ function initClearAllFilters() {
   }
 }
 ```
+
+Replace 'tagsLower.includes' with the original Set logic or define tagsLower correctly, e.g., const tagsLower = tags.map(t=>t.toLowerCase());
+
+Remove the stray '});' and ensure the function ends with a single '}'.
+
+Restore exact token matching using a Set or split tags and compare whole tokens.
+
+Make the limit configurable or document the change clearly; consider keeping the previous limit for backward compatibility.
+
+Revert to true or expose a configurable option; add tests to verify intended default.
