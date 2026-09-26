@@ -2292,3 +2292,11 @@ function matchesTechStack(projectTags) {
 +  // Persist the updated queue
 +  localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
 +}
+
+Define tagsLower before use, e.g., const tagsLower = tags.map(t=>t.toLowerCase()); or revert to the original Set logic.
+
+Remove the stray '});' and ensure initClearAllFilters ends with a single '}'; wrap explanatory text in comments.
+
+Re‑add initClearAllFilters(); after its definition or ensure the button is initialized elsewhere.
+
+Restore original behavior or make the flag configurable based on UI requirements.
