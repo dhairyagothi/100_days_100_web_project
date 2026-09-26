@@ -2342,3 +2342,30 @@ function matchesTechStack(projectTags) {
 
 // Re‑enable the clear‑all‑filters button initialization (was commented out in the PR)
 initClearAllFilters();
+
+function initClearAllFilters() {
+  const btn = document.getElementById("clearAllFiltersBtn");
+  if (btn) {
+    btn.addEventListener("click", resetAllFilters);
+  }
+}
+
+/* ============================================================
+   FILTER CHIPS
+============================================================ */
+
+function matchesTechStack(projectTags) {
+  // Normalise the project's tags to a Set of lower‑cased tokens for exact matching
+  const tagSet = new Set(
+    (Array.isArray(projectTags) ? projectTags : projectTags.split(' '))
+      .filter(Boolean)
+      .map(t => t.toLowerCase())
+  );
+
+  // Every active filter must match an exact token in the tag set (AND logic).
+  // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
+  return techStackFilters.every(filter => tagSet.has(filter.toLowerCase()));
+}
+
+// Re‑enable the clear‑all‑filters button initialisation (it was commented out in the PR)
+initClearAllFilters();
