@@ -2260,3 +2260,16 @@ Make the limit configurable or document the change; add tests to verify behavior
 Revert to true or expose a configurable option and update related tests.
 
 Re‑add initClearAllFilters() call after its definition or ensure the button is initialized elsewhere.
+
+function matchesTechStack(projectTags) {
+  // Normalise the project's tags to a Set of lower‑cased tokens for exact matching
+  const tagSet = new Set(
+    (Array.isArray(projectTags) ? projectTags : projectTags.split(' '))
+      .filter(Boolean)
+      .map(t => t.toLowerCase())
+  );
+
+  // Every active filter must match an exact token in the tag set (AND logic).
+  // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
+  return techStackFilters.every(filter => tagSet.has(filter.toLowerCase()));
+}
