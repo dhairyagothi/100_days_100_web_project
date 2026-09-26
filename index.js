@@ -2248,3 +2248,15 @@ Restore original Set-based exact token matching.
 Make the limit configurable or document the change clearly; add tests.
 
 Confirm intended behavior; if not, revert to true or make configurable.
+
+Define tagsLower (e.g., const tagsLower = tags.map(t=>t.toLowerCase());) or revert to the original Set‑based exact token matching.
+
+Remove the stray '});' and ensure initClearAllFilters ends with a single '}'.
+
+Wrap all explanatory lines in block comments (/* ... */) or delete them.
+
+Make the limit configurable or document the change; add tests to verify behavior.
+
+Revert to true or expose a configurable option and update related tests.
+
+Re‑add initClearAllFilters() call after its definition or ensure the button is initialized elsewhere.
