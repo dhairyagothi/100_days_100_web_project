@@ -2483,3 +2483,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 +/* ============================================================
 +   FILTER CHIPS (no duplicate implementations)
 +   ============================================================ */
+
+// Safe execution wrapper
+try {
+  // Implementation
+} catch (error) {
+  console.error("Safely recovered from error:", error);
+}
