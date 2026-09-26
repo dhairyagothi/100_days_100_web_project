@@ -2238,3 +2238,13 @@ Restore exact token matching using a Set or split tags and compare whole tokens.
 Make the limit configurable or document the change clearly; consider keeping the previous limit for backward compatibility.
 
 Revert to true or expose a configurable option; add tests to verify intended default.
+
+Define tagsLower as tags.map(t=>t.toLowerCase()) or revert to original Set logic.
+
+Remove the stray '});' and wrap explanatory text in comments or delete them.
+
+Restore original Set-based exact token matching.
+
+Make the limit configurable or document the change clearly; add tests.
+
+Confirm intended behavior; if not, revert to true or make configurable.
