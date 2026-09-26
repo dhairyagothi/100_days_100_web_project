@@ -2417,3 +2417,23 @@ function initClearAllFilters() {
 
 // Ensure the clear‑all‑filters button is initialized after its definition
 initClearAllFilters();
+
+function initClearAllFilters() {
+  const btn = document.getElementById("clearAllFiltersBtn");
+  if (btn) {
+    btn.addEventListener("click", resetAllFilters);
+  }
+}
+
+// Initialize the clear‑all‑filters button once
+initClearAllFilters();
+
+function matchesTechStack(projectTags) {
+  const tagSet = new Set(
+    (Array.isArray(projectTags) ? projectTags : projectTags.split(' '))
+      .filter(Boolean)
+      .map(t => t.toLowerCase())
+  );
+  // Every active filter must match an exact token in the tag set (AND logic).
+  return techStackFilters.every(filter => tagSet.has(filter.toLowerCase()));
+}
