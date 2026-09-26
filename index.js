@@ -2369,3 +2369,51 @@ function matchesTechStack(projectTags) {
 
 // Re‑enable the clear‑all‑filters button initialisation (it was commented out in the PR)
 initClearAllFilters();
+
+document.addEventListener("DOMContentLoaded", async () => {
+  initSearch();
+  initSorting();
+  initTechStackSearch();
++  initClearAllFilters(); // re‑enable clear‑all‑filters button
+
+  try {
+    // Await the projects to be fetched securely
+    await loadProjects();
+    syncProjectCounts();
+    // other initialization code …
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+/* ------------------------------------------------------------------
+   NOTE: The following explanatory block was added in a previous PR
+   but was not wrapped in comments, causing a syntax error. It has
+   been converted to a proper block comment.
+------------------------------------------------------------------- */
+/*
+  Restore the original closing brace `}` for the function and ensure any surrounding IIFE or listener is correctly structured.
+  Replace 'tagsLower.includes' with the original Set logic or define tagsLower correctly, e.g., const tagsLower = tags.map(t=>t.toLowerCase());
+  Remove the stray '});' and ensure initClearAllFilters ends with a single '}'.
+  ... (additional guidance) ...
+*/
+
+// Restored exact‑token matching using a Set (original behavior)
+function matchesTechStack(projectTags) {
+  const tagSet = new Set(
+    (Array.isArray(projectTags) ? projectTags : projectTags.split(' '))
+      .filter(Boolean)
+      .map(t => t.toLowerCase())
+  );
+  return techStackFilters.every(filter => tagSet.has(filter.toLowerCase()));
+}
+
+function initClearAllFilters() {
+  const btn = document.getElementById("clearAllFiltersBtn");
+  if (btn) {
+    btn.addEventListener("click", resetAllFilters);
+  }
+}
+
+// Ensure the clear‑all‑filters button is initialized after its definition
+initClearAllFilters();
