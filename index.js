@@ -2437,3 +2437,49 @@ function matchesTechStack(projectTags) {
   // Every active filter must match an exact token in the tag set (AND logic).
   return techStackFilters.every(filter => tagSet.has(filter.toLowerCase()));
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+  initSearch();
+  initSorting();
+  initTechStackSearch();
++  // Initialise the clear‑all‑filters button (was unintentionally removed)
++  initClearAllFilters();
+
+  try {
++    // Await the projects to be fetched securely
+     await loadProjects();
+ 
+     syncProjectCounts();
+@@
+ });
++
++/* ------------------------------------------------------------
++   Helper: exact‑token tech‑stack matching
++   ------------------------------------------------------------ */
++function matchesTechStack(projectTags) {
++  // Normalise the project's tags to a Set of lower‑cased tokens for exact matching
++  const tagSet = new Set(
++    (Array.isArray(projectTags) ? projectTags : projectTags.split(' '))
++      .filter(Boolean)
++      .map(t => t.toLowerCase())
++  );
++  // Every active filter must match an exact token in the tag set (AND logic).
++  return techStackFilters.every(filter => tagSet.has(filter.toLowerCase()));
++}
++
++/* ------------------------------------------------------------
++   Clear‑all‑filters button initialisation
++   ------------------------------------------------------------ */
++function initClearAllFilters() {
++  const btn = document.getElementById("clearAllFiltersBtn");
++  if (btn) {
++    btn.addEventListener("click", resetAllFilters);
++  }
++}
++
++// Ensure the button is wired up after the DOM is ready
++initClearAllFilters();
++
++/* ============================================================
++   FILTER CHIPS (no duplicate implementations)
++   ============================================================ */
