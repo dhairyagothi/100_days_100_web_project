@@ -2218,3 +2218,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 Restore the original closing brace `}` for the function and ensure any surrounding IIFE or listener is correctly structured.
+
+Restore the original closing brace `}` for the function and ensure any surrounding IIFE or listener is correctly structured. Example:
+```js
+function initClearAllFilters() {
+  const btn = document.getElementById("clearAllFiltersBtn");
+  if (btn) {
+    btn.addEventListener("click", resetAllFilters);
+  }
+}
+```
