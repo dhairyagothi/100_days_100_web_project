@@ -355,7 +355,7 @@ function matchesTechStack(projectTags) {
 
   // EFFICIENT: Check if ALL filters exist in tags (AND logic)
   // Uses simple includes() - O(n*m) where n=filters, m=tag length
-  return techStackFilters.every(filter => tagsLower.includes(filter));
+  return techStackFilters.every(filter => tagsLower.includes(filter.toLowerCase()));
 }
 
 /**
