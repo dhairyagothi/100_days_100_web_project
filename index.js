@@ -2273,3 +2273,22 @@ function matchesTechStack(projectTags) {
   // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
   return techStackFilters.every(filter => tagSet.has(filter.toLowerCase()));
 }
+
+// ---- constants -----------------------------------------------------------
++export const RECENT_PROJECTS_LIMIT = 20; // default historic limit, can be overridden via settings
++
++function trackRecentProject(project) {
++  // Remove any existing entry for the same day
++  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
++
++  // Add the new project to the front of the queue
++  recentProjects.unshift(projectObj);
++
++  // Enforce the configurable limit – slice excess items off the tail
++  if (recentProjects.length > RECENT_PROJECTS_LIMIT) {
++    recentProjects = recentProjects.slice(0, RECENT_PROJECTS_LIMIT);
++  }
++
++  // Persist the updated queue
++  localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
++}
