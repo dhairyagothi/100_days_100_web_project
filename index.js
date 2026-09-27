@@ -3079,3 +3079,14 @@ document.addEventListener("DOMContentLoaded", () => {
 document
   .getElementById("randomProjectBtn")
   ?.addEventListener("click", renderRandomProject);
+// Register Hex Color Flipper project
+PROJECTS.push({
+    day: "Day 228",
+    projectNo: 228,
+    projectType: "tool",
+    projectName: "Hex Color Flipper",
+    projectPath: "./public/Hex_Color_Flipper/index.html",
+    techStack: ["javascript", "css", "html", "tool"],
+    difficulty: "Beginner",
+    projectDesc: "A minimalist web utility that generates a random hex color code and applies it to the browser background."
+});
