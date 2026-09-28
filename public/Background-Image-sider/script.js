@@ -1,4 +1,9 @@
+
+
+// ───── DESTINATION DATA ─────
+
 // ───── CONFIGURATION & DATA ─────
+
 const destinations = [
   { name: "Iceland", flag: "🇮🇸", region: "Europe", bg: "url('images/iceland.jpg')", desc: "Explore glaciers, geysers, and the ethereal Northern Lights across volcanic landscapes.", lat: 64.9631, lon: -19.0208 },
   { name: "Switzerland", flag: "🇨🇭", region: "Europe", bg: "url('images/Jennifer.avif')", desc: "Experience the serene beauty of the Swiss Alps and impossibly picturesque alpine villages.", lat: 46.8182, lon: 8.2275 },
@@ -573,6 +578,7 @@ document.addEventListener('keydown', e => {
 });
 
 // ───── SYSTEM START ─────
+// ───── SYSTEM START ─────
 window.addEventListener('DOMContentLoaded', () => {
   buildUI();
   updateContent(0);
@@ -586,4 +592,4 @@ window.addEventListener('DOMContentLoaded', () => {
       if (autoplaying) startProgress();
     });
   }
-}); 
+});

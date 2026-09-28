@@ -1,3 +1,47 @@
+<<<<<<< HEAD
+@media screen and (max-width: 768px){
+
+    .navbar{
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .navbar ul{
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #placeTitle{
+        font-size: 2rem;
+    }
+
+    #placeDescription{
+        font-size: 1rem;
+    }
+
+    .booking{
+        width: 90%;
+    }
+
+    #placeSelector{
+        width: 90%;
+    }
+
+    .controls{
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+
+    .controls button{
+        width: 80%;
+    }
+}
+
+/* ───── RESET ───── */
+* {
+=======
 * {
   margin: 0;
   padding: 0;
@@ -1150,3 +1194,4 @@ footer p {
     width: 110px;
   }
 }
+>>>>>>> upstream/Main
