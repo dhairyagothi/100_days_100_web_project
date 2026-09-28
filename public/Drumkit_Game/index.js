@@ -11,7 +11,6 @@ for (var i = 0; i < numberOfDrumButtons; i++) {
     buttonAnimation(buttonInnerHTML);
 
   });
-
 }
 
 // Detect keyboard presses
@@ -24,7 +23,6 @@ document.addEventListener("keypress", function (event) {
 
 // Play sounds
 function makeSound(key) {
-
   switch (key) {
 
     case "do":
