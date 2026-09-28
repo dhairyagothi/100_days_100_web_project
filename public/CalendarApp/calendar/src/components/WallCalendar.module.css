@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+.calendarLayout {
+  @apply grid grid-cols-1 md:grid-cols-[1fr_300px] bg-white divide-y md:divide-y-0 md:divide-x divide-neutral-200;
+}
+
+.gridColumn {
+  @apply col-span-1;
+}

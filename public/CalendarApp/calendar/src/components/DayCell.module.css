@@ -1,0 +1,145 @@
+@reference "tailwindcss";
+.cellContainer {
+  @apply relative h-12 sm:h-14 lg:h-16 flex items-center justify-center p-1;
+}
+
+.rangeBgFull {
+  @apply absolute top-1/2 -translate-y-1/2 inset-x-0 h-9 sm:h-10 z-0;
+  background-color: #ccfcfc;
+}
+
+.rangeBgStart {
+  @apply absolute top-1/2 -translate-y-1/2 left-1/2 right-0 h-9 sm:h-10 z-0;
+  background-color: #ccfcfc;
+}
+
+.rangeBgEnd {
+  @apply absolute top-1/2 -translate-y-1/2 right-1/2 left-0 h-9 sm:h-10 z-0;
+  background-color: #ccfcfc;
+}
+
+.dayButton {
+  @apply relative w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base font-sans transition-colors z-10;
+}
+
+.notCurrentMonth {
+  @apply text-neutral-300;
+}
+
+.standardDay {
+  @apply text-neutral-700 hover:bg-neutral-100;
+}
+
+.weekendDay {
+  @apply text-blue-500 hover:bg-blue-50 font-semibold text-[1.1em];
+}
+
+.todayDay {
+  @apply text-neutral-900 border-2 border-neutral-800;
+}
+
+.selectedStart {
+  background-color: #d1e2e2;
+  color: #1a565a;
+  box-shadow: 0 0 0 2px white, 0 0 0 5px #14494c;
+}
+
+.selectedEnd {
+  background-color: #f1d7cb;
+  color: #333333;
+  box-shadow: 0 0 0 2px white, 0 0 0 5px #b05a2e;
+}
+
+.iconStart {
+  @apply absolute w-4 h-4 fill-current;
+  color: #14494c;
+  top: -10px;
+  right: -10px;
+}
+
+.iconEnd {
+  @apply absolute w-4 h-4 fill-current;
+  color: #b05a2e;
+  top: -10px;
+  right: -10px;
+}
+
+.holidayIndicator {
+  @apply absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full z-10 shadow-sm;
+  background-color: #cc3366;
+}
+
+.tooltip {
+  @apply absolute py-1 px-2.5 text-[0.7rem] font-bold tracking-wider uppercase text-white whitespace-nowrap rounded pointer-events-none opacity-0 transition-all duration-200 z-50;
+  background-color: #162646;
+  bottom: 110%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.tooltipCenter {
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+}
+
+.dayButton:hover .tooltipCenter {
+  @apply opacity-100;
+  transform: translateX(-50%) translateY(0);
+}
+
+.tooltipRight {
+  left: 0;
+  transform: translateY(5px);
+}
+
+.dayButton:hover .tooltipRight {
+  @apply opacity-100;
+  transform: translateY(0);
+}
+
+.tooltipLeft {
+  right: 0;
+  left: auto;
+  transform: translateY(5px);
+}
+
+.dayButton:hover .tooltipLeft {
+  @apply opacity-100;
+  transform: translateY(0);
+}
+
+.tooltipArrow {
+  @apply absolute w-2.5 h-2.5 rotate-45;
+  background-color: #162646;
+  bottom: -4px;
+  z-index: -1;
+}
+
+.arrowCenter {
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.arrowLeft {
+  left: 12px;
+  transform: rotate(45deg);
+}
+
+.arrowRight {
+  right: 12px;
+  transform: rotate(45deg);
+}
+
+.customLabelBadge {
+  @apply absolute top-0 -right-2 text-[0.68rem] font-bold text-neutral-600 bg-neutral-100 border border-neutral-200 px-1.5 py-0.5 rounded-sm leading-none whitespace-nowrap overflow-hidden shadow-sm z-30 pointer-events-none;
+  max-width: 90%;
+  text-overflow: ellipsis;
+}
+
+.labelInputWrapper {
+  @apply absolute -bottom-1 left-1/2 -translate-x-1/2 translate-y-full w-20 z-50 pt-1;
+}
+
+.labelInput {
+  @apply w-full text-[0.65rem] text-center font-bold text-neutral-800 bg-white border border-blue-400 rounded py-1 px-1 shadow-md outline-none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

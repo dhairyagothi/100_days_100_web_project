@@ -1,0 +1,127 @@
+@reference "tailwindcss";
+.sidebarContainer {
+  @apply min-h-[500px] md:min-h-0 md:h-full p-6 md:p-8 flex flex-col bg-white;
+}
+
+.sidebarHeader {
+  @apply flex justify-between items-center mb-6 border-b-2 border-neutral-800 pb-2;
+}
+
+.sidebarTitle {
+  @apply font-serif text-xl font-bold tracking-tight text-neutral-900 m-0 leading-none;
+}
+
+.addButton {
+  @apply text-white bg-neutral-800 hover:bg-neutral-700 w-7 h-7 flex flex-col items-center justify-center rounded-full transition-colors cursor-pointer border-none outline-none;
+}
+
+.notesWrapper {
+  @apply relative flex-1 min-h-0 bg-yellow-50 rounded-md border border-neutral-200 overflow-hidden;
+}
+
+.linedPaperEffect {
+  @apply absolute inset-0 pointer-events-none opacity-30 z-0;
+  background-image: repeating-linear-gradient(transparent, transparent 31px, #94a3b8 31px, #94a3b8 32px);
+  background-size: 100% 32px;
+}
+
+.notesListContainer {
+  @apply absolute inset-0 overflow-y-auto p-4 z-10 space-y-3;
+}
+
+.reorderGroup {
+  @apply space-y-2 m-0 p-0 list-none;
+}
+
+.noteItemBoxWrapper {
+  @apply relative rounded list-none;
+}
+
+/* Framer Motion drag actively changes cursor, grab ensures it looks grabbable */
+.noteItemBox {
+  @apply flex items-start gap-2 bg-white/90 backdrop-blur-[2px] p-3 rounded-lg shadow-sm border border-neutral-200/60 transition-colors w-full box-border;
+}
+
+.noteItemBox:hover {
+  @apply shadow border-neutral-300;
+}
+
+.noteItemBox.pinned {
+  @apply border-yellow-300/60 bg-yellow-100/70;
+}
+
+.dragHandle {
+  @apply text-neutral-400 cursor-grab mt-0.5 shrink-0 hover:text-neutral-600;
+}
+
+.dragHandle:active {
+  @apply cursor-grabbing;
+}
+
+.noteContent {
+  @apply flex-1 min-w-0 pr-2 pt-0.5;
+}
+
+.noteText {
+  @apply text-sm text-neutral-800 font-sans leading-tight whitespace-pre-wrap break-words m-0;
+}
+
+.noteDates {
+  @apply block mt-1.5 text-[0.65rem] font-semibold text-neutral-500 uppercase tracking-wider;
+}
+
+.noteActions {
+  @apply flex flex-col gap-1 opacity-0 transition-opacity shrink-0;
+}
+
+.noteItemBox:hover .noteActions, .noteItemBox:focus-within .noteActions {
+  @apply opacity-100;
+}
+
+.iconBtn {
+  @apply p-1.5 flex items-center justify-center text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 rounded transition-colors cursor-pointer border-none bg-transparent outline-none;
+}
+
+.iconBtnDanger {
+  @apply p-1.5 flex items-center justify-center text-neutral-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors cursor-pointer border-none bg-transparent outline-none;
+}
+
+.iconBtnSuccess {
+  @apply p-1.5 flex items-center justify-center text-neutral-400 hover:text-green-600 hover:bg-green-50 rounded transition-colors cursor-pointer border-none bg-transparent outline-none;
+}
+
+.activePin {
+  @apply text-yellow-600 hover:text-yellow-700;
+}
+
+.pinnedDivider {
+  @apply h-px bg-neutral-300/70 my-4 mx-4;
+}
+
+.editDraftBox {
+  @apply bg-white p-3 rounded-lg shadow-lg border border-neutral-300 flex flex-col gap-2 relative z-20 w-full box-border;
+}
+
+.editTextArea {
+  @apply w-full text-sm text-neutral-800 bg-transparent border border-transparent hover:border-neutral-100 focus:border-neutral-200 focus:bg-neutral-50 rounded outline-none resize-none font-sans p-1 box-border transition-colors;
+}
+
+.editDraftActions {
+  @apply flex justify-between items-center mt-1 pt-2 border-t border-neutral-100;
+}
+
+.editDatePreview {
+  @apply text-[0.65rem] font-semibold text-blue-600 uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-full;
+}
+
+.actionButtons {
+  @apply flex gap-1;
+}
+
+.emptyStateContainer {
+  @apply h-full flex items-center justify-center pt-12;
+}
+
+.emptyStateText {
+  @apply text-neutral-500 text-sm italic text-center px-4 leading-relaxed;
+}
