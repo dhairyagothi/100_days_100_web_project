@@ -11,6 +11,48 @@ let soundEnabled = true;
 let flashSpeed = 600;
 let clickable = true;
 let paused = false;
+
+let sequenceInterval = null; // store Simon sequence interval
+
+const screens = document.querySelectorAll('.screen');
+const h2 = document.querySelector("h2");
+const highScoreText = document.getElementById("highscore");
+const modal = document.getElementById("game-modal");
+const modalTitle = document.getElementById("modal-title");
+const modalScore = document.getElementById("modal-score");
+const modalHighScore = document.getElementById("modal-highscore");
+const modalBtn = document.getElementById("modal-btn");
+const strictToggle = document.getElementById("strict-toggle");
+const themeToggle = document.getElementById("theme-toggle");
+const startBtn = document.getElementById("start-btn");
+const stopBtn = document.getElementById("stop-btn");
+const board = document.getElementById("board");
+const allBtns = document.querySelectorAll(".btn");
+const pauseBtn = document.getElementById("pause-btn");
+const playBtn =document.getElementById("play-btn");
+
+let sounds = {
+  red: new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"),
+  yellow: new Audio("https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"),
+  green: new Audio("https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"),
+  purple: new Audio("https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"),
+  wrong: new Audio("https://s3.amazonaws.com/adam-recvlohe-sounds/error.wav")
+};
+
+function playSound(color) {
+  const sound = sounds[color];
+
+  sound.pause();
+  sound.currentTime = 0;
+  sound.play();
+}
+
+let highScore = localStorage.getItem("highScore") || 0;
+highScoreText.innerText = `🏆 High Score: ${highScore}`;
+
+playBtn.addEventListener('click', () => screens[0].classList.add('up'));
+
+// ---------------- Flash functions ----------------
 let sequenceInterval = null;
 
 // ── DOM refs ──────────────────────────────
@@ -174,6 +216,7 @@ function setLevelDisplay(val) {
 }
 
 // ── Flash ─────────────────────────────────
+
 function gameFlash(btn) {
   playTone(btn.id);
   btn.classList.add("flash");
@@ -221,7 +264,15 @@ function playSequence() {
   let i = 0;
   sequenceInterval = setInterval(() => {
     if (paused) return;
+
+    const color = gameSeq[i];
+    const btn = document.getElementById(color);
+
+    gameFlash(btn);
+    playSound(color);
+    
     gameFlash(document.getElementById(gameSeq[i]));
+
     i++;
     if (i >= gameSeq.length) {
       clearInterval(sequenceInterval); sequenceInterval = null;
@@ -289,6 +340,20 @@ function stopGame() {
 }
 
 function gameOver() {
+ 
+  playSound("wrong");
+  h2.innerHTML = `💀 Game Over! Score: <b>${level}</b><br>Press Start to play again.`;
+  document.body.style.backgroundColor = "red";
+  document.body.classList.add("game-over");
+
+setTimeout(() => {
+  document.body.classList.remove("game-over");
+}, 200);
+
+  board.classList.add("shake");
+  board.addEventListener("animationend", () => board.classList.remove("shake"), { once: true });
+  h2.innerHTML = `💀 Game Over! Score: <b>${level}</b>`;
+ 
   updateHighScore();
   showModal("💀", "Game Over!", level, true);
   resetGame();
@@ -317,6 +382,19 @@ function setStatus(msg, levelUp = false) {
 
 function btnPress() {
   if (!started || !clickable || paused) return;
+
+  const btn = this;
+  userFlash(btn);
+ 
+  playSound(btn.id);
+
+  if (navigator.vibrate) navigator.vibrate(50);
+ 
+
+  let userColor = btn.getAttribute("id");
+  userSeq.push(userColor);
+
+
   userFlash(this);
   if (navigator.vibrate) navigator.vibrate(50);
   userSeq.push(this.id);
@@ -324,6 +402,7 @@ function btnPress() {
   const pip = document.getElementById(`pip-${userSeq.length - 1}`);
   if (pip) { pip.classList.add("done"); }
   updateClickCounter();
+
   checkAns(userSeq.length - 1);
 }
 

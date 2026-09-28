@@ -558,8 +558,70 @@ input:checked + .slider::before { transform: translateX(20px); }
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-8px); }
+  75%      { transform: translateX(8px); }
+}
+ 
+.shake { animation: shake 0.4s ease; }
+ 
+/* ===== Dark Mode ===== */
+body.dark {
+  background: #1a1a2e;
+  color: #f0f0ff;
+}
+ 
+body.dark h2 {
+  color: #ccc;
+}
+ 
+body.dark h3 {
+  color: #666;
+}
+ 
+body.dark .toggle-group {
+  background: #16213e;
+  border-color: rgba(255, 217, 61, 0.3);
+}
+ 
+body.dark .toggle-label {
+  color: #ccc;
+}
+ 
+body.dark .btn {
+  opacity: 0.7;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.4);
+}
+ 
+body.dark .btn:active {
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+}
+ 
+body.dark .flash {
+  filter: brightness(1.6);
+}
+body.dark .instructions{
+  background: #16213e;
+  border-color: rgba(255, 217, 61, 0.3);
+}
+ 
+body.dark .btn.red { background-color: #ff6666; }
+body.dark .btn.yellow { background-color: #ffe066; }
+body.dark .btn.green { background-color: #66ff66; }
+body.dark .btn.purple { background-color: #b366ff; }
+
+.game-over {
+  background: #ff4d4d !important;
+}
+
+ 
+/* ===== Responsive ===== */
+@media (max-width: 400px) {
+  h1 { font-size: 2.2rem; }
+  .btn { width: 100px; height: 100px; }
+  .controls { gap: 12px; }
   20%      { transform: translateX(-6px); }
   60%      { transform: translateX(6px); }
+
 }
 
 .flash     { animation: gameFlashAnim .38s ease; }
