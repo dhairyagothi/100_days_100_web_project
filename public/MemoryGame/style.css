@@ -270,6 +270,11 @@ header {
   font-size: 1.2rem;
   color: rgba(168,85,247,0.4);
 }
+.instructions{
+  padding:10px;
+  margin:10px;
+  text-align:center;
+}
 
 /* Card Front */
 .card-front {
