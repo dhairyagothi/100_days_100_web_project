@@ -1,115 +1,37 @@
-// ── Config ────────────────────────────────────────────────
-const EMOJIS = ['🦊','🐬','🦋','🌸','🍄','⚡','🎸','🔮','🦄','🌈','🎯','🍀'];
+const gameContainer = document.getElementById('game-container');
+// EMOJIS instead of colors! 🎉
+const emojis = ['🐼', '🚀', '🍕', '👻', '💎', '🌟', '❤️', '🎵'];
+let cards = [];
+let firstCard, secondCard;
+let lockBoard = false;
+let matchesCount = 0;
+const totalPairs = emojis.length;
 
-const DIFFICULTIES = {
-  easy:   { cols: 4, pairs: 8,  label: '4×4' },
-  medium: { cols: 5, pairs: 10, label: '5×4' },
-  hard:   { cols: 6, pairs: 12, label: '6×4' }
-};
-
-// ── State ─────────────────────────────────────────────────
-let cards        = [];
-let flipped      = [];
-let matched      = [];
-let moves        = 0;
-let seconds      = 0;
-let timerInterval = null;
-let previewInterval=null;
-let gameActive   = false;
-let lockBoard    = false;
-let hintUsed     = false;
-let difficulty   = 'easy';
-let highScores   = JSON.parse(localStorage.getItem('mmHighScores') || '{}');
-
-// ── DOM References ─────────────────────────────────────────
-const grid       = document.getElementById('gameGrid');
-const movesEl    = document.getElementById('movesVal');
-const timerEl    = document.getElementById('timerVal');
-const pairsEl    = document.getElementById('pairsVal');
-const bestEl     = document.getElementById('bestVal');
-const progressEl = document.getElementById('progressBar');
-const winModal   = document.getElementById('winModal');
-const toastEl    = document.getElementById('toast');
-const startBtn   = document.getElementById('startBtn');
-const hintBtn    = document.getElementById('hintBtn');
-const victorySound = document.getElementById('victorySound');
-
-// ── Event Listeners ───────────────────────────────────────
-document.querySelectorAll('.diff-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    difficulty = btn.dataset.diff;
-    updateGridClass();
-    updateBestDisplay();
-    setupPreview();
-  });
-});
-
-// FIX 1: Updated event listener to handle both start and restart
-startBtn.addEventListener('click', () => {
-  if (gameActive) {
-    setupPreview();      // Restart completely if game is active
-  } else {
-    startGame();         // Skip preview / start game
-  }
-});
-
-hintBtn.addEventListener('click', useHint);
-
-document.getElementById('playAgainBtn').addEventListener('click', () => {
-  victorySound.pause();
-  victorySound.currentTime = 0;
-  winModal.classList.remove('visible');
-  setupPreview();
-});
-document.getElementById('restartBtn').addEventListener('click', setupPreview);
-
-// ── Utility Helpers ───────────────────────────────────────
-
-/**
- * Fisher-Yates shuffle — returns a new shuffled array
- */
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-/**
- * Format seconds as M:SS string
- */
-function fmt(s) {
-  const m = Math.floor(s / 60);
-  return `${m}:${String(s % 60).padStart(2, '0')}`;
-}
-
-/**
- * Apply the correct grid CSS class based on current difficulty
- */
-function updateGridClass() {
-  const cfg = DIFFICULTIES[difficulty];
-  grid.className = `game-grid grid-4x${cfg.cols}`;
-}
-
-/**
- * Update the Best Moves display in the stats bar
- */
-function updateBestDisplay() {
-  const hs = highScores[difficulty];
-  bestEl.textContent = hs ? `${hs.moves}m` : '—';
-}
-
-/**
- * Show a temporary toast notification
- */
-function showToast(msg, dur = 1800) {
-  toastEl.textContent = msg;
-  toastEl.classList.add('show');
-  setTimeout(() => toastEl.classList.remove('show'), dur);
+// Create cards dynamically
+function createCards() {
+    const cardsArray = [...emojis, ...emojis];
+    // Shuffle cards
+    for (let i = cardsArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cardsArray[i], cardsArray[j]] = [cardsArray[j], cardsArray[i]];
+    }
+    
+    cardsArray.forEach(emoji => {
+        const cardElement = document.createElement('div');
+        cardElement.classList.add('card');
+        
+        // HTML structure of each card with emoji
+        const innerHTML = `
+            <div class="card-inner">
+                <div class="card-front">❓</div>
+                <div class="card-back" style="background: linear-gradient(135deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 48px;">${emoji}</div>
+            </div>
+        `;
+        cardElement.innerHTML = innerHTML;
+        gameContainer.appendChild(cardElement);
+    });
+    
+    cards = document.querySelectorAll('.card');
 }
 
 // ── Timer ─────────────────────────────────────────────────
