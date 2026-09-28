@@ -352,6 +352,27 @@ modalBtn.addEventListener("click", () => {
 });
 
 function resetGame() {
+  started = false;
+  paused = false;
+
+  if (sequenceInterval) {
+    clearInterval(sequenceInterval);
+  }
+
+  gameSeq = [];
+  userSeq = [];
+  level = 0;
+  clickable = true;
+
+  h2.innerText = "Press Any Key to Start 🎉";
+
+  enableStartListeners();
+  pauseBtn.innerText = "⏸ Pause";
+}
+
+// ---------------- Event Listeners ----------------
+enableStartListeners();
+
   started = false; paused = false;
   if (sequenceInterval) clearInterval(sequenceInterval);
   gameSeq = []; userSeq = [];
@@ -393,3 +414,20 @@ themeToggle.addEventListener("change", () => {
   document.body.classList.toggle("dark");
   themeIcon.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
 });
+
+allBtns.forEach((btn) => btn.addEventListener("click", btnPress));
+
+
+function enableStartListeners() {
+
+  document.addEventListener("keypress", startGameOnce, { once: true });
+
+  document.addEventListener("touchstart", startGameOnce, { once: true });
+}
+
+function startGameOnce() {
+  startGame();
+}
+
+pauseBtn.addEventListener("click", togglePause);
+

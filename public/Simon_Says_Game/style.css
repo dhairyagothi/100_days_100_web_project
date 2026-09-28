@@ -223,6 +223,33 @@ body {
   gap: 3px;
 }
 
+h1 { font-size: 3rem; margin-top: 20px; }
+h2 { font-size: 1.5rem; margin-top: 10px; letter-spacing: 0.5px; animation: pulseText 1.5s infinite;}
+h3 { margin-top: 5px; color: #555; }
+
+h1 {
+  width: 100%;
+  font-family: 'Fredoka One', cursive;
+  font-size: 3rem;
+  margin-bottom: 6px;
+  color:#ff6b6b;
+  text-shadow: 3px 3px 0 #c94040;
+
+@keyframes pulseText {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* ----- Buttons ----- */
+.btn-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+.line-one, .line-two { display: flex; }
+  
 .score-value {
   font-family: 'Fredoka One', cursive;
   font-size: 2.2rem;
