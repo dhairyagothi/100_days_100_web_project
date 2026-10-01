@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Tree Traversal Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1>Binary Tree Traversal Visualizer</h1>
+            <p>Insert nodes to build your own tree. Then watch <strong>Pre-Order</strong> (Root, Left, Right), <strong>In-Order</strong> (Left, Root, Right), and <strong>Post-Order</strong> (Left, Right, Root) traversals in action!</p>
+        </header>
+        <main>
+            <div class="controls glass-panel">
+                <div class="input-group">
+                    <input type="number" id="node-value" placeholder="Enter number..." />
+                    <button id="btn-insert" class="btn primary">Insert Node</button>
+                    <button id="btn-pre" class="btn secondary">Pre-Order</button>
+                    <button id="btn-in" class="btn secondary">In-Order</button>
+                    <button id="btn-post" class="btn warning">Post-Order</button>
+                    <button id="btn-reset" class="btn danger">Clear Tree</button>
+                </div>
+                <div class="speed-control">
+                    <label for="speed-slider">Animation Speed:</label>
+                    <input type="range" id="speed-slider" min="1" max="10" value="5">
+                </div>
+            </div>
+            <div class="logger glass-panel" id="logger">
+                <h3>Traversal Output</h3>
+                <div id="traversal-output" class="output-box">Insert nodes and select a traversal to begin...</div>
+            </div>
+            <div class="visualization-area glass-panel">
+                <svg id="edges-svg"></svg>
+                <div id="nodes-container"></div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

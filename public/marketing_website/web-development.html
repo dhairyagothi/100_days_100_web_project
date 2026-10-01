@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Design & Development | SEO Agency</title>
+    <meta name="description" content="Build stunning, fast, and conversion-optimized websites. Our expert web development team creates digital experiences that grow your business.">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .page-hero {
+            background: linear-gradient(135deg, #0f172a, #134e4a, #111827);
+            color: white; padding: 130px 0 100px;
+            position: relative; overflow: hidden;
+        }
+        .page-hero::before {
+            content: ''; position: absolute;
+            width: 600px; height: 600px;
+            background: rgba(16,185,129,0.2); filter: blur(130px);
+            top: -150px; right: -150px;
+        }
+        .page-hero-content { position: relative; z-index: 2; text-align: center; }
+        .page-badge {
+            display: inline-block; padding: 8px 20px; border-radius: 30px;
+            background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3);
+            color: #6ee7b7; font-size: 14px; font-weight: 600;
+            margin-bottom: 24px; letter-spacing: 1px;
+        }
+        .page-hero h1 { font-size: 62px; font-weight: 800; line-height: 1.1; margin-bottom: 24px; }
+        .page-hero h1 span { color: #10b981; }
+        .page-hero p { font-size: 18px; color: #cbd5e1; max-width: 680px; margin: 0 auto 40px; line-height: 1.8; }
+        .page-hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        /* TECH STACK */
+        .tech-strip {
+            background: white; padding: 50px 0; border-bottom: 1px solid #e2e8f0;
+        }
+        .tech-strip h6 {
+            text-align: center; color: #94a3b8; font-size: 13px;
+            font-weight: 700; letter-spacing: 2px; margin-bottom: 30px;
+        }
+        .tech-logos {
+            display: flex; justify-content: center; align-items: center;
+            gap: 40px; flex-wrap: wrap;
+        }
+        .tech-badge {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 8px; color: #64748b; font-size: 13px; font-weight: 600;
+        }
+        .tech-badge i { font-size: 32px; }
+        .tech-badge .html5  { color: #e34c26; }
+        .tech-badge .css3   { color: #1572b6; }
+        .tech-badge .js     { color: #f7df1e; }
+        .tech-badge .react  { color: #61dafb; }
+        .tech-badge .nodejs { color: #339933; }
+        .tech-badge .wp     { color: #21759b; }
+
+        /* STATS */
+        .stats-band {
+            background: linear-gradient(135deg, #065f46, #047857);
+            padding: 60px 0;
+        }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px; text-align: center;
+        }
+        .stat-item h3 { font-size: 42px; font-weight: 800; color: white; margin-bottom: 6px; }
+        .stat-item p  { color: rgba(255,255,255,0.7); font-size: 15px; margin: 0; }
+
+        /* SECTION COMMON */
+        .section-label {
+            display: inline-block; padding: 8px 18px; border-radius: 30px;
+            background: rgba(16,185,129,0.1); color: #10b981;
+            font-size: 13px; font-weight: 700; letter-spacing: 1px; margin-bottom: 20px;
+        }
+        .section-title { font-size: 44px; font-weight: 800; color: #111827; margin-bottom: 18px; line-height: 1.2; }
+        .section-sub   { color: #64748b; font-size: 17px; line-height: 1.8; max-width: 600px; }
+
+        /* SERVICES */
+        .webdev-services { padding: 100px 0; background: #f8fafc; }
+        .svc-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px; margin-top: 60px;
+        }
+        .svc-card {
+            background: white; padding: 38px 30px; border-radius: 20px;
+            border: 1px solid #e2e8f0; transition: all 0.35s ease;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+        }
+        .svc-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(16,185,129,0.12);
+            border-color: #6ee7b7;
+        }
+        .svc-icon {
+            width: 64px; height: 64px; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; margin-bottom: 24px;
+        }
+        .g { background: rgba(16,185,129,0.1); color: #10b981; }
+        .b { background: rgba(59,130,246,0.1);  color: #3b82f6; }
+        .p { background: rgba(139,92,246,0.1);  color: #8b5cf6; }
+        .o { background: rgba(245,158,11,0.1);  color: #f59e0b; }
+        .r { background: rgba(239,68,68,0.1);   color: #ef4444; }
+        .t { background: rgba(20,184,166,0.1);  color: #14b8a6; }
+        .svc-card h3 { font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 12px; }
+        .svc-card p  { color: #64748b; font-size: 15px; line-height: 1.7; margin: 0; }
+
+        /* PORTFOLIO PREVIEW */
+        .portfolio-section { padding: 100px 0; background: white; }
+        .portfolio-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px; margin-top: 60px;
+        }
+        .portfolio-card {
+            border-radius: 20px; overflow: hidden;
+            border: 1px solid #e2e8f0; transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+        }
+        .portfolio-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .portfolio-thumb {
+            height: 200px; display: flex; align-items: center; justify-content: center;
+            font-size: 60px; position: relative;
+        }
+        .thumb-1 { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .thumb-2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .thumb-3 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .portfolio-info { padding: 24px; }
+        .portfolio-info h4 { font-size: 18px; font-weight: 700; color: #111827; margin-bottom: 8px; }
+        .portfolio-info p  { color: #64748b; font-size: 14px; margin: 0; }
+        .portfolio-tags { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+        .tag {
+            padding: 4px 12px; border-radius: 20px;
+            background: rgba(16,185,129,0.1); color: #10b981;
+            font-size: 12px; font-weight: 600;
+        }
+
+        /* PROCESS */
+        .process-section { padding: 100px 0; background: #f8fafc; }
+        .process-steps {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px; margin-top: 60px;
+        }
+        .process-step { text-align: center; padding: 20px; }
+        .step-number {
+            width: 56px; height: 56px; border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white; font-size: 20px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(16,185,129,0.3);
+        }
+        .process-step h4 { font-size: 18px; font-weight: 700; color: #111827; margin-bottom: 10px; }
+        .process-step p  { color: #64748b; font-size: 14px; line-height: 1.7; }
+
+        /* CTA */
+        .cta-strip {
+            background: linear-gradient(135deg, #064e3b, #047857, #059669);
+            padding: 90px 0; text-align: center;
+        }
+        .cta-strip h2 { font-size: 44px; font-weight: 800; color: white; margin-bottom: 18px; }
+        .cta-strip p  { color: rgba(255,255,255,0.8); font-size: 17px; margin-bottom: 36px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .btn-white { background: white; color: #047857; padding: 15px 32px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s; display: inline-block; }
+        .btn-white:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.2); transform: translateY(-2px); color: #047857; }
+
+        /* FOOTER */
+        .footer-section { background: linear-gradient(135deg, #020617, #0f172a, #111827); color: white; padding: 50px 0 25px; }
+        .footer-section h5 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+        .footer-section p, .footer-section a { color: #cbd5e1; line-height: 1.9; text-decoration: none; }
+        .footer-section a:hover { color: #8b5cf6; }
+        .social-icons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .social-icons a { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: white; transition: 0.3s; }
+        .social-icons a:hover { background: #10b981; transform: translateY(-3px); }
+
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 38px; }
+            .section-title { font-size: 32px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" id="navbar">
+        <a class="navbar-brand" href="index.html">WEB TEMPLATE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" id="servicesDropdown" role="button" data-toggle="dropdown">Service List</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="seo.html">SEO Optimization</a>
+                        <a class="dropdown-item" href="cm.html">Content Marketing</a>
+                        <a class="dropdown-item" href="google-ads.html">Google Ads</a>
+                        <a class="dropdown-item" href="web-development.html">Web Development</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="case-study.html">Case Study</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="styleguide.html">Styleguide</a></li>
+                <li class="nav-item ml-3"><button id="theme-toggle">🌙</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="page-hero">
+        <div class="container page-hero-content">
+            <span class="page-badge">💻 WEB DESIGN & DEVELOPMENT</span>
+            <h1>Websites That <span>Convert</span><br>Visitors Into Customers</h1>
+            <p>We design and develop fast, beautiful, and SEO-friendly websites that deliver real business results — from landing pages to full e-commerce platforms.</p>
+            <div class="page-hero-cta">
+                <a href="contact.html" class="btn btn-primary">Start Your Project</a>
+                <a href="#portfolio" class="btn btn-secondary">View Our Work</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Tech Stack -->
+    <div class="tech-strip">
+        <div class="container">
+            <h6>TECHNOLOGIES WE WORK WITH</h6>
+            <div class="tech-logos">
+                <div class="tech-badge"><i class="fab fa-html5 html5"></i><span>HTML5</span></div>
+                <div class="tech-badge"><i class="fab fa-css3-alt css3"></i><span>CSS3</span></div>
+                <div class="tech-badge"><i class="fab fa-js-square js"></i><span>JavaScript</span></div>
+                <div class="tech-badge"><i class="fab fa-react react"></i><span>React</span></div>
+                <div class="tech-badge"><i class="fab fa-node-js nodejs"></i><span>Node.js</span></div>
+                <div class="tech-badge"><i class="fab fa-wordpress wp"></i><span>WordPress</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <section class="stats-band">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item"><h3>350+</h3><p>Websites Built</p></div>
+                <div class="stat-item"><h3>98%</h3><p>Client Satisfaction</p></div>
+                <div class="stat-item"><h3>2.1s</h3><p>Avg. Page Load Time</p></div>
+                <div class="stat-item"><h3>100%</h3><p>Mobile Responsive</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="webdev-services" id="services">
+        <div class="container">
+            <span class="section-label">WHAT WE BUILD</span>
+            <h2 class="section-title">End-to-End Web Development Services</h2>
+            <p class="section-sub">From concept to launch — we handle every aspect of building your digital presence.</p>
+            <div class="svc-grid">
+                <div class="svc-card">
+                    <div class="svc-icon g"><i class="fas fa-paint-brush"></i></div>
+                    <h3>UI/UX Design</h3>
+                    <p>Beautiful, user-centered designs crafted to maximize engagement, usability, and conversion rates.</p>
+                </div>
+                <div class="svc-card">
+                    <div class="svc-icon b"><i class="fas fa-laptop-code"></i></div>
+                    <h3>Custom Web Development</h3>
+                    <p>Hand-coded, pixel-perfect websites built from scratch for performance and scalability.</p>
+                </div>
+                <div class="svc-card">
+                    <div class="svc-icon p"><i class="fas fa-shopping-bag"></i></div>
+                    <h3>E-Commerce Development</h3>
+                    <p>Powerful online stores with seamless checkout, inventory management, and payment integration.</p>
+                </div>
+                <div class="svc-card">
+                    <div class="svc-icon o"><i class="fab fa-wordpress"></i></div>
+                    <h3>WordPress Development</h3>
+                    <p>Custom WordPress themes and plugins that give you full control over your content and design.</p>
+                </div>
+                <div class="svc-card">
+                    <div class="svc-icon r"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>Responsive Design</h3>
+                    <p>Every site we build works flawlessly across all devices — desktop, tablet, and mobile.</p>
+                </div>
+                <div class="svc-card">
+                    <div class="svc-icon t"><i class="fas fa-tachometer-alt"></i></div>
+                    <h3>Performance Optimization</h3>
+                    <p>Speed optimization, Core Web Vitals improvements, and CDN setup for lightning-fast load times.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section class="portfolio-section" id="portfolio">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-label">OUR PORTFOLIO</span>
+                <h2 class="section-title">Recent Projects</h2>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-card">
+                    <div class="portfolio-thumb thumb-1">🛒</div>
+                    <div class="portfolio-info">
+                        <h4>FashionHub E-Commerce</h4>
+                        <p>Complete online store with 500+ products, custom filters, and seamless checkout flow.</p>
+                        <div class="portfolio-tags">
+                            <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">E-Commerce</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-card">
+                    <div class="portfolio-thumb thumb-2">🏥</div>
+                    <div class="portfolio-info">
+                        <h4>MedCare Clinic Portal</h4>
+                        <p>Patient appointment booking system with doctor profiles and telehealth integration.</p>
+                        <div class="portfolio-tags">
+                            <span class="tag">WordPress</span><span class="tag">PHP</span><span class="tag">Portal</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-card">
+                    <div class="portfolio-thumb thumb-3">📊</div>
+                    <div class="portfolio-info">
+                        <h4>FinTrack Dashboard</h4>
+                        <p>Real-time financial analytics dashboard with interactive charts and data visualization.</p>
+                        <div class="portfolio-tags">
+                            <span class="tag">React</span><span class="tag">Chart.js</span><span class="tag">Dashboard</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section class="process-section">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-label">OUR PROCESS</span>
+                <h2 class="section-title">How We Build Your Website</h2>
+            </div>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h4>Discovery Call</h4>
+                    <p>We learn about your business, goals, target audience, and project requirements.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h4>Design Mockups</h4>
+                    <p>Create wireframes and high-fidelity mockups for your approval before any coding begins.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h4>Development</h4>
+                    <p>Build your site with clean code, SEO best practices, and performance optimization.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h4>Launch & Support</h4>
+                    <p>Deploy, test thoroughly, and provide ongoing maintenance and support post-launch.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-strip">
+        <div class="container">
+            <h2>Let's Build Something Amazing</h2>
+            <p>Tell us about your project and get a free quote within 24 hours from our expert development team.</p>
+            <a href="contact.html" class="btn-white">Get Free Quote</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-4"><h5>About Us</h5><p>We build beautiful, fast websites that drive real business results for our clients worldwide.</p></div>
+                <div class="col-md-4"><h5>Contact Info</h5><p><i class="fas fa-envelope mr-2"></i>info@seoagency.com</p><p><i class="fas fa-phone mr-2"></i>+123-456-7890</p></div>
+                <div class="col-md-4"><h5>Follow Us</h5><div class="social-icons mt-3"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a></div></div>
+            </div>
+            <p class="mt-4">&copy; 2026 SEO Agency. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Eisenhower Matrix</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="matrix-wrapper">
+      <header class="matrix-header">
+        <h1>Eisenhower Task Matrix</h1>
+        <p>
+          Prioritize your workload spatially by separating impact from simple
+          distractions
+        </p>
+      </header>
+
+      <section class="task-entry-bar">
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="What needs to be done?"
+        />
+        <select id="quadrantSelect">
+          <option value="urgent-important">Urgent & Important</option>
+          <option value="important-not-urgent">Important & Not Urgent</option>
+          <option value="urgent-not-important">Urgent & Not Important</option>
+          <option value="neither">Neither (Eliminate)</option>
+        </select>
+        <button id="addTaskBtn">Add Task</button>
+      </section>
+
+      <main class="matrix-grid">
+        <div
+          class="quadrant"
+          id="urgent-important"
+          data-quadrant="urgent-important"
+        >
+          <div class="quadrant-header q1">
+            <h2>Urgent & Important</h2>
+            <span class="task-count" id="count-urgent-important">0</span>
+          </div>
+          <div class="dropzone" id="dz-urgent-important"></div>
+        </div>
+
+        <div
+          class="quadrant"
+          id="important-not-urgent"
+          data-quadrant="important-not-urgent"
+        >
+          <div class="quadrant-header q2">
+            <h2>Important & Not Urgent</h2>
+            <span class="task-count" id="count-important-not-urgent">0</span>
+          </div>
+          <div class="dropzone" id="dz-important-not-urgent"></div>
+        </div>
+
+        <div
+          class="quadrant"
+          id="urgent-not-important"
+          data-quadrant="urgent-not-important"
+        >
+          <div class="quadrant-header q3">
+            <h2>Urgent & Not Important</h2>
+            <span class="task-count" id="count-urgent-not-important">0</span>
+          </div>
+          <div class="dropzone" id="dz-urgent-not-important"></div>
+        </div>
+
+        <div class="quadrant" id="neither" data-quadrant="neither">
+          <div class="quadrant-header q4">
+            <h2>Neither (Eliminate)</h2>
+            <span class="task-count" id="count-neither">0</span>
+          </div>
+          <div class="dropzone" id="dz-neither"></div>
+        </div>
+      </main>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VitaPulse</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Calculate your Body Mass Index (BMI), estimate daily calorie needs, set health goals, and track your weight trends using our interactive glassmorphic dashboard.">
+  <meta name="keywords" content="BMI Calculator, Body Mass Index, Calorie Estimator, Weight Tracker, Health Dashboard, Glassmorphism, BMR Calculator">
+  <meta name="author" content="VitaPulse Health">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background mesh gradients -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-glow bg-glow-3"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header glass-card">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <i class="fa-solid fa-heart-pulse"></i>
+        </div>
+        <div class="logo-text">
+          <h1>VitaPulse</h1>
+          <span>Health Dashboard</span>
+        </div>
+      </div>
+      
+      <div class="header-controls">
+        <div class="date-display" id="currentDate">
+          <i class="fa-regular fa-calendar"></i> <span id="dateText">Friday, July 3, 2026</span>
+        </div>
+        <button id="themeToggle" class="btn-icon" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="dashboard-grid">
+      
+      <!-- COLUMN 1: Inputs & Suggestions -->
+      <section class="grid-column column-inputs">
+        <!-- Calculator Card -->
+        <div class="glass-card card-calculator">
+          <h2 class="card-title"><i class="fa-solid fa-calculator text-primary"></i> BMI Calculator</h2>
+          
+          <!-- Unit Selector Tab -->
+          <div class="unit-tabs">
+            <button class="unit-tab active" id="btnMetric" data-unit="metric">Metric (cm/kg)</button>
+            <button class="unit-tab" id="btnImperial" data-unit="imperial">Imperial (ft-in/lbs)</button>
+          </div>
+
+          <form id="bmiForm" class="calc-form" novalidate>
+            <!-- Gender Selector -->
+            <div class="form-group">
+              <label class="input-label">Gender</label>
+              <div class="gender-selector">
+                <label class="gender-btn">
+                  <input type="radio" name="gender" value="male" checked>
+                  <div class="gender-box">
+                    <i class="fa-solid fa-mars"></i>
+                    <span>Male</span>
+                  </div>
+                </label>
+                <label class="gender-btn">
+                  <input type="radio" name="gender" value="female">
+                  <div class="gender-box">
+                    <i class="fa-solid fa-venus"></i>
+                    <span>Female</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Age Input -->
+            <div class="form-group">
+              <div class="label-row">
+                <label for="ageInput" class="input-label">Age</label>
+                <span class="value-display"><span id="ageVal">25</span> yrs</span>
+              </div>
+              <div class="slider-container">
+                <input type="range" id="ageInput" min="15" max="80" value="25" class="slider">
+              </div>
+            </div>
+
+            <!-- Height Input (Dynamic based on unit) -->
+            <div class="form-group" id="heightGroupMetric">
+              <div class="label-row">
+                <label for="heightCmInput" class="input-label">Height</label>
+                <span class="value-display"><span id="heightCmVal">175</span> cm</span>
+              </div>
+              <div class="slider-container">
+                <input type="range" id="heightCmInput" min="100" max="220" value="175" class="slider">
+              </div>
+            </div>
+
+            <div class="form-group hidden" id="heightGroupImperial">
+              <label class="input-label">Height</label>
+              <div class="ft-in-inputs">
+                <div class="sub-input-container">
+                  <div class="label-row">
+                    <span class="sub-label">Feet</span>
+                    <span class="value-display"><span id="heightFtVal">5</span> ft</span>
+                  </div>
+                  <input type="range" id="heightFtInput" min="3" max="8" value="5" class="slider">
+                </div>
+                <div class="sub-input-container">
+                  <div class="label-row">
+                    <span class="sub-label">Inches</span>
+                    <span class="value-display"><span id="heightInVal">9</span> in</span>
+                  </div>
+                  <input type="range" id="heightInInput" min="0" max="11" value="9" class="slider">
+                </div>
+              </div>
+            </div>
+
+            <!-- Weight Input (Dynamic based on unit) -->
+            <div class="form-group" id="weightGroupMetric">
+              <div class="label-row">
+                <label for="weightKgInput" class="input-label">Weight</label>
+                <span class="value-display"><span id="weightKgVal">70</span> kg</span>
+              </div>
+              <div class="slider-container">
+                <input type="range" id="weightKgInput" min="30" max="180" value="70" class="slider">
+              </div>
+            </div>
+
+            <div class="form-group hidden" id="weightGroupImperial">
+              <div class="label-row">
+                <label for="weightLbsInput" class="input-label">Weight</label>
+                <span class="value-display"><span id="weightLbsVal">154</span> lbs</span>
+              </div>
+              <div class="slider-container">
+                <input type="range" id="weightLbsInput" min="60" max="400" value="154" class="slider">
+              </div>
+            </div>
+
+            <!-- Activity Level (For Calorie Estimate) -->
+            <div class="form-group">
+              <label for="activityInput" class="input-label">Activity Level</label>
+              <div class="select-wrapper">
+                <i class="fa-solid fa-running select-icon"></i>
+                <select id="activityInput" class="select-field">
+                  <option value="1.2">Sedentary (Little or no exercise)</option>
+                  <option value="1.375">Lightly Active (Light exercise 1-3 days/wk)</option>
+                  <option value="1.55" selected>Moderately Active (Moderate exercise 3-5 days/wk)</option>
+                  <option value="1.725">Very Active (Hard exercise 6-7 days/wk)</option>
+                  <option value="1.9">Extra Active (Hard exercise & physical job)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="button-row">
+              <button type="button" id="btnReset" class="btn btn-secondary">
+                <i class="fa-solid fa-rotate-left"></i> Reset
+              </button>
+              <button type="button" id="btnSave" class="btn btn-gradient">
+                <i class="fa-solid fa-floppy-disk"></i> Save Record
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Health Tips Card -->
+        <div class="glass-card card-tips">
+          <h2 class="card-title"><i class="fa-solid fa-heart-pulse text-success"></i> Health Recommendations</h2>
+          <div id="tipsContent" class="tips-container">
+            <!-- Dynamic Tips Loaded via JS -->
+            <div class="tip-item">
+              <i class="fa-solid fa-circle-info text-accent"></i>
+              <p>Enter your height and weight to get personalized recommendations.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMN 2: Gauge & Dashboard Metrics -->
+      <section class="grid-column column-results">
+        <!-- Animated BMI Gauge Card -->
+        <div class="glass-card card-gauge">
+          <h2 class="card-title text-center">BMI Result</h2>
+          
+          <div class="gauge-wrapper">
+            <!-- Circular Progress Indicator SVG -->
+            <svg class="circular-gauge" viewBox="0 0 160 160">
+              <defs>
+                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="var(--accent-color)" />
+                  <stop offset="100%" stop-color="#ec4899" />
+                </linearGradient>
+              </defs>
+              <!-- Outer Track -->
+              <circle class="gauge-track" cx="80" cy="80" r="70" />
+              <!-- Animated Indicator Arc -->
+              <circle class="gauge-fill" id="gaugeProgress" cx="80" cy="80" r="70" />
+            </svg>
+            
+            <!-- Centered BMI Numbers & Categories -->
+            <div class="gauge-center">
+              <span class="bmi-number" id="bmiDisplay">22.9</span>
+              <span class="bmi-category-badge" id="categoryDisplay">Normal</span>
+            </div>
+          </div>
+
+          <!-- Color-coded BMI Scale Visualization -->
+          <div class="scale-bar-container">
+            <div class="scale-bar">
+              <div class="scale-seg under" data-label="Underweight (<18.5)"></div>
+              <div class="scale-seg normal" data-label="Normal (18.5-24.9)"></div>
+              <div class="scale-seg over" data-label="Overweight (25-29.9)"></div>
+              <div class="scale-seg obese" data-label="Obese (≥30)"></div>
+            </div>
+            <!-- Pointer on Scale -->
+            <div class="scale-pointer" id="scalePointer" style="left: 45%;"></div>
+          </div>
+          <div class="scale-labels">
+            <span>15</span>
+            <span>18.5</span>
+            <span>25</span>
+            <span>30</span>
+            <span>40</span>
+          </div>
+        </div>
+
+        <!-- Dashboard Insights Card -->
+        <div class="glass-card card-dashboard">
+          <h2 class="card-title"><i class="fa-solid fa-gauge-high text-accent"></i> Health Insights</h2>
+          
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <span class="metric-label">Healthy Weight Range</span>
+              <span class="metric-value" id="healthyRangeVal">56.7 - 76.3 kg</span>
+              <span class="metric-sub">For your height</span>
+            </div>
+
+            <div class="metric-card">
+              <span class="metric-label">Ideal Weight Goal</span>
+              <span class="metric-value" id="idealWeightVal">66.5 kg</span>
+              <span class="metric-sub">Middle of healthy BMI</span>
+            </div>
+
+            <div class="metric-card">
+              <span class="metric-label">Daily Calorie Estimate</span>
+              <span class="metric-value" id="calorieVal">2,150 kcal</span>
+              <span class="metric-sub" id="calorieSub">To maintain weight</span>
+            </div>
+
+            <div class="metric-card">
+              <span class="metric-label">Last Calculated</span>
+              <span class="metric-value" id="lastCalcDate">No records yet</span>
+              <span class="metric-sub" id="lastCalcTime">--:--</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMN 3: Analytics & History Log -->
+      <section class="grid-column column-analytics">
+        <!-- Analytics Card -->
+        <div class="glass-card card-analytics">
+          <h2 class="card-title"><i class="fa-solid fa-chart-line text-primary"></i> Historical Analytics</h2>
+          
+          <!-- Analytics Stats Summary -->
+          <div class="stats-summary">
+            <div class="stat-box">
+              <span class="stat-label">Average BMI</span>
+              <span class="stat-num" id="avgBmi">--</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Highest BMI</span>
+              <span class="stat-num text-danger" id="maxBmi">--</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Lowest BMI</span>
+              <span class="stat-num text-info" id="minBmi">--</span>
+            </div>
+          </div>
+
+          <!-- Charts Container -->
+          <div class="charts-wrapper">
+            <div class="chart-tab-container">
+              <button class="chart-tab active" id="btnBmiChart">BMI Progress</button>
+              <button class="chart-tab" id="btnWeightChart">Weight Trend</button>
+            </div>
+            <div class="chart-container">
+              <canvas id="analyticsChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- History Log Card -->
+        <div class="glass-card card-history">
+          <div class="card-header-actions">
+            <h2 class="card-title"><i class="fa-solid fa-clock-history text-secondary"></i> Calculation History</h2>
+            <div class="history-actions">
+              <button id="btnExportCSV" class="btn-sm btn-outline" title="Export as CSV">
+                <i class="fa-solid fa-file-csv"></i> Export
+              </button>
+              <button id="btnClearHistory" class="btn-sm btn-danger-outline" title="Clear all history">
+                <i class="fa-solid fa-trash-can"></i> Clear
+              </button>
+            </div>
+          </div>
+
+          <div class="history-table-container">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>Date & Time</th>
+                  <th>Weight</th>
+                  <th>BMI</th>
+                  <th>Category</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="historyList">
+                <!-- Rendered dynamically -->
+                <tr class="empty-state">
+                  <td colspan="5">No records saved yet. Calculate and save to see history.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>&copy; 2026 VitaPulse Health Systems. Designed for premium biometric monitoring.</p>
+    </footer>
+  </div>
+
+  <!-- Core Javascript -->
+  <script src="script.js"></script>
+</body>
+</html>

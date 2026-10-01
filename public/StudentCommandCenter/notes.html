@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes - Student Command Center</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- BACK BUTTON -->
+    <a href="index.html"
+       style="position:fixed;left:18px;top:18px;padding:8px 12px;
+       border-radius:8px;background:white;text-decoration:none;
+       z-index:9999;font-weight:700;">
+       ← Back to Dashboard
+    </a>
+
+    <div class="container">
+
+        <!-- NOTES SECTION -->
+        <section class="notes-section">
+
+            <h2>Quick Notes</h2>
+            <textarea id="notesArea" placeholder="Write notes here..."></textarea>
+            <button id="saveNotesBtn">Save Note</button>
+
+            <h3>Saved Notes</h3>
+            <ul id="notesList"></ul>
+
+        </section>
+
+    </div>
+    <script src="notes.js"></script>
+</body>
+</html>

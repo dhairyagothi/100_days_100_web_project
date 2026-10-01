@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPU-Accelerated Scroll Optimizer Sandbox</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div class="perf-container">
+        <div class="telemetry-panel">
+            <h2>THREAD MONITOR</h2>
+            <hr class="divider">
+
+            <div class="metric-box">
+                <span class="label">TARGET FRAME RATE</span>
+                <div class="value safe">60.00 FPS</div>
+            </div>
+
+            <div class="metric-box">
+                <span class="label">MUTATION PIPELINE</span>
+                <div class="value accent">GPU Composited</div>
+            </div>
+
+            <div class="instruction-pad">
+                <h3>PERFORMANCE PROFILE</h3>
+                <p>Scroll down through the workspace panels. The matrix rendering loop calculates transformation vectors
+                    asynchronously, avoiding forced layout recalculations completely.</p>
+            </div>
+        </div>
+
+        <div class="viewport-area">
+            <div class="viewport-header">
+                <span class="status-dot blinking"></span>
+                <span class="title-text">RENDER_PIPELINE // ASYNC_COORDINATE_TRANSFORM</span>
+            </div>
+
+            <div class="scroll-container" id="scrollContainer">
+                <section class="scroll-panel unique-1">
+                    <div class="parallax-element" data-speed="-0.3">MATRIX_LAYER_ALPHA</div>
+                    <div class="content-card">Panel 01 // Initial State</div>
+                </section>
+
+                <section class="scroll-panel unique-2">
+                    <div class="parallax-element" data-speed="0.2">MATRIX_LAYER_BETA</div>
+                    <div class="content-card">Panel 02 // Deep Inversion</div>
+                </section>
+
+                <section class="scroll-panel unique-3">
+                    <div class="parallax-element" data-speed="-0.5">MATRIX_LAYER_GAMMA</div>
+                    <div class="content-card">Panel 03 // Terminal Bounds</div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <script src="./app.js"></script>
+</body>
+
+</html>

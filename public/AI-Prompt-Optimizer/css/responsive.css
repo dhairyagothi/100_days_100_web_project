@@ -1,0 +1,34 @@
+@media (max-width: 900px) {
+  .results-section {
+    grid-template-columns: 1fr;
+  }
+
+  .score-circle {
+    width: 150px;
+    height: 150px;
+  }
+
+  .score-circle span {
+    font-size: 2.3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .button-group {
+    flex-direction: column;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+
+  .theme-toggle {
+    width: 48px;
+    height: 48px;
+  }
+}

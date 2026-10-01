@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body { font-family: sans-serif; display: flex; margin: 0; }
+        nav { width: 200px; height: 100vh; background: #2c3e50; color: white; padding: 20px; }
+        nav div { margin-bottom: 15px; cursor: pointer; color: #bdc3c7; }
+        nav div:hover { color: white; }
+        main { flex: 1; padding: 40px; }
+        .page { display: none; }
+        .active { display: block; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h3>My Projects</h3>
+    <div onclick="showPage('todo')">Focus List</div>
+    <div onclick="showPage('game')">Memory Match</div>
+    <div onclick="showPage('finance')">Finance Dashboard</div>
+</nav>
+
+<main id="app">
+    <div id="todo" class="page active"><h1>Focus List</h1><p>Task content here...</p></div>
+    <div id="game" class="page"><h1>Memory Match</h1><p>Game content here...</p></div>
+    <div id="finance" class="page"><h1>Finance Dashboard</h1><p>Finance content here...</p></div>
+</main>
+
+<script>
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+    }
+</script>
+</body>

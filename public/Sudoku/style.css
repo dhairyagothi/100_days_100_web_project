@@ -284,3 +284,63 @@ select,
         grid-template-columns: repeat(5, 1fr);
     }
 }
+
+/* ==========================================
+   1. Theme Variables
+   ========================================== */
+:root {
+    /* Light Mode (Defaults) */
+    --bg-app: #f8f9fa;
+    --bg-panel: #ffffff;
+    --text-primary: #212529;
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --board-grid: #343a40;
+    --btn-bg: #e9ecef;
+    --btn-text: #495057;
+    --accent: #007bff;
+}
+
+[data-theme="dark"] {
+    /* Dark Mode Overrides */
+    --bg-app: #121212;
+    --bg-panel: #1e1e1e;
+    --text-primary: #f8f9fa;
+    --text-muted: #a8aeb4;
+    --border-color: #383838;
+    --board-grid: #f8f9fa;
+    --btn-bg: #2d2d2d;
+    --btn-text: #e0e0e0;
+    --accent: #3793ff;
+}
+
+
+body {
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.game-panel {
+    background-color: var(--bg-panel);
+}
+
+.eyebrow, .stats span {
+    color: var(--text-muted);
+}
+
+
+.board {
+    border: 2px solid var(--board-grid);
+    background-color: var(--board-grid); /* If using grid gaps for lines */
+}
+
+button {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    border: 1px solid var(--border-color);
+}
+
+
+[data-theme="dark"] .sun-icon { display: none; }
+[data-theme="dark"] .moon-icon { display: inline-block; }

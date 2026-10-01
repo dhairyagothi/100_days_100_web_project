@@ -102,11 +102,12 @@ docker compose up --build
 make docker-up
 ```
 
-**Option D — Make (shortcut commands):**
+**Option D — Make & Run Scripts (shortcut commands):**
 ```bash
-make help    # Show all available commands
-make dev     # Start local dev server
-make lint    # Run HTML linter
+make help               # Show all available commands
+make dev                # Start local dev server
+make lint               # Run HTML linter
+npm run validate:projects # Runs projects registry JSON validation checks
 ```
 
 ## 📁 Project Structure
@@ -216,8 +217,180 @@ Add your project to the main website by editing `index.js`:
 
 ```javascript
 // Find the data array and add your project
-["Day X", "Your Project Name", "/public/YourProjectName/index.html"],
+```javascript
+["Day X", "Your Project Name", "./public/YourProjectName/index.html", ["javascript", "css"], "Beginner"]
 ```
+
+## ➕ Adding Your Project to the Project List
+
+Welcome! This section will walk you through how to correctly add your project to the main project list in `index.js`. Following this format carefully ensures your project shows up on the website, works with filters, and links correctly. Don't worry — it's simpler than it looks!
+
+---
+
+### 📋 The Project Entry Format
+
+Each project is stored as a single line inside the `PROJECTS` array in `index.js`. Every entry follows this structure:
+
+```javascript
+["Day Number", "Project Name", "./public/FolderName/index.html", ["tag1", "tag2"], "Difficulty"]
+```
+
+Here's a real example of a valid entry:
+
+```javascript
+["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["javascript", "canvas"], "Beginner"]
+```
+
+---
+
+### 🗂️ What Each Field Means
+
+| Position | Field | Example | Description |
+|----------|-------|---------|-------------|
+| 1st | Day Number | `"Day 113"` | The day this project is assigned. Follow the existing numbering in the file. |
+| 2nd | Project Name | `"Drawing Canvas"` | The display name of your project. Use title case. Must match the key used in `PROJECT_DESCRIPTIONS` if you add a description. |
+| 3rd | File Path | `"./public/DrawingCanvas/index.html"` | The relative path to your project's `index.html`. Must start with `./public/`. |
+| 4th | Tags | `["javascript", "canvas"]` | An array of lowercase technology or category tags describing your project. |
+| 5th | Difficulty | `"Beginner"` | How challenging the project is. Must be one of the three allowed values (see below). |
+
+---
+
+### ✅ Allowed Difficulty Values
+
+The difficulty field accepts **only** these three values, spelled and capitalized exactly as shown:
+
+- `"Beginner"`
+- `"Intermediate"`
+- `"Advanced"`
+
+Using any other value (like `"Easy"`, `"Hard"`, or `"beginner"` in lowercase) will cause the difficulty filter to silently ignore your project.
+
+---
+
+### 🔗 Why Relative Paths Are Required
+
+The path in the third field **must be a relative path** starting with `./public/`. This is because the website is hosted as a collection of static files, and the browser needs to resolve the link from the project root. An absolute path like `/home/user/myproject/` or a URL like `https://mysite.com` will not work and will break the project card link.
+
+**Always use:**
+```javascript
+"./public/YourProjectFolder/index.html"
+```
+
+---
+
+### 📁 Folder Names Must Match Exactly
+
+The folder name in your path must **exactly match** the folder you created inside `public/`. This includes matching the capitalization.
+
+For example, if your folder is named `DrawingCanvas`, your path must be:
+```javascript
+"./public/DrawingCanvas/index.html"
+```
+
+Writing `"./public/drawingcanvas/index.html"` or `"./public/Drawing_Canvas/index.html"` will result in a broken link — the project card will appear on the site but clicking it will show a 404 error.
+
+---
+
+### 🏷️ Tags Must Always Be Lowercase
+
+Tags are used by the filtering system to let visitors sort projects by technology. The filter logic converts all tags to lowercase before comparing, so a tag written as `"JavaScript"` or `"Canvas"` will **not** match what users search for.
+
+Always write tags in lowercase:
+
+```javascript
+// ✅ Correct
+["javascript", "canvas", "game"]
+
+// ❌ Incorrect
+["JavaScript", "Canvas", "Game"]
+```
+
+---
+
+### ✅ Correct vs. ❌ Incorrect Entry Examples
+
+**✅ Correct entry:**
+```javascript
+["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["javascript", "canvas"], "Beginner"]
+```
+- Day number is formatted correctly
+- Path uses `./public/` and matches the actual folder name
+- Tags are lowercase
+- Difficulty is one of the three allowed values
+
+---
+
+**❌ Incorrect — wrong difficulty value:**
+```javascript
+["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["javascript", "canvas"], "Easy"]
+```
+`"Easy"` is not an accepted value. Use `"Beginner"` instead.
+
+---
+
+**❌ Incorrect — uppercase tags:**
+```javascript
+["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["JavaScript", "Canvas"], "Beginner"]
+```
+Tags must be all lowercase: `["javascript", "canvas"]`.
+
+---
+
+**❌ Incorrect — path doesn't match the folder name:**
+```javascript
+["Day 113", "Drawing Canvas", "./public/drawing-canvas/index.html", ["javascript", "canvas"], "Beginner"]
+```
+If the actual folder is named `DrawingCanvas`, the path must be `./public/DrawingCanvas/index.html`.
+
+---
+
+**❌ Incorrect — missing tags array:**
+```javascript
+["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", "javascript", "Beginner"]
+```
+Tags must be wrapped in square brackets as an array: `["javascript"]`, not just a plain string.
+
+---
+
+### ⚠️ Common Mistakes
+
+Here's a quick summary of the most frequent errors contributors make, and how to fix them:
+
+| Mistake | What Goes Wrong | Fix |
+|--------|----------------|-----|
+| Using `"Easy"` or `"Hard"` as difficulty | Project won't appear in difficulty filter | Use `"Beginner"`, `"Intermediate"`, or `"Advanced"` |
+| Tags with capital letters like `"JavaScript"` | Project won't show up in tag-based searches | Use all-lowercase tags: `"javascript"` |
+| Path doesn't match the actual folder name | Clicking the project card shows a 404 page | Double-check the folder name in `public/` and copy it exactly |
+| Forgetting square brackets around tags | JavaScript syntax error, site may break | Always write tags as an array: `["tag1", "tag2"]` |
+| Using an absolute path or a URL for the file path | Link doesn't work in the deployed site | Always start the path with `./public/` |
+| Missing `"./"` before `public/` | Source URL generation and project links may fail | Always start paths with `./public/` |
+
+
+---
+
+### 💡 Why This Matters
+
+The project list isn't just for display — it powers several features of the website:
+
+- **Search and filtering** — Tags and difficulty values are used directly by the search and filter system. A typo or wrong format means your project won't appear in filtered results.
+- **Project card links** — The file path is used to open your project when someone clicks on it. An incorrect path means visitors get a broken page instead of your work.
+- **Category detection** — The website automatically determines a project's category (Games, Tools, Clones, etc.) by reading your tags. Missing or wrong tags may result in your project being miscategorized.
+
+Taking a moment to double-check your entry before submitting your pull request saves everyone time — including yours! 🙌
+
+---
+
+### ✅ Final Checklist Before Opening a PR
+
+Before submitting your pull request, preview your changes locally and verify that:
+
+- your project card appears correctly
+- filters work as expected
+- the project link opens successfully
+
+---
+
+> **Still unsure?** Look at any existing entry in `index.js` as a reference, or open an issue and the maintainers will be happy to help.
 
 ### Step 4: Add .gitignore (If needed)
 For projects with dependencies:
@@ -277,6 +450,7 @@ git merge upstream/main
 
 ### 2. Make Changes
 - Follow our coding standards
+- Format and lint your code using `npm run format` and `npm run lint`
 - Test your changes thoroughly
 - Add documentation if needed
 
@@ -322,6 +496,7 @@ Brief description of changes
 Add screenshots if applicable
 
 ## Checklist
+- [ ] Code is formatted and linted (`npm run format` and `npm run lint`)
 - [ ] Code follows style guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated
@@ -366,6 +541,13 @@ Your information
 ```
 
 ## 🎨 Code Style Guidelines
+
+To maintain code quality and styling consistency across all projects, we use ESLint and Prettier.
+
+### Formatting & Linting
+Before raising a Pull Request, please run the following commands:
+- **Format code**: `npm run format` (runs Prettier to format all JS, HTML, and CSS files)
+- **Lint code**: `npm run lint` (runs ESLint to check for syntax and logical issues in JS and HTML files)
 
 ### HTML
 - Use semantic HTML elements

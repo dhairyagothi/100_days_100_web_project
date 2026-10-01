@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeonVault • Glassmorphism Login</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Grid Background -->
+    <div class="grid-overlay"></div>
+
+    <!-- Floating Particles -->
+    <div class="particles"></div>
+
+    <!-- Background Glow Circles -->
+    <div class="bg-circle circle1"></div>
+    <div class="bg-circle circle2"></div>
+    <div class="bg-circle circle3"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Login Card -->
+        <div class="login-card">
+
+            <!-- Reflection -->
+            <div class="reflection"></div>
+
+            <!-- Header -->
+            <div class="header">
+
+                <div class="logo">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <h1>Login Page</h1>
+
+                <p class="subtitle">
+                    Secure access to your futuristic workspace
+                </p>
+            </div>
+
+            <!-- Form -->
+            <form>
+
+                <!-- Email -->
+                <div class="input-group">
+
+                    <label>Email Address</label>
+
+                    <div class="input-wrapper">
+
+                        <i class="fa-solid fa-envelope icon"></i>
+
+                        <input type="email"
+                            placeholder="you@example.com"
+                            required>
+
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="input-group">
+
+                    <label>Password</label>
+
+                    <div class="input-wrapper">
+
+                        <i class="fa-solid fa-lock icon"></i>
+
+                        <input type="password"
+                            id="password"
+                            placeholder="••••••••"
+                            required>
+
+                        <i class="fa-solid fa-eye toggle-password"
+                            id="togglePassword"></i>
+
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div class="options">
+
+                    <label class="remember">
+                        <input type="checkbox" checked>
+                        <span>Remember me</span>
+                    </label>
+
+                    <a href="#" class="forgot">
+                        Forgot Password?
+                    </a>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="login-btn">
+                    <span>Sign In</span>
+                </button>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span>or continue with</span>
+                </div>
+
+                <!-- Social Login -->
+                <div class="social-login">
+
+                    <button type="button" class="social-btn">
+                        <i class="fa-brands fa-google"></i>
+                    </button>
+
+                    <button type="button" class="social-btn">
+                        <i class="fa-brands fa-github"></i>
+                    </button>
+
+                    <button type="button" class="social-btn">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </button>
+
+                </div>
+
+                <!-- Sign Up -->
+                <p class="signup-text">
+                    Don't have an account?
+                    <a href="#">Create one</a>
+                </p>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Password Toggle -->
+    <script>
+
+        const togglePassword =
+            document.getElementById('togglePassword');
+
+        const passwordField =
+            document.getElementById('password');
+
+        togglePassword.addEventListener('click', () => {
+
+            const type =
+                passwordField.getAttribute('type') === 'password'
+                ? 'text'
+                : 'password';
+
+            passwordField.setAttribute('type', type);
+
+            togglePassword.classList.toggle('fa-eye');
+            togglePassword.classList.toggle('fa-eye-slash');
+
+        });
+
+    </script>
+
+</body>
+</html>

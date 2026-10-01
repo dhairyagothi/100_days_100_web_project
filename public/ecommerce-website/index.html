@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe | Premium E-Commerce</title>
+    
+    <!-- Google Fonts: Inter for a clean, modern UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons (Lightweight & Modern) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-light">
+    <!-- APP WRAPPER -->
+    <div id="app">
+
+        <!-- 1. NAVIGATION BAR (Glassmorphism) -->
+        <header class="navbar" id="main-nav">
+            <div class="nav-container">
+                <!-- Logo -->
+                <div class="logo" onclick="navigateTo('home')">
+                    <i class="ph-fill ph-storefront"></i>
+                    <span>Luxe.</span>
+                </div>
+
+                <!-- Desktop Links -->
+                <nav class="nav-links">
+                    <a href="#home" class="nav-link active" onclick="navigateTo('home')">Home</a>
+                    <a href="#shop" class="nav-link" onclick="navigateTo('shop')">Shop</a>
+                    <a href="#orders" class="nav-link" onclick="navigateTo('orders')">Orders</a>
+                    <a href="#contact" class="nav-link" onclick="navigateTo('contact')">Contact</a>
+                </nav>
+
+                <!-- Search Bar -->
+                <div class="search-bar">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <input type="text" id="global-search" placeholder="Search products...">
+                </div>
+
+                <!-- Nav Actions -->
+                <div class="nav-actions">
+                    <button class="icon-btn" id="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="ph ph-moon"></i>
+                    </button>
+                    <button class="icon-btn" onclick="openWishlist()" aria-label="Wishlist">
+                        <i class="ph ph-heart"></i>
+                        <span class="badge" id="wishlist-badge">0</span>
+                    </button>
+                    <button class="icon-btn" onclick="openCart()" aria-label="Cart">
+                        <i class="ph ph-shopping-cart"></i>
+                        <span class="badge" id="cart-badge">0</span>
+                    </button>
+                    <button class="icon-btn mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="ph ph-list"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- SPA VIEWS CONTAINER -->
+        <main class="main-content">
+            
+            <!-- =========================
+                 HOME VIEW
+            ========================== -->
+            <section id="view-home" class="view active">
+                
+                <!-- 2. HERO SECTION -->
+                <section class="hero">
+                    <div class="hero-content glass-panel">
+                        <span class="hero-tag">New Collection 2026</span>
+                        <h1>Elevate Your Everyday Style</h1>
+                        <p>Discover premium quality apparel, electronics, and accessories designed for the modern lifestyle. Up to 40% off on selected items.</p>
+                        <div class="hero-buttons">
+                            <button class="btn btn-primary" onclick="navigateTo('shop')">Shop Now <i class="ph ph-arrow-right"></i></button>
+                            <button class="btn btn-secondary" onclick="scrollToFeatured()">View Trending</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. CATEGORIES GRID -->
+                <section class="categories section-padding">
+                    <div class="section-header">
+                        <h2>Shop by Category</h2>
+                        <p>Explore our wide range of premium collections.</p>
+                    </div>
+                    <div class="category-grid">
+                        <div class="category-card" onclick="filterByCategory('electronics')">
+                            <i class="ph ph-devices"></i>
+                            <h3>Tech & Electronics</h3>
+                        </div>
+                        <div class="category-card" onclick="filterByCategory('fashion')">
+                            <i class="ph ph-t-shirt"></i>
+                            <h3>Apparel & Fashion</h3>
+                        </div>
+                        <div class="category-card" onclick="filterByCategory('home')">
+                            <i class="ph ph-armchair"></i>
+                            <h3>Home & Living</h3>
+                        </div>
+                        <div class="category-card" onclick="filterByCategory('accessories')">
+                            <i class="ph ph-watch"></i>
+                            <h3>Accessories</h3>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. FEATURED BANNER -->
+                <section class="promotional-banner">
+                    <div class="promo-content">
+                        <h2>Summer Clearance Sale</h2>
+                        <p>Use code <strong>SUMMER26</strong> at checkout for an extra 20% off all clearance items.</p>
+                        <div class="countdown-timer" id="promo-countdown">
+                            <!-- JS will populate timer here -->
+                            <div class="time-block"><span class="days">02</span><small>Days</small></div>
+                            <div class="time-block"><span class="hours">14</span><small>Hours</small></div>
+                            <div class="time-block"><span class="mins">45</span><small>Mins</small></div>
+                        </div>
+                    </div>
+                </section>
+                <!-- 5. FEATURED PRODUCTS (Trending Now) -->
+                <section class="featured-products section-padding" id="featured">
+                    <div class="section-header">
+                        <h2>Trending Now</h2>
+                        <p>Our most popular picks of the week.</p>
+                    </div>
+                    
+                    <div class="product-grid" id="home-product-grid">
+                        
+                        <!-- Product 1 -->
+                        <div class="product-card" data-id="1" data-category="electronics" data-price="299.99">
+                            <div class="product-badge discount">-15%</div>
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80" alt="Premium Headphones" loading="lazy">
+                                <div class="product-actions-overlay">
+                                    <button class="btn-icon wishlist-btn" onclick="toggleWishlist(1)" aria-label="Add to Wishlist"><i class="ph ph-heart"></i></button>
+                                    <button class="btn-icon quick-view-btn" onclick="openQuickView(1)" aria-label="Quick View"><i class="ph ph-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Electronics</span>
+                                <h3 class="product-title">Premium Noise-Cancelling Headphones</h3>
+                                <div class="product-rating">
+                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-half ph-star"></i>
+                                    <span class="review-count">(128)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">$299.99</span>
+                                    <span class="old-price">$349.99</span>
+                                </div>
+                                <button class="btn btn-block btn-add-cart" onclick="addToCart(1)">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Product 2 -->
+                        <div class="product-card" data-id="2" data-category="electronics" data-price="199.50">
+                            <div class="product-badge new">New</div>
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80" alt="Smart Watch" loading="lazy">
+                                <div class="product-actions-overlay">
+                                    <button class="btn-icon wishlist-btn" onclick="toggleWishlist(2)"><i class="ph ph-heart"></i></button>
+                                    <button class="btn-icon quick-view-btn" onclick="openQuickView(2)"><i class="ph ph-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Electronics</span>
+                                <h3 class="product-title">Minimalist Smart Watch V2</h3>
+                                <div class="product-rating">
+                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                    <span class="review-count">(85)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">$199.50</span>
+                                </div>
+                                <button class="btn btn-block btn-add-cart" onclick="addToCart(2)">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Product 3 -->
+                        <div class="product-card" data-id="3" data-category="home" data-price="145.00">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?w=500&q=80" alt="Ceramic Vases" loading="lazy">
+                                <div class="product-actions-overlay">
+                                    <button class="btn-icon wishlist-btn" onclick="toggleWishlist(3)"><i class="ph ph-heart"></i></button>
+                                    <button class="btn-icon quick-view-btn" onclick="openQuickView(3)"><i class="ph ph-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Home & Living</span>
+                                <h3 class="product-title">Nordic Ceramic Vase Set</h3>
+                                <div class="product-rating">
+                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph ph-star"></i>
+                                    <span class="review-count">(42)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">$145.00</span>
+                                </div>
+                                <button class="btn btn-block btn-add-cart" onclick="addToCart(3)">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Product 4 -->
+                        <div class="product-card" data-id="4" data-category="fashion" data-price="89.99">
+                            <div class="product-badge discount">-20%</div>
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80" alt="Running Shoes" loading="lazy">
+                                <div class="product-actions-overlay">
+                                    <button class="btn-icon wishlist-btn" onclick="toggleWishlist(4)"><i class="ph ph-heart"></i></button>
+                                    <button class="btn-icon quick-view-btn" onclick="openQuickView(4)"><i class="ph ph-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Apparel & Fashion</span>
+                                <h3 class="product-title">Pro-Runner Lightweight Sneakers</h3>
+                                <div class="product-rating">
+                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-half ph-star"></i>
+                                    <span class="review-count">(215)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">$89.99</span>
+                                    <span class="old-price">$112.50</span>
+                                </div>
+                                <button class="btn btn-block btn-add-cart" onclick="addToCart(4)">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Product 5 -->
+                        <div class="product-card" data-id="5" data-category="accessories" data-price="55.00">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&q=80" alt="Sunglasses" loading="lazy">
+                                <div class="product-actions-overlay">
+                                    <button class="btn-icon wishlist-btn" onclick="toggleWishlist(5)"><i class="ph ph-heart"></i></button>
+                                    <button class="btn-icon quick-view-btn" onclick="openQuickView(5)"><i class="ph ph-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Accessories</span>
+                                <h3 class="product-title">Retro Polarized Sunglasses</h3>
+                                <div class="product-rating">
+                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                    <span class="review-count">(94)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">$55.00</span>
+                                </div>
+                                <button class="btn btn-block btn-add-cart" onclick="addToCart(5)">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Product 6 -->
+                        <div class="product-card" data-id="6" data-category="accessories" data-price="120.00">
+                            <div class="product-badge new">New</div>
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&q=80" alt="Leather Backpack" loading="lazy">
+                                <div class="product-actions-overlay">
+                                    <button class="btn-icon wishlist-btn" onclick="toggleWishlist(6)"><i class="ph ph-heart"></i></button>
+                                    <button class="btn-icon quick-view-btn" onclick="openQuickView(6)"><i class="ph ph-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Accessories</span>
+                                <h3 class="product-title">Classic Leather Backpack</h3>
+                                <div class="product-rating">
+                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-half ph-star"></i>
+                                    <span class="review-count">(67)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">$120.00</span>
+                                </div>
+                                <button class="btn btn-block btn-add-cart" onclick="addToCart(6)">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Product 7 -->
+                        <div class="product-card" data-id="7" data-category="electronics" data-price="899.00">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80" alt="Laptop" loading="lazy">
+                                <div class="product-actions-overlay">
+                                    <button class="btn-icon wishlist-btn" onclick="toggleWishlist(7)"><i class="ph ph-heart"></i></button>
+                                    <button class="btn-icon quick-view-btn" onclick="openQuickView(7)"><i class="ph ph-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Electronics</span>
+                                <h3 class="product-title">UltraSlim 14" Creator Laptop</h3>
+                                <div class="product-rating">
+                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                    <span class="review-count">(34)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">$899.00</span>
+                                </div>
+                                <button class="btn btn-block btn-add-cart" onclick="addToCart(7)">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Product 8 -->
+                        <div class="product-card" data-id="8" data-category="fashion" data-price="45.00">
+                            <div class="product-badge discount">-10%</div>
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&q=80" alt="T-Shirt" loading="lazy">
+                                <div class="product-actions-overlay">
+                                    <button class="btn-icon wishlist-btn" onclick="toggleWishlist(8)"><i class="ph ph-heart"></i></button>
+                                    <button class="btn-icon quick-view-btn" onclick="openQuickView(8)"><i class="ph ph-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Apparel & Fashion</span>
+                                <h3 class="product-title">Organic Cotton Basic Tee</h3>
+                                <div class="product-rating">
+                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph ph-star"></i>
+                                    <span class="review-count">(188)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">$40.50</span>
+                                    <span class="old-price">$45.00</span>
+                                </div>
+                                <button class="btn btn-block btn-add-cart" onclick="addToCart(8)">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Product 9 -->
+                        <div class="product-card" data-id="9" data-category="home" data-price="210.00">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?w=500&q=80" alt="Lounge Chair" loading="lazy">
+                                <div class="product-actions-overlay">
+                                    <button class="btn-icon wishlist-btn" onclick="toggleWishlist(9)"><i class="ph ph-heart"></i></button>
+                                    <button class="btn-icon quick-view-btn" onclick="openQuickView(9)"><i class="ph ph-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Home & Living</span>
+                                <h3 class="product-title">Modern Lounge Chair</h3>
+                                <div class="product-rating">
+                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-half ph-star"></i>
+                                    <span class="review-count">(53)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">$210.00</span>
+                                </div>
+                                <button class="btn btn-block btn-add-cart" onclick="addToCart(9)">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Product 10 -->
+                        <div class="product-card" data-id="10" data-category="electronics" data-price="65.00">
+                            <div class="product-badge new">New</div>
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1527443154391-4206c5ee3145?w=500&q=80" alt="Wireless Mouse" loading="lazy">
+                                <div class="product-actions-overlay">
+                                    <button class="btn-icon wishlist-btn" onclick="toggleWishlist(10)"><i class="ph ph-heart"></i></button>
+                                    <button class="btn-icon quick-view-btn" onclick="openQuickView(10)"><i class="ph ph-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Electronics</span>
+                                <h3 class="product-title">Ergonomic Wireless Mouse</h3>
+                                <div class="product-rating">
+                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                    <span class="review-count">(312)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">$65.00</span>
+                                </div>
+                                <button class="btn btn-block btn-add-cart" onclick="addToCart(10)">Add to Cart</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="view-all-container">
+                        <button class="btn btn-outline" onclick="navigateTo('shop')">View All Products</button>
+                    </div>
+                </section>
+
+            </section> <!-- END OF HOME VIEW -->
+            
+            <!-- =========================
+                 SHOP VIEW (SPA)
+            ========================== -->
+            <section id="view-shop" class="view">
+                <div class="shop-header glass-panel">
+                    <h2>All Products</h2>
+                    <div class="shop-controls">
+                        <div class="filter-group">
+                            <label for="category-filter"><i class="ph ph-funnel"></i> Category:</label>
+                            <select id="category-filter" onchange="applyFilters()">
+                                <option value="all">All Categories</option>
+                                <option value="electronics">Tech & Electronics</option>
+                                <option value="fashion">Apparel & Fashion</option>
+                                <option value="home">Home & Living</option>
+                                <option value="accessories">Accessories</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="sort-filter"><i class="ph ph-sort-ascending"></i> Sort By:</label>
+                            <select id="sort-filter" onchange="applyFilters()">
+                                <option value="default">Default</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="rating">Top Rated</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-grid" id="main-shop-grid">
+                <!-- Product 11 -->
+                    <div class="product-card" data-id="11" data-category="home" data-price="45.00">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500&q=80" alt="Desk Lamp" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(11)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(11)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Home & Living</span>
+                            <h3 class="product-title">Minimalist LED Desk Lamp</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph ph-star"></i>
+                                <span class="review-count">(76)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$45.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(11)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 12 -->
+                    <div class="product-card" data-id="12" data-category="electronics" data-price="149.99">
+                        <div class="product-badge discount">-25%</div>
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1595225476474-87563907a212?w=500&q=80" alt="Mechanical Keyboard" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(12)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(12)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Electronics</span>
+                            <h3 class="product-title">Pro Mechanical Keyboard</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-half ph-star"></i>
+                                <span class="review-count">(412)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$112.50</span>
+                                <span class="old-price">$149.99</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(12)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 13 -->
+                    <div class="product-card" data-id="13" data-category="fashion" data-price="185.00">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?w=500&q=80" alt="Winter Coat" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(13)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(13)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Apparel & Fashion</span>
+                            <h3 class="product-title">Classic Wool Blend Coat</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                <span class="review-count">(89)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$185.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(13)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 14 -->
+                    <div class="product-card" data-id="14" data-category="accessories" data-price="49.50">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&q=80" alt="Leather Wallet" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(14)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(14)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Accessories</span>
+                            <h3 class="product-title">Genuine Slim Leather Wallet</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph ph-star"></i>
+                                <span class="review-count">(156)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$49.50</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(14)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 15 -->
+                    <div class="product-card" data-id="15" data-category="electronics" data-price="129.00">
+                        <div class="product-badge new">New</div>
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500&q=80" alt="Bluetooth Speaker" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(15)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(15)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Electronics</span>
+                            <h3 class="product-title">Waterproof Portable Speaker</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-half ph-star"></i>
+                                <span class="review-count">(234)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$129.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(15)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 16 -->
+                    <div class="product-card" data-id="16" data-category="home" data-price="250.00">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1495474472204-51ea0d20d56c?w=500&q=80" alt="Coffee Maker" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(16)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(16)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Home & Living</span>
+                            <h3 class="product-title">Artisan Espresso Machine</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                <span class="review-count">(112)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$250.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(16)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 17 -->
+                    <div class="product-card" data-id="17" data-category="fashion" data-price="75.00">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=500&q=80" alt="Denim Jacket" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(17)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(17)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Apparel & Fashion</span>
+                            <h3 class="product-title">Vintage Wash Denim Jacket</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-half ph-star"></i>
+                                <span class="review-count">(198)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$75.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(17)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 18 -->
+                    <div class="product-card" data-id="18" data-category="accessories" data-price="135.00">
+                        <div class="product-badge discount">-15%</div>
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1599643478524-fb66f70d00de?w=500&q=80" alt="Silver Necklace" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(18)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(18)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Accessories</span>
+                            <h3 class="product-title">Sterling Silver Pendant Chain</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                <span class="review-count">(47)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$114.75</span>
+                                <span class="old-price">$135.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(18)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 19 -->
+                    <div class="product-card" data-id="19" data-category="electronics" data-price="349.99">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500&q=80" alt="Action Camera" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(19)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(19)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Electronics</span>
+                            <h3 class="product-title">4K Action Camera Bundle</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-half ph-star"></i>
+                                <span class="review-count">(305)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$349.99</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(19)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 20 -->
+                    <div class="product-card" data-id="20" data-category="home" data-price="35.00">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1602874801007-bd458cb6c975?w=500&q=80" alt="Scented Candle" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(20)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(20)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Home & Living</span>
+                            <h3 class="product-title">Aromatherapy Soy Candle</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph ph-star"></i>
+                                <span class="review-count">(142)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$35.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(20)">Add to Cart</button>
+                        </div>
+                    </div>
+                    <!-- Product 21 -->
+                    <div class="product-card" data-id="21" data-category="fashion" data-price="55.00">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&q=80" alt="Summer Dress" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(21)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(21)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Apparel & Fashion</span>
+                            <h3 class="product-title">Floral Summer Midi Dress</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph ph-star"></i>
+                                <span class="review-count">(92)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$55.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(21)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 22 -->
+                    <div class="product-card" data-id="22" data-category="accessories" data-price="25.00">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1572595460592-911854ea7468?w=500&q=80" alt="Fedora Hat" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(22)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(22)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Accessories</span>
+                            <h3 class="product-title">Classic Wool Fedora</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-half ph-star"></i><i class="ph ph-star"></i>
+                                <span class="review-count">(34)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$25.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(22)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 23 -->
+                    <div class="product-card" data-id="23" data-category="electronics" data-price="199.00">
+                        <div class="product-badge discount">-10%</div>
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&q=80" alt="Wireless Earbuds" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(23)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(23)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Electronics</span>
+                            <h3 class="product-title">True Wireless Pro Earbuds</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                <span class="review-count">(512)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$179.10</span>
+                                <span class="old-price">$199.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(23)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 24 -->
+                    <div class="product-card" data-id="24" data-category="home" data-price="85.00">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500&q=80" alt="Indoor Planter" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(24)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(24)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Home & Living</span>
+                            <h3 class="product-title">Geometric Indoor Planter</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph ph-star"></i>
+                                <span class="review-count">(61)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$85.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(24)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 25 -->
+                    <div class="product-card" data-id="25" data-category="fashion" data-price="65.00">
+                        <div class="product-badge new">New</div>
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1542272604-780c8d5015ce?w=500&q=80" alt="Denim Jeans" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(25)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(25)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Apparel & Fashion</span>
+                            <h3 class="product-title">Slim Fit Selvedge Jeans</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-half ph-star"></i>
+                                <span class="review-count">(118)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$65.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(25)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 26 -->
+                    <div class="product-card" data-id="26" data-category="accessories" data-price="40.00">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=500&q=80" alt="Leather Belt" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(26)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(26)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Accessories</span>
+                            <h3 class="product-title">Full Grain Leather Belt</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                <span class="review-count">(205)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$40.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(26)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 27 -->
+                    <div class="product-card" data-id="27" data-category="electronics" data-price="450.00">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d4aff?w=500&q=80" alt="Ultrawide Monitor" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(27)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(27)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Electronics</span>
+                            <h3 class="product-title">34" Ultrawide Curved Monitor</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-half ph-star"></i>
+                                <span class="review-count">(88)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$450.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(27)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 28 -->
+                    <div class="product-card" data-id="28" data-category="home" data-price="120.00">
+                        <div class="product-badge discount">-30%</div>
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500&q=80" alt="Wall Art" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(28)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(28)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Home & Living</span>
+                            <h3 class="product-title">Abstract Canvas Wall Art</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph ph-star"></i>
+                                <span class="review-count">(42)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$84.00</span>
+                                <span class="old-price">$120.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(28)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 29 -->
+                    <div class="product-card" data-id="29" data-category="fashion" data-price="95.00">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&q=80" alt="Hoodie" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(29)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(29)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Apparel & Fashion</span>
+                            <h3 class="product-title">Heavyweight Cotton Hoodie</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                <span class="review-count">(310)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$95.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(29)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 30 -->
+                    <div class="product-card" data-id="30" data-category="accessories" data-price="295.00">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=500&q=80" alt="Luxury Watch" loading="lazy">
+                            <div class="product-actions-overlay">
+                                <button class="btn-icon wishlist-btn" onclick="toggleWishlist(30)"><i class="ph ph-heart"></i></button>
+                                <button class="btn-icon quick-view-btn" onclick="openQuickView(30)"><i class="ph ph-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">Accessories</span>
+                            <h3 class="product-title">Chronograph Luxury Watch</h3>
+                            <div class="product-rating">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                <span class="review-count">(124)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$295.00</span>
+                            </div>
+                            <button class="btn btn-block btn-add-cart" onclick="addToCart(30)">Add to Cart</button>
+                        </div>
+                    </div>
+                </div> <!-- End of main-shop-grid -->
+                
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="btn-icon disabled"><i class="ph ph-caret-left"></i></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="btn-icon"><i class="ph ph-caret-right"></i></button>
+                </div>
+            </section> <!-- END OF SHOP VIEW -->
+
+            <!-- =========================
+                 PRODUCT QUICK VIEW MODAL
+            ========================== -->
+            <div class="modal" id="quick-view-modal">
+                <div class="modal-overlay" onclick="closeQuickView()"></div>
+                <div class="modal-content quick-view-content glass-panel">
+                    <button class="close-modal" onclick="closeQuickView()"><i class="ph ph-x"></i></button>
+                    <div class="quick-view-grid">
+                        <div class="qv-images">
+                            <img id="qv-main-image" src="" alt="Product Image">
+                            <div class="qv-thumbnails">
+                                <!-- Thumbnails will be injected by JS -->
+                            </div>
+                        </div>
+                        <div class="qv-details">
+                            <span class="product-category" id="qv-category">Category</span>
+                            <h2 id="qv-title">Product Title</h2>
+                            <div class="product-rating" id="qv-rating">
+                                <!-- Rating injected by JS -->
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price" id="qv-price">$0.00</span>
+                            </div>
+                            <p class="qv-description">Experience premium quality and exceptional design. This product has been crafted with attention to detail to ensure maximum satisfaction and durability.</p>
+                            
+                            <div class="stock-indicator">
+                                <i class="ph-fill ph-check-circle" style="color: var(--success-color);"></i>
+                                <span>In Stock & Ready to Ship</span>
+                            </div>
+
+                            <div class="qv-actions">
+                                <div class="quantity-selector">
+                                    <button onclick="updateQvQuantity(-1)"><i class="ph ph-minus"></i></button>
+                                    <input type="number" id="qv-quantity" value="1" min="1" max="10" readonly>
+                                    <button onclick="updateQvQuantity(1)"><i class="ph ph-plus"></i></button>
+                                </div>
+                                <button class="btn btn-primary btn-add-cart" id="qv-add-to-cart">
+                                    <i class="ph ph-shopping-cart"></i> Add to Cart
+                                </button>
+                                <button class="btn-icon wishlist-btn" id="qv-wishlist-btn" title="Add to Wishlist">
+                                    <i class="ph ph-heart"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="qv-meta">
+                                <p><strong>SKU:</strong> <span id="qv-sku">LX-001</span></p>
+                                <p><strong>Tags:</strong> Premium, Trending</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- =========================
+                 CART SIDEBAR
+            ========================== -->
+            <div class="sidebar-overlay" id="cart-overlay" onclick="closeCart()"></div>
+            <aside class="sidebar glass-panel" id="cart-sidebar">
+                <div class="sidebar-header">
+                    <h3>Your Cart (<span id="cart-count-header">0</span>)</h3>
+                    <button class="close-sidebar" onclick="closeCart()" aria-label="Close Cart"><i class="ph ph-x"></i></button>
+                </div>
+                
+                <div class="sidebar-body" id="cart-items-container">
+                    <!-- Empty Cart State -->
+                    <div class="empty-state" id="cart-empty-state">
+                        <div class="empty-icon-wrapper">
+                            <i class="ph ph-shopping-bag"></i>
+                        </div>
+                        <h4>Your cart is empty</h4>
+                        <p>Looks like you haven't added anything yet.</p>
+                        <button class="btn btn-primary" onclick="closeCart(); navigateTo('shop')">Start Shopping</button>
+                    </div>
+                    
+                    <!-- Cart Items List (Injected by JS) -->
+                    <ul class="cart-list" id="cart-list">
+                        <!-- Example format of dynamically added item:
+                        <li class="cart-item">
+                            <img src="..." alt="...">
+                            <div class="cart-item-details">
+                                <h4>Product Title</h4>
+                                <span class="cart-item-price">$99.00</span>
+                                <div class="quantity-selector small">
+                                    <button><i class="ph ph-minus"></i></button>
+                                    <input type="number" value="1" readonly>
+                                    <button><i class="ph ph-plus"></i></button>
+                                </div>
+                            </div>
+                            <button class="remove-item"><i class="ph ph-trash"></i></button>
+                        </li>
+                        -->
+                    </ul>
+                </div>
+                
+                <div class="sidebar-footer" id="cart-footer" style="display: none;">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal" class="font-bold">$0.00</span>
+                    </div>
+                    <div class="summary-row text-muted text-sm">
+                        <span>Shipping & Taxes</span>
+                        <span>Calculated at checkout</span>
+                    </div>
+                    <div class="free-shipping-progress">
+                        <div class="progress-text">
+                            <span id="shipping-message">Add $50.00 more for free shipping</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="shipping-progress" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="proceedToCheckout()">
+                        Checkout Now <i class="ph ph-arrow-right"></i>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- =========================
+                 WISHLIST SIDEBAR
+            ========================== -->
+            <div class="sidebar-overlay" id="wishlist-overlay" onclick="closeWishlist()"></div>
+            <aside class="sidebar glass-panel" id="wishlist-sidebar">
+                <div class="sidebar-header">
+                    <h3>Your Wishlist (<span id="wishlist-count-header">0</span>)</h3>
+                    <button class="close-sidebar" onclick="closeWishlist()" aria-label="Close Wishlist"><i class="ph ph-x"></i></button>
+                </div>
+                
+                <div class="sidebar-body" id="wishlist-items-container">
+                    <!-- Empty Wishlist State -->
+                    <div class="empty-state" id="wishlist-empty-state">
+                        <div class="empty-icon-wrapper">
+                            <i class="ph ph-heart-break"></i>
+                        </div>
+                        <h4>Your wishlist is empty</h4>
+                        <p>Save items you love here to buy them later.</p>
+                        <button class="btn btn-outline" onclick="closeWishlist(); navigateTo('shop')">Explore Products</button>
+                    </div>
+                    
+                    <!-- Wishlist Items List (Injected by JS) -->
+                    <ul class="wishlist-list" id="wishlist-list">
+                        <!-- Example format of dynamically added item:
+                        <li class="wishlist-item">
+                            <img src="..." alt="...">
+                            <div class="wishlist-item-details">
+                                <h4>Product Title</h4>
+                                <span class="wishlist-item-price">$99.00</span>
+                                <button class="btn btn-sm btn-outline" onclick="moveToCart(id)">Move to Cart</button>
+                            </div>
+                            <button class="remove-item"><i class="ph ph-x"></i></button>
+                        </li>
+                        -->
+                    </ul>
+                </div>
+                
+                <div class="sidebar-footer" id="wishlist-footer" style="display: none;">
+                    <button class="btn btn-secondary btn-block" onclick="addAllWishlistToCart()">
+                        Move All to Cart <i class="ph ph-shopping-cart"></i>
+                    </button>
+                    <button class="btn btn-text btn-block text-danger mt-2" onclick="clearWishlist()">
+                        Clear Wishlist
+                    </button>
+                </div>
+            </aside>
+            <!-- =========================
+                 CHECKOUT VIEW (SPA)
+            ========================== -->
+            <section id="view-checkout" class="view section-padding">
+                <div class="section-header">
+                    <h2>Checkout</h2>
+                    <p>Complete your order securely.</p>
+                </div>
+                
+                <div class="checkout-container">
+                    <!-- Left Column: Checkout Form -->
+                    <div class="checkout-form-container glass-panel">
+                        <form id="checkout-form" onsubmit="handleCheckout(event)">
+                            
+                            <!-- Contact Info -->
+                            <div class="form-section">
+                                <h3><i class="ph ph-user"></i> Contact Information</h3>
+                                <div class="form-group">
+                                    <label for="checkout-email">Email Address *</label>
+                                    <input type="email" id="checkout-email" required placeholder="john.doe@example.com">
+                                </div>
+                                <div class="form-checkbox">
+                                    <input type="checkbox" id="checkout-newsletter" checked>
+                                    <label for="checkout-newsletter">Keep me up to date on news and exclusive offers</label>
+                                </div>
+                            </div>
+
+                            <hr class="divider">
+
+                            <!-- Shipping Address -->
+                            <div class="form-section">
+                                <h3><i class="ph ph-map-pin"></i> Shipping Address</h3>
+                                <div class="form-row">
+                                    <div class="form-group half">
+                                        <label for="checkout-fn">First Name *</label>
+                                        <input type="text" id="checkout-fn" required placeholder="John">
+                                    </div>
+                                    <div class="form-group half">
+                                        <label for="checkout-ln">Last Name *</label>
+                                        <input type="text" id="checkout-ln" required placeholder="Doe">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="checkout-address">Address *</label>
+                                    <input type="text" id="checkout-address" required placeholder="123 Main St">
+                                </div>
+                                <div class="form-group">
+                                    <label for="checkout-apartment">Apartment, suite, etc. (optional)</label>
+                                    <input type="text" id="checkout-apartment" placeholder="Apt 4B">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group third">
+                                        <label for="checkout-city">City *</label>
+                                        <input type="text" id="checkout-city" required placeholder="New York">
+                                    </div>
+                                    <div class="form-group third">
+                                        <label for="checkout-state">State/Province *</label>
+                                        <select id="checkout-state" required>
+                                            <option value="" disabled selected>Select State</option>
+                                            <option value="NY">New York</option>
+                                            <option value="CA">California</option>
+                                            <option value="TX">Texas</option>
+                                            <option value="FL">Florida</option>
+                                            <option value="OTHER">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group third">
+                                        <label for="checkout-zip">ZIP/Postal Code *</label>
+                                        <input type="text" id="checkout-zip" required placeholder="10001">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="divider">
+
+                            <!-- Payment Method -->
+                            <div class="form-section">
+                                <h3><i class="ph ph-credit-card"></i> Payment Method</h3>
+                                <p class="text-sm text-muted mb-3">All transactions are secure and encrypted.</p>
+                                
+                                <div class="payment-methods">
+                                    <label class="payment-option">
+                                        <input type="radio" name="payment-type" value="credit-card" checked onchange="togglePaymentDetails()">
+                                        <div class="payment-option-content">
+                                            <span>Credit Card</span>
+                                            <div class="payment-icons">
+                                                <i class="ph-fill ph-visa-logo"></i>
+                                                <i class="ph-fill ph-mastercard-logo"></i>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    
+                                    <!-- Credit Card Details (Expands if selected) -->
+                                    <div class="payment-details-panel" id="cc-details">
+                                        <div class="form-group">
+                                            <label for="cc-number">Card Number *</label>
+                                            <div class="input-with-icon">
+                                                <input type="text" id="cc-number" placeholder="0000 0000 0000 0000" maxlength="19">
+                                                <i class="ph ph-credit-card"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group half">
+                                                <label for="cc-exp">Expiration Date (MM/YY) *</label>
+                                                <input type="text" id="cc-exp" placeholder="MM/YY" maxlength="5">
+                                            </div>
+                                            <div class="form-group half">
+                                                <label for="cc-cvv">Security Code (CVV) *</label>
+                                                <div class="input-with-icon">
+                                                    <input type="password" id="cc-cvv" placeholder="123" maxlength="4">
+                                                    <i class="ph ph-lock-key"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cc-name">Name on Card *</label>
+                                            <input type="text" id="cc-name" placeholder="John Doe">
+                                        </div>
+                                    </div>
+
+                                    <label class="payment-option">
+                                        <input type="radio" name="payment-type" value="paypal" onchange="togglePaymentDetails()">
+                                        <div class="payment-option-content">
+                                            <span>PayPal</span>
+                                            <i class="ph-fill ph-paypal-logo"></i>
+                                        </div>
+                                    </label>
+                                    
+                                    <div class="payment-details-panel" id="paypal-details" style="display: none;">
+                                        <p class="text-sm">You will be redirected to PayPal to complete your purchase securely.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block btn-large mt-4" id="place-order-btn">
+                                <i class="ph ph-lock-key"></i> Place Order
+                            </button>
+                            <button type="button" class="btn btn-text btn-block mt-2" onclick="navigateTo('shop')">
+                                <i class="ph ph-arrow-left"></i> Return to Shop
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Right Column: Order Summary -->
+                    <div class="checkout-summary-container">
+                        <div class="glass-panel sticky-summary">
+                            <h3>Order Summary</h3>
+                            
+                            <div class="checkout-items-list" id="checkout-items-list">
+                                <!-- Checkout items injected via JS -->
+                                <p class="text-sm text-muted">Loading items...</p>
+                            </div>
+
+                            <hr class="divider">
+
+                            <!-- Coupon Section -->
+                            <div class="coupon-section">
+                                <label for="coupon-code">Discount Code</label>
+                                <div class="coupon-input-group">
+                                    <input type="text" id="coupon-code" placeholder="Enter code (e.g. SUMMER26)">
+                                    <button class="btn btn-secondary" onclick="applyCoupon()">Apply</button>
+                                </div>
+                                <span class="text-sm success-text" id="coupon-message" style="display: none;"></span>
+                            </div>
+
+                            <hr class="divider">
+
+                            <!-- Totals -->
+                            <div class="summary-totals">
+                                <div class="summary-row">
+                                    <span>Subtotal</span>
+                                    <span id="checkout-subtotal">$0.00</span>
+                                </div>
+                                <div class="summary-row discount-row" id="checkout-discount-row" style="display: none;">
+                                    <span>Discount (<span id="applied-coupon-name"></span>)</span>
+                                    <span class="text-danger" id="checkout-discount">-$0.00</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Shipping</span>
+                                    <span id="checkout-shipping">$0.00</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Estimated Tax (8%)</span>
+                                    <span id="checkout-tax">$0.00</span>
+                                </div>
+                                <div class="summary-row total-row mt-3">
+                                    <span>Total</span>
+                                    <span id="checkout-total" class="font-bold text-large">$0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> <!-- END OF CHECKOUT VIEW -->
+            <!-- =========================
+                 ORDERS & PROFILE VIEW (SPA)
+            ========================== -->
+            <section id="view-orders" class="view section-padding">
+                <div class="section-header">
+                    <h2>My Account</h2>
+                    <p>Manage your orders, profile, and preferences.</p>
+                </div>
+                
+                <div class="account-container">
+                    <!-- Account Sidebar Navigation -->
+                    <div class="account-sidebar glass-panel">
+                        <div class="user-profile-brief">
+                            <div class="avatar">JD</div>
+                            <div class="user-info">
+                                <h4>John Doe</h4>
+                                <p class="text-sm text-muted">john.doe@example.com</p>
+                            </div>
+                        </div>
+                        <ul class="account-links" id="account-nav">
+                            <li class="active">
+                                <a href="#" onclick="switchAccountTab('orders', event)"><i class="ph ph-package"></i> Order History</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="switchAccountTab('profile', event)"><i class="ph ph-user-circle"></i> Profile Settings</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="switchAccountTab('addresses', event)"><i class="ph ph-map-pin"></i> Saved Addresses</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="openLoginModal(event)" class="text-danger"><i class="ph ph-sign-out"></i> Sign Out</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Account Content Area -->
+                    <div class="account-content glass-panel">
+                        
+                        <!-- TAB: Order History -->
+                        <div id="tab-orders" class="account-tab active">
+                            <div class="tab-header">
+                                <h3>Order History</h3>
+                                <div class="filter-group small">
+                                    <select>
+                                        <option value="6months">Past 6 months</option>
+                                        <option value="2026">2026</option>
+                                        <option value="2025">2025</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="orders-list">
+                                <!-- Order Item 1 -->
+                                <div class="order-card">
+                                    <div class="order-header">
+                                        <div class="order-meta">
+                                            <div class="meta-item">
+                                                <span class="meta-label">Order Placed</span>
+                                                <span class="meta-value">June 28, 2026</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <span class="meta-label">Total</span>
+                                                <span class="meta-value">$499.49</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <span class="meta-label">Order #</span>
+                                                <span class="meta-value">LX-8472910</span>
+                                            </div>
+                                        </div>
+                                        <div class="order-status status-processing">
+                                            <i class="ph-fill ph-circle-notch"></i> Processing
+                                        </div>
+                                    </div>
+                                    <div class="order-body">
+                                        <div class="order-items-preview">
+                                            <div class="preview-img">
+                                                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&q=80" alt="Headphones">
+                                            </div>
+                                            <div class="preview-img">
+                                                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&q=80" alt="Watch">
+                                            </div>
+                                        </div>
+                                        <div class="order-actions">
+                                            <button class="btn btn-outline btn-sm">Track Package</button>
+                                            <button class="btn btn-text btn-sm">View Invoice</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Order Item 2 -->
+                                <div class="order-card">
+                                    <div class="order-header">
+                                        <div class="order-meta">
+                                            <div class="meta-item">
+                                                <span class="meta-label">Order Placed</span>
+                                                <span class="meta-value">May 15, 2026</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <span class="meta-label">Total</span>
+                                                <span class="meta-value">$89.99</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <span class="meta-label">Order #</span>
+                                                <span class="meta-value">LX-7391022</span>
+                                            </div>
+                                        </div>
+                                        <div class="order-status status-delivered">
+                                            <i class="ph-fill ph-check-circle"></i> Delivered
+                                        </div>
+                                    </div>
+                                    <div class="order-body">
+                                        <div class="order-items-preview">
+                                            <div class="preview-img">
+                                                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&q=80" alt="Shoes">
+                                            </div>
+                                            <div class="preview-details">
+                                                <h4>Pro-Runner Lightweight Sneakers</h4>
+                                                <p class="text-sm text-muted">Delivered on May 18, 2026</p>
+                                            </div>
+                                        </div>
+                                        <div class="order-actions">
+                                            <button class="btn btn-secondary btn-sm" onclick="addToCart(4)">Buy Again</button>
+                                            <button class="btn btn-outline btn-sm">Write Review</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB: Profile Settings (Hidden by default) -->
+                        <div id="tab-profile" class="account-tab" style="display: none;">
+                            <h3>Profile Settings</h3>
+                            <form class="profile-form mt-4" onsubmit="event.preventDefault(); showToast('Profile updated successfully!', 'success');">
+                                <div class="form-row">
+                                    <div class="form-group half">
+                                        <label for="profile-fn">First Name</label>
+                                        <input type="text" id="profile-fn" value="John" required>
+                                    </div>
+                                    <div class="form-group half">
+                                        <label for="profile-ln">Last Name</label>
+                                        <input type="text" id="profile-ln" value="Doe" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-email">Email Address</label>
+                                    <input type="email" id="profile-email" value="john.doe@example.com" readonly class="bg-light">
+                                    <small class="text-muted">Email address cannot be changed.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-phone">Phone Number</label>
+                                    <input type="tel" id="profile-phone" placeholder="+1 (555) 000-0000">
+                                </div>
+                                <hr class="divider my-4">
+                                <h4>Change Password</h4>
+                                <div class="form-group mt-3">
+                                    <label for="profile-old-pw">Current Password</label>
+                                    <input type="password" id="profile-old-pw">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group half">
+                                        <label for="profile-new-pw">New Password</label>
+                                        <input type="password" id="profile-new-pw">
+                                    </div>
+                                    <div class="form-group half">
+                                        <label for="profile-confirm-pw">Confirm New Password</label>
+                                        <input type="password" id="profile-confirm-pw">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+                            </form>
+                        </div>
+                        
+                        <!-- TAB: Saved Addresses (Hidden by default) -->
+                        <div id="tab-addresses" class="account-tab" style="display: none;">
+                            <h3>Saved Addresses</h3>
+                            <div class="addresses-grid mt-4">
+                                <div class="address-card default-address">
+                                    <div class="address-badge">Default</div>
+                                    <h4>Home</h4>
+                                    <p class="address-name">John Doe</p>
+                                    <p>123 Main St, Apt 4B</p>
+                                    <p>New York, NY 10001</p>
+                                    <p>United States</p>
+                                    <div class="address-actions mt-3">
+                                        <button class="btn btn-sm btn-outline">Edit</button>
+                                        <button class="btn btn-sm btn-text text-danger">Delete</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="address-card add-new" onclick="showToast('Add address modal would open here.', 'info')">
+                                    <i class="ph ph-plus-circle"></i>
+                                    <h4>Add New Address</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recently Viewed Section (Bottom of Account Page) -->
+                <div class="recently-viewed-section mt-5">
+                    <div class="section-header">
+                        <h3>Recently Viewed</h3>
+                    </div>
+                    <div class="product-grid" id="recently-viewed-grid">
+                        <!-- Populated dynamically via JS. For now, a fallback message: -->
+                        <div class="empty-state w-100" id="recent-empty-state">
+                            <i class="ph ph-clock-counter-clockwise"></i>
+                            <p class="text-muted">You haven't viewed any products recently.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </section> <!-- END OF ORDERS VIEW -->
+            <!-- =========================
+                 TESTIMONIALS & FAQ VIEW (SPA)
+            ========================== -->
+            <section id="view-faq" class="view section-padding">
+                <!-- Testimonials Section -->
+                <div class="section-header">
+                    <h2>What Our Customers Say</h2>
+                    <p>Don't just take our word for it. Read the reviews from our loyal community.</p>
+                </div>
+                
+                <div class="testimonial-grid mb-5">
+                    <div class="testimonial-card glass-panel">
+                        <div class="testimonial-rating">
+                            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                        </div>
+                        <p class="testimonial-text">"The premium noise-cancelling headphones are absolutely incredible. The sound quality is unmatched, and the shipping was incredibly fast. Luxe is now my go-to store!"</p>
+                        <div class="testimonial-author">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Sarah J." class="author-avatar" loading="lazy">
+                            <div class="author-info">
+                                <h4>Sarah Jenkins</h4>
+                                <span>Verified Buyer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card glass-panel">
+                        <div class="testimonial-rating">
+                            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                        </div>
+                        <p class="testimonial-text">"I ordered a couple of the minimalist desk lamps for my home office, and they look stunning. The glassmorphism UI of this site made shopping a breeze."</p>
+                        <div class="testimonial-author">
+                            <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&q=80" alt="Michael T." class="author-avatar" loading="lazy">
+                            <div class="author-info">
+                                <h4>Michael Torres</h4>
+                                <span>Verified Buyer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card glass-panel">
+                        <div class="testimonial-rating">
+                            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-half ph-star"></i>
+                        </div>
+                        <p class="testimonial-text">"Great customer service! I had to exchange a shirt for a different size, and the process was seamless. The clothes are high quality and fit perfectly."</p>
+                        <div class="testimonial-author">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="David L." class="author-avatar" loading="lazy">
+                            <div class="author-info">
+                                <h4>David Lin</h4>
+                                <span>Verified Buyer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="divider my-5">
+
+                <!-- FAQ Section -->
+                <div class="section-header">
+                    <h2>Frequently Asked Questions</h2>
+                    <p>Have questions? We're here to help.</p>
+                </div>
+
+                <div class="faq-container">
+                    <!-- FAQ Item 1 -->
+                    <div class="faq-item glass-panel">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            What is your return policy?
+                            <i class="ph ph-caret-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We offer a 30-day money-back guarantee on all our products. If you are not completely satisfied with your purchase, you can return it within 30 days of delivery for a full refund or exchange. Items must be in their original condition with all tags attached.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="faq-item glass-panel">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            How long does shipping take?
+                            <i class="ph ph-caret-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Standard shipping typically takes 3-5 business days within the continental US. Expedited shipping options are available at checkout. International shipping times vary by destination, usually ranging from 7-14 business days.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="faq-item glass-panel">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            Do you ship internationally?
+                            <i class="ph ph-caret-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes, we ship to over 50 countries worldwide. Shipping costs and delivery times will be calculated at checkout based on your specific location. Please note that international orders may be subject to customs fees and import duties.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="faq-item glass-panel">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            How can I track my order?
+                            <i class="ph ph-caret-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Once your order has shipped, you will receive a confirmation email containing a tracking number and a link to track your package. You can also view your order status by logging into your account and visiting the "Orders" tab.</p>
+                        </div>
+                    </div>
+                </div>
+            </section> <!-- END OF FAQ VIEW -->
+
+        </main> <!-- END OF SPA VIEWS CONTAINER -->
+
+        <!-- =========================
+             GLOBAL NEWSLETTER SECTION
+        ========================== -->
+        <section class="newsletter-section section-padding">
+            <div class="newsletter-container glass-panel">
+                <div class="newsletter-content">
+                    <i class="ph ph-envelope-simple-open newsletter-icon"></i>
+                    <h2>Join the Luxe Community</h2>
+                    <p>Subscribe to our newsletter to receive exclusive offers, early access to new collections, and the latest style tips straight to your inbox.</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); showToast('Subscribed successfully!', 'success'); this.reset();">
+                        <input type="email" placeholder="Enter your email address" required aria-label="Email address">
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                    <p class="text-xs text-muted mt-2">By subscribing, you agree to our Terms of Service and Privacy Policy.</p>
+                </div>
+            </div>
+        </section>
+        <!-- =========================
+             CONTACT VIEW (SPA)
+             Note: Even though <main> was closed, our JS will still toggle this view correctly!
+        ========================== -->
+        <section id="view-contact" class="view section-padding">
+            <div class="section-header">
+                <h2>Get In Touch</h2>
+                <p>We'd love to hear from you. Reach out with any questions or concerns.</p>
+            </div>
+            
+            <div class="contact-container">
+                <!-- Contact Information -->
+                <div class="contact-info glass-panel">
+                    <h3>Contact Information</h3>
+                    <p class="text-muted mb-4">Our support team is available Monday through Friday, 9am to 6pm EST.</p>
+                    
+                    <div class="info-list">
+                        <div class="info-item">
+                            <div class="info-icon"><i class="ph-fill ph-map-pin"></i></div>
+                            <div>
+                                <h4>Our Headquarters</h4>
+                                <p>123 Luxe Avenue, Suite 400<br>New York, NY 10012</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="ph-fill ph-phone"></i></div>
+                            <div>
+                                <h4>Phone Support</h4>
+                                <p>+1 (800) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="ph-fill ph-envelope"></i></div>
+                            <div>
+                                <h4>Email Us</h4>
+                                <p>support@luxestore.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="social-links mt-4">
+                        <h4>Follow Us</h4>
+                        <div class="social-icons">
+                            <a href="#" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="ph ph-twitter-logo"></i></a>
+                            <a href="#" aria-label="Facebook"><i class="ph ph-facebook-logo"></i></a>
+                            <a href="#" aria-label="Pinterest"><i class="ph ph-pinterest-logo"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="contact-form-wrapper glass-panel">
+                    <h3>Send Us a Message</h3>
+                    <form id="contact-form" onsubmit="event.preventDefault(); showToast('Message sent! We will get back to you shortly.', 'success'); this.reset();">
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label for="contact-name">Your Name *</label>
+                                <input type="text" id="contact-name" required placeholder="Jane Doe">
+                            </div>
+                            <div class="form-group half">
+                                <label for="contact-email">Email Address *</label>
+                                <input type="email" id="contact-email" required placeholder="jane@example.com">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-subject">Subject</label>
+                            <input type="text" id="contact-subject" placeholder="Order Inquiry, Product Question, etc.">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-message">Message *</label>
+                            <textarea id="contact-message" rows="5" required placeholder="How can we help you?"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block mt-2">
+                            Send Message <i class="ph ph-paper-plane-right"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section> <!-- END OF CONTACT VIEW -->
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+        <footer class="main-footer">
+            <div class="footer-container">
+                <!-- Brand Column -->
+                <div class="footer-col brand-col">
+                    <div class="logo footer-logo" onclick="navigateTo('home')">
+                        <i class="ph-fill ph-storefront"></i>
+                        <span>Luxe.</span>
+                    </div>
+                    <p class="text-sm text-muted mt-3">Redefining modern e-commerce with premium products, sleek design, and exceptional customer service.</p>
+                    <div class="payment-methods-footer mt-3">
+                        <i class="ph-fill ph-visa-logo"></i>
+                        <i class="ph-fill ph-mastercard-logo"></i>
+                        <i class="ph-fill ph-paypal-logo"></i>
+                        <i class="ph-fill ph-apple-logo"></i>
+                    </div>
+                </div>
+
+                <!-- Quick Links Column -->
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home" onclick="navigateTo('home')">Home</a></li>
+                        <li><a href="#shop" onclick="navigateTo('shop')">Shop All</a></li>
+                        <li><a href="#orders" onclick="navigateTo('orders')">My Account</a></li>
+                        <li><a href="#faq" onclick="navigateTo('faq')">FAQ & Support</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories Column -->
+                <div class="footer-col">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="#shop" onclick="filterByCategory('electronics'); navigateTo('shop')">Electronics</a></li>
+                        <li><a href="#shop" onclick="filterByCategory('fashion'); navigateTo('shop')">Apparel & Fashion</a></li>
+                        <li><a href="#shop" onclick="filterByCategory('home'); navigateTo('shop')">Home & Living</a></li>
+                        <li><a href="#shop" onclick="filterByCategory('accessories'); navigateTo('shop')">Accessories</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal Column -->
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Luxe E-Commerce. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Design System</a>
+                    <a href="#">Sitemap</a>
+                </div>
+            </div>
+        </footer>
+
+    </div> <!-- END OF APP WRAPPER (Opened in Part 1) -->
+
+    <!-- =========================
+         FLOATING UI ELEMENTS
+    ========================== -->
+    
+    <!-- Back to Top Button -->
+    <button class="back-to-top glass-panel" id="back-to-top" onclick="scrollToTop()" aria-label="Back to Top">
+        <i class="ph ph-arrow-up"></i>
+    </button>
+
+    <!-- Floating Mobile Cart (Visible only on smaller screens) -->
+    <button class="floating-cart glass-panel" id="floating-cart" onclick="openCart()" aria-label="Open Cart">
+        <i class="ph ph-shopping-cart"></i>
+        <span class="badge" id="floating-cart-badge">0</span>
+    </button>
+    <!-- =========================
+         LOGIN / REGISTER MODAL
+    ========================== -->
+    <div class="modal" id="login-modal">
+        <div class="modal-overlay" onclick="closeLoginModal()"></div>
+        <div class="modal-content auth-content glass-panel">
+            <button class="close-modal" onclick="closeLoginModal()" aria-label="Close Auth Modal"><i class="ph ph-x"></i></button>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active" onsubmit="event.preventDefault(); handleAuth('login');">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <div class="input-with-icon">
+                        <input type="email" id="login-email" required placeholder="you@example.com">
+                        <i class="ph ph-envelope"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <div class="input-with-icon">
+                        <input type="password" id="login-password" required placeholder="••••••••">
+                        <i class="ph ph-lock-key"></i>
+                    </div>
+                </div>
+                <div class="auth-actions">
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="remember-me">
+                        <label for="remember-me">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password text-sm">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-3">Sign In</button>
+                <div class="social-login mt-4">
+                    <p class="text-center text-sm text-muted mb-2">Or continue with</p>
+                    <div class="social-buttons">
+                        <button type="button" class="btn btn-outline btn-block"><i class="ph-fill ph-google-logo"></i> Google</button>
+                        <button type="button" class="btn btn-outline btn-block"><i class="ph-fill ph-apple-logo"></i> Apple</button>
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Register Form (Hidden by default) -->
+            <form id="register-form" class="auth-form" onsubmit="event.preventDefault(); handleAuth('register');" style="display: none;">
+                <div class="form-group">
+                    <label for="reg-name">Full Name</label>
+                    <div class="input-with-icon">
+                        <input type="text" id="reg-name" required placeholder="John Doe">
+                        <i class="ph ph-user"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email</label>
+                    <div class="input-with-icon">
+                        <input type="email" id="reg-email" required placeholder="you@example.com">
+                        <i class="ph ph-envelope"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <div class="input-with-icon">
+                        <input type="password" id="reg-password" required placeholder="••••••••" minlength="8">
+                        <i class="ph ph-lock-key"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-3">Create Account</button>
+                <p class="text-center text-sm text-muted mt-3">By registering, you agree to our Terms & Privacy Policy.</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- =========================
+         TOAST NOTIFICATIONS CONTAINER
+    ========================== -->
+    <!-- JavaScript will dynamically inject toast messages here -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- =========================
+         GLOBAL LOADING SCREEN
+    ========================== -->
+    <div id="loading-screen" class="loading-screen glass-panel">
+        <div class="loader-content">
+            <i class="ph-fill ph-storefront loader-icon"></i>
+            <div class="spinner"></div>
+            <p>Loading Luxe...</p>
+        </div>
+    </div>
+
+    <!-- =========================
+         JAVASCRIPT INCLUDES
+    ========================== -->
+    <script src="script.js"></script>
+</body>
+</html>

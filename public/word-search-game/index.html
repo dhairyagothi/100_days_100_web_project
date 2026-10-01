@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Search Quest - Modern Word Search Game</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Fullscreen Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="logo-icon"><i class="fa-solid fa-compass"></i></div>
+        <div class="logo-text">
+          <h1>Word Search <span>Quest</span></h1>
+          <span class="sub-text">Find the hidden paths</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="daily-challenge-btn" class="btn btn-secondary btn-icon-text">
+          <i class="fa-solid fa-calendar-day"></i>
+          <span>Daily Challenge</span>
+        </button>
+        <button id="sound-toggle" class="btn btn-icon btn-secondary" title="Mute/Unmute Sounds">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+        <button id="leaderboard-btn" class="btn btn-icon btn-secondary" title="Leaderboard">
+          <i class="fa-solid fa-trophy"></i>
+        </button>
+        <button id="help-btn" class="btn btn-icon btn-secondary" title="How to Play">
+          <i class="fa-solid fa-question"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Game Interface -->
+    <main class="game-main">
+      <!-- Sidebar Panel: Controls & Word list -->
+      <section class="sidebar-panel glass-card">
+        <!-- Game Configuration -->
+        <div class="control-group">
+          <h3>Game Settings</h3>
+          <div class="settings-inputs">
+            <div class="input-wrapper">
+              <label for="difficulty-select"><i class="fa-solid fa-gauge-high"></i> Difficulty</label>
+              <select id="difficulty-select" class="custom-select">
+                <option value="easy">Easy (8x8)</option>
+                <option value="medium" selected>Medium (10x10)</option>
+                <option value="hard">Hard (12x12)</option>
+                <option value="expert">Expert (14x14)</option>
+              </select>
+            </div>
+
+            <div class="input-wrapper">
+              <label for="category-select"><i class="fa-solid fa-tags"></i> Category</label>
+              <select id="category-select" class="custom-select">
+                <option value="animals">Animals</option>
+                <option value="countries">Countries</option>
+                <option value="programming">Programming</option>
+                <option value="movies">Movies</option>
+                <option value="sports">Sports</option>
+                <option value="food">Food</option>
+                <option value="science">Science</option>
+                <option value="geography">Geography</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Target Word List -->
+        <div class="word-list-container">
+          <div class="word-list-header">
+            <h3>Words to Find</h3>
+            <span id="words-progress" class="badge">0/0</span>
+          </div>
+          <div id="word-list" class="words-grid">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="game-actions">
+          <button id="new-puzzle-btn" class="btn btn-primary">
+            <i class="fa-solid fa-arrows-rotate"></i> New Puzzle
+          </button>
+          <button id="restart-btn" class="btn btn-secondary">
+            <i class="fa-solid fa-rotate-left"></i> Restart
+          </button>
+          <button id="hint-btn" class="btn btn-accent" title="Get a hint">
+            <i class="fa-solid fa-lightbulb"></i> Hint
+          </button>
+        </div>
+      </section>
+
+      <!-- Center Game Arena -->
+      <section class="game-arena">
+        <!-- Stats Bar -->
+        <div class="stats-bar glass-card">
+          <div class="stat-item">
+            <span class="stat-label">Score</span>
+            <span id="score-val" class="stat-value">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Time</span>
+            <span id="timer-val" class="stat-value">00:00</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Difficulty</span>
+            <span id="difficulty-badge" class="badge badge-difficulty">Medium</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Best Score</span>
+            <span id="best-score-val" class="stat-value">0</span>
+          </div>
+        </div>
+
+        <!-- Word Search Grid Arena -->
+        <div class="grid-card glass-card">
+          <div id="grid-container" class="grid-container">
+            <!-- Letters grid is dynamically built in JS -->
+            <div id="grid" class="letters-grid"></div>
+            
+            <!-- SVG selection overlay for smooth capsule selection paths -->
+            <svg id="selection-svg" class="selection-overlay">
+              <!-- Completed paths and current selection line will be drawn here -->
+              <g id="completed-lines"></g>
+              <line id="drag-line" x1="0" y1="0" x2="0" y2="0" class="drag-selection-line" />
+            </svg>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- HELP / HOW TO PLAY MODAL -->
+  <div id="help-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-circle-question"></i> How To Play</h2>
+        <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>Find all the hidden words listed in the panel to complete the puzzle!</p>
+        
+        <div class="instruction-list">
+          <div class="instruction-item">
+            <div class="inst-icon"><i class="fa-solid fa-hand-pointer"></i></div>
+            <div class="inst-text">
+              <strong>Select Words:</strong> Click/touch and drag across letters to connect them. You can select horizontal, vertical, or diagonal lines.
+            </div>
+          </div>
+          <div class="instruction-item">
+            <div class="inst-icon"><i class="fa-solid fa-arrows-alt"></i></div>
+            <div class="inst-text">
+              <strong>Directions:</strong> Word directions depend on difficulty:
+              <ul>
+                <li><strong>Easy:</strong> Forward horizontal and vertical only.</li>
+                <li><strong>Medium:</strong> Forward horizontal, vertical, and diagonal.</li>
+                <li><strong>Hard/Expert:</strong> Horizontal, vertical, diagonal—both forward and backward.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="instruction-item">
+            <div class="inst-icon"><i class="fa-solid fa-lightbulb"></i></div>
+            <div class="inst-text">
+              <strong>Hints:</strong> Starcharts running low? Use the Hint button to briefly highlight the first letter of a random remaining word (costs score).
+            </div>
+          </div>
+          <div class="instruction-item">
+            <div class="inst-icon"><i class="fa-solid fa-calendar-day"></i></div>
+            <div class="inst-text">
+              <strong>Daily Challenge:</strong> Play a unique, hand-crafted daily word search grid shared with players around the globe!
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary modal-close-btn">Let's Play</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD / RECORDS MODAL -->
+  <div id="leaderboard-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-trophy"></i> Personal Records</h2>
+        <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="leaderboard-tabs">
+          <button class="tab-btn active" data-tab="normal">Classic Records</button>
+          <button class="tab-btn" data-tab="daily">Daily Challenges</button>
+        </div>
+
+        <div id="normal-records-pane" class="tab-pane">
+          <div class="record-selectors">
+            <select id="leaderboard-diff" class="custom-select select-sm">
+              <option value="easy">Easy</option>
+              <option value="medium" selected>Medium</option>
+              <option value="hard">Hard</option>
+              <option value="expert">Expert</option>
+            </select>
+            <select id="leaderboard-cat" class="custom-select select-sm">
+              <option value="animals">Animals</option>
+              <option value="countries">Countries</option>
+              <option value="programming">Programming</option>
+              <option value="movies">Movies</option>
+              <option value="sports">Sports</option>
+              <option value="food">Food</option>
+              <option value="science">Science</option>
+              <option value="geography">Geography</option>
+            </select>
+          </div>
+          <table class="records-table">
+            <thead>
+              <tr>
+                <th>Stat</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Best Score</td>
+                <td id="record-best-score">0</td>
+              </tr>
+              <tr>
+                <td>Best Time</td>
+                <td id="record-best-time">--:--</td>
+              </tr>
+              <tr>
+                <td>Puzzles Completed</td>
+                <td id="record-completed-count">0</td>
+              </tr>
+            </tbody>
+          </table>
+          <button id="clear-records-btn" class="btn btn-danger btn-sm" style="margin-top: 15px;">
+            <i class="fa-solid fa-trash"></i> Reset Selected Record
+          </button>
+        </div>
+
+        <div id="daily-records-pane" class="tab-pane hidden">
+          <div class="daily-summary">
+            <h3>Completed Daily Challenges</h3>
+            <p>Complete challenges daily to build your streak!</p>
+          </div>
+          <div class="records-scroll-container">
+            <table class="records-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody id="daily-records-body">
+                <!-- Dynamically populated daily completions -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VICTORY MODAL -->
+  <div id="victory-modal" class="modal-overlay hidden">
+    <div class="modal-content victory-content glass-card animate-zoom">
+      <div class="victory-header">
+        <div class="crown-icon"><i class="fa-solid fa-crown"></i></div>
+        <h2>Puzzle Complete!</h2>
+        <p id="victory-subtitle" class="sub-text">You found all the hidden paths!</p>
+      </div>
+      <div class="victory-stats">
+        <div class="v-stat-card">
+          <span class="v-stat-label">Final Score</span>
+          <span id="v-score" class="v-stat-val">0</span>
+        </div>
+        <div class="v-stat-card">
+          <span class="v-stat-label">Time Taken</span>
+          <span id="v-time" class="v-stat-val">00:00</span>
+        </div>
+        <div class="v-stat-card">
+          <span class="v-stat-label">Hints Used</span>
+          <span id="v-hints" class="v-stat-val">0</span>
+        </div>
+      </div>
+
+      <div class="victory-achievements" id="victory-achievements-container">
+        <!-- Dynamically injected badges or achievements -->
+      </div>
+
+      <div class="victory-actions">
+        <button id="victory-close-btn" class="btn btn-secondary">Close</button>
+        <button id="victory-next-btn" class="btn btn-primary"><i class="fa-solid fa-arrow-right"></i> Next Puzzle</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>

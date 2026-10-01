@@ -1,0 +1,65 @@
+[
+  {
+    "id": "easy_animals",
+    "title": "Animal Kingdom",
+    "difficulty": "easy",
+    "category": "Animals",
+    "gridSize": 8,
+    "clues": {
+      "across": [
+        { "number": 1, "row": 0, "col": 1, "answer": "LION", "clue": "King of the jungle" },
+        { "number": 4, "row": 2, "col": 0, "answer": "BEAR", "clue": "Large furry mammal that loves honey" },
+        { "number": 6, "row": 4, "col": 2, "answer": "DEER", "clue": "Forest animal with antlers" },
+        { "number": 7, "row": 6, "col": 3, "answer": "FROG", "clue": "Green amphibian that leaps" }
+      ],
+      "down": [
+        { "number": 1, "row": 0, "col": 1, "answer": "LAMB", "clue": "A baby sheep" },
+        { "number": 2, "row": 0, "col": 3, "answer": "NEST", "clue": "A bird's home" },
+        { "number": 3, "row": 2, "col": 0, "answer": "BIRD", "clue": "Feathered creature that flies" },
+        { "number": 5, "row": 2, "col": 5, "answer": "WOLF", "clue": "Wild canine that packs and howls" }
+      ]
+    }
+  },
+  {
+    "id": "easy_food",
+    "title": "Tasty Treats",
+    "difficulty": "easy",
+    "category": "Food",
+    "gridSize": 8,
+    "clues": {
+      "across": [
+        { "number": 1, "row": 0, "col": 2, "answer": "CAKE", "clue": "Sweet baked dessert eaten on birthdays" },
+        { "number": 4, "row": 2, "col": 0, "answer": "APPLE", "clue": "Crisp round fruit, red or green" },
+        { "number": 5, "row": 4, "col": 3, "answer": "RICE", "clue": "Common white or brown grain" },
+        { "number": 6, "row": 6, "col": 0, "answer": "SOUP", "clue": "Hot liquid food served in a bowl" }
+      ],
+      "down": [
+        { "number": 1, "row": 0, "col": 2, "answer": "CHIP", "clue": "Thin crispy snack (potato or tortilla)" },
+        { "number": 2, "row": 0, "col": 5, "answer": "PEAR", "clue": "Sweet tear-drop shaped fruit" },
+        { "number": 3, "row": 2, "col": 0, "answer": "TACO", "clue": "Mexican shell filled with meat and cheese" },
+        { "number": 4, "row": 2, "col": 3, "answer": "PLUM", "clue": "Small sweet fruit with a dark purple skin" }
+      ]
+    }
+  },
+  {
+    "id": "easy_sports",
+    "title": "Get Active!",
+    "difficulty": "easy",
+    "category": "Sports",
+    "gridSize": 8,
+    "clues": {
+      "across": [
+        { "number": 1, "row": 1, "col": 0, "answer": "GOLF", "clue": "Game played on green grass with a tiny white ball" },
+        { "number": 4, "row": 3, "col": 1, "answer": "TENNIS", "clue": "Racket sport played with a yellow fuzzy ball" },
+        { "number": 6, "row": 5, "col": 2, "answer": "RUN", "clue": "Move faster than a walk" },
+        { "number": 7, "row": 7, "col": 0, "answer": "SWIM", "clue": "Move through water using limbs" }
+      ],
+      "down": [
+        { "number": 2, "row": 1, "col": 2, "answer": "LINE", "clue": "Boundary on a sports court" },
+        { "number": 3, "row": 1, "col": 5, "answer": "FINS", "clue": "Flipped gear worn on feet for diving/swimming" },
+        { "number": 4, "row": 3, "col": 1, "answer": "TEAM", "clue": "Group of players working together" },
+        { "number": 5, "row": 3, "col": 4, "answer": "NETS", "clue": "Mesh grids used in basketball or soccer goals" }
+      ]
+    }
+  }
+]

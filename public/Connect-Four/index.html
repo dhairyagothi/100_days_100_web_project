@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect Four Multiplayer Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="scene-glow" aria-hidden="true"></div>
+
+  <main class="game-shell">
+    <section class="hero" aria-labelledby="game-title">
+      <div class="disc-orbit" aria-hidden="true">
+        <span class="orbit-disc orbit-red"></span>
+        <span class="orbit-disc orbit-yellow"></span>
+      </div>
+      <p class="eyebrow">Two Player Game</p>
+      <h1 id="game-title">Connect Four</h1>
+      <p class="intro">Drop discs into the grid and connect four in a row before your opponent does.</p>
+
+      <div class="feature-strip" aria-label="Game features">
+        <span>2 Players</span>
+        <span>Strategy</span>
+        <span>Win Smart</span>
+      </div>
+    </section>
+
+    <section class="game-panel" aria-label="Connect Four game board">
+      <div id="celebration" class="celebration" aria-hidden="true"></div>
+
+      <div class="scorebar" aria-live="polite">
+        <div class="player-card active" id="player-one-card">
+          <span class="disc-sample player-one"></span>
+          <div>
+            <span class="label">Player 1</span>
+            <strong>Red</strong>
+          </div>
+        </div>
+
+        <div class="turn-card">
+          <span class="label">Current Turn</span>
+          <strong id="turn-indicator">Player 1</strong>
+        </div>
+
+        <div class="player-card" id="player-two-card">
+          <span class="disc-sample player-two"></span>
+          <div>
+            <span class="label">Player 2</span>
+            <strong>Yellow</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="status-row">
+        <p id="status-message" class="status-message" aria-live="assertive">
+          Player 1, choose a column.
+        </p>
+        <p class="move-counter">Moves: <span id="move-count">0</span></p>
+      </div>
+
+      <div class="board-wrap">
+        <div id="board" class="board" role="grid" aria-label="Connect Four board"></div>
+      </div>
+
+      <button id="restart-button" class="restart-button" type="button">Restart Game</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

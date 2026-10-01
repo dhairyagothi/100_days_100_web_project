@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — SEO & Digital Marketing Insights | SEO Agency</title>
+    <meta name="description" content="Stay ahead with the latest SEO tips, Google Ads strategies, content marketing insights, and web development trends from our expert team.">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* HERO */
+        .page-hero {
+            background: linear-gradient(135deg, #0f172a, #111827, #1e1b4b);
+            color: white; padding: 110px 0 80px;
+            position: relative; overflow: hidden;
+        }
+        .page-hero::before {
+            content: ''; position: absolute;
+            width: 500px; height: 500px;
+            background: rgba(139,92,246,0.18); filter: blur(120px);
+            top: -100px; right: -100px;
+        }
+        .page-hero-content { position: relative; z-index: 2; text-align: center; }
+        .page-badge {
+            display: inline-block; padding: 8px 20px; border-radius: 30px;
+            background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3);
+            color: #c4b5fd; font-size: 14px; font-weight: 600;
+            margin-bottom: 24px; letter-spacing: 1px;
+        }
+        .page-hero h1 { font-size: 56px; font-weight: 800; line-height: 1.15; margin-bottom: 20px; }
+        .page-hero h1 span { color: #8b5cf6; }
+        .page-hero p { font-size: 17px; color: #cbd5e1; max-width: 600px; margin: 0 auto; line-height: 1.8; }
+
+        /* CATEGORIES */
+        .categories-bar {
+            background: white; padding: 30px 0;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky; top: 62px; z-index: 100;
+        }
+        .cat-pills {
+            display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+        }
+        .cat-pill {
+            padding: 8px 20px; border-radius: 25px;
+            border: 2px solid #e2e8f0; background: white;
+            color: #64748b; font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: all 0.3s;
+            text-decoration: none;
+        }
+        .cat-pill:hover, .cat-pill.active {
+            background: #8b5cf6; border-color: #8b5cf6; color: white;
+        }
+
+        /* FEATURED POST */
+        .featured-section { padding: 80px 0; background: #f8fafc; }
+        .featured-card {
+            background: white; border-radius: 24px; overflow: hidden;
+            border: 1px solid #e2e8f0; box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            display: flex; flex-wrap: wrap;
+        }
+        .featured-thumb {
+            flex: 1; min-width: 300px; min-height: 360px;
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 90px; position: relative;
+        }
+        .featured-label {
+            position: absolute; top: 20px; left: 20px;
+            background: #8b5cf6; color: white;
+            padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+        }
+        .featured-body { flex: 1; min-width: 300px; padding: 50px 44px; display: flex; flex-direction: column; justify-content: center; }
+        .post-meta { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .meta-tag { background: rgba(139,92,246,0.1); color: #8b5cf6; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+        .meta-date { color: #94a3b8; font-size: 14px; }
+        .meta-read { color: #94a3b8; font-size: 14px; }
+        .featured-body h2 { font-size: 30px; font-weight: 800; color: #111827; line-height: 1.3; margin-bottom: 18px; }
+        .featured-body p  { color: #64748b; font-size: 16px; line-height: 1.8; margin-bottom: 28px; }
+        .read-more {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: #8b5cf6; font-weight: 700; text-decoration: none; font-size: 15px;
+            transition: gap 0.3s;
+        }
+        .read-more:hover { gap: 14px; color: #7c3aed; }
+        .author-info { display: flex; align-items: center; gap: 12px; margin-top: 30px; padding-top: 24px; border-top: 1px solid #f1f5f9; }
+        .author-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+        .author-info h6 { font-size: 14px; font-weight: 700; color: #111827; margin: 0; }
+        .author-info span { font-size: 12px; color: #94a3b8; }
+
+        /* BLOG GRID */
+        .blog-grid-section { padding: 80px 0; background: white; }
+        .blog-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .blog-card {
+            background: white; border-radius: 20px; overflow: hidden;
+            border: 1px solid #e2e8f0; transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+        }
+        .blog-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(139,92,246,0.1);
+            border-color: #c4b5fd;
+        }
+        .blog-thumb {
+            height: 200px; display: flex; align-items: center;
+            justify-content: center; font-size: 56px;
+        }
+        .bg-1 { background: linear-gradient(135deg, #7c3aed, #2563eb); }
+        .bg-2 { background: linear-gradient(135deg, #059669, #0284c7); }
+        .bg-3 { background: linear-gradient(135deg, #dc2626, #ea580c); }
+        .bg-4 { background: linear-gradient(135deg, #7c3aed, #db2777); }
+        .bg-5 { background: linear-gradient(135deg, #0284c7, #0891b2); }
+        .bg-6 { background: linear-gradient(135deg, #65a30d, #16a34a); }
+        .blog-card-body { padding: 28px; }
+        .blog-card-body .post-meta { margin-bottom: 14px; }
+        .blog-card-body h3 { font-size: 19px; font-weight: 700; color: #111827; line-height: 1.4; margin-bottom: 12px; }
+        .blog-card-body p  { color: #64748b; font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
+
+        /* SIDEBAR */
+        .blog-layout { display: grid; grid-template-columns: 1fr 320px; gap: 50px; }
+        .sidebar { }
+        .sidebar-widget { background: #f8fafc; border-radius: 20px; padding: 30px; margin-bottom: 28px; border: 1px solid #e2e8f0; }
+        .sidebar-widget h5 { font-size: 18px; font-weight: 800; color: #111827; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid #e2e8f0; }
+        .popular-post { display: flex; gap: 14px; margin-bottom: 18px; align-items: flex-start; }
+        .popular-post:last-child { margin-bottom: 0; }
+        .pop-num { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .pop-text h6 { font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 4px; line-height: 1.4; }
+        .pop-text span { font-size: 12px; color: #94a3b8; }
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag-pill { padding: 6px 14px; border-radius: 20px; background: white; border: 1px solid #e2e8f0; color: #64748b; font-size: 13px; font-weight: 600; text-decoration: none; transition: 0.3s; }
+        .tag-pill:hover { background: #8b5cf6; border-color: #8b5cf6; color: white; }
+        .newsletter-widget { background: linear-gradient(135deg, #8b5cf6, #6366f1); border-radius: 20px; padding: 30px; margin-bottom: 28px; color: white; }
+        .newsletter-widget h5 { font-size: 18px; font-weight: 800; margin-bottom: 12px; }
+        .newsletter-widget p  { font-size: 14px; opacity: 0.85; margin-bottom: 20px; line-height: 1.6; }
+        .newsletter-widget input { width: 100%; padding: 12px 16px; border-radius: 10px; border: none; margin-bottom: 12px; font-size: 14px; outline: none; }
+        .newsletter-widget button { width: 100%; padding: 12px; border-radius: 10px; border: none; background: white; color: #8b5cf6; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 14px; }
+        .newsletter-widget button:hover { background: #f3f4f6; }
+
+        /* PAGINATION */
+        .pagination-section { padding: 40px 0 80px; background: white; }
+        .pagination { display: flex; justify-content: center; gap: 8px; }
+        .page-btn { width: 42px; height: 42px; border-radius: 10px; border: 2px solid #e2e8f0; background: white; color: #64748b; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; text-decoration: none; font-size: 15px; }
+        .page-btn:hover, .page-btn.active { background: #8b5cf6; border-color: #8b5cf6; color: white; }
+
+        /* FOOTER */
+        .footer-section { background: linear-gradient(135deg, #020617, #0f172a, #111827); color: white; padding: 50px 0 25px; }
+        .footer-section h5 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+        .footer-section p, .footer-section a { color: #cbd5e1; line-height: 1.9; text-decoration: none; }
+        .footer-section a:hover { color: #8b5cf6; }
+        .social-icons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .social-icons a { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: white; transition: 0.3s; }
+        .social-icons a:hover { background: #8b5cf6; transform: translateY(-3px); }
+
+        @media (max-width: 1100px) {
+            .blog-layout { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 36px; }
+            .featured-thumb { min-height: 220px; font-size: 60px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" id="navbar">
+        <a class="navbar-brand" href="index.html">WEB TEMPLATE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown">Service List</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="seo.html">SEO Optimization</a>
+                        <a class="dropdown-item" href="cm.html">Content Marketing</a>
+                        <a class="dropdown-item" href="google-ads.html">Google Ads</a>
+                        <a class="dropdown-item" href="web-development.html">Web Development</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link active" href="blog.html">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="case-study.html">Case Study</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="styleguide.html">Styleguide</a></li>
+                <li class="nav-item ml-3"><button id="theme-toggle">🌙</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="page-hero">
+        <div class="container page-hero-content">
+            <span class="page-badge">📝 OUR BLOG</span>
+            <h1>Expert Insights on <span>SEO</span> &<br>Digital Marketing</h1>
+            <p>Actionable tips, case studies, and strategies from our team of digital marketing experts to help you grow your business online.</p>
+        </div>
+    </header>
+
+    <!-- Categories -->
+    <div class="categories-bar">
+        <div class="container">
+            <div class="cat-pills">
+                <a href="#" class="cat-pill active">All Posts</a>
+                <a href="#" class="cat-pill">SEO</a>
+                <a href="#" class="cat-pill">Content Marketing</a>
+                <a href="#" class="cat-pill">Google Ads</a>
+                <a href="#" class="cat-pill">Web Design</a>
+                <a href="#" class="cat-pill">Social Media</a>
+                <a href="#" class="cat-pill">Analytics</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Post -->
+    <section class="featured-section">
+        <div class="container">
+            <div class="featured-card">
+                <div class="featured-thumb bg-1">
+                    📈
+                    <span class="featured-label">⭐ FEATURED</span>
+                </div>
+                <div class="featured-body">
+                    <div class="post-meta">
+                        <span class="meta-tag">SEO</span>
+                        <span class="meta-date"><i class="far fa-calendar-alt mr-1"></i> June 5, 2026</span>
+                        <span class="meta-read"><i class="far fa-clock mr-1"></i> 8 min read</span>
+                    </div>
+                    <h2>The Complete 2026 SEO Guide: How to Rank #1 on Google in 90 Days</h2>
+                    <p>Discover the exact SEO strategies our team used to help 50+ clients achieve first-page rankings in under 3 months. From technical fixes to content strategy — everything revealed.</p>
+                    <a href="#" class="read-more">Read Full Article <i class="fas fa-arrow-right"></i></a>
+                    <div class="author-info">
+                        <img class="author-avatar" src="https://randomuser.me/api/portraits/men/45.jpg" alt="Author">
+                        <div>
+                            <h6>James Carter</h6>
+                            <span>Head of SEO Strategy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Grid with Sidebar -->
+    <section class="blog-grid-section">
+        <div class="container">
+            <div class="blog-layout">
+                <!-- Posts -->
+                <div>
+                    <div class="blog-grid">
+                        <div class="blog-card">
+                            <div class="blog-thumb bg-2">🎯</div>
+                            <div class="blog-card-body">
+                                <div class="post-meta">
+                                    <span class="meta-tag">Google Ads</span>
+                                    <span class="meta-date">June 2, 2026</span>
+                                </div>
+                                <h3>10 Google Ads Mistakes That Are Burning Your Budget</h3>
+                                <p>Avoid these common PPC pitfalls that cost businesses thousands every month in wasted ad spend.</p>
+                                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="blog-card">
+                            <div class="blog-thumb bg-3">✍️</div>
+                            <div class="blog-card-body">
+                                <div class="post-meta">
+                                    <span class="meta-tag">Content</span>
+                                    <span class="meta-date">May 28, 2026</span>
+                                </div>
+                                <h3>How to Write Blog Posts That Actually Rank on Google</h3>
+                                <p>A step-by-step guide to creating SEO-optimized content that drives organic traffic month after month.</p>
+                                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="blog-card">
+                            <div class="blog-thumb bg-4">🔗</div>
+                            <div class="blog-card-body">
+                                <div class="post-meta">
+                                    <span class="meta-tag">SEO</span>
+                                    <span class="meta-date">May 22, 2026</span>
+                                </div>
+                                <h3>Link Building in 2026: Strategies That Still Work</h3>
+                                <p>The ultimate guide to building high-quality backlinks that boost your domain authority fast.</p>
+                                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="blog-card">
+                            <div class="blog-thumb bg-5">📱</div>
+                            <div class="blog-card-body">
+                                <div class="post-meta">
+                                    <span class="meta-tag">Web Design</span>
+                                    <span class="meta-date">May 18, 2026</span>
+                                </div>
+                                <h3>Why Mobile-First Design Matters More Than Ever in 2026</h3>
+                                <p>Google's mobile-first indexing means your site must perform perfectly on smartphones or lose rankings.</p>
+                                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="blog-card">
+                            <div class="blog-thumb bg-6">📊</div>
+                            <div class="blog-card-body">
+                                <div class="post-meta">
+                                    <span class="meta-tag">Analytics</span>
+                                    <span class="meta-date">May 14, 2026</span>
+                                </div>
+                                <h3>Google Analytics 4: The Complete Beginner's Guide</h3>
+                                <p>Everything you need to know about GA4 — setup, reports, events, and how to track what matters.</p>
+                                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="blog-card">
+                            <div class="blog-thumb bg-1">🌐</div>
+                            <div class="blog-card-body">
+                                <div class="post-meta">
+                                    <span class="meta-tag">Social Media</span>
+                                    <span class="meta-date">May 8, 2026</span>
+                                </div>
+                                <h3>Social Media Marketing Trends That Will Dominate 2026</h3>
+                                <p>Short-form video, AI content, and community building — the strategies reshaping social marketing.</p>
+                                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination-section" style="padding: 40px 0 0;">
+                        <div class="pagination">
+                            <a href="#" class="page-btn active">1</a>
+                            <a href="#" class="page-btn">2</a>
+                            <a href="#" class="page-btn">3</a>
+                            <a href="#" class="page-btn">4</a>
+                            <a href="#" class="page-btn">→</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Newsletter -->
+                    <div class="newsletter-widget">
+                        <h5>📬 Get Weekly Tips</h5>
+                        <p>Subscribe for the latest SEO strategies, delivered to your inbox every Tuesday.</p>
+                        <input type="email" placeholder="Your email address">
+                        <button>Subscribe Free →</button>
+                    </div>
+
+                    <!-- Popular Posts -->
+                    <div class="sidebar-widget">
+                        <h5>🔥 Popular Posts</h5>
+                        <div class="popular-post">
+                            <div class="pop-num">1</div>
+                            <div class="pop-text"><h6>How to Rank #1 on Google in 90 Days</h6><span>12.4k views</span></div>
+                        </div>
+                        <div class="popular-post">
+                            <div class="pop-num">2</div>
+                            <div class="pop-text"><h6>10 Google Ads Mistakes Burning Your Budget</h6><span>8.2k views</span></div>
+                        </div>
+                        <div class="popular-post">
+                            <div class="pop-num">3</div>
+                            <div class="pop-text"><h6>Link Building Strategies That Still Work</h6><span>6.8k views</span></div>
+                        </div>
+                        <div class="popular-post">
+                            <div class="pop-num">4</div>
+                            <div class="pop-text"><h6>Google Analytics 4 Beginner's Guide</h6><span>5.1k views</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="sidebar-widget">
+                        <h5>🏷️ Topics</h5>
+                        <div class="tag-cloud">
+                            <a href="#" class="tag-pill">SEO</a>
+                            <a href="#" class="tag-pill">PPC</a>
+                            <a href="#" class="tag-pill">Google Ads</a>
+                            <a href="#" class="tag-pill">Content</a>
+                            <a href="#" class="tag-pill">Analytics</a>
+                            <a href="#" class="tag-pill">Social Media</a>
+                            <a href="#" class="tag-pill">Web Design</a>
+                            <a href="#" class="tag-pill">Email</a>
+                            <a href="#" class="tag-pill">Backlinks</a>
+                            <a href="#" class="tag-pill">Keywords</a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-4"><h5>About Us</h5><p>We help brands grow through SEO, content marketing, and digital advertising strategies.</p></div>
+                <div class="col-md-4"><h5>Contact Info</h5><p><i class="fas fa-envelope mr-2"></i>info@seoagency.com</p><p><i class="fas fa-phone mr-2"></i>+123-456-7890</p></div>
+                <div class="col-md-4"><h5>Follow Us</h5><div class="social-icons mt-3"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a></div></div>
+            </div>
+            <p class="mt-4">&copy; 2026 SEO Agency. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

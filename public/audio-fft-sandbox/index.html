@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFT Audio Spectrum & Phase Sandbox</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div class="lab-container">
+        <div class="telemetry-panel">
+            <h2>AUDIO FFT CORE</h2>
+            <hr class="divider">
+
+            <div class="control-box">
+                <button id="startAudioBtn">INITIALIZE ENGINE</button>
+            </div>
+
+            <div class="metric-box">
+                <span class="label">ACTIVE FREQUENCY</span>
+                <div class="value warning" id="freqMetric">440.00 Hz</div>
+            </div>
+
+            <div class="metric-box">
+                <span class="label">PEAK AMPLITUDE</span>
+                <div class="value safe" id="amplitudeMetric">0.00 dB</div>
+            </div>
+
+            <div class="metric-box">
+                <span class="label">FFT WINDOW RESOLUTION</span>
+                <div class="value accent">1024 Samples</div>
+            </div>
+
+            <div class="metric-box">
+                <span class="label">AUDIO CYCLE LATENCY</span>
+                <div class="value safe" id="latencyMetric">0.00 ms</div>
+            </div>
+
+            <div class="instruction-pad">
+                <h3>LAB OVERRIDE</h3>
+                <p>Click and drag your mouse horizontally across the canvas matrix grid to modulate the target tone
+                    frequency range dynamically in real time.</p>
+            </div>
+        </div>
+
+        <div class="viewport-area">
+            <div class="viewport-header">
+                <span class="status-dot blinking"></span>
+                <span class="title-text">LABVIEW // SPECTRUM_PHASE_CONSTELLATION</span>
+            </div>
+            <canvas id="audioCanvas"></canvas>
+        </div>
+    </div>
+    <script src="./app.js"></script>
+</body>
+
+</html>

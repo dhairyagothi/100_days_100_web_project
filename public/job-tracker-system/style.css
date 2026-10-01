@@ -1,0 +1,452 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e0e7ff;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+header h2 {
+    color: #4a5568;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-clear {
+    padding: 8px 16px;
+    background: #fc8181;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+}
+
+.btn-clear:hover {
+    background: #f56565;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(252, 129, 129, 0.4);
+}
+
+/* Stats Bar */
+.stats-bar {
+    background: linear-gradient(135deg, #f6f9fc 0%, #edf2f7 100%);
+    padding: 15px 25px;
+    border-radius: 12px;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    border: 1px solid #e2e8f0;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-label {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.stat-value {
+    font-weight: 700;
+    color: #667eea;
+    font-size: 18px;
+}
+
+.stat-value.applied { color: #4299e1; }
+.stat-value.interviewing { color: #ed8936; }
+.stat-value.offered { color: #48bb78; }
+.stat-value.rejected { color: #fc8181; }
+
+/* Add Job Form */
+.add-job-form {
+    background: #f7fafc;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    border: 1px solid #e2e8f0;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 150px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input, 
+.form-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.form-group input:focus, 
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.btn {
+    padding: 8px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    height: 40px;
+    align-self: flex-end;
+    font-size: 14px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Kanban Board */
+.kanban-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.kanban-column {
+    background: #f7fafc;
+    border-radius: 12px;
+    padding: 15px;
+    min-height: 400px;
+    border: 2px dashed #cbd5e0;
+    transition: all 0.3s ease;
+}
+
+.kanban-column:hover {
+    border-color: #667eea;
+}
+
+.kanban-column.drag-over {
+    background: #ebf4ff;
+    border-color: #667eea;
+    border-style: solid;
+}
+
+.kanban-column.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #a0aec0;
+    font-size: 14px;
+}
+
+.kanban-column.empty::after {
+    content: 'No jobs yet';
+    margin-top: 10px;
+}
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.column-header h3 {
+    color: #2d3748;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.column-count {
+    background: #667eea;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Job Cards */
+.job-card {
+    background: white;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: grab;
+    transition: all 0.2s ease;
+    border-left: 4px solid #667eea;
+    position: relative;
+}
+
+.job-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.job-card:active {
+    cursor: grabbing;
+}
+
+.job-card .role {
+    color: #2d3748;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.job-card .company {
+    color: #718096;
+    font-size: 12px;
+}
+
+.job-card .delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    color: #fc8181;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    opacity: 0;
+}
+
+.job-card:hover .delete-btn {
+    opacity: 1;
+}
+
+.job-card .delete-btn:hover {
+    background: #fed7d7;
+    transform: scale(1.2);
+}
+
+/* Stage-specific colors */
+.kanban-column[data-stage="Applied"] .job-card {
+    border-left-color: #4299e1;
+}
+
+.kanban-column[data-stage="Applied"] .column-count {
+    background: #4299e1;
+}
+
+.kanban-column[data-stage="Interviewing"] .job-card {
+    border-left-color: #ed8936;
+}
+
+.kanban-column[data-stage="Interviewing"] .column-count {
+    background: #ed8936;
+}
+
+.kanban-column[data-stage="Offered"] .job-card {
+    border-left-color: #48bb78;
+}
+
+.kanban-column[data-stage="Offered"] .column-count {
+    background: #48bb78;
+}
+
+.kanban-column[data-stage="Rejected"] .job-card {
+    border-left-color: #fc8181;
+}
+
+.kanban-column[data-stage="Rejected"] .column-count {
+    background: #fc8181;
+}
+
+/* System Log */
+.system-log {
+    margin-top: 30px;
+    background: #1a202c;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.system-log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.system-log-header h4 {
+    color: #a0aec0;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-clear-log {
+    padding: 4px 12px;
+    background: #4a5568;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.btn-clear-log:hover {
+    background: #2d3748;
+}
+
+#system-log {
+    background: transparent;
+    color: #68d391;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border: none;
+    margin: 0;
+}
+
+#system-log::-webkit-scrollbar {
+    width: 8px;
+}
+
+#system-log::-webkit-scrollbar-track {
+    background: #2d3748;
+    border-radius: 4px;
+}
+
+#system-log::-webkit-scrollbar-thumb {
+    background: #4a5568;
+    border-radius: 4px;
+}
+
+#system-log::-webkit-scrollbar-thumb:hover {
+    background: #667eea;
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #48bb78;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast.error {
+    background: #fc8181;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .kanban-board {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .kanban-board {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .add-job-form {
+        flex-direction: column;
+    }
+    
+    .form-group {
+        width: 100%;
+    }
+    
+    header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Sorting Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="landing-page theme-dark">
+    
+    <div class="landing-container">
+        <header class="landing-header">
+            <div class="logo-icon"><i class="fa-solid fa-chart-column"></i></div>
+            <h1>Sorting Visualizer</h1>
+            <p class="subtitle">Demystifying data structures and algorithms through animation.</p>
+        </header>
+
+        <div class="algorithms-section">
+            <h2>The Algorithms</h2>
+            
+            <div class="algo-grid">
+                <div class="algo-card">
+                    <div class="algo-icon"><i class="fa-solid fa-arrow-up-9-1"></i></div>
+                    <h3>Bubble Sort</h3>
+                    <p>Repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order. <br><br><strong>O(n²) Time</strong></p>
+                </div>
+                <div class="algo-card">
+                    <div class="algo-icon"><i class="fa-solid fa-arrow-down-up-across-line"></i></div>
+                    <h3>Insertion Sort</h3>
+                    <p>Builds the final sorted array one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort.<br><br><strong>O(n²) Time</strong></p>
+                </div>
+                <div class="algo-card">
+                    <div class="algo-icon"><i class="fa-solid fa-code-merge"></i></div>
+                    <h3>Merge Sort</h3>
+                    <p>An efficient, stable sorting algorithm that makes use of the divide and conquer paradigm.<br><br><strong>O(n log n) Time</strong></p>
+                </div>
+                <div class="algo-card">
+                    <div class="algo-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <h3>Quick Sort</h3>
+                    <p>An extremely efficient, unstable algorithm that uses a pivot to partition the array into smaller subarrays.<br><br><strong>O(n log n) Time</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <a href="visualizer.html" class="btn btn-primary btn-large">Open Visualizer <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </div>
+
+</body>
+</html>

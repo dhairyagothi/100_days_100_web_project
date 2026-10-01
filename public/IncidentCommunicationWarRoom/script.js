@@ -14,6 +14,7 @@ function createIncident() {
   };
 
   renderPublicStatus();
+  renderTimeline();
 }
 
 function renderPublicStatus() {

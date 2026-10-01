@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekend Spark</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-cozy-morning">
+  <div class="background-decor">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+        <div class="logo-text">
+          <h1>Weekend Spark</h1>
+          <p>Curate your perfect weekend escape</p>
+        </div>
+      </div>
+
+      <!-- Theme Selector -->
+      <div class="theme-selector">
+        <button class="theme-btn active" data-theme="theme-cozy-morning" title="Cozy Morning">
+          <span class="theme-dot morning"></span> Cozy Morning
+        </button>
+        <button class="theme-btn" data-theme="theme-sunset-glow" title="Sunset Glow">
+          <span class="theme-dot sunset"></span> Sunset Glow
+        </button>
+        <button class="theme-btn" data-theme="theme-midnight-breeze" title="Midnight Breeze">
+          <span class="theme-dot midnight"></span> Midnight Breeze
+        </button>
+      </div>
+    </header>
+
+    <main class="app-content">
+      <!-- Sidebar / Filters -->
+      <section class="panel filters-panel">
+        <h2 class="panel-title"><i class="fa-solid fa-sliders"></i> Preferences</h2>
+        
+        <div class="filter-group">
+          <label class="filter-label">Activity Category</label>
+          <div class="filter-options grid-2">
+            <button class="filter-btn active" data-filter="category" data-value="all">All</button>
+            <button class="filter-btn" data-filter="category" data-value="cafe"><i class="fa-solid fa-mug-hot"></i> Cafes</button>
+            <button class="filter-btn" data-filter="category" data-value="hike"><i class="fa-solid fa-mountain"></i> Hikes</button>
+            <button class="filter-btn" data-filter="category" data-value="market"><i class="fa-solid fa-store"></i> Markets</button>
+            <button class="filter-btn" data-filter="category" data-value="culture"><i class="fa-solid fa-palette"></i> Culture</button>
+            <button class="filter-btn" data-filter="category" data-value="relaxation"><i class="fa-solid fa-spa"></i> Relax</button>
+            <button class="filter-btn" data-filter="category" data-value="entertainment"><i class="fa-solid fa-gamepad"></i> Play</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Vibe / Mood</label>
+          <div class="filter-options grid-3">
+            <button class="filter-btn active" data-filter="vibe" data-value="all">Any</button>
+            <button class="filter-btn" data-filter="vibe" data-value="cozy">Cozy</button>
+            <button class="filter-btn" data-filter="vibe" data-value="adventurous">Active</button>
+            <button class="filter-btn" data-filter="vibe" data-value="chill">Chill</button>
+            <button class="filter-btn" data-filter="vibe" data-value="creative">Creative</button>
+            <button class="filter-btn" data-filter="vibe" data-value="lively">Lively</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Weather Setting</label>
+          <div class="weather-selector">
+            <label class="weather-option">
+              <input type="radio" name="weather" value="all" checked>
+              <div class="weather-card">
+                <i class="fa-solid fa-cloud-sun"></i>
+                <span>Any Weather</span>
+              </div>
+            </label>
+            <label class="weather-option">
+              <input type="radio" name="weather" value="sunny">
+              <div class="weather-card">
+                <i class="fa-solid fa-sun"></i>
+                <span>Outdoor / Sunny</span>
+              </div>
+            </label>
+            <label class="weather-option">
+              <input type="radio" name="weather" value="any">
+              <div class="weather-card">
+                <i class="fa-solid fa-cloud-showers-heavy"></i>
+                <span>Indoor / Rainy</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Budget Range</label>
+          <div class="budget-selector">
+            <button class="budget-btn active" data-value="all">All Budgets</button>
+            <button class="budget-btn" data-value="$">$ (Free/Cheap)</button>
+            <button class="budget-btn" data-value="$$">$$ (Moderate)</button>
+            <button class="budget-btn" data-value="$$$">$$$ (Splurge)</button>
+          </div>
+        </div>
+
+        <div class="sound-toggle-area">
+          <span><i class="fa-solid fa-volume-high"></i> Sound Effects</span>
+          <label class="switch">
+            <input type="checkbox" id="soundToggle" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Center Card Generation Area -->
+      <section class="generator-section">
+        <!-- Deck Card Display -->
+        <div class="card-display-container">
+          <div class="deck-background"></div>
+          
+          <div class="activity-card" id="activityCard">
+            <!-- Card Front (Default/Generated Activity) -->
+            <div class="card-face card-front">
+              <div class="card-header-decor">
+                <span class="activity-category-badge" id="cardCategory">Cafe</span>
+                <div class="activity-metrics">
+                  <span id="cardCost" title="Budget">$$</span>
+                  <span class="metric-divider">•</span>
+                  <span id="cardDuration" title="Duration"><i class="fa-regular fa-clock"></i> 2 hrs</span>
+                </div>
+              </div>
+
+              <h3 class="activity-title" id="cardTitle">Ready to Spark Your Weekend?</h3>
+              
+              <p class="activity-description" id="cardDescription">
+                Set your filters on the left and click the generator button below. We'll find a delightful nearby activity tailored to your current mood!
+              </p>
+
+              <!-- Checklist section -->
+              <div class="checklist-section" id="cardChecklistContainer" style="display: none;">
+                <h4><i class="fa-solid fa-clipboard-list"></i> Mini Checklist</h4>
+                <ul class="activity-checklist" id="cardChecklist">
+                  <!-- Checkbox items inserted here -->
+                </ul>
+              </div>
+
+              <div class="card-actions" id="cardActions" style="display: none;">
+                <button class="btn btn-secondary" id="btnShowOnMap">
+                  <i class="fa-solid fa-location-dot"></i> Find on Map
+                </button>
+                <button class="btn btn-primary" id="btnAddToItinerary">
+                  <i class="fa-solid fa-plus"></i> Add to Itinerary
+                </button>
+              </div>
+            </div>
+
+            <!-- Card Back (Shuffle State / Loading) -->
+            <div class="card-face card-back">
+              <div class="shuffle-animation-content">
+                <i class="fa-solid fa-wand-magic-sparkles magic-icon-spin"></i>
+                <h3 class="shuffling-text">Shuffling Ideas...</h3>
+                <div class="shuffle-preview-cards">
+                  <div class="preview-mini-card"></div>
+                  <div class="preview-mini-card"></div>
+                  <div class="preview-mini-card"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Big CTA Button -->
+        <div class="action-trigger-container">
+          <button class="btn-generate" id="btnGenerate">
+            <span class="btn-glow"></span>
+            <span class="btn-content">
+              <i class="fa-solid fa-dice"></i> Suggest Weekend Activity
+            </span>
+          </button>
+          <p class="match-count-text" id="matchCount">20 activities match current preferences</p>
+        </div>
+      </section>
+
+      <!-- Right Column: Map & Itinerary -->
+      <section class="side-panel-group">
+        <!-- Interactive Map Panel -->
+        <div class="panel map-panel">
+          <div class="panel-header-with-action">
+            <h2 class="panel-title"><i class="fa-solid fa-map-location-dot"></i> Nearby Discovery Map</h2>
+            <button class="btn-text-action" id="btnLocateMe" title="Get current location">
+              <i class="fa-solid fa-crosshairs"></i> Locate Me
+            </button>
+          </div>
+          <div class="map-wrapper">
+            <div id="map"></div>
+            <div class="map-loading-overlay" id="mapLoading" style="display: none;">
+              <div class="spinner"></div>
+              <span>Fetching location...</span>
+            </div>
+            <div class="location-status-badge" id="locationStatus">
+              <i class="fa-solid fa-circle-info"></i> Using default city (Portland)
+            </div>
+          </div>
+        </div>
+
+        <!-- Itinerary Board Panel -->
+        <div class="panel itinerary-panel">
+          <div class="panel-header-with-action">
+            <h2 class="panel-title"><i class="fa-solid fa-calendar-check"></i> My Weekend Plan</h2>
+            <button class="btn-text-action danger" id="btnClearItinerary" title="Clear all planned items">
+              <i class="fa-solid fa-trash-can"></i> Clear
+            </button>
+          </div>
+          
+          <!-- Itinerary Progress Bar -->
+          <div class="itinerary-progress-container" id="itineraryProgressArea" style="display: none;">
+            <div class="itinerary-progress-bar">
+              <div class="progress-fill" id="itineraryProgressFill" style="width: 0%"></div>
+            </div>
+            <div class="progress-label" id="itineraryProgressText">0 of 0 activities completed</div>
+          </div>
+
+          <div class="itinerary-empty-state" id="itineraryEmpty">
+            <i class="fa-solid fa-calendar-plus"></i>
+            <p>Your itinerary is empty.</p>
+            <span>Generate and add activities above to map out your weekend adventure!</span>
+          </div>
+
+          <ul class="itinerary-list" id="itineraryList">
+            <!-- Planned activities go here -->
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>Made with love for cozy weekends.</p>
+    </footer>
+  </div>
+
+  <!-- Leaflet JS CDN -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- App Scripts -->
+  <script src="activities-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

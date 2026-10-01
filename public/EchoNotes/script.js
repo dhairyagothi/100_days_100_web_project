@@ -609,6 +609,215 @@ function applyFontSize(s) {
 }
 
 // ==========================================================================
+// HIGHLIGHT FUNCTIONS (Cross-browser compatible)
+// ==========================================================================
+
+// Apply highlight to selected text (works in Chrome, Firefox, Safari, Edge)
+function applyHighlight(color) {
+  const r = parseInt(color.slice(1,3), 16);
+  const g = parseInt(color.slice(3,5), 16);
+  const b = parseInt(color.slice(5,7), 16);
+  const rgba = `rgba(${r},${g},${b},0.5)`;
+  
+  const selection = window.getSelection();
+  
+  // Check if text is selected
+  if (!selection.rangeCount || selection.isCollapsed) {
+    showToast('⚠️', 'Select some text first', 'error');
+    return;
+  }
+  
+  const range = selection.getRangeAt(0);
+  
+  // Don't highlight if nothing selected
+  if (range.collapsed) {
+    showToast('⚠️', 'Select some text first', 'error');
+    return;
+  }
+  
+  try {
+    // Modern method: wrap selected text in a span with background color
+    const span = document.createElement('span');
+    span.style.backgroundColor = rgba;
+    span.style.transition = 'background-color 0.2s ease';
+    span.style.cursor = 'pointer';
+    
+    // Add data attribute to identify highlights
+    span.setAttribute('data-highlight', 'true');
+    
+    range.surroundContents(span);
+    selection.removeAllRanges();
+    markUnsaved();
+    showToast('✨', 'Text highlighted', 'success');
+  } catch (e) {
+    // Fallback for edge cases (selection spans across multiple elements)
+    try {
+      if (document.queryCommandSupported('hiliteColor')) {
+        document.execCommand('hiliteColor', false, rgba);
+        markUnsaved();
+        showToast('✨', 'Text highlighted', 'success');
+      } else {
+        showToast('⚠️', 'Highlight not supported in this browser', 'error');
+      }
+    } catch (err) {
+      showToast('⚠️', 'Could not highlight selection', 'error');
+    }
+  }
+}
+
+// Remove highlight from currently selected text
+function removeHighlight() {
+  const selection = window.getSelection();
+  
+  if (!selection.rangeCount || selection.isCollapsed) {
+    showToast('⚠️', 'Select highlighted text first', 'error');
+    return;
+  }
+  
+  const range = selection.getRangeAt(0);
+  let removed = false;
+  
+  try {
+    // Check if the selected node is inside a highlight span
+    let node = range.commonAncestorContainer;
+    if (node.nodeType === Node.TEXT_NODE) {
+      node = node.parentNode;
+    }
+    
+    // If directly on a highlight span, remove it
+    if (node && node.tagName === 'SPAN' && node.hasAttribute('data-highlight')) {
+      const parent = node.parentNode;
+      while (node.firstChild) {
+        parent.insertBefore(node.firstChild, node);
+      }
+      parent.removeChild(node);
+      removed = true;
+    } else {
+      // Find all highlight spans within the selection
+      const highlightedSpans = range.cloneContents().querySelectorAll('span[data-highlight]');
+      if (highlightedSpans.length > 0) {
+        // Create a document fragment to work with
+        const fragment = range.extractContents();
+        const tempDiv = document.createElement('div');
+        tempDiv.appendChild(fragment);
+        
+        // Remove all highlight spans
+        tempDiv.querySelectorAll('span[data-highlight]').forEach(span => {
+          const parent = span.parentNode;
+          while (span.firstChild) {
+            parent.insertBefore(span.firstChild, span);
+          }
+          parent.removeChild(span);
+        });
+        
+        // Insert back the cleaned content
+        while (tempDiv.firstChild) {
+          range.insertNode(tempDiv.firstChild);
+        }
+        removed = true;
+      }
+    }
+    
+    if (removed) {
+      selection.removeAllRanges();
+      markUnsaved();
+      showToast('✨', 'Highlight removed', 'success');
+    } else {
+      // Try execCommand fallback
+      if (document.queryCommandSupported('removeFormat')) {
+        document.execCommand('removeFormat', false, null);
+        markUnsaved();
+        showToast('✨', 'Highlight removed', 'success');
+      } else {
+        showToast('⚠️', 'No highlight found in selection', 'error');
+      }
+    }
+  } catch (e) {
+    // Fallback to execCommand
+    if (document.queryCommandSupported('removeFormat')) {
+      document.execCommand('removeFormat', false, null);
+      markUnsaved();
+      showToast('✨', 'Highlight removed', 'success');
+    } else {
+      showToast('⚠️', 'Could not remove highlight', 'error');
+    }
+  }
+}
+
+// Clear ALL highlights from the current note
+function clearAllHighlights() {
+  const editor = document.getElementById('note-content');
+  if (!editor) {
+    showToast('⚠️', 'No note open', 'error');
+    return;
+  }
+  
+  // Find all highlighted spans (using data attribute or background style)
+  let highlighted = editor.querySelectorAll('span[data-highlight]');
+  
+  // Also find elements with background color (for execCommand highlights)
+  const bgHighlighted = editor.querySelectorAll('[style*="background-color"]');
+  
+  // Combine both
+  if (bgHighlighted.length > 0) {
+    const existingIds = new Set();
+    highlighted.forEach(h => existingIds.add(h));
+    bgHighlighted.forEach(h => {
+      if (!existingIds.has(h)) existingIds.add(h);
+    });
+    highlighted = Array.from(existingIds);
+  }
+  
+  if (highlighted.length === 0) {
+    showToast('ℹ️', 'No highlights to clear', 'info');
+    return;
+  }
+  
+  openModal('Clear All Highlights', `Remove ${highlighted.length} highlight(s) from this note?`, () => {
+    highlighted.forEach(el => {
+      // If it's a span with our data attribute, remove it
+      if (el.tagName === 'SPAN' && (el.hasAttribute('data-highlight') || el.style.backgroundColor)) {
+        const parent = el.parentNode;
+        while (el.firstChild) {
+          parent.insertBefore(el.firstChild, el);
+        }
+        parent.removeChild(el);
+      } else {
+        // Just remove background color style
+        el.style.backgroundColor = '';
+        if (el.style.background) el.style.background = '';
+      }
+    });
+    
+    // Clean up any empty spans left behind
+    editor.querySelectorAll('span:empty').forEach(span => {
+      if (!span.hasAttributes() || span.attributes.length === 0) {
+        span.remove();
+      }
+    });
+    
+    markUnsaved();
+    showToast('✨', `Cleared ${highlighted.length} highlight(s)`, 'success');
+  });
+}
+
+// Optional: Keyboard shortcut for removing highlight (Ctrl+Shift+H)
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'H') {
+    e.preventDefault();
+    if (activeId) {
+      removeHighlight();
+    }
+  }
+  // Ctrl+Shift+C for clear all highlights
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'C') {
+    e.preventDefault();
+    if (activeId) {
+      clearAllHighlights();
+    }
+  }
+});
+// ==========================================================================
 // PDF EXPORT
 // ==========================================================================
 function exportPDF() {

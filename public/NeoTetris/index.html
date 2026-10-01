@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="neon-cyberpunk">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NeoTetris — Premium Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/themes.css" />
+    <link rel="stylesheet" href="css/Animations.css" />
+    <link rel="stylesheet" href="css/Main.css" />
+    <link rel="stylesheet" href="css/Game.css" />
+</head>
+
+<body>
+    <!-- Background layers -->
+    <div class="bg-layer bg-grid"></div>
+    <div class="bg-layer bg-glow-1"></div>
+    <div class="bg-layer bg-glow-2"></div>
+    <div class="scanlines"></div>
+
+    <!-- Header -->
+    <header class="app-header reveal-up">
+        <div class="header-left">
+            <span class="header-badge">PREMIUM EDITION</span>
+            <span class="header-version">v2.4.1</span>
+        </div>
+        <div class="header-center">
+            <div class="header-ticker">
+                <span>🏆 TODAY'S TOP: NEXUS_X — 847,320 pts</span>
+                <span>⚡ STREAK RECORD: 42 COMBOS</span>
+                <span>🌐 12,847 PLAYERS ONLINE</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="player-badge">
+                <div class="player-avatar">N</div>
+                <div class="player-info">
+                    <span class="player-name">PLAYER_01</span>
+                    <span class="player-rank">RANK #1,337</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main layout -->
+    <main class="game-layout">
+
+        <!-- ============ LEFT SIDEBAR ============ -->
+        <aside class="sidebar sidebar-left reveal-left">
+
+            <!-- Logo -->
+            <div class="logo-card card">
+                <div class="logo-icon">
+                    <div class="logo-cube">
+                        <div class="cube-face cube-top"></div>
+                        <div class="cube-face cube-front"></div>
+                        <div class="cube-face cube-right"></div>
+                    </div>
+                </div>
+                <div class="logo-text">
+                    <h1 class="logo-title">NEO<span class="logo-accent">TETRIS</span></h1>
+                    <p class="logo-tagline">PREMIUM EDITION</p>
+                </div>
+                <div class="logo-glow-ring"></div>
+            </div>
+
+            <!-- Hold Piece -->
+            <div class="card hold-card">
+                <div class="card-header">
+                    <span class="card-icon">⬛</span>
+                    <h3 class="card-title">HOLD PIECE</h3>
+                    <div class="card-badge">C</div>
+                </div>
+                <div class="hold-display">
+                    <div class="piece-preview-area" id="hold-area">
+                        <div class="empty-piece-hint">
+                            <div class="piece-placeholder">
+                                <span class="piece-ghost-text">EMPTY</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="card-hint">Press <kbd>C</kbd> to hold</p>
+            </div>
+
+            <!-- Controls -->
+            <div class="card controls-card">
+                <div class="card-header">
+                    <span class="card-icon">🎮</span>
+                    <h3 class="card-title">CONTROLS</h3>
+                </div>
+                <div class="controls-grid">
+                    <div class="control-item">
+                        <kbd class="key">←→</kbd>
+                        <span class="control-label">Move</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd class="key">↑</kbd>
+                        <span class="control-label">Rotate</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd class="key">↓</kbd>
+                        <span class="control-label">Soft Drop</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd class="key">SPACE</kbd>
+                        <span class="control-label">Hard Drop</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd class="key">C</kbd>
+                        <span class="control-label">Hold</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd class="key">ESC</kbd>
+                        <span class="control-label">Pause</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theme Selector -->
+            <div class="card theme-card">
+                <div class="card-header">
+                    <span class="card-icon">🎨</span>
+                    <h3 class="card-title">THEME</h3>
+                </div>
+                <div class="theme-options">
+                    <div class="theme-option active" data-theme="neon-cyberpunk" title="Neon Cyberpunk">
+                        <div class="theme-swatch">
+                            <span class="swatch-dot" style="background:#00f5ff"></span>
+                            <span class="swatch-dot" style="background:#ff00ff"></span>
+                            <span class="swatch-dot" style="background:#0a0a1a"></span>
+                        </div>
+                        <span class="theme-name">CYBERPUNK</span>
+                        <span class="theme-check">✓</span>
+                    </div>
+                    <div class="theme-option" data-theme="classic-retro" title="Classic Retro">
+                        <div class="theme-swatch">
+                            <span class="swatch-dot" style="background:#ffcc00"></span>
+                            <span class="swatch-dot" style="background:#ff6600"></span>
+                            <span class="swatch-dot" style="background:#1a1a2e"></span>
+                        </div>
+                        <span class="theme-name">RETRO</span>
+                        <span class="theme-check">✓</span>
+                    </div>
+                    <div class="theme-option" data-theme="dark-minimal" title="Dark Minimal">
+                        <div class="theme-swatch">
+                            <span class="swatch-dot" style="background:#ffffff"></span>
+                            <span class="swatch-dot" style="background:#888888"></span>
+                            <span class="swatch-dot" style="background:#0d0d0d"></span>
+                        </div>
+                        <span class="theme-name">MINIMAL</span>
+                        <span class="theme-check">✓</span>
+                    </div>
+                    <div class="theme-option" data-theme="space-theme" title="Space Theme">
+                        <div class="theme-swatch">
+                            <span class="swatch-dot" style="background:#7b2fff"></span>
+                            <span class="swatch-dot" style="background:#00d4ff"></span>
+                            <span class="swatch-dot" style="background:#050510"></span>
+                        </div>
+                        <span class="theme-name">SPACE</span>
+                        <span class="theme-check">✓</span>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- ============ CENTER BOARD ============ -->
+        <section class="game-center reveal-up" style="animation-delay:0.1s">
+
+            <!-- Board wrapper -->
+            <div class="board-wrapper">
+                <div class="board-frame">
+                    <!-- Corner decorations -->
+                    <div class="corner corner-tl"></div>
+                    <div class="corner corner-tr"></div>
+                    <div class="corner corner-bl"></div>
+                    <div class="corner corner-br"></div>
+
+                    <!-- Side tick marks -->
+                    <div class="board-ticks board-ticks-left">
+                        <span>20</span><span>18</span><span>16</span><span>14</span>
+                        <span>12</span><span>10</span><span>8</span><span>6</span>
+                        <span>4</span><span>2</span>
+                    </div>
+                    <div class="board-ticks board-ticks-right">
+                        <span>20</span><span>18</span><span>16</span><span>14</span>
+                        <span>12</span><span>10</span><span>8</span><span>6</span>
+                        <span>4</span><span>2</span>
+                    </div>
+
+                    <!-- The actual game board -->
+                    <div class="tetris-board" id="tetris-board">
+                        <!-- 10x20 grid cells generated by JS -->
+                    </div>
+
+                    <!-- Overlay: idle state -->
+                    <div class="board-overlay" id="board-overlay">
+                        <div class="overlay-content">
+                            <div class="overlay-logo-pulse">
+                                <div class="pulse-ring pulse-ring-1"></div>
+                                <div class="pulse-ring pulse-ring-2"></div>
+                                <div class="pulse-ring pulse-ring-3"></div>
+                                <div class="overlay-icon">▶</div>
+                            </div>
+                            <h2 class="overlay-title">READY TO PLAY</h2>
+                            <p class="overlay-sub">Press START to begin your session</p>
+                            <div class="overlay-stats">
+                                <div class="overlay-stat">
+                                    <span class="ostat-val">00:00</span>
+                                    <span class="ostat-label">BEST TIME</span>
+                                </div>
+                                <div class="overlay-divider"></div>
+                                <div class="overlay-stat">
+                                    <span class="ostat-val">0</span>
+                                    <span class="ostat-label">HIGH SCORE</span>
+                                </div>
+                                <div class="overlay-divider"></div>
+                                <div class="overlay-stat">
+                                    <span class="ostat-val">0</span>
+                                    <span class="ostat-label">BEST LEVEL</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Board status bar -->
+                <div class="board-statusbar">
+                    <div class="status-item">
+                        <div class="status-dot status-dot--idle" id="status-dot"></div>
+                        <span id="status-text">IDLE</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">SESSION</span>
+                        <span class="status-val" id="session-timer">00:00</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">FPS</span>
+                        <span class="status-val" id="fps-counter">60</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-start" id="btn-start">
+                    <span class="btn-icon">▶</span>
+                    <span class="btn-text">START GAME</span>
+                    <div class="btn-shine"></div>
+                </button>
+                <button class="btn btn-pause" id="btn-pause" disabled>
+                    <span class="btn-icon">⏸</span>
+                    <span class="btn-text">PAUSE</span>
+                    <div class="btn-shine"></div>
+                </button>
+                <button class="btn btn-restart" id="btn-restart">
+                    <span class="btn-icon">↺</span>
+                    <span class="btn-text">RESTART</span>
+                    <div class="btn-shine"></div>
+                </button>
+            </div>
+
+        </section>
+
+        <!-- ============ RIGHT SIDEBAR ============ -->
+        <aside class="sidebar sidebar-right reveal-right">
+
+            <!-- Score -->
+            <div class="card score-card">
+                <div class="card-header">
+                    <span class="card-icon">💎</span>
+                    <h3 class="card-title">SCORE</h3>
+                </div>
+                <div class="score-display">
+                    <div class="score-value" id="score-val">000000</div>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar" id="score-bar" style="width:0%"></div>
+                    </div>
+                    <div class="score-high">
+                        <span class="score-high-label">HIGH SCORE</span>
+                        <span class="score-high-val" id="high-score-val">000000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level + Lines row -->
+            <div class="cards-row">
+                <div class="card level-card">
+                    <div class="card-header">
+                        <span class="card-icon">⚡</span>
+                        <h3 class="card-title">LEVEL</h3>
+                    </div>
+                    <div class="metric-value" id="level-val">01</div>
+                    <div class="level-pips">
+                        <div class="pip active"></div>
+                        <div class="pip"></div>
+                        <div class="pip"></div>
+                        <div class="pip"></div>
+                        <div class="pip"></div>
+                    </div>
+                </div>
+                <div class="card lines-card">
+                    <div class="card-header">
+                        <span class="card-icon">☰</span>
+                        <h3 class="card-title">LINES</h3>
+                    </div>
+                    <div class="metric-value" id="lines-val">000</div>
+                    <div class="lines-target">
+                        <span class="lines-label">NEXT LVL</span>
+                        <span class="lines-needed">10</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Combo -->
+            <div class="card combo-card">
+                <div class="card-header">
+                    <span class="card-icon">🔥</span>
+                    <h3 class="card-title">COMBO</h3>
+                    <div class="combo-flame" id="combo-flame">🔥</div>
+                </div>
+                <div class="combo-display">
+                    <div class="combo-value" id="combo-val">x0</div>
+                    <div class="combo-label">CONSECUTIVE CLEARS</div>
+                </div>
+                <div class="combo-history" id="combo-history">
+                    <span class="combo-hist-dot inactive"></span>
+                    <span class="combo-hist-dot inactive"></span>
+                    <span class="combo-hist-dot inactive"></span>
+                    <span class="combo-hist-dot inactive"></span>
+                    <span class="combo-hist-dot inactive"></span>
+                    <span class="combo-hist-dot inactive"></span>
+                    <span class="combo-hist-dot inactive"></span>
+                    <span class="combo-hist-dot inactive"></span>
+                </div>
+            </div>
+
+            <!-- Next Pieces -->
+            <div class="card next-card">
+                <div class="card-header">
+                    <span class="card-icon">🔮</span>
+                    <h3 class="card-title">NEXT UP</h3>
+                </div>
+                <div class="next-pieces-list" id="next-pieces">
+                    <div class="next-piece-slot next-piece-slot--main">
+                        <div class="next-label">NEXT</div>
+                        <div class="piece-preview-area" id="next-1">
+                            <div class="empty-piece-hint">
+                                <div class="piece-placeholder"><span class="piece-ghost-text">—</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="next-piece-slot next-piece-slot--secondary">
+                        <div class="piece-preview-area sm" id="next-2">
+                            <div class="empty-piece-hint sm"><span class="piece-ghost-text">—</span></div>
+                        </div>
+                    </div>
+                    <div class="next-piece-slot next-piece-slot--secondary">
+                        <div class="piece-preview-area sm" id="next-3">
+                            <div class="empty-piece-hint sm"><span class="piece-ghost-text">—</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Challenge -->
+            <div class="card daily-card">
+                <div class="card-header">
+                    <span class="card-icon">📅</span>
+                    <h3 class="card-title">DAILY CHALLENGE</h3>
+                    <div class="daily-timer" id="daily-timer">23:47:12</div>
+                </div>
+                <div class="daily-challenge">
+                    <div class="challenge-item">
+                        <div class="challenge-icon">🎯</div>
+                        <div class="challenge-info">
+                            <span class="challenge-name">Score 50,000 pts</span>
+                            <div class="challenge-progress-bar">
+                                <div class="challenge-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <span class="challenge-status">0%</span>
+                    </div>
+                    <div class="challenge-item">
+                        <div class="challenge-icon">⚡</div>
+                        <div class="challenge-info">
+                            <span class="challenge-name">Clear 10 Lines</span>
+                            <div class="challenge-progress-bar">
+                                <div class="challenge-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <span class="challenge-status">0%</span>
+                    </div>
+                    <div class="challenge-item">
+                        <div class="challenge-icon">🔥</div>
+                        <div class="challenge-info">
+                            <span class="challenge-name">Reach Level 5</span>
+                            <div class="challenge-progress-bar">
+                                <div class="challenge-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <span class="challenge-status">0%</span>
+                    </div>
+                </div>
+                <div class="daily-reward">
+                    <span class="reward-icon">🏆</span>
+                    <span class="reward-text">REWARD: <strong>500 XP</strong></span>
+                </div>
+            </div>
+
+            <!-- Achievement Progress -->
+            <div class="card achievement-card">
+                <div class="card-header">
+                    <span class="card-icon">🏅</span>
+                    <h3 class="card-title">ACHIEVEMENTS</h3>
+                    <span class="achv-count">3 / 24</span>
+                </div>
+                <div class="achievements-list">
+                    <div class="achievement-item unlocked">
+                        <div class="achv-icon">🌟</div>
+                        <div class="achv-info">
+                            <span class="achv-name">First Game</span>
+                            <span class="achv-desc">Play your first game</span>
+                        </div>
+                        <span class="achv-badge">✓</span>
+                    </div>
+                    <div class="achievement-item unlocked">
+                        <div class="achv-icon">💥</div>
+                        <div class="achv-info">
+                            <span class="achv-name">Line Breaker</span>
+                            <span class="achv-desc">Clear 100 lines total</span>
+                        </div>
+                        <span class="achv-badge">✓</span>
+                    </div>
+                    <div class="achievement-item locked">
+                        <div class="achv-icon">🔒</div>
+                        <div class="achv-info">
+                            <span class="achv-name">Tetris Master</span>
+                            <span class="achv-desc">Get a Tetris (4 lines)</span>
+                        </div>
+                        <div class="achv-progress-bar">
+                            <div class="achv-fill" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <div class="achievement-item locked">
+                        <div class="achv-icon">🔒</div>
+                        <div class="achv-info">
+                            <span class="achv-name">Speed Demon</span>
+                            <span class="achv-desc">Reach Level 10</span>
+                        </div>
+                        <div class="achv-progress-bar">
+                            <div class="achv-fill" style="width: 10%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+    </main>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/Main.js"></script>
+</body>
+
+</html>

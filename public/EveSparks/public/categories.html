@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Categories – EveSparks</title>
+  <meta name="description" content="Browse all event service categories on EveSparks — Decoration, Catering, Photography, Videography, DJ and more." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .cat-section { scroll-margin-top: 120px; }
+    .service-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,123,156,.12); color: var(--accent);
+      border-radius: 8px; padding: 6px 14px;
+      font-size: .82rem; font-weight: 700; margin-bottom: 14px;
+    }
+    .sub-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px; text-align: center;
+      transition: all .3s; cursor: pointer;
+    }
+    .sub-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.12); border-color: var(--accent); }
+    .sub-card .icon { font-size: 2.2rem; margin-bottom: 12px; }
+    .sub-card h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .sub-card p { font-size: .82rem; color: var(--muted); }
+  </style>
+</head>
+<body class="light">
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <img src="image/b1.jpg" class="hero-bg" alt="Categories" />
+  <div class="hero-content">
+    <span class="badge-tag">📋 All Categories</span>
+    <h1>Browse Our Services</h1>
+    <p>From decoration to catering — find every service you need under one roof.</p>
+  </div>
+</div>
+
+<!-- DECORATION -->
+<div class="section cat-section" id="decoration">
+  <div class="service-badge"><i class="bi bi-flower1"></i> Decoration</div>
+  <h2 class="section-title reveal">Decoration Services</h2>
+  <p class="section-sub reveal">Transform any venue into a breathtaking experience</p>
+  <div class="row g-4">
+    <div class="col-6 col-md-4 col-lg-2 reveal"><div class="sub-card"><div class="icon">🎈</div><h3>Balloon</h3><p>Arch, bouquet &amp; ceiling decor</p></div></div>
+    <div class="col-6 col-md-4 col-lg-2 reveal"><div class="sub-card"><div class="icon">🌸</div><h3>Flowers</h3><p>Fresh &amp; artificial arrangements</p></div></div>
+    <div class="col-6 col-md-4 col-lg-2 reveal"><div class="sub-card"><div class="icon">💡</div><h3>Lighting</h3><p>LED, fairy lights &amp; spotlights</p></div></div>
+    <div class="col-6 col-md-4 col-lg-2 reveal"><div class="sub-card"><div class="icon">🎪</div><h3>Stage</h3><p>Wedding mandap &amp; stage setups</p></div></div>
+    <div class="col-6 col-md-4 col-lg-2 reveal"><div class="sub-card"><div class="icon">🚪</div><h3>Entrance</h3><p>Grand entrance gates &amp; arches</p></div></div>
+    <div class="col-6 col-md-4 col-lg-2 reveal"><div class="sub-card"><div class="icon">🎭</div><h3>Theme</h3><p>Custom themed environments</p></div></div>
+  </div>
+</div>
+
+<!-- EVENT TYPE -->
+<div style="background:var(--card);border-top:1px solid var(--border)">
+<div class="section cat-section" id="event">
+  <div class="service-badge"><i class="bi bi-calendar-event"></i> Event Type</div>
+  <h2 class="section-title reveal">Event Types</h2>
+  <p class="section-sub reveal">We specialise in a wide variety of events</p>
+  <div class="card-grid">
+    <div class="eve-card reveal">
+      <img src="image/b3.png" class="card-img" alt="Wedding" />
+      <div class="card-body">
+        <h3 class="card-title">💍 Weddings</h3>
+        <p class="card-desc">Full wedding management from engagement to reception</p>
+        <div class="card-footer-row"><a href="social-events.html#wedding" class="btn-sm">Explore</a></div>
+      </div>
+    </div>
+    <div class="eve-card reveal">
+      <img src="image/birthday.jpg" class="card-img" alt="Birthday" />
+      <div class="card-body">
+        <h3 class="card-title">🎂 Birthday Parties</h3>
+        <p class="card-desc">Themed birthday setups for all ages — kids to adults</p>
+        <div class="card-footer-row"><a href="social-events.html#birthday" class="btn-sm">Explore</a></div>
+      </div>
+    </div>
+    <div class="eve-card reveal">
+      <img src="image/corporate.jpg" class="card-img" alt="Corporate" />
+      <div class="card-body">
+        <h3 class="card-title">🏢 Corporate Events</h3>
+        <p class="card-desc">Conferences, seminars, team outings &amp; product launches</p>
+        <div class="card-footer-row"><a href="corporate-events.html" class="btn-sm">Explore</a></div>
+      </div>
+    </div>
+    <div class="eve-card reveal">
+      <img src="image/concert.jpg" class="card-img" alt="Concert" />
+      <div class="card-body">
+        <h3 class="card-title">🎵 Concerts</h3>
+        <p class="card-desc">Stage, sound, lighting &amp; crowd management for live events</p>
+        <div class="card-footer-row"><a href="social-events.html#concert" class="btn-sm">Explore</a></div>
+      </div>
+    </div>
+    <div class="eve-card reveal">
+      <img src="image/festival.jpeg" class="card-img" alt="Festival" />
+      <div class="card-body">
+        <h3 class="card-title">🎊 Festivals</h3>
+        <p class="card-desc">Large-scale festival management with full logistics</p>
+        <div class="card-footer-row"><a href="other-services.html" class="btn-sm">Explore</a></div>
+      </div>
+    </div>
+    <div class="eve-card reveal">
+      <img src="image/customized.jpg" class="card-img" alt="Custom" />
+      <div class="card-body">
+        <h3 class="card-title">✨ Custom Events</h3>
+        <p class="card-desc">Baby showers, anniversaries, farewells and more</p>
+        <div class="card-footer-row"><a href="budget-planner.html" class="btn-sm">Plan Now</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CATERING -->
+<div class="section cat-section" id="catering">
+  <div class="service-badge"><i class="bi bi-egg-fried"></i> Catering</div>
+  <h2 class="section-title reveal">Catering Services</h2>
+  <p class="section-sub reveal">Delicious cuisines for every palate and occasion</p>
+  <div class="row g-4">
+    <div class="col-6 col-md-4 reveal"><div class="sub-card"><div class="icon">🍛</div><h3>North Indian</h3><p>Dal makhani, paneer, biryani &amp; more</p></div></div>
+    <div class="col-6 col-md-4 reveal"><div class="sub-card"><div class="icon">🍚</div><h3>South Indian</h3><p>Idli, dosa, sambar &amp; thali</p></div></div>
+    <div class="col-6 col-md-4 reveal"><div class="sub-card"><div class="icon">🍜</div><h3>Chinese</h3><p>Noodles, manchurian &amp; fried rice</p></div></div>
+    <div class="col-6 col-md-4 reveal"><div class="sub-card"><div class="icon">🍕</div><h3>Continental</h3><p>Pizza, pasta &amp; international dishes</p></div></div>
+    <div class="col-6 col-md-4 reveal"><div class="sub-card"><div class="icon">🫕</div><h3>Gujarati</h3><p>Authentic thali, dhokla &amp; more</p></div></div>
+    <div class="col-6 col-md-4 reveal"><div class="sub-card"><div class="icon">☕</div><h3>Beverages</h3><p>Soft drinks, juices, chai &amp; mocktails</p></div></div>
+  </div>
+</div>
+
+<!-- PHOTOGRAPHY -->
+<div style="background:var(--card);border-top:1px solid var(--border)">
+<div class="section cat-section" id="photo">
+  <div class="service-badge"><i class="bi bi-camera"></i> Photography</div>
+  <h2 class="section-title reveal">Photography &amp; Videography</h2>
+  <p class="section-sub reveal">Capture every precious moment with our expert teams</p>
+  <div class="row g-4">
+    <div class="col-sm-6 col-lg-3 reveal">
+      <div class="eve-card h-100">
+        <div class="card-body">
+          <div style="font-size:2.5rem;margin-bottom:12px">📷</div>
+          <h3 class="card-title">Wedding Photography</h3>
+          <p class="card-desc">Pre-wedding, ceremony &amp; reception shoots with cinematic editing</p>
+          <div class="card-footer-row"><a href="complete-package.html" class="btn-sm">Book Now</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3 reveal">
+      <div class="eve-card h-100">
+        <div class="card-body">
+          <div style="font-size:2.5rem;margin-bottom:12px">🎬</div>
+          <h3 class="card-title">Videography</h3>
+          <p class="card-desc">Cinematic wedding films, drone shots &amp; highlight reels</p>
+          <div class="card-footer-row"><a href="complete-package.html" class="btn-sm">Book Now</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3 reveal">
+      <div class="eve-card h-100">
+        <div class="card-body">
+          <div style="font-size:2.5rem;margin-bottom:12px">🚁</div>
+          <h3 class="card-title">Drone Shoots</h3>
+          <p class="card-desc">Aerial photography for grand venues &amp; outdoor events</p>
+          <div class="card-footer-row"><a href="other-services.html" class="btn-sm">Book Now</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3 reveal">
+      <div class="eve-card h-100">
+        <div class="card-body">
+          <div style="font-size:2.5rem;margin-bottom:12px">🖼️</div>
+          <h3 class="card-title">Photo Albums</h3>
+          <p class="card-desc">Premium printed albums &amp; digital photobooks</p>
+          <div class="card-footer-row"><a href="other-services.html" class="btn-sm">Book Now</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="foot-placeholder"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="nav.js"></script>
+<script src="main.js"></script>
+<script>injectNav('categories');</script>
+</body>
+</html>

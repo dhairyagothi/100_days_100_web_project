@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Ads Management | SEO Agency</title>
+    <meta name="description" content="Drive instant results with our expert Google Ads management. PPC campaigns designed to maximize ROI and grow your business fast.">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .page-hero {
+            background: linear-gradient(135deg, #0c1445, #111827, #0f172a);
+            color: white;
+            padding: 130px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            width: 600px; height: 600px;
+            background: rgba(59,130,246,0.2);
+            filter: blur(130px);
+            top: -150px; right: -150px;
+        }
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            width: 400px; height: 400px;
+            background: rgba(245,158,11,0.1);
+            filter: blur(100px);
+            bottom: -100px; left: -100px;
+        }
+        .page-hero-content { position: relative; z-index: 2; text-align: center; }
+        .page-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 30px;
+            background: rgba(245,158,11,0.15);
+            border: 1px solid rgba(245,158,11,0.3);
+            color: #fcd34d;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+        }
+        .page-hero h1 { font-size: 62px; font-weight: 800; line-height: 1.1; margin-bottom: 24px; }
+        .page-hero h1 span { color: #f59e0b; }
+        .page-hero p { font-size: 18px; color: #cbd5e1; max-width: 680px; margin: 0 auto 40px; line-height: 1.8; }
+        .page-hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        /* GOOGLE COLORS STRIP */
+        .google-strip {
+            background: white;
+            padding: 40px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .google-strip-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+        .google-strip-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 15px;
+        }
+        .google-strip-item i { font-size: 22px; }
+        .google-strip-item .g-blue { color: #4285F4; }
+        .google-strip-item .g-red  { color: #EA4335; }
+        .google-strip-item .g-yellow { color: #FBBC05; }
+        .google-strip-item .g-green { color: #34A853; }
+
+        /* STATS */
+        .stats-band {
+            background: linear-gradient(135deg, #1e40af, #1d4ed8);
+            padding: 60px 0;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        .stat-item h3 { font-size: 42px; font-weight: 800; color: white; margin-bottom: 6px; }
+        .stat-item p { color: rgba(255,255,255,0.7); font-size: 15px; margin: 0; }
+
+        /* SECTION COMMON */
+        .section-label {
+            display: inline-block; padding: 8px 18px; border-radius: 30px;
+            background: rgba(59,130,246,0.1); color: #3b82f6;
+            font-size: 13px; font-weight: 700; letter-spacing: 1px; margin-bottom: 20px;
+        }
+        .section-title { font-size: 44px; font-weight: 800; color: #111827; margin-bottom: 18px; line-height: 1.2; }
+        .section-sub { color: #64748b; font-size: 17px; line-height: 1.8; max-width: 600px; }
+
+        /* ADS SERVICES */
+        .ads-services { padding: 100px 0; background: #f8fafc; }
+        .ads-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px; margin-top: 60px;
+        }
+        .ads-card {
+            background: white; padding: 38px 30px; border-radius: 20px;
+            border: 1px solid #e2e8f0; transition: all 0.35s ease;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+        }
+        .ads-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(59,130,246,0.12);
+            border-color: #93c5fd;
+        }
+        .ads-card-icon {
+            width: 64px; height: 64px; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; margin-bottom: 24px;
+        }
+        .icon-blue-soft   { background: rgba(59,130,246,0.1);  color: #3b82f6; }
+        .icon-yellow-soft { background: rgba(245,158,11,0.1);  color: #f59e0b; }
+        .icon-red-soft    { background: rgba(239,68,68,0.1);   color: #ef4444; }
+        .icon-green-soft  { background: rgba(16,185,129,0.1);  color: #10b981; }
+        .icon-purple-soft { background: rgba(139,92,246,0.1);  color: #8b5cf6; }
+        .icon-teal-soft   { background: rgba(20,184,166,0.1);  color: #14b8a6; }
+        .ads-card h3 { font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 12px; }
+        .ads-card p  { color: #64748b; font-size: 15px; line-height: 1.7; margin: 0; }
+
+        /* ROI SECTION */
+        .roi-section { padding: 100px 0; background: white; }
+        .roi-layout {
+            display: flex; gap: 70px; align-items: center; flex-wrap: wrap;
+        }
+        .roi-text { flex: 1; min-width: 300px; }
+        .roi-text h2 { font-size: 42px; font-weight: 800; color: #111827; margin-bottom: 20px; }
+        .roi-text p  { color: #64748b; font-size: 16px; line-height: 1.8; margin-bottom: 30px; }
+        .roi-list { list-style: none; padding: 0; }
+        .roi-list li {
+            display: flex; gap: 14px; align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .roi-list li .check-icon {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: rgba(59,130,246,0.1); color: #3b82f6;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-size: 13px; margin-top: 2px;
+        }
+        .roi-list li .list-text h5 { font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+        .roi-list li .list-text p  { font-size: 14px; color: #64748b; margin: 0; line-height: 1.6; }
+        .roi-visual { flex: 1; min-width: 300px; }
+        .roi-card {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-radius: 24px; padding: 40px;
+            border: 1px solid #bfdbfe;
+        }
+        .roi-metric {
+            display: flex; justify-content: space-between;
+            align-items: center; padding: 16px 0;
+            border-bottom: 1px solid rgba(59,130,246,0.15);
+        }
+        .roi-metric:last-child { border-bottom: none; }
+        .roi-metric-label { font-size: 15px; font-weight: 600; color: #374151; }
+        .roi-metric-value { font-size: 20px; font-weight: 800; color: #1d4ed8; }
+
+        /* PROCESS */
+        .process-section { padding: 100px 0; background: #f8fafc; }
+        .process-steps {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px; margin-top: 60px;
+        }
+        .process-step { text-align: center; padding: 20px; }
+        .step-number {
+            width: 56px; height: 56px; border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white; font-size: 20px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(59,130,246,0.3);
+        }
+        .process-step h4 { font-size: 18px; font-weight: 700; color: #111827; margin-bottom: 10px; }
+        .process-step p  { color: #64748b; font-size: 14px; line-height: 1.7; }
+
+        /* CTA */
+        .cta-strip {
+            background: linear-gradient(135deg, #1e3a8a, #1d4ed8, #2563eb);
+            padding: 90px 0; text-align: center;
+        }
+        .cta-strip h2 { font-size: 44px; font-weight: 800; color: white; margin-bottom: 18px; }
+        .cta-strip p { color: rgba(255,255,255,0.8); font-size: 17px; margin-bottom: 36px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .btn-white {
+            background: white; color: #1d4ed8;
+            padding: 15px 32px; border-radius: 12px; font-weight: 700;
+            text-decoration: none; transition: 0.3s; display: inline-block;
+        }
+        .btn-white:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.2); transform: translateY(-2px); color: #1d4ed8; }
+
+        /* FOOTER */
+        .footer-section { background: linear-gradient(135deg, #020617, #0f172a, #111827); color: white; padding: 50px 0 25px; }
+        .footer-section h5 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+        .footer-section p, .footer-section a { color: #cbd5e1; line-height: 1.9; text-decoration: none; }
+        .footer-section a:hover { color: #8b5cf6; }
+        .social-icons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .social-icons a { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: white; transition: 0.3s; }
+        .social-icons a:hover { background: #8b5cf6; transform: translateY(-3px); }
+
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 38px; }
+            .section-title { font-size: 32px; }
+            .cta-strip h2 { font-size: 32px; }
+            .roi-layout { flex-direction: column; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" id="navbar">
+        <a class="navbar-brand" href="index.html">WEB TEMPLATE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" id="servicesDropdown" role="button" data-toggle="dropdown">Service List</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="seo.html">SEO Optimization</a>
+                        <a class="dropdown-item" href="cm.html">Content Marketing</a>
+                        <a class="dropdown-item" href="google-ads.html">Google Ads</a>
+                        <a class="dropdown-item" href="web-development.html">Web Development</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="case-study.html">Case Study</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="styleguide.html">Styleguide</a></li>
+                <li class="nav-item ml-3"><button id="theme-toggle">🌙</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="page-hero">
+        <div class="container page-hero-content">
+            <span class="page-badge">📢 GOOGLE ADS MANAGEMENT</span>
+            <h1>Get Instant Traffic with<br><span>Google Ads</span> That Convert</h1>
+            <p>We create, manage, and optimize high-performing Google Ad campaigns that deliver measurable ROI and put your brand at the top of search results immediately.</p>
+            <div class="page-hero-cta">
+                <a href="contact.html" class="btn btn-primary">Launch Your Campaign</a>
+                <a href="#services" class="btn btn-secondary">See What We Offer</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Google Partner Strip -->
+    <div class="google-strip">
+        <div class="container">
+            <div class="google-strip-inner">
+                <div class="google-strip-item"><i class="fab fa-google g-blue"></i> Google Partner Agency</div>
+                <div class="google-strip-item"><i class="fas fa-shield-alt g-green"></i> Certified Specialists</div>
+                <div class="google-strip-item"><i class="fas fa-chart-bar g-yellow"></i> Data-Driven Results</div>
+                <div class="google-strip-item"><i class="fas fa-dollar-sign g-red"></i> Maximum ROI Focus</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <section class="stats-band">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item"><h3>$5M+</h3><p>Ad Spend Managed</p></div>
+                <div class="stat-item"><h3>3.5x</h3><p>Average ROAS</p></div>
+                <div class="stat-item"><h3>45%</h3><p>Avg. Cost Per Click Reduction</p></div>
+                <div class="stat-item"><h3>400+</h3><p>Campaigns Launched</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="ads-services" id="services">
+        <div class="container">
+            <span class="section-label">OUR GOOGLE ADS SERVICES</span>
+            <h2 class="section-title">Full-Service PPC Management</h2>
+            <p class="section-sub">Everything you need to run profitable Google Ads campaigns — from setup to ongoing optimization.</p>
+            <div class="ads-cards">
+                <div class="ads-card">
+                    <div class="ads-card-icon icon-blue-soft"><i class="fas fa-search-dollar"></i></div>
+                    <h3>Search Ads</h3>
+                    <p>Appear at the top of Google when customers search for your products or services with laser-targeted keyword campaigns.</p>
+                </div>
+                <div class="ads-card">
+                    <div class="ads-card-icon icon-yellow-soft"><i class="fas fa-images"></i></div>
+                    <h3>Display Advertising</h3>
+                    <p>Eye-catching visual banner ads across millions of Google partner websites to build brand awareness at scale.</p>
+                </div>
+                <div class="ads-card">
+                    <div class="ads-card-icon icon-red-soft"><i class="fas fa-shopping-cart"></i></div>
+                    <h3>Google Shopping Ads</h3>
+                    <p>Showcase your products directly in search results with pricing, ratings, and images to drive purchase intent.</p>
+                </div>
+                <div class="ads-card">
+                    <div class="ads-card-icon icon-green-soft"><i class="fas fa-redo-alt"></i></div>
+                    <h3>Remarketing Campaigns</h3>
+                    <p>Re-engage visitors who left your website and bring them back with highly personalized ad sequences.</p>
+                </div>
+                <div class="ads-card">
+                    <div class="ads-card-icon icon-purple-soft"><i class="fas fa-video"></i></div>
+                    <h3>YouTube Video Ads</h3>
+                    <p>Reach your audience on YouTube with compelling video ads that build brand recall and drive traffic.</p>
+                </div>
+                <div class="ads-card">
+                    <div class="ads-card-icon icon-teal-soft"><i class="fas fa-cogs"></i></div>
+                    <h3>Campaign Optimization</h3>
+                    <p>Continuous A/B testing, bid adjustments, and audience refinements to maximize your ad spend efficiency.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Section -->
+    <section class="roi-section">
+        <div class="container">
+            <div class="roi-layout">
+                <div class="roi-text">
+                    <span class="section-label">WHY CHOOSE US</span>
+                    <h2>We Make Every Dollar Count</h2>
+                    <p>Our certified Google Ads specialists don't just set up campaigns — we constantly optimize to squeeze maximum return from every dollar you spend.</p>
+                    <ul class="roi-list">
+                        <li>
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                            <div class="list-text">
+                                <h5>Smart Bidding Strategies</h5>
+                                <p>We use AI-powered bidding to automatically optimize for conversions at the lowest cost.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                            <div class="list-text">
+                                <h5>Hyper-Targeted Audiences</h5>
+                                <p>Reach exactly the right people based on demographics, interests, and behavior patterns.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                            <div class="list-text">
+                                <h5>Transparent Reporting</h5>
+                                <p>Weekly dashboards with clear metrics — impressions, clicks, conversions, and revenue.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                            <div class="list-text">
+                                <h5>Negative Keyword Management</h5>
+                                <p>We eliminate wasted ad spend by continuously refining what triggers your ads.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="roi-visual">
+                    <div class="roi-card">
+                        <h4 style="font-weight:800;color:#1d4ed8;margin-bottom:24px;">📊 Campaign Results</h4>
+                        <div class="roi-metric">
+                            <span class="roi-metric-label">Monthly Impressions</span>
+                            <span class="roi-metric-value">2.4M</span>
+                        </div>
+                        <div class="roi-metric">
+                            <span class="roi-metric-label">Click-Through Rate</span>
+                            <span class="roi-metric-value">8.7%</span>
+                        </div>
+                        <div class="roi-metric">
+                            <span class="roi-metric-label">Conversion Rate</span>
+                            <span class="roi-metric-value">12.3%</span>
+                        </div>
+                        <div class="roi-metric">
+                            <span class="roi-metric-label">Cost Per Acquisition</span>
+                            <span class="roi-metric-value">$14.50</span>
+                        </div>
+                        <div class="roi-metric">
+                            <span class="roi-metric-label">Return on Ad Spend</span>
+                            <span class="roi-metric-value">3.8x 🚀</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section class="process-section">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-label">OUR PROCESS</span>
+                <h2 class="section-title">From Setup to Sales in 4 Steps</h2>
+            </div>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h4>Business Analysis</h4>
+                    <p>We study your business goals, competition, and audience to craft the perfect ad strategy.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h4>Campaign Setup</h4>
+                    <p>Build campaigns, write compelling ad copy, set up landing pages and conversion tracking.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h4>Launch & Monitor</h4>
+                    <p>Go live and actively monitor performance 24/7 during the critical first weeks.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h4>Optimize & Scale</h4>
+                    <p>Continuously test, refine, and scale what works to compound your ROI over time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-strip">
+        <div class="container">
+            <h2>Ready to Get Instant Traffic?</h2>
+            <p>Launch your first Google Ads campaign today with a free consultation from our PPC experts.</p>
+            <a href="contact.html" class="btn-white">Book Free Consultation</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-4"><h5>About Us</h5><p>We help brands build strong digital presence through SEO, Google Ads, and high-performing campaigns.</p></div>
+                <div class="col-md-4"><h5>Contact Info</h5><p><i class="fas fa-envelope mr-2"></i>info@seoagency.com</p><p><i class="fas fa-phone mr-2"></i>+123-456-7890</p></div>
+                <div class="col-md-4"><h5>Follow Us</h5><div class="social-icons mt-3"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a></div></div>
+            </div>
+            <p class="mt-4">&copy; 2026 SEO Agency. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

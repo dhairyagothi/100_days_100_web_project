@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Play the ultimate Tic Tac Toe game with 3x3, 4x4, and 5x5 grids, advanced Minimax AI with Alpha-Beta pruning, live achievements, sound synthesis, and match replays in a premium light interface.">
+</head>
+<body data-theme="light-glass">
+
+    <!-- Confetti canvas for victory celebrations -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Main Grid Application layout (3 columns on desktop) -->
+    <main class="app-container">
+        
+        <!-- ================= COLUMN 1: CONFIGURATION & SETUP ================= -->
+        <section class="left-section">
+            <div class="glass-card">
+                <div class="app-header">
+                    <div class="app-logo">
+                        <h1>⭕ Tic Tac Toe ❌</h1>
+                    </div>
+                    <div class="sound-toggles">
+                        <button id="sound-toggle" class="sound-btn active" title="Toggle Sound FX">🔊</button>
+                        <button id="music-toggle" class="sound-btn" title="Toggle Background Music">🎵</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game configuration controls -->
+            <div class="glass-card">
+                <h2>⚙️ Setup Match</h2>
+                
+                <!-- Game Mode selection -->
+                <div class="form-group">
+                    <label>Game Mode</label>
+                    <div id="mode-opts" class="toggle-group">
+                        <button class="active" data-val="ai">🤖 vs AI</button>
+                        <button data-val="pvp">👥 Local PvP</button>
+                    </div>
+                </div>
+
+
+
+                <!-- Choose player character symbol -->
+                <div class="form-group">
+                    <label>Your Symbol</label>
+                    <div id="symbol-opts" class="toggle-group">
+                        <button class="active" data-val="X">X</button>
+                        <button data-val="O">O</button>
+                    </div>
+                </div>
+
+                <!-- AI Difficulty -->
+                <div class="form-group" id="diff-form-group">
+                    <label>AI Level</label>
+                    <div id="diff-opts" class="toggle-group">
+                        <button data-val="easy">Easy</button>
+                        <button data-val="medium">Medium</button>
+                        <button class="active" data-val="hard">Hard AI</button>
+                    </div>
+                </div>
+
+                <!-- Time limit Blitz turn mode -->
+                <div class="form-group">
+                    <label>Blitz Turn Timer (10s)</label>
+                    <div id="timer-opts" class="toggle-group">
+                        <button class="active" data-val="off">Off</button>
+                        <button data-val="on">On</button>
+                    </div>
+                </div>
+
+                <!-- Launch Button -->
+                <button id="start-game-btn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">🎮 Start Match</button>
+            </div>
+
+            <!-- Explainable AI Dialog board (Fixed height to prevent jumps) -->
+            <div class="glass-card ai-explanation-panel" id="ai-explanation-card">
+                <div class="ai-avatar">🤖</div>
+                <div class="ai-explanation-content">
+                    <label>AI Thought Process</label>
+                    <p id="ai-explanation-text">"Analyzing potential outcomes to block target threats..."</p>
+                </div>
+            </div>
+
+            <!-- Move History horizontal tracker (Fixed height to prevent jumps) -->
+            <div class="history-panel" id="history-panel">
+                <div class="history-title">Move History</div>
+                <div class="history-list" id="history-list"></div>
+            </div>
+        </section>
+
+        <!-- ================= COLUMN 2: MAIN BOARD GRID ================= -->
+        <section class="center-section">
+            <!-- Active Game State Header -->
+            <div class="glass-card" style="padding: 14px 20px; display: flex; flex-direction: column; gap: 14px;">
+                <div class="game-header">
+                    <div class="turn-indicator">
+                        <div id="turn-dot" class="turn-dot"></div>
+                        <span id="turn-player-name">Player X</span>
+                    </div>
+                    <!-- Turn timer countdown overlay -->
+                    <div class="blitz-timer" id="blitz-timer-container" style="display: none;">
+                        <span>⚡</span>
+                        <span id="timer-seconds">10s</span>
+                    </div>
+                </div>
+
+                <!-- Status message (Win, lose, draw, pause status) -->
+                <div id="game-status-text" class="game-status-text"></div>
+
+                <!-- Dynamic grid board layout frame -->
+                <div class="board-container">
+                    <div id="board" class="board board-3x3">
+                        <!-- Javascript populates cells dynamically -->
+                    </div>
+                </div>
+
+                <!-- Replay controller overlay (Fixed height) -->
+                <div class="replay-controller" id="replay-controller">
+                    <div class="replay-progress">
+                        <span>🔄 Replay Mode: </span>
+                        <strong id="replay-step-info">Step 0/0</strong>
+                    </div>
+                    <div class="replay-controls">
+                        <button class="replay-btn" id="replay-btn-prev" title="Step Back">◀</button>
+                        <button class="replay-btn" id="replay-btn-play" title="Auto Play">▶</button>
+                        <button class="replay-btn" id="replay-btn-next" title="Step Forward">▶</button>
+                        <button class="replay-btn" id="replay-btn-close" title="Exit Replay" style="background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.15); color: #dc2626;">✖</button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= COLUMN 3: TABBED DASHBOARD & LEADERBOARD ================= -->
+        <section class="right-section">
+            <div class="glass-card">
+                <!-- Tab Headers -->
+                <div class="tab-headers">
+                    <button class="tab-btn active" data-tab="stats">📈 Stats</button>
+                    <button class="tab-btn" data-tab="leaderboard">🏆 Records</button>
+                    <button class="tab-btn" data-tab="achievements">🏅 Badges</button>
+                </div>
+                
+                <!-- Tab Stats content -->
+                <div class="tab-content active" id="tab-stats">
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-val" id="stat-played">0</div>
+                            <div class="stat-lbl">Played</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val" id="stat-won" style="color: #10b981;">0</div>
+                            <div class="stat-lbl">Won</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val" id="stat-lost" style="color: #ef4444;">0</div>
+                            <div class="stat-lbl">Lost</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val" id="stat-drawn">0</div>
+                            <div class="stat-lbl">Drawn</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val" id="stat-winrate">0%</div>
+                            <div class="stat-lbl">Win Rate</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val" id="stat-streak">0</div>
+                            <div class="stat-lbl">Streak</div>
+                        </div>
+                        <div class="stat-item" style="grid-column: span 2;">
+                            <div class="stat-val" id="stat-best-streak">0</div>
+                            <div class="stat-lbl">Longest Win Streak</div>
+                        </div>
+                        <div class="stat-item" style="grid-column: span 2;">
+                            <div class="stat-val" id="stat-time">0m</div>
+                            <div class="stat-lbl">Total Play Time</div>
+                        </div>
+                    </div>
+                    <button id="reset-data-btn" class="btn" style="width: 100%; margin-top: 14px; padding: 6px 10px; font-size: 0.75rem; background: rgba(239, 68, 68, 0.05); border-color: rgba(239, 68, 68, 0.1); color: #ef4444;">🚨 Wipe Stats</button>
+                </div>
+
+                <!-- Tab Leaderboard content -->
+                <div class="tab-content" id="tab-leaderboard">
+                    <div class="leaderboard-list">
+                        <div class="leader-item">
+                            <span>🔥 Max Win Streak</span>
+                            <strong id="leader-win-streak">0 Games</strong>
+                        </div>
+                        <div class="leader-item">
+                            <span>⚡ Fastest Victory</span>
+                            <strong id="leader-fastest-win">N/A</strong>
+                        </div>
+                        <div class="leader-item">
+                            <span>👤 Player Victories</span>
+                            <strong id="leader-player-wins">0</strong>
+                        </div>
+                        <div class="leader-item">
+                            <span>🤖 AI Victories</span>
+                            <strong id="leader-ai-wins">0</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Achievements content -->
+                <div class="tab-content" id="tab-achievements">
+                    <div id="achievements-list" class="achievements-grid">
+                        <!-- Loaded dynamically via storage.js -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game action triggers -->
+            <div class="action-buttons">
+                <button id="undo-btn" class="btn" title="Undo your last action">↩️ Undo Move</button>
+                <button id="pause-btn" class="btn" title="Temporarily freeze play states">⏸ Pause</button>
+                <button id="restart-btn" class="btn btn-primary" style="grid-column: span 2;" title="Restart match instantly">🔄 Restart Game</button>
+            </div>
+        </section>
+
+    </main>
+
+
+
+    <!-- ================= TOAST NOTIFICATION CARD ================= -->
+    <div class="toast-notification" id="toast-badge">
+        <div class="toast-badge-icon" id="toast-icon">🏆</div>
+        <div class="toast-badge-info">
+            <h4 id="toast-title">Achievement Unlocked!</h4>
+            <p id="toast-desc">Details of user action success...</p>
+        </div>
+    </div>
+
+    <!-- Javascript logic file references -->
+    <script src="storage.js"></script>
+    <script src="sounds.js"></script>
+    <script src="ai.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productivity Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="home-btn">Dashboard</button>
+
+        <button id="darkToggle" class="dark-btn">
+            🌙 Dark Mode
+        </button>
+    </div>
+
+    <div class="dashboard">
+
+        <!-- Today -->
+        <div class="card today">
+            <h2>TODAY</h2>
+
+            <div class="input-group">
+                <input id="todayInput" type="text" placeholder="Add a task">
+                <button class="add-btn" onclick="addTask('today')">
+                    Add
+                </button>
+            </div>
+
+            <ul id="todayList"></ul>
+        </div>
+
+        <!-- Tracker -->
+        <div class="card tracker">
+            <h2>TRACKER</h2>
+
+            <div id="stats" class="stats">
+                Total: 0 | Done: 0 | Progress: 0%
+            </div>
+
+            <div class="progress">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+
+            <div id="streak" class="streak">
+                🔥 Streak: 0 Days
+            </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="card notes">
+            <h2>IMPORTANT NOTES</h2>
+
+            <textarea id="notes" placeholder="Write your notes..."></textarea>
+
+            <button class="save-note" onclick="saveNotes()">
+                Save Notes
+            </button>
+        </div>
+
+        <!-- Tomorrow -->
+        <div class="card tomorrow">
+            <h2>TOMORROW</h2>
+
+            <div class="input-group">
+                <input id="tomorrowInput" type="text" placeholder="Add a task">
+                <button class="add-btn" onclick="addTask('tomorrow')">
+                    Add
+                </button>
+            </div>
+
+            <ul id="tomorrowList"></ul>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

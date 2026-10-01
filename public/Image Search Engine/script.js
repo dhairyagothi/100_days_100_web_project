@@ -2,6 +2,7 @@ const searchform = document.getElementById("searchform");
 const searchBox = document.getElementById("search-box");
 const searchResult = document.getElementById("search-result");
 const showMoreButton = document.getElementById("show-more-button");
+const resetButton = document.getElementById("reset-button");
 
 let keyword = "";
 let page = 1;
@@ -25,7 +26,7 @@ async function searchImages() {
         
         for (let i = 0; i < itemsPerPage; i++) {
             // Uses a zero-key open API that strictly matches the keyword entered
-            const accurateImageUrl = `https://loremflickr.com/500/400/${encodeURIComponent(keyword)}?random=${i + (page * itemsPerPage)}`;
+            const accurateImageUrl = `https://loremflickr.com/500/400/${encodeURIComponent(keyword)}?lock=${i + (page * itemsPerPage)}`;
 
             const image = document.createElement("img");
             image.src = accurateImageUrl;
@@ -68,4 +69,13 @@ searchform.addEventListener("submit", (e) => {
 showMoreButton.addEventListener("click", () => {
     page++;
     searchImages();
+});
+
+resetButton.addEventListener("click", () => {
+    searchBox.value = "";
+    searchResult.innerHTML = "";
+    page = 1;
+    keyword = "";
+    showMoreButton.style.display = "none";
+    searchBox.focus();
 });

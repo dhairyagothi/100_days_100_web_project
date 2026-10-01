@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Find a Travel Buddy - Travel Companion</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./travel-buddy.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+      <div class="navbar-container">
+        <a href="index.html#home" class="navbar-logo">✈️ Travel<span class="gradient-text"> Companion</span></a>
+
+        <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navbarLinks">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <ul class="navbar-links" id="navbarLinks">
+          <li><a href="index.html#home" class="navbar-link">Home</a></li>
+          <li><a href="index.html#destinations" class="navbar-link">Destinations</a></li>
+          <li><a href="index.html#plan-trip" class="navbar-link">Plan Trip</a></li>
+          <li><a href="index.html#why-us" class="navbar-link">Why Us</a></li>
+          <li><a href="travel-buddy.html" class="navbar-link active" aria-current="page">Find a Travel Buddy</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Back Button -->
+    <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;backdrop-filter:blur(10px);" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">← Back</a>
+
+    <!-- Buddy Hero -->
+    <header class="buddy-hero" id="home">
+      <div class="buddy-hero-inner">
+        <p class="demo-badge">🧪 Prototype / Demo — Mock Data Only</p>
+        <h1 class="buddy-hero-title">Find a <span class="gradient-text">Travel Buddy</span></h1>
+        <p class="buddy-hero-subtitle">
+          Browse fellow travelers, filter by destination, dates, interests and travel style, then say hello.
+          Everything on this page — profiles, filters and chats — is hardcoded sample data for a UI prototype.
+          There is no real backend, no accounts and no real messaging yet.
+        </p>
+      </div>
+    </header>
+
+    <main class="buddy-main">
+      <!-- Filters -->
+      <section class="buddy-filters-section" aria-labelledby="filtersHeading">
+        <div class="section-container">
+          <h2 id="filtersHeading" class="visually-hidden">Filter travel buddies</h2>
+          <form id="buddyFilterForm" class="buddy-filter-form" aria-label="Filter travel buddies">
+            <div class="filter-field">
+              <label for="filterDestination">Destination</label>
+              <input type="text" id="filterDestination" name="destination" placeholder="e.g. Bali, Tokyo..." autocomplete="off" />
+            </div>
+
+            <div class="filter-field">
+              <label for="filterStartDate">Trip start</label>
+              <input type="date" id="filterStartDate" name="startDate" />
+            </div>
+
+            <div class="filter-field">
+              <label for="filterEndDate">Trip end</label>
+              <input type="date" id="filterEndDate" name="endDate" />
+            </div>
+
+            <div class="filter-field">
+              <label for="filterStyle">Travel style</label>
+              <select id="filterStyle" name="style">
+                <option value="">Any style</option>
+                <option value="Backpacker">Backpacker</option>
+                <option value="Luxury">Luxury</option>
+                <option value="Solo-friendly">Solo-friendly</option>
+                <option value="Family">Family</option>
+              </select>
+            </div>
+
+            <fieldset class="filter-field filter-interests">
+              <legend>Interests</legend>
+              <div class="interest-chips" role="group" aria-label="Filter by interests">
+                <label class="interest-chip">
+                  <input type="checkbox" name="interests" value="Adventure" />
+                  <span>🏔️ Adventure</span>
+                </label>
+                <label class="interest-chip">
+                  <input type="checkbox" name="interests" value="Food" />
+                  <span>🍜 Food</span>
+                </label>
+                <label class="interest-chip">
+                  <input type="checkbox" name="interests" value="Culture" />
+                  <span>🏛️ Culture</span>
+                </label>
+                <label class="interest-chip">
+                  <input type="checkbox" name="interests" value="Relaxation" />
+                  <span>🌴 Relaxation</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="filter-actions">
+              <button type="submit" class="planner-btn primary">Search Travel Buddies</button>
+              <button type="button" id="resetFiltersBtn" class="planner-btn secondary">Reset Filters</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Results -->
+      <section class="buddy-results-section" aria-labelledby="resultsHeading">
+        <div class="section-container">
+          <div class="buddy-results-header">
+            <h2 id="resultsHeading" class="section-title-sm">Travel Buddies</h2>
+            <p id="resultsCount" class="results-count" aria-live="polite"></p>
+          </div>
+
+          <div id="buddyGrid" class="buddy-grid"></div>
+          <p id="noResultsMessage" class="no-results hidden">No travel buddies match your filters yet. Try widening your search.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Mock Chat Modal -->
+    <div id="chatModalOverlay" class="modal-overlay hidden">
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="chatModalTitle" id="chatModal">
+        <button type="button" class="modal-close" id="chatModalClose" aria-label="Close chat">&times;</button>
+
+        <div class="modal-header">
+          <img id="chatModalAvatar" class="modal-avatar" src="" alt="" />
+          <div>
+            <h2 id="chatModalTitle" class="modal-title">Chat</h2>
+            <p class="modal-subtitle">🧪 Demo conversation — mock data only</p>
+          </div>
+        </div>
+
+        <div id="chatModalMessages" class="modal-messages" aria-live="polite"></div>
+
+        <form class="modal-input-row" id="modalInputForm">
+          <label for="modalMessageInput" class="visually-hidden">Type a message</label>
+          <input type="text" id="modalMessageInput" placeholder="Real messaging is coming soon..." disabled />
+          <button type="submit" id="modalSendBtn" disabled>Send</button>
+        </form>
+        <p class="modal-disabled-note">🚧 Real messaging isn't connected yet — this is a front-end prototype only.</p>
+      </div>
+    </div>
+
+    <!-- Vanilla JavaScript -->
+    <script src="./travel-buddy.js"></script>
+  </body>
+</html>

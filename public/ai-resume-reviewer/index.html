@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Resume Reviewer</title>
+  <meta name="description" content="Evaluate your resume ATS compliance, extract skills, compare keywords with job descriptions, and get instant suggestions using our advanced resume analysis dashboard.">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Text Extraction & PDF Export Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- Background Decorative Glowing Orbs -->
+  <div class="bg-glow-orb orb-1"></div>
+  <div class="bg-glow-orb orb-2"></div>
+
+  <!-- Mobile Header -->
+  <header class="mobile-header" id="mobileHeader">
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
+      <i data-lucide="menu"></i>
+    </button>
+    <div class="logo-container">
+      <div class="logo-icon"><i data-lucide="sparkles"></i></div>
+      <span class="logo-text">CV Genius</span>
+    </div>
+    <button class="theme-toggle-btn" id="mobileThemeToggleBtn" aria-label="Toggle Theme">
+      <i data-lucide="sun" id="mobileThemeIconSun"></i>
+      <i data-lucide="moon" id="mobileThemeIconMoon" style="display: none;"></i>
+    </button>
+  </header>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation & History -->
+    <aside class="app-sidebar" id="sidebar">
+      <div class="logo-container">
+        <div class="logo-icon"><i data-lucide="sparkles"></i></div>
+        <h1 class="logo-text">CV Genius</h1>
+      </div>
+
+      <!-- Main Navigation -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li class="nav-item active" id="navReviewer">
+            <a href="#" onclick="return false;"><i data-lucide="layout-dashboard"></i> Reviewer Dashboard</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- History Panel -->
+      <div class="history-section">
+        <div class="history-title">
+          <span>Review History</span>
+          <button class="clear-history-btn" id="btnClearHistory" title="Clear all reviews">Clear All</button>
+        </div>
+        <div class="history-list" id="historyList">
+          <!-- Dynamically filled with localStorage items -->
+          <div class="history-card" style="cursor: default; opacity: 0.7;">
+            <p style="font-size: 0.8rem; text-align: center; color: var(--text-muted);">No reviews yet. Analyze your first resume!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer Settings -->
+      <div class="sidebar-footer">
+        <div class="theme-toggle-container">
+          <span class="theme-label">Dark Mode</span>
+          <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Light and Dark Mode">
+            <i data-lucide="sun" id="themeIconSun"></i>
+            <i data-lucide="moon" id="themeIconMoon" style="display: none;"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Dashboard Area -->
+    <main class="main-content">
+      <!-- Top header action bar -->
+      <div class="content-header">
+        <div>
+          <h2>AI Resume Analyzer</h2>
+          <p class="page-title-desc">Compare your CV with target descriptions, discover keyword gaps, and check section ATS compliance.</p>
+        </div>
+
+      </div>
+
+      <!-- Input Pane Grid -->
+      <section class="dashboard-grid" id="inputSection" aria-label="Resume Review Input Forms">
+        <!-- Resume File Input -->
+        <article class="glass-panel" id="resumeUploadPanel">
+          <h3 class="panel-title"><i data-lucide="file-text"></i> 1. Upload Resume</h3>
+          <div class="upload-container">
+            <div class="upload-dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload Resume File (PDF, DOCX formats)">
+              <div class="upload-icon-container">
+                <i data-lucide="upload-cloud" style="width: 28px; height: 28px;"></i>
+              </div>
+              <p class="upload-text">Drag & drop your resume file here</p>
+              <p class="upload-subtext">Supports PDF, DOCX (Max size 5MB)</p>
+              <input type="file" id="fileInput" class="file-input" accept=".pdf,.docx">
+            </div>
+
+            <!-- Upload File Status Card -->
+            <div class="file-status-card" id="fileStatusCard">
+              <i data-lucide="file" class="file-status-icon"></i>
+              <div class="file-status-info">
+                <p class="file-status-name" id="fileName">resume_frontend.pdf</p>
+                <p class="file-status-size" id="fileSize">1.2 MB</p>
+              </div>
+              <button class="file-remove-btn" id="btnRemoveFile" aria-label="Remove uploaded file">
+                <i data-lucide="trash-2"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Job Description & Options Input -->
+        <article class="glass-panel" id="jobDetailsPanel">
+          <h3 class="panel-title"><i data-lucide="briefcase"></i> 2. Target Job Details</h3>
+          <div class="job-desc-container">
+            <div class="form-group">
+              <label for="jobRoleSelect" class="form-label">Job Role Industry</label>
+              <select id="jobRoleSelect" class="select-input">
+                <option value="frontend">Frontend Developer</option>
+                <option value="backend">Backend Developer</option>
+                <option value="fullstack">Fullstack Developer</option>
+                <option value="mobile">Mobile Application Developer</option>
+                <option value="datascience">Data Scientist / Analyst</option>
+                <option value="productmanager">Product Manager</option>
+                <option value="uiux">UI/UX Designer</option>
+                <option value="qa">QA Test Automation Engineer</option>
+                <option value="marketing">Marketing Specialist</option>
+                <option value="hr">HR & Recruiting Manager</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="jobDescText" class="form-label">Paste Job Description</label>
+              <textarea id="jobDescText" class="textarea-input" placeholder="Paste the duties, technical skills, qualification details, and keywords from the job description here..."></textarea>
+            </div>
+
+            <div class="button-actions">
+              <button class="btn-primary" id="btnAnalyze" disabled>
+                <i data-lucide="play"></i> Analyze Match
+              </button>
+              <button class="btn-secondary" id="btnClearForm">
+                <i data-lucide="rotate-ccw"></i> Reset
+              </button>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Analysis Processing Screen -->
+      <section class="glass-panel analyzer-loader" id="analyzerLoader">
+        <div class="orbit-spinner">
+          <div class="ring ring-1"></div>
+          <div class="ring ring-2"></div>
+          <div class="ring ring-3"></div>
+        </div>
+        <div>
+          <h3 class="loader-text" id="loaderTitle">Extracting resume text...</h3>
+          <p class="loader-subtext" id="loaderSubtext" style="text-align: center; margin-top: 0.5rem;"></p>
+        </div>
+      </section>
+
+      <!-- Report Output Dashboard (hidden by default) -->
+      <section class="report-container" id="reportContainer">
+        <!-- Visual Stats Grid -->
+        <div class="score-cards-grid">
+          <!-- Overall Match Card -->
+          <div class="score-card">
+            <div class="circle-progress-container">
+              <svg class="circle-progress-svg">
+                <circle class="circle-bg" cx="40" cy="40" r="36"></circle>
+                <circle class="circle-bar" id="scoreOverallRing" cx="40" cy="40" r="36"></circle>
+              </svg>
+              <div class="circle-text" id="scoreOverallText">0%</div>
+            </div>
+            <div class="score-card-info">
+              <span class="score-card-title">Overall Score</span>
+              <p style="font-size: 0.75rem; color: var(--text-secondary);" id="scoreOverallVerdict">Strong Match</p>
+            </div>
+          </div>
+
+          <!-- ATS Score -->
+          <div class="score-card">
+            <div class="circle-progress-container">
+              <svg class="circle-progress-svg">
+                <circle class="circle-bg" cx="40" cy="40" r="36"></circle>
+                <circle class="circle-bar" id="scoreAtsRing" cx="40" cy="40" r="36"></circle>
+              </svg>
+              <div class="circle-text" id="scoreAtsText">0%</div>
+            </div>
+            <div class="score-card-info">
+              <span class="score-card-title">ATS Compatibility</span>
+              <p style="font-size: 0.75rem; color: var(--text-secondary);">Section Compliance</p>
+            </div>
+          </div>
+
+          <!-- Skill Match Score -->
+          <div class="score-card" style="flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.5rem;">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: baseline;">
+              <span class="score-card-title">Skills Match</span>
+              <span class="score-card-value" id="scoreSkillsValue" style="font-size: 1.5rem;">0%</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="scoreSkillsBar"></div>
+            </div>
+            <span id="scoreSkillsCounts" style="font-size: 0.75rem; color: var(--text-muted);">0 / 0 target skills matched</span>
+          </div>
+
+          <!-- Grammar and Structure Score -->
+          <div class="score-card" style="flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.5rem;">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: baseline;">
+              <span class="score-card-title">Grammar & Format</span>
+              <span class="score-card-value" id="scoreFormattingValue" style="font-size: 1.5rem;">0%</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="scoreFormattingBar"></div>
+            </div>
+            <span id="scoreFormattingIssues" style="font-size: 0.75rem; color: var(--text-muted);">0 active suggestions</span>
+          </div>
+        </div>
+
+        <!-- Report Tabs and Dynamic Content Panel -->
+        <div class="glass-panel" style="padding-top: 1rem;">
+          <div class="report-tabs-container" role="tablist" aria-label="Analysis Report Tab Sections">
+            <button class="report-tab-btn active" id="tabSummary" role="tab" aria-selected="true" aria-controls="panelSummary">
+              <i data-lucide="eye"></i> Executive Summary
+            </button>
+            <button class="report-tab-btn" id="tabSkills" role="tab" aria-selected="false" aria-controls="panelSkills">
+              <i data-lucide="wrench"></i> Skills Gap
+            </button>
+            <button class="report-tab-btn" id="tabAtsChecklist" role="tab" aria-selected="false" aria-controls="panelAtsChecklist">
+              <i data-lucide="check-square"></i> ATS Compliance
+            </button>
+            <button class="report-tab-btn" id="tabGrammar" role="tab" aria-selected="false" aria-controls="panelGrammar">
+              <i data-lucide="type"></i> Writing & Impact
+            </button>
+            <button class="report-tab-btn" id="tabTemplates" role="tab" aria-selected="false" aria-controls="panelTemplates">
+              <i data-lucide="layout"></i> Design & Templates
+            </button>
+            <button class="report-tab-btn" id="tabAiFeedback" role="tab" aria-selected="false" aria-controls="panelAiFeedback">
+              <i data-lucide="brain-circuit"></i> AI Advisor
+            </button>
+          </div>
+
+          <!-- Tab Content Sections -->
+          <div style="margin-top: 2rem;">
+            
+            <!-- Summary Tab Panel -->
+            <div class="report-tab-panel active" id="panelSummary" role="tabpanel" aria-labelledby="tabSummary">
+              <div class="critique-grid">
+                <!-- Strengths -->
+                <div class="critique-card strength">
+                  <div class="critique-header">
+                    <i data-lucide="smile"></i> Key Strengths
+                  </div>
+                  <ul class="critique-list" id="summaryStrengthsList">
+                    <li>Strong inclusion of core frontend technologies like React and TypeScript.</li>
+                    <li>Professional section structure matching ATS standards.</li>
+                  </ul>
+                </div>
+                <!-- Weaknesses / Gaps -->
+                <div class="critique-card weakness">
+                  <div class="critique-header">
+                    <i data-lucide="frown"></i> Areas for Improvement
+                  </div>
+                  <ul class="critique-list" id="summaryWeaknessesList">
+                    <li>Missing critical keywords found in the job description (e.g. Next.js, Docker).</li>
+                    <li>Contains bullet points using passive action verbs, which reduces job impact.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skills Gap Tab Panel -->
+            <div class="report-tab-panel" id="panelSkills" role="tabpanel" aria-labelledby="tabSkills">
+              <div>
+                <h4 style="margin-bottom: 0.5rem;">Target Skills Matching</h4>
+                <p class="page-title-desc">We analyzed your resume text against standard industries and target description terms. Correct skills gaps by incorporating missing technology keywords.</p>
+                
+                <h5 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--accent-success);">Matched Skills (<span id="matchedSkillsCount">0</span>)</h5>
+                <div class="chip-group" id="matchedSkillsChips">
+                  <!-- Generated Chips -->
+                </div>
+
+                <h5 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--accent-danger);">Missing Skills / Keywords (<span id="missingSkillsCount">0</span>)</h5>
+                <div class="chip-group" id="missingSkillsChips">
+                  <!-- Generated Chips -->
+                </div>
+              </div>
+            </div>
+
+            <!-- ATS Checklist Panel -->
+            <div class="report-tab-panel" id="panelAtsChecklist" role="tabpanel" aria-labelledby="tabAtsChecklist">
+              <div>
+                <h4>ATS Format & Structure Scan</h4>
+                <p class="page-title-desc" style="margin-bottom: 1.5rem;">Most modern Applicant Tracking Systems scan for specific format blocks. Ensure these sections exist in text form.</p>
+                
+                <div class="checklist-grid" id="atsChecklistGrid">
+                  <!-- Generated items -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Grammar and Action Verbs Panel -->
+            <div class="report-tab-panel" id="panelGrammar" role="tabpanel" aria-labelledby="tabGrammar">
+              <div>
+                <h4>Impact, Passive Voice & Word Choice Check</h4>
+                <p class="page-title-desc">Resumes are most effective when they use strong action verbs ("Designed", "Spearheaded") rather than weak statements ("Responsible for", "Worked on") or passive structure.</p>
+                
+                <div class="suggestions-table-wrapper">
+                  <table class="suggestions-table">
+                    <thead>
+                      <tr>
+                        <th>Category</th>
+                        <th>CV Snippet / Issue</th>
+                        <th>Impact / Suggestion</th>
+                      </tr>
+                    </thead>
+                    <tbody id="grammarIssuesTableBody">
+                      <!-- Generated table rows -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Template Recommendations Panel -->
+            <div class="report-tab-panel" id="panelTemplates" role="tabpanel" aria-labelledby="tabTemplates">
+              <div>
+                <h4>Suggested Resume Structures</h4>
+                <p class="page-title-desc">Based on your experience profile, choose template styles that highlight your strengths.</p>
+                
+                <div class="templates-grid" id="templatesGrid">
+                  <!-- Dynamic template cards generated based on work history -->
+                </div>
+              </div>
+            </div>
+
+            <!-- AI Advisor Panel -->
+            <div class="report-tab-panel" id="panelAiFeedback" role="tabpanel" aria-labelledby="tabAiFeedback">
+              <div class="ai-feedback-container">
+                  <div class="ai-banner">
+                    <div class="ai-banner-info">
+                      <i data-lucide="sparkles" class="ai-banner-icon"></i>
+                      <div>
+                        <h4 class="ai-banner-title">Deep Critique Advisor</h4>
+                        <p class="ai-banner-desc" id="aiConfigLabel">Generates detailed critiques and section recommendations for your resume.</p>
+                      </div>
+                    </div>
+                    <button class="btn-ai-analyze" id="btnRequestAiReview">
+                      <i data-lucide="sparkles"></i> Generate Critique Report
+                    </button>
+                  </div>
+
+                <!-- Loader for AI fetching -->
+                <div class="analyzer-loader" id="aiLoader" style="min-height: 150px;">
+                  <div class="orbit-spinner" style="width: 50px; height: 50px;">
+                    <div class="ring ring-1"></div>
+                    <div class="ring ring-2"></div>
+                  </div>
+                  <p class="loader-text" style="font-size: 0.95rem;">Asking AI Critic... (This might take a moment)</p>
+                </div>
+
+                <!-- Output block for AI feedback -->
+                <div class="ai-result-box" id="aiResultBox">
+                  <!-- AI response content parsed dynamically -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PDF Export Button action row -->
+        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+          <button class="btn-secondary" id="btnDownloadReport" style="max-width: 250px;">
+            <i data-lucide="download"></i> Download Report PDF
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+
+
+  <!-- Main JavaScript File -->
+  <script src="app.js"></script>
+</body>
+</html>

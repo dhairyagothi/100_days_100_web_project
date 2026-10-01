@@ -1,71 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flip Clock</title>
-    <link href="https://fonts.googleapis.com/css2?family=Gaegu&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flip Clock</title>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-<h1 class="app-title">Flip Clock</h1>
-    <div class="clock-widget">
+  <h1 class="app-title">Flip Clock</h1>
+  
+  <div class="clock-widget">
+    <div class="time-row">
+      <div class="flip-card">
+        <div id="hour">00</div>
+      </div>
 
-        <div class="time-row">
+      <div class="flip-card">
+        <div id="minute">00</div>
+      </div>
 
-            <div class="flip-card">
-                <div id="hour">00</div>
-            </div>
-
-            <div class="flip-card">
-                <div id="minute">00</div>
-            </div>
-
-            <div class="flip-card">
-                <div id="second">00</div>
-            </div>
-
-        </div>
-
-        <div class="footer">
-            <span id="date"></span>
-            <span id="day"></span>
-        </div>
-
+      <div class="flip-card">
+        <div id="second">00</div>
+      </div>
     </div>
 
-    <div class="color-section">
+    <div class="footer">
+      <span id="date"></span>
+      <span id="day"></span>
+    </div>
+  </div>
 
-        <h3 class="color-title">Change Clock Color</h3>
+  <div class="color-section">
+    <h3 class="color-title">Change Clock Color</h3>
 
-        <div class="theme-picker">
-
-            <button class="color mint active" onclick="changeTheme('mint', this)">
-            </button>
-
-            <button class="color lavender" onclick="changeTheme('lavender', this)">
-            </button>
-
-            <button class="color peach" onclick="changeTheme('peach', this)">
-            </button>
-
-            <button class="color sky" onclick="changeTheme('sky', this)">
-            </button>
-
-            <button class="color sakura" onclick="changeTheme('sakura', this)">
-            </button>
-
-            <button class="color butter" onclick="changeTheme('butter', this)">
-            </button>
-
-        </div>
-
+    <div class="theme-picker">
+      <button class="color mint active" aria-label="Mint theme" aria-pressed="true" data-theme="mint"></button>
+      <button class="color lavender" aria-label="Lavender theme" aria-pressed="false" data-theme="lavender"></button>
+      <button class="color peach" aria-label="Peach theme" aria-pressed="false" data-theme="peach"></button>
+      <button class="color sky" aria-label="Sky theme" aria-pressed="false" data-theme="sky"></button>
+      <button class="color sakura" aria-label="Sakura theme" aria-pressed="false" data-theme="sakura"></button>
+      <button class="color butter" aria-label="Butter theme" aria-pressed="false" data-theme="butter"></button>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Custom Color Palette -->
+    <div class="custom-palette">
+      <label>
+        <span>🎨</span>
+        <input type="color" id="customColorPicker" value="#dff7ea" />
+      </label>
+      <label>
+        <span>✏️</span>
+        <input type="text" id="customHexInput" placeholder="#hex" value="#dff7ea" />
+      </label>
+      <button class="apply-btn" id="applyCustomBtn">Apply</button>
+      <button class="apply-btn" id="resetPresetBtn" style="background:rgba(255,255,240,0.6);">↺ Reset</button>
+    </div>
+  </div>
 
+  <script src="script.js"></script>
 </body>
-
 </html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Donation | Aahar</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#0d6b23;
+        }
+
+        .navbar{
+            background:#228b3b;
+            color:white;
+            padding:20px 40px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .navbar h1{
+            font-size:36px;
+        }
+
+        .back-btn{
+            color:white;
+            text-decoration:none;
+            font-size:18px;
+        }
+
+        .container{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:85vh;
+            padding:30px;
+        }
+
+        .card{
+            width:100%;
+            max-width:650px;
+            background:white;
+            border-radius:18px;
+            padding:35px;
+            box-shadow:0 10px 25px rgba(0,0,0,.2);
+        }
+
+        .card h2{
+            text-align:center;
+            color:#1d3557;
+            margin-bottom:25px;
+        }
+
+        input,
+        textarea,
+        select{
+            width:100%;
+            padding:14px;
+            margin:12px 0;
+            border:1px solid #ccc;
+            border-radius:8px;
+            font-size:16px;
+        }
+
+        textarea{
+            resize:none;
+        }
+
+        button{
+            width:100%;
+            padding:15px;
+            background:#198754;
+            color:white;
+            border:none;
+            border-radius:8px;
+            font-size:18px;
+            cursor:pointer;
+            transition:.3s;
+        }
+
+        button:hover{
+            background:#146c43;
+        }
+
+        #message{
+            margin-top:20px;
+            text-align:center;
+            color:green;
+            font-weight:bold;
+            display:none;
+        }
+
+        @media(max-width:768px){
+            .navbar{
+                flex-direction:column;
+                gap:10px;
+                text-align:center;
+            }
+
+            .navbar h1{
+                font-size:28px;
+            }
+
+            .card{
+                padding:25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a href="index.html" class="back-btn">← Back to Home</a>
+        <h1>❤️ Aahar</h1>
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>Donate Surplus Food</h2>
+
+            <form id="foodForm">
+
+                <input
+                    type="text"
+                    placeholder="Food Name (e.g. Rice, Dal, Roti)"
+                    required>
+
+                <input
+                    type="text"
+                    placeholder="Food Source (Restaurant / Wedding / Hotel)"
+                    required>
+
+                <input
+                    type="number"
+                    placeholder="Quantity (People Served)"
+                    required>
+
+                <input
+                    type="text"
+                    placeholder="Pickup Address"
+                    required>
+
+                <input
+                    type="tel"
+                    placeholder="Contact Number"
+                    required>
+
+                <input
+                    type="datetime-local"
+                    required>
+
+                <select required>
+                    <option value="">Select Food Type</option>
+                    <option>Vegetarian</option>
+                    <option>Non-Vegetarian</option>
+                    <option>Both</option>
+                </select>
+
+                <textarea
+                    rows="4"
+                    placeholder="Additional Notes (Optional)"></textarea>
+
+                <button type="submit">
+                    Donate Food
+                </button>
+
+            </form>
+
+            <p id="message">
+                ✅ Thank you! Your food donation has been submitted successfully.
+            </p>
+
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById("foodForm").addEventListener("submit", function(e){
+            e.preventDefault();
+
+            document.getElementById("message").style.display = "block";
+
+            this.reset();
+        });
+    </script>
+
+</body>
+</html>

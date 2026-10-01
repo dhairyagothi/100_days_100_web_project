@@ -1,0 +1,80 @@
+[
+  {
+    "id": "job1",
+    "company": "IT Infosy co.",
+    "title": "Senior Web Developer",
+    "location": "Mumbai, India",
+    "datePosted": "2 days ago",
+    "salary": "10k - 20k",
+    "jobType": "Part-time",
+    "education": "Bachelor's Degree",
+    "shift": "Day shift",
+    "image": "./image/html.webp",
+    "link": "ITinfosy.html"
+  },
+  {
+    "id": "job2",
+    "company": "All Media Ltd.",
+    "title": "Qualified Developer",
+    "location": "Mumbai, India",
+    "datePosted": "2 days ago",
+    "salary": "9000",
+    "jobType": "Full-time",
+    "education": "Master's Degree",
+    "shift": "Flexible shift",
+    "image": "./image/css3-logo-png-transparent.png",
+    "link": "AllmediaLts.html"
+  },
+  {
+    "id": "job3",
+    "company": "Software Solution",
+    "title": "Javascript Developer",
+    "location": "Mumbai, India",
+    "datePosted": "Posted today",
+    "salary": "10k - 20k",
+    "jobType": "Internship",
+    "education": "Bachelor's Degree",
+    "shift": "Night shift",
+    "image": "./image/java.jpg",
+    "link": "softwareSolution.html"
+  },
+  {
+    "id": "job4",
+    "company": "IT World",
+    "title": "Junior Front-End",
+    "location": "Mumbai, India",
+    "datePosted": "19 days ago",
+    "salary": "40k - 50k",
+    "jobType": "Contract",
+    "education": "Diploma",
+    "shift": "Fixed shift",
+    "image": "https://static.vecteezy.com/system/resources/previews/001/198/090/non_2x/world-png.png",
+    "link": "ITWorlds.html"
+  },
+  {
+    "id": "job5",
+    "company": "Info Statics",
+    "title": "Junior Assistant",
+    "location": "Mumbai, India",
+    "datePosted": "2 days ago",
+    "salary": "5000",
+    "jobType": "Temporary",
+    "education": "10th Pass",
+    "shift": "Flexible shift",
+    "image": "https://th.bing.com/th/id/OIP.iJbuiX_YdBeTqI7wYawlwwHaHa?rs=1&pid=ImgDetMain",
+    "link": "InfoStatics.html"
+  },
+  {
+    "id": "job6",
+    "company": "Mass Idea",
+    "title": "PHP Developer",
+    "location": "Mumbai, India",
+    "datePosted": "2 days ago",
+    "salary": "50k - 1 lakh",
+    "jobType": "Fresher",
+    "education": "Bachelor's Degree",
+    "shift": "Day shift",
+    "image": "./image/php.jpg",
+    "link": "massIdea.html"
+  }
+]

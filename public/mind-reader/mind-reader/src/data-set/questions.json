@@ -1,0 +1,99 @@
+[
+  {
+    "queNo":1,
+    "key": "male",
+    "question": "Is the character male?"
+  },
+  {
+    "queNo":2,
+    "key": "protagonist",
+    "question": "Is the character a main protagonist?"
+  },
+  {
+    "queNo":3,
+    "key": "student",
+    "question": "Is the character a student?"
+  },
+  {
+    "queNo":4,
+    "key": "teacher",
+    "question": "Is the character a teacher?"
+  },
+  {
+    "queNo":5,
+    "key": "villain",
+    "question": "Is the character considered a villain?"
+  },
+  {
+    "queNo":6,
+    "key": "ninja",
+    "question": "Is the character a ninja?"
+  },
+  {
+    "queNo":7,
+    "key": "pirate",
+    "question": "Is the character a pirate?"
+  },
+  {
+    "queNo":8,
+    "key": "usesSword",
+    "question": "Does the character primarily use a sword?"
+  },
+  {
+    "queNo":9,
+    "key": "usesMagic",
+    "question": "Does the character use supernatural or magical powers?"
+  },
+  {
+    "queNo":10,
+    "key": "whiteHair",
+    "question": "Does the character have white hair?"
+  },
+  {
+    "queNo":11,
+    "key": "blackHair",
+    "question": "Does the character have black hair?"
+  },
+  {
+    "queNo":12,
+    "key": "blondeHair",
+    "question": "Does the character have blonde hair?"
+  },
+  {
+    "queNo":13,
+    "key": "fromNaruto",
+    "question": "Is the character from Naruto?"
+  },
+  {"queNo":14,
+    "key": "fromOnePiece",
+    "question": "Is the character from One Piece?"
+  },
+  {"queNo":15,
+    "key": "fromJJK",
+    "question": "Is the character from Jujutsu Kaisen?"
+  },
+  {"queNo":16,
+    "key": "fromAOT",
+    "question": "Is the character from Attack on Titan?"
+  },
+  {"queNo":17,
+    "key": "fromDeathNote",
+    "question": "Is the character from Death Note?"
+  },
+  {"queNo":18,
+    "key": "fromDemonSlayer",
+    "question": "Is the character from Demon Slayer?"
+  },
+  {"queNo":19,
+    "key": "hasSpecialEyes",
+    "question": "Is the character known for unique eyes or eye powers?"
+  },
+  {"queNo":20,
+    "key": "hasTransformation",
+    "question": "Does the character have a notable transformation form?"
+  },
+  {"queNo":21,
+    "key": "last",
+    "question": "found it"
+  }
+]

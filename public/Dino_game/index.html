@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chrome Dino - T-Rex Runner</title>
+
+    <!-- Bootstrap CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <style>
+      body {
+        background: #f7f7f7;
+        font-family: "Courier New", monospace;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+      }
+      .game-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(to bottom, #535353, #2a2a2a);
+      }
+      canvas {
+        border: 4px solid #fff;
+        image-rendering: pixelated;
+        background: #fff;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      }
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+      }
+      .start-screen,
+      .game-over-screen {
+        background: rgba(0, 0, 0, 0.85);
+        color: white;
+        padding: 30px 50px;
+        border: 4px solid #fff;
+        text-align: center;
+        pointer-events: all;
+      }
+      .score-display {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        font-size: 28px;
+        font-weight: bold;
+        text-shadow: 2px 2px 0 #000;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-container">
+      <div class="position-relative">
+        <!-- Score Display -->
+        <div class="score-display" id="score">00000</div>
+
+        <!-- Game Canvas -->
+        <canvas id="gameCanvas" width="800" height="300"></canvas>
+
+        <!-- Start Screen -->
+        <div class="overlay start-screen" id="startScreen">
+          <h1 class="mb-4">🦖 T-REX RUNNER</h1>
+          <p class="fs-4 mb-4">Press <strong>SPACE</strong> or tap to start</p>
+          <small class="text-light">↑ / SPACE = Jump  ↓ = Duck</small>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div class="overlay game-over-screen" id="gameOverScreen">
+          <h2 class="mb-3 text-danger">GAME OVER</h2>
+          <div class="mb-4">
+            <p class="mb-1">
+              SCORE: <span id="finalScore" class="fs-3"></span>
+            </p>
+            <p>HIGH SCORE: <span id="highScore" class="fs-3"></span></p>
+          </div>
+          <button class="btn btn-light btn-lg px-5" onclick="restartGame()">
+            RESTART
+          </button>
+          <p class="mt-4 text-light">Press SPACE to play again</p>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

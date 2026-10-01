@@ -23,15 +23,27 @@ if(playGame){
 }
 
 function validateGuess(guess){
+    // Bail out on invalid input BEFORE incrementing any counter or writing
+    // to the guessed list. The old chain used `} if (` (not `else if`) so
+    // execution fell through and every invalid input still ran displayGuess
+    // + checkGuess, burning a guess and printing "NaN" into the tray
+    // (issue #10334).
     if(isNaN(guess)){
         alert("Please enter a valid number")
-    } else if(guess<=0){
+        return
+    }
+    if(guess<=0){
         alert("Please enter a number greater than 0")
-    } else if(guess>100){
+        return
+    }
+    if(guess>100){
         alert("Please enter a number less than 100")
-    } else {
-        prevGuess.push(guess)
-    } if(numGuess>10){
+        return
+    }
+
+    prevGuess.push(guess)
+
+    if(numGuess>10){
         displayGuess(guess)
         displayMessage(`Game Over. Random Number Was ${randomNumber}`)
         endGame()
@@ -88,3 +100,25 @@ function newGame(){
         playGame = true;
     })
 }
+
+const toggleBtn = document.getElementById("theme-toggle");
+
+if (!localStorage.getItem("theme") && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    localStorage.setItem("theme", "dark");
+}
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+}
+toggleBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+
+toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    if (document.body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+        toggleBtn.textContent = "☀️";
+    } else {
+        localStorage.setItem("theme", "light");
+        toggleBtn.textContent = "🌙";
+    }
+});

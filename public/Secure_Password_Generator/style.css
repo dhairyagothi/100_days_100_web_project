@@ -1,7 +1,9 @@
 /* =============================================
    Reset & Base
    ============================================= */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -42,7 +44,11 @@ html {
 }
 
 body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
   background-color: var(--bg);
   color: var(--text-primary);
   min-height: 100vh;
@@ -115,8 +121,12 @@ body {
 }
 
 @keyframes floatShape {
-  from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(30px, -30px) scale(1.1); }
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(30px, -30px) scale(1.1);
+  }
 }
 
 .shape-3 {
@@ -124,8 +134,12 @@ body {
 }
 
 @keyframes floatShapeCenter {
-  from { transform: translate(-50%, -50%) scale(1); }
-  to   { transform: translate(calc(-50% + 20px), calc(-50% - 20px)) scale(1.08); }
+  from {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    transform: translate(calc(-50% + 20px), calc(-50% - 20px)) scale(1.08);
+  }
 }
 
 /* =============================================
@@ -215,7 +229,9 @@ body {
   border: 1px solid var(--input-border);
   border-radius: var(--radius-md);
   padding: 4px 8px 4px 16px;
-  transition: border-color var(--transition), box-shadow var(--transition);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
 }
 
 .password-box:focus-within {
@@ -260,7 +276,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--transition), color var(--transition), transform var(--transition);
+  transition:
+    background var(--transition),
+    color var(--transition),
+    transform var(--transition);
 }
 
 .icon-btn:hover {
@@ -284,8 +303,12 @@ body {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* =============================================
@@ -308,16 +331,24 @@ body {
   height: 5px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.08);
-  transition: background var(--transition-slow), transform var(--transition);
+  transition:
+    background var(--transition-slow),
+    transform var(--transition);
 }
 
 .bar.active {
   transform: scaleY(1.3);
 }
 
-.bar.weak   { background: var(--weak); }
-.bar.medium { background: var(--medium); }
-.bar.strong { background: var(--strong); }
+.bar.weak {
+  background: var(--weak);
+}
+.bar.medium {
+  background: var(--medium);
+}
+.bar.strong {
+  background: var(--strong);
+}
 
 .strength-label {
   font-size: 0.78rem;
@@ -330,9 +361,15 @@ body {
   transition: color var(--transition-slow);
 }
 
-.strength-label.weak   { color: var(--weak); }
-.strength-label.medium { color: var(--medium); }
-.strength-label.strong { color: var(--strong); }
+.strength-label.weak {
+  color: var(--weak);
+}
+.strength-label.medium {
+  color: var(--medium);
+}
+.strength-label.strong {
+  color: var(--strong);
+}
 
 /* =============================================
    Settings
@@ -381,9 +418,15 @@ body {
 }
 
 @keyframes pop {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.3); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Slider */
@@ -430,10 +473,14 @@ body {
   height: 20px;
   border-radius: 50%;
   background: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(167, 139, 250, 0.5);
+  box-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.4),
+    0 0 0 3px rgba(167, 139, 250, 0.5);
   cursor: grab;
   margin-top: -7.5px;
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition);
   position: relative;
   z-index: 2;
 }
@@ -441,7 +488,9 @@ body {
 .slider::-webkit-slider-thumb:active {
   cursor: grabbing;
   transform: scale(1.2);
-  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.5), 0 0 0 5px rgba(167, 139, 250, 0.4);
+  box-shadow:
+    0 2px 14px rgba(0, 0, 0, 0.5),
+    0 0 0 5px rgba(167, 139, 250, 0.4);
 }
 
 .slider::-moz-range-track {
@@ -456,12 +505,16 @@ body {
   border-radius: 50%;
   background: white;
   border: none;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(167, 139, 250, 0.5);
+  box-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.4),
+    0 0 0 3px rgba(167, 139, 250, 0.5);
   cursor: grab;
 }
 
 .slider:focus-visible::-webkit-slider-thumb {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 0 0 4px var(--accent-1);
+  box-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.4),
+    0 0 0 4px var(--accent-1);
 }
 
 .slider-labels {
@@ -490,7 +543,10 @@ body {
   border-radius: var(--radius-sm);
   padding: 12px 14px;
   cursor: pointer;
-  transition: border-color var(--transition), background var(--transition), transform var(--transition);
+  transition:
+    border-color var(--transition),
+    background var(--transition),
+    transform var(--transition);
   position: relative;
 }
 
@@ -505,7 +561,7 @@ body {
   background: rgba(167, 139, 250, 0.1);
 }
 
-.checkbox-label input[type="checkbox"] {
+.checkbox-label input[type='checkbox'] {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -522,7 +578,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color var(--transition), background var(--transition);
+  transition:
+    border-color var(--transition),
+    background var(--transition);
   position: relative;
 }
 
@@ -595,8 +653,14 @@ body {
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* =============================================
@@ -616,7 +680,10 @@ body {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+  transition:
+    opacity var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
   box-shadow: 0 8px 24px rgba(167, 139, 250, 0.3);
   letter-spacing: 0.02em;
 }
@@ -658,7 +725,9 @@ body {
   gap: 8px;
   z-index: 100;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
   white-space: nowrap;
 }
@@ -676,13 +745,25 @@ body {
    Animations
    ============================================= */
 @keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* =============================================
@@ -739,7 +820,9 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }

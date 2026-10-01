@@ -46,8 +46,8 @@ function getHabits() {
  *     — Works for existing data, becomes accurate after script.js update.
  */
 function getHistory(habit) {
-  if (Array.isArray(habit.completionHistory) && habit.completionHistory.length > 0) {
-    return habit.completionHistory;
+  if (Array.isArray(habit.completionDates) && habit.completionDates.length > 0) {
+    return habit.completionDates;
   }
   // Fallback: approximate N consecutive days ending at lastCompleted
   if (!habit.lastCompleted || !(habit.streak > 0)) return [];
@@ -83,7 +83,7 @@ const HEAT_DARK  = ['#161a2e', '#2d2a6a', '#4a44b0', '#7c6af7', '#a78bfa'];
 const HEAT_LIGHT = ['#e8eaf6', '#c5cae9', '#9fa8da', '#7986cb', '#5c6bc0'];
 
 function getHeatColors() {
-  return document.body.classList.contains('light') ? HEAT_LIGHT : HEAT_DARK;
+  return document.body.classList.contains('dark-mode') ? HEAT_DARK : HEAT_LIGHT;
 }
 
 function heatColor(count, maxHabits, colors) {
@@ -364,7 +364,7 @@ function renderPerHabitHeatmaps(habits) {
     nameRow.innerHTML =
       habit.name +
       (habit.streak > 0
-        ? ` <span class="habit-streak-badge">🔥 ${habit.streak}d streak</span>`
+        ? ` <span class="habit-streak-badge">Streak: ${habit.streak}d streak</span>`
         : '');
     item.appendChild(nameRow);
 
@@ -381,19 +381,18 @@ function renderPerHabitHeatmaps(habits) {
 // ── Theme ──────────────────────────────────────────────────────────────────
 
 function initTheme() {
-  // Analytics is dark by default; respect the saved preference
   const saved = localStorage.getItem('theme');
-  if (saved === 'light') document.body.classList.add('light');
+  const isDark = saved === 'dark';
+  document.body.classList.toggle('dark-mode', isDark);
 
   const btn = document.getElementById('theme-toggle');
-  btn.textContent = document.body.classList.contains('light') ? '🌙 Dark' : '☀️ Light';
+  btn.textContent = isDark ? 'Light Mode' : 'Dark Mode';
 
   btn.addEventListener('click', () => {
-    document.body.classList.toggle('light');
-    const isLight = document.body.classList.contains('light');
-    btn.textContent = isLight ? '🌙 Dark' : '☀️ Light';
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    // Re-render heatmaps so colours update
+    const nowDark = document.body.classList.toggle('dark-mode');
+    btn.textContent = nowDark ? 'Light Mode' : 'Dark Mode';
+    localStorage.setItem('theme', nowDark ? 'dark' : 'light');
+
     const habits = getHabits();
     renderHeatmap(habits);
     renderPerHabitHeatmaps(habits);
@@ -409,7 +408,7 @@ function renderEmptyState() {
   const empty = document.createElement('div');
   empty.className = 'empty-state';
   empty.innerHTML = `
-    <div class="empty-icon">📊</div>
+    <div class="empty-icon"></div>
     <h2>No habit data yet</h2>
     <p>
       Head back to the <a href="index.html">Habit Tracker</a> and add your first habit.<br>

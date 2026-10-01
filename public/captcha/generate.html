@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Captcha – Captcha</title>
+    <link rel="stylesheet" href="captcha.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="project-back-button">← Back to Home</a>
+        <a href="captcha.html" class="logo">✦ Captcha</a>
+        <ul class="nav-links">
+            <li><a href="captcha.html">Home</a></li>
+            <li><a href="generate.html" class="active">Generate Captcha</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-btn" aria-label="Toggle dark/light mode">
+            <span id="themeIcon" aria-hidden="true">🌙</span>
+        </button>
+    </nav>
+
+    <main class="page-shell">
+        <section class="hero-card">
+            <div class="hero-copy">
+                <span class="eyebrow">Interactive Security Check</span>
+                <h1>Create and solve a fresh challenge.</h1>
+                <p>Select a mode, adjust difficulty, and verify your response with a polished interface built for any screen size.</p>
+            </div>
+            <div class="hero-metrics">
+                <div class="metric-card">
+                    <strong>Custom Modes</strong>
+                    <span>Text, image, audio, and math challenges</span>
+                </div>
+                <div class="metric-card">
+                    <strong>Flexible Difficulty</strong>
+                    <span>Easy, medium, and hard options for every skill level</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="challenge-card">
+            <div class="control-grid">
+                <label class="field">
+                    <span>Challenge Type</span>
+                    <select id="captchaTypeSelect">
+                        <option value="text">Text</option>
+                        <option value="image">Image</option>
+                        <option value="audio">Audio</option>
+                        <option value="math">Math</option>
+                    </select>
+                </label>
+                <label class="field">
+                    <span>Difficulty</span>
+                    <select id="difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="status-row">
+                <div class="status-pill">⏳ <span id="timer">30</span>s</div>
+                <div class="status-pill">🎯 <span id="attempts">3</span> left</div>
+            </div>
+
+            <div id="captchaContainer" class="captcha-surface" aria-live="polite"></div>
+
+            <div id="voiceField" class="voice-field hidden">
+                <label for="voiceSelect">Voice</label>
+                <select id="voiceSelect"></select>
+            </div>
+
+            <div class="textcaptcha">
+                <input id="captchaInput" type="text" placeholder="Enter your answer" />
+            </div>
+
+            <div class="actions">
+                <button class="refresh" aria-label="Refresh CAPTCHA">↻</button>
+                <button class="submit" type="button">Submit Challenge</button>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast-container" aria-live="polite"></div>
+
+    <footer class="footer">
+        <section id="footer-container">
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </section>
+        <div class="footer-bottom">
+            <p>©<span id="currentYear"></span> Captcha is a modern front-end verification demo.</p>
+        </div>
+    </footer>
+
+    <script src="captcha.js"></script>
+</body>
+</html>

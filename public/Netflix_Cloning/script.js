@@ -28,49 +28,57 @@ const MOVIES_DATA = [
         id: 5,
         title: "Mission Impossible",
         genre: "action",
-        rating: "7.7/10"
+        rating: "7.7/10",
+        image: "missionimpossible2.jpg"
     },
     {
         id: 6,
         title: "John Wick",
         genre: "action",
-        rating: "7.4/10"
+        rating: "7.4/10",
+        image : "johnwick2.jpg"
     },
     {
         id: 7,
         title: "Mad Max",
         genre: "action",
-        rating: "8.1/10"
+        rating: "8.1/10",
+        image: "madmax.jpg"
     },
     {
         id: 8,
         title: "Top Gun",
         genre: "action",
-        rating: "8.0/10"
+        rating: "8.0/10",
+        image:"topgun.jpg"
     },
     {
         id: 9,
         title: "The Handmaid's Tale",
         genre: "drama",
-        rating: "8.4/10"
+        rating: "8.4/10",
+        image: "thehandmaidtale.jpg"
     },
     {
         id: 10,
         title: "Chernobyl",
         genre: "drama",
-        rating: "9.3/10"
+        rating: "9.3/10",
+        image: "chernobyl.jpg"
     },
     {
         id: 11,
         title: "The Irishman",
         genre: "drama",
-        rating: "8.2/10"
+        rating: "8.2/10",
+        image: "theirishman4.jpg"
     },
     {
         id: 12,
         title: "Ozark",
         genre: "drama",
-        rating: "8.5/10"
+        rating: "8.5/10",
+        image : "ozark.png"
     }
 ];
 
@@ -318,7 +326,7 @@ function createMovieCards(movies) {
     return movies.map(movie => `
         <div class="movie-card">
             <div class="movie-poster">
-                <span style="font-size: 12px;">🎬 ${movie.title}</span>
+                <img src="img/${movie.image}" alt="${movie.title}">
             </div>
             <div class="movie-info">
                 <div class="movie-title">${movie.title}</div>

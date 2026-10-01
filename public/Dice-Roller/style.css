@@ -460,3 +460,140 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Color Picker with Custom Picker ── */
+.color-picker-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.color-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+  gap: 6px;
+  padding: 8px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  max-height: 120px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+.color-picker::-webkit-scrollbar {
+  width: 4px;
+}
+
+.color-picker::-webkit-scrollbar-track {
+  background: var(--bg-page);
+  border-radius: 4px;
+}
+
+.color-picker::-webkit-scrollbar-thumb {
+  background: var(--text-secondary);
+  border-radius: 4px;
+}
+
+.color-picker-divider {
+  border-top: 1px solid var(--border);
+  margin: 4px 0;
+}
+
+.color-picker-custom {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  border: 2px solid var(--border);
+}
+
+.color-picker-custom label {
+  font-size: 0.75em;
+  font-weight: 600;
+  color: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+}
+
+#customColorPicker {
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 2px;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+#customColorPicker:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+#customColorPicker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+#customColorPicker::-webkit-color-swatch {
+  border: none;
+  border-radius: 4px;
+}
+
+.color-option {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.2s ease;
+  min-width: 28px;
+}
+
+.color-option:hover {
+  transform: scale(1.15);
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.color-option.selected {
+  border-color: #333;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #333;
+  transform: scale(1.1);
+}
+
+[data-theme="dark"] .color-option.selected {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px #111, 0 0 0 4px #fff;
+}
+
+/* ── Responsive adjustments ── */
+@media (max-width: 520px) {
+  .color-picker {
+    grid-template-columns: repeat(auto-fill, minmax(28px, 1fr));
+    max-height: 100px;
+    gap: 4px;
+    padding: 6px;
+  }
+  
+  .color-option {
+    min-width: 24px;
+  }
+  
+  #customColorPicker {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (min-width: 768px) {
+  .color-picker {
+    grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+  }
+}

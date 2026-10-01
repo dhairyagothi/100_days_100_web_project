@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Palette Lab</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <h1>🎨 Palette Lab</h1>
+    <p>Extract the six most dominant colors from any image.</p>
+    <button id="themeToggle">🌙</button>
+  </header>
+
+  <main class="container">
+    <section class="upload-card">
+      <div id="dropZone" class="drop-zone">
+        <input type="file" id="imageInput" accept="image/*">
+        <p><strong>Drag & Drop</strong> an image here</p>
+        <span>or click to browse</span>
+      </div>
+
+      <div class="preview">
+        <img id="previewImage" src="" alt="Preview">
+      </div>
+    </section>
+
+    <section class="palette-section">
+      <div class="section-title">
+        <h2>Dominant Colors</h2>
+        <button id="copyAll">Copy All</button>
+      </div>
+
+      <div id="paletteContainer" class="palette-grid">
+        <div class="color-card">
+          <div class="swatch" style="background:#5B7CFA;"></div>
+          <p>#5B7CFA</p>
+          <button>Copy</button>
+        </div>
+
+        <div class="color-card">
+          <div class="swatch" style="background:#FFB347;"></div>
+          <p>#FFB347</p>
+          <button>Copy</button>
+        </div>
+
+        <div class="color-card">
+          <div class="swatch" style="background:#36CFC9;"></div>
+          <p>#36CFC9</p>
+          <button>Copy</button>
+        </div>
+
+        <div class="color-card">
+          <div class="swatch" style="background:#9C6ADE;"></div>
+          <p>#9C6ADE</p>
+          <button>Copy</button>
+        </div>
+
+        <div class="color-card">
+          <div class="swatch" style="background:#F95D6A;"></div>
+          <p>#F95D6A</p>
+          <button>Copy</button>
+        </div>
+
+        <div class="color-card">
+          <div class="swatch" style="background:#2ED573;"></div>
+          <p>#2ED573</p>
+          <button>Copy</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <canvas id="hiddenCanvas" hidden></canvas>
+  <script src="script.js"></script>
+</body>
+</html>

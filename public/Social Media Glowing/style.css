@@ -3,21 +3,43 @@
   padding: 0;
   box-sizing: border-box;
 }
+html {
+    background: radial-gradient(circle at top,
+        #1a1a40 0%,
+        #0f0f2d 35%,
+        #050510 70%,
+        #000000 100%);
+}
+html,
 body {
-  height: 100vh;
-  width: 100vw;
-  background: #18191f;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+}
+
+body {
   margin: 0;
   padding: 0;
+  overflow: auto;
+  background: radial-gradient(circle at top,
+      #1a1a40 0%,
+      #0f0f2d 35%,
+      #050510 70%,
+      #000000 100%);
+  position: relative;
+  width: 100%;
   font-family: "Arial", sans-serif;
-  background-color: #000000;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .container {
+  width: 100%;
+  margin: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,6 +47,7 @@ body {
   width: 100vw;
   flex-wrap: wrap;
 }
+
 #apple,
 #twitter,
 #github,
@@ -54,6 +77,7 @@ body {
     transform 0.3s ease,
     box-shadow 0.3s ease;
 }
+
 /* Icon Hover Effects */
 #apple:hover,
 #twitter:hover,
@@ -62,12 +86,15 @@ body {
   transform: scale(1.2);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
 #twitter {
   animation-delay: 0.3s;
 }
+
 #facebook {
   animation-delay: 0.7s;
 }
+
 #github {
   animation-delay: 0.1s;
 }
@@ -76,6 +103,7 @@ body {
   from {
     filter: hue-rotate(0deg);
   }
+
   to {
     filter: hue-rotate(360deg);
   }
@@ -114,7 +142,22 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding-left: 140px;
+  padding-left: 20px;
+}
+
+.back {
+  background-color: #ff0080;
+  color: white;
+  width: 100px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.back:hover {
+  cursor: pointer;
+  background: none;
 }
 
 .logo i {
@@ -156,26 +199,14 @@ body {
     0 0 40px #ff0080;
 }
 
-/* Galaxy Background */
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  overflow: hidden;
-  background: radial-gradient(
-    circle at top,
-    #1a1a40 0%,
-    #0f0f2d 35%,
-    #050510 70%,
-    #000000 100%
-  );
-  position: relative;
-}
+
 
 /* Stars */
 body::before {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
   content: "";
-  position: absolute;
   width: 100%;
   height: 100%;
   background-image:
@@ -187,15 +218,16 @@ body::before {
     120px 120px,
     180px 180px,
     240px 240px;
-
   opacity: 0.4;
   animation: starsMove 20s linear infinite;
 }
 
 /* Glow Effect */
 body::after {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
   content: "";
-  position: absolute;
   width: 500px;
   height: 500px;
   background: #ff0080;
@@ -207,6 +239,7 @@ body::after {
 
 /* Hero Section */
 .hero {
+  margin: 30px;
   width: 100%;
   text-align: center;
   margin-top: 120px;
@@ -261,6 +294,7 @@ body::after {
   from {
     transform: translateY(0);
   }
+
   to {
     transform: translateY(-200px);
   }
@@ -286,6 +320,7 @@ body::after {
       0 0 10px white,
       0 0 20px white;
   }
+
   to {
     text-shadow:
       0 0 20px white,
@@ -296,12 +331,14 @@ body::after {
 
 /* Footer */
 .footer {
+  height: auto;
+  margin-top: auto;
   width: 100%;
   text-align: center;
   padding: 20px;
   position: relative;
   z-index: 2;
-  margin-top: 50px;
+  background-color: #111;
 }
 
 .footer p {
@@ -312,4 +349,90 @@ body::after {
   text-shadow:
     0 0 10px #ff0080,
     0 0 20px #ff0080;
+}
+
+
+/* Navigation Links */
+.nav-links {
+
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 20px;
+  padding: 0;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  transition: color 0.3s, border-bottom 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #ff0080;
+  border-bottom: 2px solid #ff0080;
+}
+
+/* Right Side (Theme Toggle) */
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+#themeToggle {
+  margin: 20px;
+  margin-right: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: #333;
+  transition: transform 0.3s, color 0.3s;
+}
+
+#themeToggle:hover {
+  transform: rotate(20deg);
+  color: #ff0080;
+}
+
+body.light-theme {
+  background: #fafafa;
+  color: #3f4656;
+  transition: all 0.3s ease;
+}
+
+body.light-theme h1,
+body.light-theme .nav-btn,
+body.light-theme h2,
+body.light-theme p {
+  color: #3f4656;
+  transition: all 0.3s ease;
+}
+
+/* Background */
+body.light-theme .background {
+  background:
+    radial-gradient(circle at left center,
+      rgba(255, 210, 210, 0.35) 0%,
+      transparent 40%),
+    radial-gradient(circle at right center,
+      rgba(180, 220, 255, 0.35) 0%,
+      transparent 40%),
+    #fafafa;
+}
+
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+body.light-theme .nav-links li a {
+  color: #000000;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.05);
 }

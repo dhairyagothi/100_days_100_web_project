@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizer - Sorting Algorithms</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="app-mode theme-dark">
+    
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-chart-column"></i>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" title="Home"><i class="fa-solid fa-house"></i></a>
+                <a href="visualizer.html" class="active" title="Visualizer"><i class="fa-solid fa-desktop"></i></a>
+                <a href="settings.html" title="Settings"><i class="fa-solid fa-gear"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            
+            <!-- Toolbar -->
+            <header class="toolbar">
+                
+                <div class="toolbar-group">
+                    <button class="btn btn-secondary" id="btn-generate">Generate New Array</button>
+                </div>
+
+                <div class="toolbar-divider"></div>
+                
+                <div class="toolbar-group">
+                    <div class="slider-control">
+                        <label for="slider-size">Array Size</label>
+                        <input type="range" id="slider-size" min="10" max="150" value="80" class="custom-slider">
+                    </div>
+                    <div class="slider-control">
+                        <label for="slider-speed">Sorting Speed</label>
+                        <input type="range" id="slider-speed" min="1" max="100" value="75" class="custom-slider">
+                    </div>
+                </div>
+
+                <div class="toolbar-divider"></div>
+
+                <div class="toolbar-group">
+                    <select id="algo-selector" class="custom-select" title="Algorithm">
+                        <option value="bubble">Bubble Sort</option>
+                        <option value="insertion">Insertion Sort</option>
+                        <option value="merge">Merge Sort</option>
+                        <option value="quick">Quick Sort</option>
+                    </select>
+                </div>
+                
+                <div class="toolbar-group">
+                    <button class="btn btn-primary" id="btn-sort">
+                        <i class="fa-solid fa-play"></i> Sort!
+                    </button>
+                </div>
+                
+            </header>
+
+            <!-- Visualization Container -->
+            <div class="visualization-container" id="array-container">
+                <!-- Bars injected via JS -->
+            </div>
+            
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

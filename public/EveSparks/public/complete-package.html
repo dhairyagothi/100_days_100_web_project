@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Complete Package – EveSparks</title>
+  <meta name="description" content="EveSparks all-inclusive event packages — everything you need for a perfect event at one price." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .badge-popular {
+      background: var(--accent); color: #fff;
+      font-size: .7rem; font-weight: 700; padding: 3px 10px;
+      border-radius: 99px; text-transform: uppercase; letter-spacing: .8px;
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    }
+    .package-tab {
+      padding: 11px 24px; border-radius: 30px;
+      border: 2px solid var(--border); font-weight: 600; font-size: .85rem;
+      color: var(--text); background: var(--card); cursor: pointer; transition: all .25s;
+    }
+    .package-tab.active,.package-tab:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .comparison-table { width: 100%; border-collapse: collapse; }
+    .comparison-table th, .comparison-table td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border); font-size: .88rem; }
+    .comparison-table th { background: var(--accent); color: #fff; font-weight: 700; }
+    .comparison-table tr:hover { background: rgba(255,123,156,.05); }
+    .check { color: #22c55e; font-size: 1.1rem; }
+    .cross { color: #ef4444; font-size: 1.1rem; }
+  </style>
+</head>
+<body class="light">
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <img src="image/b1.jpg" class="hero-bg" alt="Complete Package" />
+  <div class="hero-content">
+    <span class="badge-tag">📦 Complete Packages</span>
+    <h1>All-Inclusive Event Packages</h1>
+    <p>Everything you need for a perfect event — decor, catering, photography &amp; planner — at one transparent price.</p>
+    <a href="#packages" class="btn-primary">View Packages <i class="bi bi-arrow-down"></i></a>
+  </div>
+</div>
+
+<!-- WHAT'S INCLUDED -->
+<div class="section">
+  <h2 class="section-title text-center reveal">What's Always Included</h2>
+  <p class="section-sub text-center reveal">Every EveSparks complete package comes with these essentials</p>
+  <div class="row g-4">
+    <div class="col-6 col-md-4 col-lg-2 reveal">
+      <div class="eve-card h-100 text-center"><div class="card-body"><div style="font-size:2.2rem;margin-bottom:10px">🌸</div><h3 class="card-title" style="font-size:.9rem">Decoration</h3></div></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2 reveal">
+      <div class="eve-card h-100 text-center"><div class="card-body"><div style="font-size:2.2rem;margin-bottom:10px">🍽️</div><h3 class="card-title" style="font-size:.9rem">Catering</h3></div></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2 reveal">
+      <div class="eve-card h-100 text-center"><div class="card-body"><div style="font-size:2.2rem;margin-bottom:10px">📷</div><h3 class="card-title" style="font-size:.9rem">Photography</h3></div></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2 reveal">
+      <div class="eve-card h-100 text-center"><div class="card-body"><div style="font-size:2.2rem;margin-bottom:10px">🎬</div><h3 class="card-title" style="font-size:.9rem">Videography</h3></div></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2 reveal">
+      <div class="eve-card h-100 text-center"><div class="card-body"><div style="font-size:2.2rem;margin-bottom:10px">📋</div><h3 class="card-title" style="font-size:.9rem">Event Planner</h3></div></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2 reveal">
+      <div class="eve-card h-100 text-center"><div class="card-body"><div style="font-size:2.2rem;margin-bottom:10px">🎶</div><h3 class="card-title" style="font-size:.9rem">DJ &amp; Music</h3></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PACKAGES -->
+<div style="background:var(--card);border-top:1px solid var(--border)">
+<div class="section" id="packages">
+  <h2 class="section-title text-center reveal">Choose Your Package</h2>
+  <p class="section-sub text-center reveal">Transparent pricing — no hidden charges</p>
+
+  <div class="pricing-grid">
+    <!-- SILVER -->
+    <div class="pricing-card reveal">
+      <div class="plan-name">🥈 Silver</div>
+      <div class="plan-price">₹75,000 <span>/ event</span></div>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:16px">Up to 200 guests</p>
+      <ul>
+        <li>Basic floral decoration</li>
+        <li>Vegetarian catering (200 pax)</li>
+        <li>4 hrs photography (1 photographer)</li>
+        <li>Basic event planner</li>
+        <li>Sound system</li>
+      </ul>
+      <a href="budget-planner.html" class="btn-primary" style="width:100%;justify-content:center;margin-top:8px">Book Now</a>
+    </div>
+
+    <!-- GOLD (Featured) -->
+    <div class="pricing-card featured reveal" style="position:relative;padding-top:44px">
+      <span class="badge-popular">⭐ Most Popular</span>
+      <div class="plan-name" style="color:var(--accent)">🥇 Gold</div>
+      <div class="plan-price">₹1,75,000 <span>/ event</span></div>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:16px">Up to 500 guests</p>
+      <ul>
+        <li>Premium floral + LED decoration</li>
+        <li>Veg + Non-veg catering (500 pax)</li>
+        <li>8 hrs photography + videography</li>
+        <li>Dedicated senior planner</li>
+        <li>DJ + sound + lighting</li>
+        <li>Drone footage included</li>
+        <li>Pre-event photoshoot</li>
+      </ul>
+      <a href="budget-planner.html" class="btn-primary" style="width:100%;justify-content:center;margin-top:8px">Book Now</a>
+    </div>
+
+    <!-- PLATINUM -->
+    <div class="pricing-card reveal">
+      <div class="plan-name">💎 Platinum</div>
+      <div class="plan-price">₹3,50,000 <span>/ event</span></div>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:16px">Up to 1000 guests</p>
+      <ul>
+        <li>Luxury themed full decoration</li>
+        <li>Multi-cuisine catering (1000 pax)</li>
+        <li>Full-day photography team</li>
+        <li>Cinematic wedding film</li>
+        <li>Live band option</li>
+        <li>Celebrity MC / anchor</li>
+        <li>VIP guest management</li>
+        <li>Post-event photo album</li>
+      </ul>
+      <a href="budget-planner.html" class="btn-primary" style="width:100%;justify-content:center;margin-top:8px">Book Now</a>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- COMPARISON TABLE -->
+<div class="section">
+  <h2 class="section-title reveal">Package Comparison</h2>
+  <p class="section-sub reveal">See exactly what you get with each package</p>
+  <div style="overflow-x:auto" class="reveal">
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>🥈 Silver</th>
+          <th>🥇 Gold</th>
+          <th>💎 Platinum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Decoration</td><td>Basic</td><td>Premium</td><td>Luxury</td></tr>
+        <tr><td>Catering (Veg)</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>Catering (Non-Veg)</td><td class="cross">✗</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>Photography</td><td>4 hrs</td><td>8 hrs</td><td>Full Day</td></tr>
+        <tr><td>Videography</td><td class="cross">✗</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>Drone Footage</td><td class="cross">✗</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>DJ &amp; Sound</td><td>Basic</td><td>Premium</td><td>Live Band Option</td></tr>
+        <tr><td>Event Planner</td><td>Basic</td><td>Senior</td><td>Celebrity MC</td></tr>
+        <tr><td>Pre-event Shoot</td><td class="cross">✗</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>Photo Album</td><td class="cross">✗</td><td class="cross">✗</td><td class="check">✓</td></tr>
+        <tr><td>Max Guests</td><td>200</td><td>500</td><td>1000+</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div style="background:var(--card);border-top:1px solid var(--border)">
+<div class="section">
+  <h2 class="section-title reveal">Frequently Asked Questions</h2>
+  <p class="section-sub reveal">Everything you want to know about our packages</p>
+  <div style="max-width:720px">
+    <div class="faq-item reveal"><button class="faq-q">Can I customise what's in my package? <span>+</span></button><div class="faq-a">Absolutely! All our packages can be customised. Use our Budget Planner to mix and match services exactly as you need.</div></div>
+    <div class="faq-item reveal"><button class="faq-q">How far in advance should I book? <span>+</span></button><div class="faq-a">We recommend booking at least 2–3 months in advance for weddings, and 4–6 weeks for other events to secure your preferred date.</div></div>
+    <div class="faq-item reveal"><button class="faq-q">Is there a cancellation policy? <span>+</span></button><div class="faq-a">Yes. Cancellations made 30+ days before the event receive a 70% refund. Within 30 days, 50% is refunded. Our team is always ready to reschedule if needed.</div></div>
+    <div class="faq-item reveal"><button class="faq-q">Do you handle outstation events? <span>+</span></button><div class="faq-a">Yes! We serve 15+ cities across Madhya Pradesh. Additional travel charges may apply for outstation events.</div></div>
+    <div class="faq-item reveal"><button class="faq-q">Can I add services after booking? <span>+</span></button><div class="faq-a">Yes, you can add or upgrade services anytime before the event subject to availability. Contact your assigned event coordinator.</div></div>
+  </div>
+</div>
+</div>
+
+<div id="foot-placeholder"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="nav.js"></script><script src="main.js"></script>
+<script>injectNav('package');</script>
+</body>
+</html>

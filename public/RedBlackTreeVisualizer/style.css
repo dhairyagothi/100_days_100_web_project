@@ -1,0 +1,196 @@
+:root {
+    --bg-color: #0f172a;
+    --panel-bg: rgba(30, 41, 59, 0.7);
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --red-node: #ef4444;
+    --black-node: #1e293b;
+    --border-color: #334155;
+    --primary-btn: #3b82f6;
+    --primary-hover: #2563eb;
+    --danger-btn: #f43f5e;
+    --danger-hover: #e11d48;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+    overflow-x: hidden;
+}
+
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.header {
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(to right, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    color: var(--text-secondary);
+}
+
+.glass-panel {
+    background: var(--panel-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+input[type="number"] {
+    background: #0f172a;
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+    font-family: inherit;
+}
+
+input[type="number"]:focus {
+    border-color: var(--primary-btn);
+}
+
+.btn {
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+}
+
+.btn.primary { background: var(--primary-btn); }
+.btn.primary:hover { background: var(--primary-hover); }
+.btn.secondary { background: #475569; }
+.btn.secondary:hover { background: #334155; }
+.btn.danger { background: var(--danger-btn); }
+.btn.danger:hover { background: var(--danger-hover); }
+
+.logger {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.logger h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: #94a3b8;
+}
+
+#log-list {
+    list-style: none;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+#log-list li {
+    margin-bottom: 0.3rem;
+    padding-left: 1rem;
+    position: relative;
+}
+
+#log-list li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--primary-btn);
+}
+
+.visualization-area {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+#edges-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#nodes-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.tree-node {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    color: white;
+    transform: translate(-50%, -50%);
+    transition: all 0.5s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    z-index: 3;
+}
+
+.tree-node.red {
+    background: radial-gradient(circle at 30% 30%, #f87171, var(--red-node));
+}
+
+.tree-node.black {
+    background: radial-gradient(circle at 30% 30%, #475569, var(--black-node));
+}
+
+line {
+    stroke: #64748b;
+    stroke-width: 2;
+    transition: all 0.5s ease-in-out;
+}

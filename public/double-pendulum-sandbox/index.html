@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaotic Double Pendulum & Fractal Generator</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div class="sandbox-container">
+        <div class="telemetry-panel">
+            <h2>CHAOS PENDULUM RK4</h2>
+            <hr class="divider">
+
+            <div class="control-box">
+                <button id="resetSimulationBtn">RESET PATH</button>
+            </div>
+
+            <div class="slider-group">
+                <label>GRAVITY VECTOR (<span id="gVal">9.81</span>)</label>
+                <input type="range" id="gravitySlider" min="0" max="25" step="0.1" value="9.8">
+            </div>
+
+            <div class="slider-group">
+                <label>STRAND 1 LENGTH (<span id="l1Val">140</span>)</label>
+                <input type="range" id="l1Slider" min="50" max="250" step="1" value="140">
+            </div>
+
+            <div class="slider-group">
+                <label>STRAND 2 LENGTH (<span id="l2Val">140</span>)</label>
+                <input type="range" id="l2Slider" min="50" max="250" step="1" value="140">
+            </div>
+
+            <div class="slider-group">
+                <label>BOB 1 MASS (<span id="m1Val">15</span>)</label>
+                <input type="range" id="m1Slider" min="5" max="50" step="1" value="15">
+            </div>
+
+            <div class="slider-group">
+                <label>BOB 2 MASS (<span id="m2Val">15</span>)</label>
+                <input type="range" id="m2Slider" min="5" max="50" step="1" value="15">
+            </div>
+
+            <div class="metric-box">
+                <span class="label">INTEGRATOR SOLVER</span>
+                <div class="value accent">Runge-Kutta (RK4)</div>
+            </div>
+
+            <div class="instruction-pad">
+                <h3>CHAOS PARAMETERS</h3>
+                <p>Modify mass or rod structures in real time to trigger phase space transitions. The canvas path
+                    renders an unrepeatable fractal-like trailing path buffer matching kinetic outputs.</p>
+            </div>
+        </div>
+
+        <div class="viewport-area">
+            <div class="viewport-header">
+                <span class="status-dot blinking"></span>
+                <span class="title-text">PHYS_LAB // NON_LINEAR_DIFFERENTIAL_SOLVER</span>
+            </div>
+            <canvas id="pendulumCanvas"></canvas>
+        </div>
+    </div>
+    <script src="./app.js"></script>
+</body>
+
+</html> 

@@ -16,13 +16,31 @@
     </header>
 
     <main class="container">
+        <section class="growth-dashboard">
+            <div class="dashboard-header">
+                <h2>>_ Competitive Programming Profile Analysis</h2>
+                <p>Analyze your Codeforces profile and receive personalized growth recommendations.</p>
+            </div>
+
+            <div class="dashboard-input">
+                <input type="text" id="cf-username" placeholder="Enter Codeforces Username" autocomplete="off" />
+                <button id="analyze-btn">[ ANALYZE ]</button>
+            </div>
+
+            <div id="analysis-container" class="analysis-container">
+                <div class="placeholder-card">
+                    <h3>>_ AWAITING INPUT</h3>
+                    <p>Enter a Codeforces username and click ANALYZE to boot the profile scanner.</p>
+                </div>
+            </div>
+        </section>
+
         <div class="dashboard-controls">
             <div class="controls-group">
                 <label for="platform-filter">Filter by Platform:</label>
                 <div class="select-wrapper">
                     <select id="platform-filter" class="filter-dropdown">
                         <option value="ALL">ALL PLATFORMS</option>
-                        <!-- Options populated via JS -->
                     </select>
                 </div>
             </div>
@@ -35,7 +53,6 @@
                     </select>
                 </div>
             </div>
-
         </div>
 
         <div id="status-container">

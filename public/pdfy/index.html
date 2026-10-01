@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pdfy. - Minimal Image to PDF Converter</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="A simple, minimal, and premium client-side Image to PDF Converter. Keep your documents private - all conversions happen locally in your browser.">
+  <meta name="keywords" content="Image to PDF, PDF Converter, PNG to PDF, JPEG to PDF, WebP to PDF, Client-side PDF Generator">
+  <meta name="author" content="pdfy.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- jsPDF Library CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-bg"></div>
+
+  <div class="app-wrapper">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <i class="fa-solid fa-file-pdf logo-icon"></i>
+        <h1>pdfy<span>.</span></h1>
+      </div>
+      <button id="themeToggle" class="icon-btn" aria-label="Toggle Theme">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="converter-container">
+      
+      <!-- Left Column: Upload and Previews -->
+      <section class="workspace-left">
+        <!-- Drag and Drop Dropzone -->
+        <div class="upload-dropzone" id="dropzone">
+          <input type="file" id="fileInput" multiple accept="image/png, image/jpeg, image/jpg, image/webp" class="file-input-hidden">
+          <div class="dropzone-content">
+            <div class="upload-icon-wrapper">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+            <h2>Drag & drop your images here</h2>
+            <p>Supports PNG, JPEG, and WebP formats</p>
+            <button type="button" class="btn-browse" id="btnBrowse">Browse Files</button>
+          </div>
+        </div>
+
+        <!-- Preview Area -->
+        <div class="preview-section hidden" id="previewSection">
+          <div class="preview-header">
+            <h3>Uploaded Images (<span id="fileCount">0</span>)</h3>
+            <button id="btnClearAll" class="btn-text-danger">Clear All</button>
+          </div>
+          
+          <!-- Image grid -->
+          <div class="image-grid" id="imageGrid">
+            <!-- Dynamic items rendered via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Settings & Actions -->
+      <section class="workspace-right">
+        <div class="settings-card">
+          <h3 class="settings-title"><i class="fa-solid fa-sliders"></i> PDF Settings</h3>
+          
+          <!-- Page Size -->
+          <div class="setting-group">
+            <label for="pageSize">Page Size</label>
+            <div class="select-wrapper">
+              <select id="pageSize" class="select-field">
+                <option value="a4" selected>A4 (210 x 297 mm)</option>
+                <option value="letter">US Letter (8.5 x 11 in)</option>
+                <option value="fit">Fit Image (Original dimensions)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Page Orientation -->
+          <div class="setting-group" id="orientationGroup">
+            <label for="pageOrientation">Page Orientation</label>
+            <div class="select-wrapper">
+              <select id="pageOrientation" class="select-field">
+                <option value="portrait" selected>Portrait</option>
+                <option value="landscape">Landscape</option>
+                <option value="auto">Auto (Match image aspect)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Margin -->
+          <div class="setting-group" id="marginGroup">
+            <label for="pageMargin">Margins</label>
+            <div class="select-wrapper">
+              <select id="pageMargin" class="select-field">
+                <option value="none" selected>None (0 mm)</option>
+                <option value="small">Small (10 mm)</option>
+                <option value="medium">Medium (20 mm)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Summary list -->
+          <div class="summary-list">
+            <div class="summary-item">
+              <span>Total Images</span>
+              <span id="summaryCount" class="summary-val">0</span>
+            </div>
+            <div class="summary-item">
+              <span>Estimated PDF Pages</span>
+              <span id="summaryPages" class="summary-val">0</span>
+            </div>
+          </div>
+
+          <!-- PDF Output Filename -->
+          <div class="setting-group filename-group">
+            <label for="pdfFilename">Output Filename</label>
+            <div class="input-wrapper">
+              <input type="text" id="pdfFilename" class="text-input" placeholder="converted_images" value="converted_images">
+              <span class="file-ext">.pdf</span>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <button type="button" id="btnGenerate" class="btn-generate" disabled>
+            <i class="fa-solid fa-file-export"></i> Generate PDF
+          </button>
+        </div>
+      </section>
+      
+    </main>
+
+    <!-- Compiler Overlay -->
+    <div class="overlay hidden" id="overlay">
+      <div class="loader-card">
+        <div class="spinner"></div>
+        <h3>Compiling PDF...</h3>
+        <p>This may take a moment based on image size.</p>
+        <span class="progress-indicator" id="progressText">0%</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>pdfy. &bull; 100% Client-Side. Your files never leave your device.</p>
+    </footer>
+  </div>
+
+  <!-- Logic Script -->
+  <script src="script.js"></script>
+</body>
+</html>

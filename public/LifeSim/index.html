@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Life Simulation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav>
+      <h3>Developer Hub</h3>
+      <div onclick="showPage('home')">Home / Welcome</div>
+      <div onclick="showPage('todo')">Focus List</div>
+      <div onclick="showPage('finance')">Finance Dashboard</div>
+      <div onclick="showPage('life')">Life Simulation</div>
+    </nav>
+
+    <main id="app">
+      <div id="home" class="page active">
+        <h1>Welcome to LifeSim</h1>
+        <p>
+          LifeSim is a unified developer hub designed to house your daily productivity tools, financial dashboards, and exploratory simulations within a cohesive, modular interface.
+        </p>
+        <h2>How to use this platform</h2>
+        <ul>
+          <li><strong>Home / Welcome:</strong> You are here! This section provides an overview of the platform.</li>
+          <li><strong>Focus List:</strong> A straightforward to-do list manager. Type your task in the input box and press Enter or click 'Add Task' to keep track of your daily goals.</li>
+          <li><strong>Finance Dashboard:</strong> <em>(Currently in Development)</em> A dedicated space to oversee and analyze your financial data and metrics.</li>
+          <li><strong>Life Simulation:</strong> A visually engaging implementation of Conway's Game of Life. Watch cellular automata evolve in real-time.</li>
+        </ul>
+        <p class="subtitle">
+          Use the sidebar navigation on the left to seamlessly switch between these modules.
+        </p>
+      </div>
+
+      <div id="todo" class="page">
+        <h1>Focus List</h1>
+        <div class="task-input-wrapper">
+          <input type="text" id="taskInput" placeholder="What needs to be done?" autocomplete="off" />
+          <button onclick="addTask()">Add Task</button>
+        </div>
+        <ul id="taskList"></ul>
+      </div>
+
+      <div id="finance" class="page">
+        <h1>Finance Dashboard</h1>
+        <p>Use the Finance Module logic here...</p>
+      </div>
+
+      <div id="life" class="page">
+        <h1>Conway's Game of Life</h1>
+        <canvas id="lifeCanvas" width="400" height="400"></canvas>
+      </div>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

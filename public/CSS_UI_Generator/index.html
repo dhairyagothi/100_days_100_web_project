@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Glassmorphism & Neumorphism UI Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1" integrity="sha384-cPFV+/abYd3INVFHPmSKpBmcnH+Q+bTZW7dv/EiuShUNPkHyFmRF8PsL7Ibfvunk" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1><i class="ph-fill ph-paint-brush-broad"></i> UI Effect Generator</h1>
+            <p>Instantly generate CSS for modern Glassmorphism and Neumorphism designs.</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Left Panel: Controls -->
+            <aside class="controls-panel">
+                <div class="mode-toggle">
+                    <button id="btn-glass" class="active">Glassmorphism</button>
+                    <button id="btn-neumorphism">Neumorphism</button>
+                </div>
+
+                <div id="glass-controls" class="control-group active">
+                    <div class="control-item">
+                        <label>Blur: <span id="val-blur">10px</span></label>
+                        <input type="range" id="glass-blur" min="0" max="50" value="10">
+                    </div>
+                    <div class="control-item">
+                        <label>Transparency: <span id="val-opacity">0.2</span></label>
+                        <input type="range" id="glass-opacity" min="0" max="1" step="0.01" value="0.2">
+                    </div>
+                    <div class="control-item">
+                        <label>Outline: <span id="val-outline">1px</span></label>
+                        <input type="range" id="glass-outline" min="0" max="5" value="1">
+                    </div>
+                    <div class="control-item">
+                        <label>Color</label>
+                        <input type="color" id="glass-color" value="#ffffff">
+                    </div>
+                </div>
+
+                <div id="neu-controls" class="control-group">
+                    <div class="control-item">
+                        <label>Distance: <span id="val-dist">10px</span></label>
+                        <input type="range" id="neu-dist" min="1" max="50" value="10">
+                    </div>
+                    <div class="control-item">
+                        <label>Blur: <span id="val-neu-blur">20px</span></label>
+                        <input type="range" id="neu-blur" min="1" max="100" value="20">
+                    </div>
+                    <div class="control-item">
+                        <label>Intensity: <span id="val-intensity">0.15</span></label>
+                        <input type="range" id="neu-intensity" min="0.01" max="0.5" step="0.01" value="0.15">
+                    </div>
+                    <div class="control-item">
+                        <label>Background Color</label>
+                        <input type="color" id="neu-bg" value="#e0e5ec">
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Right Panel: Preview and Code -->
+            <section class="preview-section">
+                <div class="preview-box" id="preview-container">
+                    <div class="preview-element" id="preview-el">
+                        <h2>Preview</h2>
+                    </div>
+                </div>
+
+                <div class="code-box">
+                    <div class="code-header">
+                        <span>CSS Output</span>
+                        <button id="copy-btn" class="copy-btn"><i class="ph ph-copy"></i> Copy</button>
+                    </div>
+                    <pre><code id="css-output"></code></pre>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

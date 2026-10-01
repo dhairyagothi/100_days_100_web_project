@@ -32,3 +32,41 @@ if (text1 && leaf && hill5 && hill1 && plant && hill4) {
         }
     }, { passive: true });
 }
+// ==========================
+// Theme Toggle
+// ==========================
+
+// Select all theme toggle buttons
+const themeToggles = document.querySelectorAll(".theme-toggle");
+
+// Function to update button icons
+function updateToggleButtons() {
+  const isDark = document.body.classList.contains("dark-theme");
+
+  themeToggles.forEach(btn => {
+    btn.textContent = isDark ? "☀️" : "🌙";
+  });
+}
+
+// Load saved theme
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark-theme");
+}
+
+updateToggleButtons();
+
+// Add click event to every toggle button
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-theme");
+
+    const isDark = document.body.classList.contains("dark-theme");
+
+    localStorage.setItem(
+      "theme",
+      isDark ? "dark" : "light"
+    );
+
+    updateToggleButtons();
+  });
+});

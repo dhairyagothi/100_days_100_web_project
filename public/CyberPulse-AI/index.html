@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhishGuard AI Terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <canvas id="matrix-canvas"></canvas>
+
+  <div class="scanlines"></div>
+
+  <main class="terminal-shell">
+
+    <header class="term-header">
+      <div class="term-header__dots">
+        <span class="dot dot--red"></span>
+        <span class="dot dot--yellow"></span>
+        <span class="dot dot--green"></span>
+      </div>
+      <h1 class="term-header__title">🛡️ PHISHGUARD <span>AI TERMINAL</span></h1>
+      <div class="term-header__status">
+        <span class="status-pulse"></span> SYSTEM ONLINE
+      </div>
+    </header>
+
+    <section class="boot-log" id="bootLog" aria-hidden="true"></section>
+
+    <section class="scan-panel" id="scanPanel">
+
+      <form class="scan-form" id="scanForm" autocomplete="off">
+        <label for="urlInput" class="scan-form__label">$ enter target url to analyze</label>
+        <div class="scan-form__row">
+          <span class="prompt-arrow">root@phishguard:~#</span>
+          <input
+            type="text"
+            id="urlInput"
+            class="scan-form__input"
+            placeholder="https://example.com"
+            required
+          />
+        </div>
+        <button type="submit" class="scan-form__submit" id="scanBtn">
+          <span class="scan-form__submit-text">RUN ANALYSIS</span>
+        </button>
+      </form>
+
+      <div class="live-log" id="liveLog" aria-live="polite"></div>
+
+      <div class="result-grid" id="resultGrid" hidden>
+
+        <div class="result-card result-card--verdict" id="verdictCard">
+          <span class="result-card__eyebrow">VERDICT</span>
+          <div class="verdict-badge" id="verdictBadge">
+            <span class="verdict-badge__icon" id="verdictIcon">🟢</span>
+            <span class="verdict-badge__text" id="verdictText">SAFE SIGNAL</span>
+          </div>
+        </div>
+
+        <div class="result-card result-card--score">
+          <span class="result-card__eyebrow">THREAT SCORE</span>
+          <div class="score-meter">
+            <div class="score-meter__bar">
+              <div class="score-meter__fill" id="scoreFill"></div>
+            </div>
+            <span class="score-meter__value" id="scoreValue">0</span>
+            <span class="score-meter__max">/100</span>
+          </div>
+        </div>
+
+        <div class="result-card result-card--confidence">
+          <span class="result-card__eyebrow">AI CONFIDENCE</span>
+          <div class="confidence-ring" id="confidenceRing">
+            <span class="confidence-ring__value" id="confidenceValue">0%</span>
+          </div>
+        </div>
+
+        <div class="result-card result-card--explain">
+          <span class="result-card__eyebrow">AI EXPLANATION</span>
+          <ul class="explain-list" id="explainList"></ul>
+        </div>
+
+      </div>
+
+      <p class="empty-state" id="emptyState">
+        &gt; awaiting input... paste a url above and run analysis to see results here.
+      </p>
+
+    </section>
+
+    <footer class="term-footer">
+      <p>⚠️ Educational tool only — rule-based heuristics, not a guaranteed phishing detector.</p>
+      <p>Built by <a href="https://github.com/sapnajha757" target="_blank" rel="noopener">Sapna Jha</a></p>
+    </footer>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

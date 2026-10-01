@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Word Scramble - Challenge your vocabulary by unscrambling words. Multiple difficulty levels, speed-based scores, and combo multipliers.">
+    <title>Word Scramble</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <span class="game-logo">Scramble.</span>
+            </div>
+            <div class="header-right">
+                <button id="sound-toggle-btn" class="icon-btn" title="Toggle Sound" aria-label="Toggle Sound">
+                    <!-- Speaker On SVG (default) -->
+                    <svg id="sound-on-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                    <!-- Speaker Off SVG (hidden by default) -->
+                    <svg id="sound-off-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="22" y1="9" x2="16" y2="15"></line>
+                        <line x1="16" y1="9" x2="22" y2="15"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="game-workspace">
+            <!-- Sidebar Panel (Left on Desktop, Top on Mobile) -->
+            <aside class="sidebar-panel">
+                <!-- Difficulty Selector -->
+                <div class="difficulty-selector" id="difficulty-selector">
+                    <button class="diff-btn active" data-difficulty="easy">Easy</button>
+                    <button class="diff-btn" data-difficulty="medium">Medium</button>
+                    <button class="diff-btn" data-difficulty="hard">Hard</button>
+                </div>
+
+                <!-- Stats Bar -->
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-label">Score</span>
+                        <span id="score-display" class="stat-val">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Streak</span>
+                        <span id="streak-display" class="stat-val">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">High Score</span>
+                        <span id="highscore-display" class="stat-val">0</span>
+                    </div>
+                </div>
+
+                <!-- Score Multiplier Tracker -->
+                <div class="multiplier-container">
+                    <span class="multiplier-pill">
+                        <span id="multiplier-val">x1.0</span> Multiplier
+                    </span>
+                    <span class="multiplier-details" id="multiplier-details">
+                        Easy Base (1.0x) • No Streak
+                    </span>
+                </div>
+            </aside>
+
+            <!-- Game Area (Right on Desktop, Bottom on Mobile) -->
+            <section class="game-area">
+                <!-- Main Interactive Card -->
+                <div class="game-card" id="game-card">
+                    <!-- Sleek Timer Progress Bar -->
+                    <div class="timer-container">
+                        <div id="timer-progress" class="timer-progress"></div>
+                    </div>
+
+                    <!-- Word Card Body -->
+                    <div class="card-body">
+                        <!-- Word Display / Scrambled Badges -->
+                        <div id="scrambled-letters-container" class="letters-container">
+                            <!-- Rendered via JS -->
+                            <span class="letter-badge placeholder">?</span>
+                            <span class="letter-badge placeholder">?</span>
+                            <span class="letter-badge placeholder">?</span>
+                            <span class="letter-badge placeholder">?</span>
+                        </div>
+
+                        <!-- Input Form -->
+                        <form id="guess-form" autocomplete="off" onsubmit="event.preventDefault();">
+                            <div class="input-wrapper">
+                                <input 
+                                    type="text" 
+                                    id="guess-input" 
+                                    placeholder="Type your answer here..." 
+                                    autofocus 
+                                    spellcheck="false"
+                                    autocomplete="off"
+                                    aria-label="Enter guess"
+                                >
+                                <button type="submit" id="submit-btn" class="submit-btn" aria-label="Submit Answer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Feedback message -->
+                        <div id="feedback-msg" class="feedback-msg"></div>
+                    </div>
+
+                    <!-- Card Actions -->
+                    <div class="card-footer">
+                        <button id="hint-btn" class="action-btn text-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path>
+                                <line x1="9" y1="18" x2="15" y2="18"></line>
+                                <line x1="10" y1="22" x2="14" y2="22"></line>
+                            </svg>
+                            <span>Hint</span>
+                        </button>
+                        <button id="skip-btn" class="action-btn text-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 4l10 8-10 8V4z"></path>
+                                <line x1="19" y1="5" x2="19" y2="19"></line>
+                            </svg>
+                            <span>Skip</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Game Over Modal / Overlay -->
+        <div id="game-over-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <div class="trophy-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                        <path d="M4 22h16"></path>
+                        <path d="M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34"></path>
+                        <path d="M12 2a7 7 0 0 0-7 7c0 3.18 1.9 5.86 4.66 7.02l.68.29a3 3 0 0 0 2.32 0l.68-.29A7.01 7.01 0 0 0 19 9a7 7 0 0 0-7-7z"></path>
+                    </svg>
+                </div>
+                <h2>Game Over!</h2>
+                <p class="modal-subtitle">Here is how you performed this round</p>
+                
+                <div class="modal-stats">
+                    <div class="m-stat">
+                        <span class="m-val" id="summary-score">0</span>
+                        <span class="m-lbl">Final Score</span>
+                    </div>
+                    <div class="m-stat">
+                        <span class="m-val" id="summary-solved">0</span>
+                        <span class="m-lbl">Words Solved</span>
+                    </div>
+                    <div class="m-stat">
+                        <span class="m-val" id="summary-streak">0</span>
+                        <span class="m-lbl">Max Streak</span>
+                    </div>
+                </div>
+
+                <button id="restart-btn" class="primary-btn">
+                    <span>Play Again</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Type to answer. Press <kbd>Enter</kbd> to submit. Press <kbd>Esc</kbd> to skip.</p>
+        </footer>
+    </div>
+
+    <!-- Script -->
+    <script src="app.js"></script>
+</body>
+</html>

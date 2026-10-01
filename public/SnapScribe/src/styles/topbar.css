@@ -1,0 +1,53 @@
+.app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 7px 13px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: transparent;
+  transition:
+    color 0.18s,
+    border-color 0.18s,
+    background 0.18s;
+}
+.back-btn:hover {
+  color: var(--text-secondary);
+  border-color: var(--border-hover);
+  background: rgba(124, 58, 237, 0.06);
+}
+
+.settings-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 7px 13px;
+  cursor: pointer;
+  transition:
+    color 0.18s,
+    border-color 0.18s,
+    background 0.18s;
+}
+.settings-trigger-btn:hover {
+  color: var(--accent-light);
+  border-color: var(--border-hover);
+  background: rgba(124, 58, 237, 0.06);
+}

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Amazon Customer Service - Get help with your orders, returns, refunds, Prime membership, devices, payments and more. Chat, call, or email us.">
+    <title>Amazon Customer Service</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="customer-service.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="cs-body">
+
+    <!-- ===== SHARED NAVBAR (reused from main site) ===== -->
+    <nav>
+        <a href="../" class="nav-logo">
+            <img src="../assets/amazon_logo.png" alt="Amazon Logo">
+        </a>
+        <div class="nav-country">
+            <img src="../assets/location_icon.png" height="20" alt="Location">
+            <div>
+                <p>Deliver to</p>
+                <h1>India</h1>
+            </div>
+        </div>
+
+        <div class="nav-search">
+            <div class="nav-search-category">
+                <select name="category" id="category" aria-label="Product Category">
+                    <option value="all">All</option>
+                    <option value="books">Books</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="home">Home</option>
+                </select>
+                <img src="../assets/dropdown_icon.png" height="12" alt="">
+            </div>
+            <input type="search" class="nav-search-input" id="main-search" placeholder="Search Amazon"
+                aria-label="Search">
+            <button type="button" class="nav-search-icon" aria-label="Search Button" id="search-btn">
+                <img src="../assets/search_icon.png" alt="Search"> 
+            </button>
+
+        </div>
+
+        <div class="nav-right">
+            <div class="nav-lang">
+                <img src="../assets/us_flag.png" width="25" alt="Language">
+                <select name="language" id="language" aria-label="Language Selection">
+                    <option value="en">EN</option>
+                    <option value="es">ES</option>
+                    <option value="fr">FR</option>
+                </select>
+                <img src="../assets/dropdown_icon.png" width="8" alt="">
+            </div>
+            <div class="nav-text">
+                <p>Hello, Sign in</p>
+                <h1>Account &amp; Lists</h1>
+            </div>
+            <div class="nav-text">
+                <p>Return</p>
+                <h1>&amp; Orders</h1>
+            </div>
+            <button class="nav-cart" type="button" aria-label="Shopping Cart" onclick="window.location='../cart.html'">
+                <span class="cart-count">0</span>
+                <img src="../assets/cart_icon.png" width="35" alt="">
+                <h4>Cart</h4>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== NAV BOTTOM BAR ===== -->
+    <div class="nav-bottom">
+        <a href="../" role="button">
+            <i class="fa-solid fa-house" style="margin-right:5px;"></i> Home
+        </a>
+        <a href="../deals.html" role="button">Today's Deals</a>
+        <a href="Customer-Service/index.html" role="button" class="cs-nav-active">Customer Service</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfsZc3yChN-f_8LOi2RnXWVHkaBe40aSok60pHm5HIIvMagGQ/viewform"
+            role="button">Registry</a>
+        <a href="../" role="button">Gift Cards</a>
+        <a href="../" role="button">Sell</a>
+    </div>
+
+    <!-- ===== MAIN CUSTOMER SERVICE CONTENT ===== -->
+    <main class="cs-main" id="cs-main">
+
+        <!-- HERO HEADER -->
+        <header class="cs-hero">
+            <div class="cs-hero-inner">
+                <div class="cs-logo-row">
+                    <img src="../assets/amazon_logo.png" alt="Amazon" class="cs-hero-logo">
+                    <span class="cs-hero-title">Customer Service</span>
+                </div>
+                <h1 class="cs-hero-heading">How can we assist you?</h1>
+
+                <!-- SEARCH BAR -->
+                <div class="cs-search-wrap">
+                    <input type="search" id="cs-search-input" class="cs-search-input" placeholder="Search Help Topics"
+                        aria-label="Search Help Topics" autocomplete="off">
+                    <button type="button" id="cs-search-btn" class="cs-search-btn" aria-label="Search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <!-- Search Suggestions Dropdown -->
+                    <div class="cs-suggestions" id="cs-suggestions" role="listbox" aria-label="Search suggestions">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decorative blobs -->
+            <div class="cs-blob cs-blob-1"></div>
+            <div class="cs-blob cs-blob-2"></div>
+        </header>
+
+        <!-- SEARCH RESULTS PANEL (hidden by default) -->
+        <section class="cs-search-results" id="cs-search-results" aria-live="polite" hidden>
+            <div class="cs-container">
+                <div class="cs-results-header">
+                    <h2 id="cs-results-title">Search Results</h2>
+                    <button type="button" class="cs-back-btn" id="cs-back-btn">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Help Center
+                    </button>
+                </div>
+                <ul class="cs-results-list" id="cs-results-list"></ul>
+            </div>
+        </section>
+
+        <!-- MAIN HELP HUB (shown by default) -->
+        <section class="cs-hub" id="cs-hub">
+            <div class="cs-container">
+
+                <!-- QUICK-ACCESS TOPIC TILES -->
+                <div class="cs-tiles-grid" role="list">
+
+                    <!-- Your Orders -->
+                    <article class="cs-tile" role="listitem" id="tile-orders" tabindex="0" aria-label="Your Orders">
+                        <div class="cs-tile-icon cs-icon-orders">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <div class="cs-tile-body">
+                            <h2 class="cs-tile-title">Your Orders</h2>
+                            <p class="cs-tile-desc">Track, return, or cancel items.</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-right cs-tile-arrow"></i>
+                    </article>
+
+                    <!-- Returns & Refunds -->
+                    <article class="cs-tile" role="listitem" id="tile-returns" tabindex="0"
+                        aria-label="Returns and Refunds">
+                        <div class="cs-tile-icon cs-icon-returns">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </div>
+                        <div class="cs-tile-body">
+                            <h2 class="cs-tile-title">Returns &amp; Refunds</h2>
+                            <p class="cs-tile-desc">Return or exchange items.</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-right cs-tile-arrow"></i>
+                    </article>
+
+                    <!-- Prime -->
+                    <article class="cs-tile" role="listitem" id="tile-prime" tabindex="0" aria-label="Amazon Prime">
+                        <div class="cs-tile-icon cs-icon-prime">
+                            <span class="cs-prime-badge">prime</span>
+                        </div>
+                        <div class="cs-tile-body">
+                            <h2 class="cs-tile-title">Prime</h2>
+                            <p class="cs-tile-desc">Manage your membership.</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-right cs-tile-arrow"></i>
+                    </article>
+
+                    <!-- Payments & Gift Cards -->
+                    <article class="cs-tile" role="listitem" id="tile-payments" tabindex="0"
+                        aria-label="Payments and Gift Cards">
+                        <div class="cs-tile-icon cs-icon-payments">
+                            <i class="fa-solid fa-credit-card"></i>
+                        </div>
+                        <div class="cs-tile-body">
+                            <h2 class="cs-tile-title">Payments &amp; Gift Cards</h2>
+                            <p class="cs-tile-desc">Manage payment options.</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-right cs-tile-arrow"></i>
+                    </article>
+
+                    <!-- Devices & Content -->
+                    <article class="cs-tile" role="listitem" id="tile-devices" tabindex="0"
+                        aria-label="Devices and Content">
+                        <div class="cs-tile-icon cs-icon-devices">
+                            <i class="fa-solid fa-tablet-screen-button"></i>
+                        </div>
+                        <div class="cs-tile-body">
+                            <h2 class="cs-tile-title">Devices &amp; Content</h2>
+                            <p class="cs-tile-desc">Support for Kindle, Fire &amp; Alexa.</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-right cs-tile-arrow"></i>
+                    </article>
+
+                    <!-- Account Settings -->
+                    <article class="cs-tile" role="listitem" id="tile-account" tabindex="0"
+                        aria-label="Account Settings">
+                        <div class="cs-tile-icon cs-icon-account">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div class="cs-tile-body">
+                            <h2 class="cs-tile-title">Account Settings</h2>
+                            <p class="cs-tile-desc">Login &amp; security settings.</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-right cs-tile-arrow"></i>
+                    </article>
+
+                </div><!-- /.cs-tiles-grid -->
+
+                <!-- BOTTOM SECTION: Popular Help Topics + Need More Help -->
+                <div class="cs-bottom-row">
+
+                    <!-- Popular Help Topics -->
+                    <div class="cs-popular-topics" id="cs-popular">
+                        <h2 class="cs-section-title cs-title-orange">Popular Help Topics</h2>
+                        <ul class="cs-topic-list" id="cs-topic-list">
+                            <li>
+                                <button type="button" class="cs-topic-link" data-topic="cancel">
+                                    <i class="fa-solid fa-angle-right"></i>
+                                    Cancel Items or Orders
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="cs-topic-link" data-topic="refund">
+                                    <i class="fa-solid fa-angle-right"></i>
+                                    Where's My Refund?
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="cs-topic-link" data-topic="payment">
+                                    <i class="fa-solid fa-angle-right"></i>
+                                    Change Payment Method
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="cs-topic-link" data-topic="prime">
+                                    <i class="fa-solid fa-angle-right"></i>
+                                    Manage Prime Membership
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="cs-topic-link" data-topic="track">
+                                    <i class="fa-solid fa-angle-right"></i>
+                                    Track My Package
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="cs-topic-link" data-topic="return">
+                                    <i class="fa-solid fa-angle-right"></i>
+                                    Start a Return
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Need More Help -->
+                    <div class="cs-contact-panel" id="cs-contact">
+                        <h2 class="cs-section-title cs-title-orange">Need More Help?</h2>
+                        <div class="cs-contact-btns">
+                            <button type="button" class="cs-contact-btn cs-chat-btn" id="btn-chat"
+                                aria-label="Chat with us">
+                                <i class="fa-solid fa-headset"></i>
+                                <span>Chat with Us</span>
+                            </button>
+                            <button type="button" class="cs-contact-btn cs-call-btn" id="btn-call"
+                                aria-label="Request a Call">
+                                <i class="fa-solid fa-phone"></i>
+                                <span>Request a Call</span>
+                            </button>
+                            <button type="button" class="cs-contact-btn cs-email-btn" id="btn-email"
+                                aria-label="Email Us">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span>Email Us</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div><!-- /.cs-bottom-row -->
+
+            </div><!-- /.cs-container -->
+        </section><!-- /#cs-hub -->
+
+    </main>
+
+    <!-- ===== SELF-SERVICE WORKFLOW MODAL ===== -->
+    <div class="cs-modal-overlay" id="cs-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cs-modal-title"
+        hidden>
+        <div class="cs-modal">
+            <button type="button" class="cs-modal-close" id="cs-modal-close" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="cs-modal-icon" id="cs-modal-icon"></div>
+            <h2 class="cs-modal-title" id="cs-modal-title"></h2>
+            <p class="cs-modal-desc" id="cs-modal-desc"></p>
+            <div class="cs-modal-actions" id="cs-modal-actions"></div>
+            <!-- Escalation section (shown after self-service options) -->
+            <div class="cs-modal-escalate" id="cs-modal-escalate" hidden>
+                <p class="cs-escalate-text">Still need help? Contact us directly:</p>
+                <div class="cs-escalate-btns">
+                    <button type="button" class="cs-esc-btn" id="esc-chat">
+                        <i class="fa-solid fa-headset"></i> Chat
+                    </button>
+                    <button type="button" class="cs-esc-btn" id="esc-call">
+                        <i class="fa-solid fa-phone"></i> Call
+                    </button>
+                    <button type="button" class="cs-esc-btn" id="esc-email">
+                        <i class="fa-solid fa-envelope"></i> Email
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CONTACT MODAL (Chat / Call / Email) ===== -->
+    <div class="cs-modal-overlay" id="cs-contact-modal" role="dialog" aria-modal="true"
+        aria-labelledby="cs-contact-title" hidden>
+        <div class="cs-modal cs-contact-modal-inner">
+            <button type="button" class="cs-modal-close" id="cs-contact-modal-close" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="cs-modal-icon" id="cs-contact-icon"></div>
+            <h2 class="cs-modal-title" id="cs-contact-title"></h2>
+            <div id="cs-contact-form-area"></div>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER (reused from main site) ===== -->
+    <footer class="cs-footer">
+        <div class="cs-footer-links">
+            <a href="./">Help</a>
+            <span>|</span>
+            <a href="./#tile-orders">Shipping &amp; Delivery</a>
+            <span>|</span>
+            <a href="./#tile-returns">Returns &amp; Refunds</a>
+            <span>|</span>
+            <a href="./#tile-devices">Device Support</a>
+        </div>
+        <div class="cs-footer-bottom">
+            <img src="../assets/amazon_logo.png" width="80" alt="Amazon">
+            <p>© 1996-2026, Amazon.com, Inc. or its affiliates</p>
+        </div>
+    </footer>
+
+    <script src="customer-service.js"></script>
+</body>
+
+</html>

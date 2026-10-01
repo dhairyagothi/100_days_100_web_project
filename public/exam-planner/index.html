@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aether | Premium Exam Planner & Study Tracker</title>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                        <path d="M2 17l10 5 10-5"></path>
+                        <path d="M2 12l10 5 10-5"></path>
+                    </svg>
+                    <span class="logo-text">aether</span>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#dashboard" class="nav-item active" id="nav-dashboard">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="9"></rect>
+                        <rect x="14" y="3" width="7" height="5"></rect>
+                        <rect x="14" y="12" width="7" height="9"></rect>
+                        <rect x="3" y="16" width="7" height="5"></rect>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#planner" class="nav-item" id="nav-planner">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span>Planner</span>
+                </a>
+                <a href="#tracker" class="nav-item" id="nav-tracker">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>Revision Tracker</span>
+                </a>
+                <a href="#calendar" class="nav-item" id="nav-calendar">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <span>Calendar</span>
+                </a>
+                <a href="#settings" class="nav-item" id="nav-settings">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">ST</div>
+                    <div class="user-info">
+                        <span class="user-name">Study Mode</span>
+                        <span class="user-status" id="session-active-indicator">Idle</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header bar -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 class="page-title" id="page-title">Dashboard</h1>
+                    <span class="current-date" id="header-date">Tuesday, Aug 4, 2026</span>
+                </div>
+                
+                <div class="header-right">
+                    <!-- Notification Bell -->
+                    <div class="notification-bell-container" id="notif-bell-container">
+                        <button class="header-btn" id="notif-bell-btn">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            </svg>
+                            <span class="badge" id="notif-badge">3</span>
+                        </button>
+                        
+                        <!-- Notifications Dropdown -->
+                        <div class="dropdown-panel" id="notif-dropdown">
+                            <div class="dropdown-header">
+                                <h3>Notifications</h3>
+                                <button class="text-btn" id="clear-notif-btn">Clear All</button>
+                            </div>
+                            <div class="dropdown-body" id="notif-list-container">
+                                <!-- Dynamic notifications go here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button class="header-btn" id="theme-toggle-btn" title="Toggle Theme">
+                        <!-- Sun Icon (visible in Dark theme) -->
+                        <svg class="theme-icon sun-icon" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <!-- Moon Icon (visible in Light theme) -->
+                        <svg class="theme-icon moon-icon" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Views Wrapper -->
+            <div class="view-content">
+                
+                <!-- 1. DASHBOARD VIEW -->
+                <section id="view-dashboard" class="app-view active-view">
+                    <!-- Primary Countdown Area -->
+                    <div class="countdown-hero-container">
+                        <div class="countdown-hero-card" id="primary-countdown-card">
+                            <div class="countdown-card-bg"></div>
+                            <div class="hero-label">NEXT EVENT COUNTDOWN</div>
+                            <h2 class="countdown-title" id="countdown-exam-title">Upcoming Exam</h2>
+                            
+                            <div class="countdown-timer">
+                                <div class="timer-segment">
+                                    <span class="timer-val" id="cd-days">00</span>
+                                    <span class="timer-lbl">Days</span>
+                                </div>
+                                <div class="timer-divider">:</div>
+                                <div class="timer-segment">
+                                    <span class="timer-val" id="cd-hours">00</span>
+                                    <span class="timer-lbl">Hours</span>
+                                </div>
+                                <div class="timer-divider">:</div>
+                                <div class="timer-segment">
+                                    <span class="timer-val" id="cd-minutes">00</span>
+                                    <span class="timer-lbl">Mins</span>
+                                </div>
+                                <div class="timer-divider">:</div>
+                                <div class="timer-segment">
+                                    <span class="timer-val" id="cd-seconds">00</span>
+                                    <span class="timer-lbl">Secs</span>
+                                </div>
+                            </div>
+                            
+                            <div class="countdown-meta" id="countdown-exam-date">
+                                Scheduled for Aug 12, 2026 • 09:00 AM
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Bar -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper red-tint">
+                                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <path d="M14 2v6h6"></path>
+                                    <path d="M16 13H8"></path>
+                                    <path d="M16 17H8"></path>
+                                    <path d="M10 9H8"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="stat-exams-count">0</div>
+                                <div class="stat-label">Total Exams</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper indigo-tint">
+                                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="stat-hours-count">0.0h</div>
+                                <div class="stat-label">Revision Hours</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper emerald-tint">
+                                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="stat-topics-count">0/0</div>
+                                <div class="stat-label">Topics Finished</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper yellow-tint">
+                                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="8" r="7"></circle>
+                                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="stat-progress-percent">0%</div>
+                                <div class="stat-label">Overall Mastery</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chart and Secondary Countdown Panel -->
+                    <div class="dashboard-layout-grid">
+                        <!-- Study Effort History Chart -->
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Study Intensity (Last 7 Days)</h3>
+                                <span class="card-subtitle">Hours spent revising</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-wrapper">
+                                    <svg id="revision-chart" class="svg-chart" viewBox="0 0 400 180">
+                                        <!-- Grid lines -->
+                                        <line x1="40" y1="20" x2="380" y2="20" stroke="var(--border-color)" stroke-dasharray="4,4" />
+                                        <line x1="40" y1="65" x2="380" y2="65" stroke="var(--border-color)" stroke-dasharray="4,4" />
+                                        <line x1="40" y1="110" x2="380" y2="110" stroke="var(--border-color)" stroke-dasharray="4,4" />
+                                        <line x1="40" y1="150" x2="380" y2="150" stroke="var(--muted-color)" />
+                                        
+                                        <!-- Y Axis labels -->
+                                        <text x="30" y="24" class="chart-text label-y">4h</text>
+                                        <text x="30" y="69" class="chart-text label-y">2h</text>
+                                        <text x="30" y="114" class="chart-text label-y">1h</text>
+                                        <text x="30" y="154" class="chart-text label-y">0</text>
+                                        
+                                        <!-- Dynamic bars will be rendered here by JS -->
+                                        <g id="chart-bars-group"></g>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- All Upcoming Exams Card -->
+                        <div class="card upcoming-exams-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Exam Schedule</h3>
+                                <span class="card-subtitle">Chronological timeline</span>
+                            </div>
+                            <div class="card-body list-scrollable" id="dashboard-exam-timeline">
+                                <!-- Dynamic timeline will be generated here -->
+                                <div class="empty-state">
+                                    <svg viewBox="0 0 24 24" width="36" height="36" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                    </svg>
+                                    <p>No exams configured. Add one in Settings to start tracking.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. SUBJECT PLANNER VIEW -->
+                <section id="view-planner" class="app-view">
+                    <div class="planner-layout">
+                        <!-- Sidebar list of subjects -->
+                        <div class="planner-sidebar">
+                            <div class="planner-sidebar-header">
+                                <h3>Subjects</h3>
+                                <button class="btn btn-primary btn-sm" id="btn-add-subject">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    Add
+                                </button>
+                            </div>
+                            <div class="subject-nav-list" id="subject-sidebar-list">
+                                <!-- Dynamic subject list item tabs -->
+                            </div>
+                        </div>
+
+                        <!-- Main topic planning container -->
+                        <div class="planner-main-panel">
+                            <div id="planner-detail-empty" class="empty-state planner-empty-state">
+                                <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                                    <path d="M9 14h6"></path>
+                                    <path d="M9 18h6"></path>
+                                    <path d="M9 10h6"></path>
+                                </svg>
+                                <h3>No Subject Selected</h3>
+                                <p>Select a subject from the left panel, or create a new one to begin detailing your revision topics.</p>
+                            </div>
+
+                            <div id="planner-detail-active" class="subject-detail-container" style="display: none;">
+                                <div class="subject-detail-header">
+                                    <div class="subject-header-title-row">
+                                        <span class="subject-badge-indicator" id="active-subj-color-dot"></span>
+                                        <h2 id="active-subj-title">Mathematics II</h2>
+                                        <div class="dropdown-menu-container">
+                                            <button class="icon-btn" id="active-subj-options-btn">
+                                                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="1"></circle>
+                                                    <circle cx="19" cy="12" r="1"></circle>
+                                                    <circle cx="5" cy="12" r="1"></circle>
+                                                </svg>
+                                            </button>
+                                            <div class="menu-popup" id="active-subj-menu">
+                                                <button class="menu-item text-danger" id="btn-delete-active-subj">Delete Subject</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="subject-progress-stats">
+                                        <div class="progress-bar-container">
+                                            <div class="progress-bar-fill" id="active-subj-progress-bar" style="width: 45%;"></div>
+                                        </div>
+                                        <span class="progress-label-text" id="active-subj-progress-text">4 of 9 topics completed (45%)</span>
+                                    </div>
+                                </div>
+
+                                <!-- Add new topic Form -->
+                                <form id="add-topic-form" class="add-topic-form-panel">
+                                    <input type="text" id="topic-name-input" placeholder="Enter new topic or chapter name..." required class="form-input">
+                                    <div class="form-row-sm">
+                                        <select id="topic-priority" class="form-select">
+                                            <option value="high">High Priority</option>
+                                            <option value="medium" selected>Medium Priority</option>
+                                            <option value="low">Low Priority</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-primary">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            </svg>
+                                            Add Topic
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <!-- List of topics -->
+                                <div class="topics-section">
+                                    <div class="topics-section-header">
+                                        <h4>Topic List</h4>
+                                        <div class="filter-tabs">
+                                            <button class="filter-tab active" data-filter="all">All</button>
+                                            <button class="filter-tab" data-filter="todo">To Do</button>
+                                            <button class="filter-tab" data-filter="done">Completed</button>
+                                        </div>
+                                    </div>
+                                    <div class="topics-list" id="active-subj-topics-list">
+                                        <!-- Dynamic topics populate here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. REVISION TRACKER VIEW -->
+                <section id="view-tracker" class="app-view">
+                    <div class="tracker-layout-grid">
+                        <!-- Timer card -->
+                        <div class="card timer-card">
+                            <div class="card-header timer-card-header">
+                                <h3 class="card-title">Study Timer</h3>
+                                <div class="timer-mode-toggles">
+                                    <button class="mode-tab active" data-duration="1500" id="timer-focus-btn">Focus (25m)</button>
+                                    <button class="mode-tab" data-duration="2700" id="timer-deep-btn">Deep (45m)</button>
+                                    <button class="mode-tab" data-duration="300" id="timer-break-btn">Short Break (5m)</button>
+                                </div>
+                            </div>
+                            <div class="card-body timer-body">
+                                <div class="circular-timer-container">
+                                    <svg class="timer-ring-svg" width="200" height="200">
+                                        <circle class="timer-ring-bg" stroke="var(--border-color)" stroke-width="8" fill="transparent" r="90" cx="100" cy="100"/>
+                                        <circle class="timer-ring-progress" id="timer-progress-ring" stroke="var(--accent-color)" stroke-width="8" fill="transparent" r="90" cx="100" cy="100" stroke-dasharray="565.48" stroke-dashoffset="0"/>
+                                    </svg>
+                                    <div class="timer-digital-display">
+                                        <span class="timer-time" id="timer-display">25:00</span>
+                                        <span class="timer-status" id="timer-state-label">FOCUS SESSION</span>
+                                    </div>
+                                </div>
+
+                                <div class="timer-controls-row">
+                                    <div class="input-group-sm">
+                                        <label for="timer-subject-select">Subject Context:</label>
+                                        <select id="timer-subject-select" class="form-select">
+                                            <option value="">No subject linked</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="timer-buttons">
+                                        <button class="btn btn-outline" id="timer-reset-btn">Reset</button>
+                                        <button class="btn btn-primary btn-lg" id="timer-toggle-btn">Start Session</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Daily goals & logs card -->
+                        <div class="card sessions-log-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Study Log History</h3>
+                                <span class="card-subtitle">Recorded sessions</span>
+                            </div>
+                            <div class="card-body list-scrollable" id="study-sessions-list">
+                                <!-- Dynamic study sessions logs -->
+                                <div class="empty-state">
+                                    <svg viewBox="0 0 24 24" width="36" height="36" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    <p>No study logs recorded yet. Start a focus session to populate history.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. CALENDAR VIEW -->
+                <section id="view-calendar" class="app-view">
+                    <div class="calendar-layout">
+                        <!-- Calendar core panel -->
+                        <div class="card calendar-grid-card">
+                            <div class="calendar-header-toolbar">
+                                <div class="calendar-nav-controls">
+                                    <button class="icon-btn" id="cal-prev-btn">
+                                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="15 18 9 12 15 6"></polyline>
+                                        </svg>
+                                    </button>
+                                    <h3 class="calendar-month-year" id="cal-month-title">August 2026</h3>
+                                    <button class="icon-btn" id="cal-next-btn">
+                                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="9 18 15 12 9 6"></polyline>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <button class="btn btn-outline btn-sm" id="cal-today-btn">Today</button>
+                            </div>
+                            
+                            <div class="calendar-weekdays-grid">
+                                <div>Sun</div>
+                                <div>Mon</div>
+                                <div>Tue</div>
+                                <div>Wed</div>
+                                <div>Thu</div>
+                                <div>Fri</div>
+                                <div>Sat</div>
+                            </div>
+                            
+                            <div class="calendar-days-grid" id="calendar-days-container">
+                                <!-- Dynamic calendar day cells -->
+                            </div>
+                        </div>
+
+                        <!-- Calendar details panel sidebar -->
+                        <div class="calendar-sidebar-details">
+                            <div class="card calendar-day-events-card">
+                                <div class="card-header">
+                                    <h3 class="card-title" id="cal-selected-day-title">Today's Agenda</h3>
+                                    <span class="card-subtitle" id="cal-selected-day-subtitle">August 4, 2026</span>
+                                </div>
+                                <div class="card-body list-scrollable" id="cal-day-events-list">
+                                    <!-- Dynamic list of events for selected day -->
+                                    <p class="empty-msg">No scheduled exams or study sessions for this date.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. SETTINGS / CONFIG VIEW -->
+                <section id="view-settings" class="app-view">
+                    <div class="settings-grid">
+                        
+                        <!-- Exam Setup and List Card -->
+                        <div class="card settings-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Manage Exam Schedule</h3>
+                                <span class="card-subtitle">Add or remove exam schedules</span>
+                            </div>
+                            <div class="card-body">
+                                <form id="add-exam-form" class="settings-form">
+                                    <div class="form-group">
+                                        <label for="exam-name-input">Subject/Exam Title</label>
+                                        <input type="text" id="exam-name-input" placeholder="e.g. Physics Final Exam" required class="form-input">
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="exam-date-input">Date</label>
+                                            <input type="date" id="exam-date-input" required class="form-input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exam-time-input">Time</label>
+                                            <input type="time" id="exam-time-input" required class="form-input">
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary width-full">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                        Save Exam Schedule
+                                    </button>
+                                </form>
+
+                                <div class="divider"></div>
+
+                                <h4>Configured Exams</h4>
+                                <div class="configured-exams-list" id="settings-exams-list">
+                                    <!-- Dynamic list of editable exams -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Data Management & Demos -->
+                        <div class="card settings-card">
+                            <div class="card-header">
+                                <h3 class="card-title">System Settings</h3>
+                                <span class="card-subtitle">Manage local storage and preferences</span>
+                            </div>
+                            <div class="card-body settings-options-body">
+                                <div class="setting-option-row">
+                                    <div class="option-description">
+                                        <h4>Mock Testing Data</h4>
+                                        <p>Populate the database with placeholder exams, subjects, and study sessions to preview dashboards.</p>
+                                    </div>
+                                    <button class="btn btn-outline" id="btn-load-mock">Load Mock Data</button>
+                                </div>
+
+                                <div class="setting-option-row">
+                                    <div class="option-description">
+                                        <h4>Enable Desktop Notifications</h4>
+                                        <p>Permit browser desktop system alerts when timers complete or exams approach.</p>
+                                    </div>
+                                    <label class="switch-toggle">
+                                        <input type="checkbox" id="toggle-browser-notifs">
+                                        <span class="slider-round"></span>
+                                    </label>
+                                </div>
+
+                                <div class="setting-option-row">
+                                    <div class="option-description">
+                                        <h4>Master Reset</h4>
+                                        <p class="text-danger">Delete all saved data and configurations permanently. This action cannot be undone.</p>
+                                    </div>
+                                    <button class="btn btn-danger" id="btn-reset-app">Reset App Data</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Subject Dialog modal -->
+    <div class="modal-overlay" id="add-subject-modal" style="display:none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Add Subject</h3>
+                <button class="icon-btn modal-close-btn" id="modal-add-subject-close">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <form id="add-subject-form" class="modal-body">
+                <div class="form-group">
+                    <label for="new-subject-name">Subject Name</label>
+                    <input type="text" id="new-subject-name" placeholder="e.g. Advanced Calculus, World History" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>Theme Color Accent</label>
+                    <div class="color-palette-grid">
+                        <label class="color-swatch-label">
+                            <input type="radio" name="subject-color" value="#6366f1" checked>
+                            <span class="swatch-indicator" style="background-color: #6366f1;"></span>
+                        </label>
+                        <label class="color-swatch-label">
+                            <input type="radio" name="subject-color" value="#3b82f6">
+                            <span class="swatch-indicator" style="background-color: #3b82f6;"></span>
+                        </label>
+                        <label class="color-swatch-label">
+                            <input type="radio" name="subject-color" value="#10b981">
+                            <span class="swatch-indicator" style="background-color: #10b981;"></span>
+                        </label>
+                        <label class="color-swatch-label">
+                            <input type="radio" name="subject-color" value="#f59e0b">
+                            <span class="swatch-indicator" style="background-color: #f59e0b;"></span>
+                        </label>
+                        <label class="color-swatch-label">
+                            <input type="radio" name="subject-color" value="#ef4444">
+                            <span class="swatch-indicator" style="background-color: #ef4444;"></span>
+                        </label>
+                        <label class="color-swatch-label">
+                            <input type="radio" name="subject-color" value="#ec4899">
+                            <span class="swatch-indicator" style="background-color: #ec4899;"></span>
+                        </label>
+                        <label class="color-swatch-label">
+                            <input type="radio" name="subject-color" value="#8b5cf6">
+                            <span class="swatch-indicator" style="background-color: #8b5cf6;"></span>
+                        </label>
+                        <label class="color-swatch-label">
+                            <input type="radio" name="subject-color" value="#06b6d4">
+                            <span class="swatch-indicator" style="background-color: #06b6d4;"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" id="btn-cancel-add-subject">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Subject</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script File -->
+    <script src="app.js"></script>
+</body>
+</html>

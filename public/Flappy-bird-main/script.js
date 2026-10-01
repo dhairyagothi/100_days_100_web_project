@@ -15,6 +15,11 @@
  * natural parallax depth without any additional overlay layers.
  */
 
+/**
+ * script.js — Flappy Bird (Enhanced)
+ * With Easy, Medium, Hard difficulty modes - FIXED SPEED
+ */
+
 'use strict';
 
 // ─── Canvas Setup ─────────────────────────────────────────────────────────────
@@ -28,34 +33,68 @@ const topPipeImg    = new Image(); topPipeImg.src    = '/public/Flappy-bird-main
 const bottomPipeImg = new Image(); bottomPipeImg.src = '/public/Flappy-bird-main/bottompipe.png';
 const birdImg       = new Image(); birdImg.src       = '/public/Flappy-bird-main/flappybird.png';
 const bgImg         = new Image(); bgImg.src         = '/public/Flappy-bird-main/flappybirdbg.png';
+
 // ─── Timing ───────────────────────────────────────────────────────────────────
-/** Nominal frame duration — all physics constants are calibrated to this. */
 const TARGET_MS = 1000 / 60;
-/** Cap on delta to prevent tunnelling after tab focus returns. */
 const MAX_DT    = TARGET_MS * 4;
 let lastTime    = 0;
 
 // ─── Physics (at 60 fps) ──────────────────────────────────────────────────────
-const GRAVITY  = 0.45;  // px/frame² downward
-const JUMP_VEL = -8;    // px/frame upward on flap
-const TERM_VEL = 11;    // terminal velocity cap
+const GRAVITY  = 0.45;
+const JUMP_VEL = -8;
+const TERM_VEL = 11;
 
 // ─── Geometry ─────────────────────────────────────────────────────────────────
 const PIPE_WIDTH = 70;
-const GROUND_H   = 28;   // taller ground strip for the grass detail
-const BIRD_R     = 13;   // collision radius (1 px forgiveness)
+const GROUND_H   = 28;
+const BIRD_R     = 13;
 
-// ─── Pipe / Difficulty ────────────────────────────────────────────────────────
-const BASE_GAP     = 200;  // opening at level 1
-const MIN_GAP      = 150;  // floor at max difficulty
-const VAR_GAP      = 30;   // ± random variance added to each pipe's opening
-const BASE_SPEED   = 2.5;
-const MAX_SPEED    = 5.0;
-const GAP_MARGIN   = MIN_GAP / 2 + 30;                      // 105 px
+// ─── Pipe Settings ────────────────────────────────────────────────────────────
+const VAR_GAP      = 30;
+const GAP_MARGIN   = 60;
 const GAP_MIN_Y    = GAP_MARGIN;
 const GAP_MAX_Y    = canvas.height - GROUND_H - GAP_MARGIN;
-const MAX_GAP_JUMP = 110;  // max vertical shift between consecutive pipes
-const PIPE_SPACING = 380;  // px between leading edges
+const MAX_GAP_JUMP = 110;
+
+// ─── Difficulty Level Settings - EXTREME DIFFERENCES ──────────────────────────
+let currentDifficulty = 'medium';
+let scoreMilestone = 0;
+
+const difficulties = {
+    easy: {
+        name: 'EASY',
+        baseSpeed: 1.2,      // VERY SLOW
+        baseGap: 300,        // VERY WIDE gap
+        speedIncrease: 0.05,
+        gapReduction: 2,
+        maxSpeed: 2.0,
+        minGap: 190,
+        milestoneInterval: 12,
+        pipeSpacing: 500     // More space between pipes
+    },
+    medium: {
+        name: 'MEDIUM',
+        baseSpeed: 2.5,      // NORMAL speed
+        baseGap: 220,        // NORMAL gap
+        speedIncrease: 0.1,
+        gapReduction: 4,
+        maxSpeed: 4.0,
+        minGap: 160,
+        milestoneInterval: 8,
+        pipeSpacing: 380     // Normal spacing
+    },
+    hard: {
+        name: 'HARD',
+        baseSpeed: 4.5,      // VERY FAST
+        baseGap: 150,        // TIGHT gap
+        speedIncrease: 0.15,
+        gapReduction: 6,
+        maxSpeed: 7.0,
+        minGap: 120,
+        milestoneInterval: 5,
+        pipeSpacing: 280     // Less space between pipes
+    }
+};
 
 // ─── Screen Shake ─────────────────────────────────────────────────────────────
 const SHAKE_FRAMES = 40;
@@ -67,10 +106,6 @@ function getAC() {
   return audioCtx;
 }
 
-/**
- * Synthesises a short tone via Web Audio API.
- * Errors are swallowed so audio failures never interrupt gameplay.
- */
 function beep(freq, type, dur, vol = 0.22) {
   try {
     const ac = getAC(), o = ac.createOscillator(), g = ac.createGain();
@@ -94,43 +129,112 @@ let gameOver    = false;
 let paused      = false;
 let flashTimer  = 0;
 let deathShake  = 0;
-let pipeSpeed   = BASE_SPEED;
-let pipeGap     = BASE_GAP;
+let pipeSpeed   = difficulties.medium.baseSpeed;
+let pipeGap     = difficulties.medium.baseGap;
+let pipeSpacing = difficulties.medium.pipeSpacing;
 let lastGapY    = (GAP_MIN_Y + GAP_MAX_Y) / 2;
 let spawnTimer  = null;
+let frameCounter = 0;
+let frameSpawnInterval = 0;
 
-// ─── Difficulty ───────────────────────────────────────────────────────────────
+// ─── Difficulty Functions ─────────────────────────────────────────────────────
+function setDifficulty(level) {
+    currentDifficulty = level;
+    const config = difficulties[level];
+    
+    // Force set ALL difficulty parameters
+    pipeSpeed = config.baseSpeed;
+    pipeGap = config.baseGap;
+    pipeSpacing = config.pipeSpacing;
+    scoreMilestone = 0;
+    
+    // Update frame spawn interval based on pipe spacing and speed
+    frameSpawnInterval = Math.floor(pipeSpacing / pipeSpeed);
+    
+    // Update active button styling
+    document.querySelectorAll('.difficulty-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector(`.difficulty-btn.${level}`).classList.add('active');
+    
+    // Update mode display
+    const modeDisplay = document.getElementById('modeDisplay');
+    if (modeDisplay) modeDisplay.innerText = level.toUpperCase();
+    
+    // Show which mode is active
+    showMilestoneNotification(`🎮 ${level.toUpperCase()} MODE\nSpeed: ${config.baseSpeed} | Gap: ${config.baseGap}px 🎮`);
+    
+    // Reset game
+    restartGame();
+    
+    console.log(`[DIFFICULTY] ${level}: Speed=${pipeSpeed}, Gap=${pipeGap}, Spacing=${pipeSpacing}`);
+}
+
+function showMilestoneNotification(message) {
+    const popup = document.createElement('div');
+    popup.className = 'milestone-popup';
+    popup.textContent = message;
+    popup.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0,0,0,0.9);
+        color: #FFD700;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-weight: bold;
+        font-size: 18px;
+        font-family: 'Courier New', monospace;
+        z-index: 1000;
+        animation: fadeOut 1.5s ease;
+        pointer-events: none;
+        text-align: center;
+        white-space: pre-line;
+        border: 2px solid #FFD700;
+        box-shadow: 0 0 20px rgba(255,215,0,0.5);
+    `;
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 2000);
+}
+
+// ─── Update Difficulty with Milestone Scaling ─────────────────────────────────
 function updateDifficulty() {
-  if (pipeSpeed >= MAX_SPEED && pipeGap <= MIN_GAP) return;
-  const lvl = Math.floor(score / 5);
-  pipeSpeed = Math.min(BASE_SPEED + lvl * 0.25, MAX_SPEED);
-  pipeGap   = Math.max(BASE_GAP   - lvl * 6,    MIN_GAP);
+    const config = difficulties[currentDifficulty];
+    
+    // Check milestone-based scaling
+    const newMilestone = Math.floor(score / config.milestoneInterval);
+    
+    if (newMilestone > scoreMilestone) {
+        scoreMilestone = newMilestone;
+        
+        // Calculate new values based on milestones
+        let newSpeed = config.baseSpeed + (scoreMilestone * config.speedIncrease);
+        let newGap = config.baseGap - (scoreMilestone * config.gapReduction);
+        
+        pipeSpeed = Math.min(newSpeed, config.maxSpeed);
+        pipeGap = Math.max(newGap, config.minGap);
+        
+        // Update spawn interval based on new speed
+        frameSpawnInterval = Math.floor(pipeSpacing / pipeSpeed);
+        
+        showMilestoneNotification(`⚠️ DIFFICULTY UP! ⚠️\nSpeed: ${pipeSpeed.toFixed(1)} | Gap: ${Math.floor(pipeGap)}px`);
+        
+        console.log(`[MILESTONE] Score=${score}, Speed=${pipeSpeed}, Gap=${pipeGap}`);
+    }
 }
 
-// ─── Spawner ──────────────────────────────────────────────────────────────────
-function scheduleNextPipe() {
-  const ms = (PIPE_SPACING / pipeSpeed) * TARGET_MS;
-  spawnTimer = setTimeout(() => {
-    if (gameStarted && !gameOver && !paused && !document.hidden) createPipe();
-    if (gameStarted && !gameOver) scheduleNextPipe();
-  }, ms);
-}
+// ─── Spawner using frame counter (MORE RELIABLE) ──────────────────────────────
 function stopSpawner() {
   if (spawnTimer) { clearTimeout(spawnTimer); spawnTimer = null; }
 }
 
 // ─── Background Scroll ─────────────────────────────────────────────────────────
-/**
- * bgImg is tiled as two side-by-side copies that scroll at 20% of pipeSpeed.
- * The speed contrast with the pipes (100%) creates natural parallax depth.
- * offX cycles 0 → canvas.width so the seam is always hidden off-screen.
- */
-const BG_SPEED = 0.20;  // fraction of pipeSpeed
+const BG_SPEED = 0.20;
 let bgX = 0;
 
 function drawBackground() {
   if (!bgImg.complete || bgImg.naturalWidth === 0) {
-    // Fallback sky colour while the image loads
     ctx.fillStyle = '#70c5ce';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     return;
@@ -150,13 +254,10 @@ function updateBackground(dt) {
 let groundX = 0;
 
 function drawGround() {
-  // Dirt base
   ctx.fillStyle = '#5d4037';
   ctx.fillRect(0, canvas.height - GROUND_H, canvas.width, GROUND_H);
-  // Grass strip on top
   ctx.fillStyle = '#558b2f';
   ctx.fillRect(0, canvas.height - GROUND_H, canvas.width, 7);
-  // Scrolling dashes on dirt
   ctx.save();
   ctx.strokeStyle    = '#8d6e63';
   ctx.lineWidth      = 2;
@@ -175,7 +276,6 @@ function updateGround(dt) {
 }
 
 // ─── Particles ────────────────────────────────────────────────────────────────
-/** Each particle: { x, y, vx, vy, life, maxLife, r, color } */
 const particles = [];
 
 function spawnParticles(x, y) {
@@ -241,7 +341,7 @@ function drawPopups() {
     ctx.fillStyle   = '#ffe082';
     ctx.strokeStyle = 'rgba(0,0,0,0.5)';
     ctx.lineWidth   = 3;
-    ctx.font        = `bold ${18 + (1 - a) * 10}px Flappy, sans-serif`;
+    ctx.font        = `bold ${18 + (1 - a) * 10}px "Courier New", monospace`;
     ctx.strokeText('+1', p.x, p.y);
     ctx.fillText('+1', p.x, p.y);
     ctx.restore();
@@ -268,7 +368,6 @@ const bird = {
     if (this.y - BIRD_R <= 0) { this.y = BIRD_R; this.velocity = 0; }
   },
 
-  /** @param {number} [overrideY] - optional Y override for idle bob */
   draw(overrideY) {
     const drawY = overrideY !== undefined ? overrideY : this.y;
     ctx.save();
@@ -295,7 +394,7 @@ function createPipe() {
   const hi      = Math.min(GAP_MAX_Y, lastGapY + MAX_GAP_JUMP);
   const gapY    = lo + Math.random() * (hi - lo);
   lastGapY      = gapY;
-  const thisGap = Math.max(MIN_GAP, pipeGap + (Math.random() * 2 - 1) * VAR_GAP);
+  const thisGap = Math.max(80, pipeGap + (Math.random() * 2 - 1) * VAR_GAP);
   const half    = thisGap / 2;
   pipes.push({
     x:      canvas.width,
@@ -335,6 +434,10 @@ function updatePipes(dt) {
       p.scored = true;
       playScore();
       updateDifficulty();
+      
+      const scoreDisplay = document.getElementById('scoreDisplay');
+      if (scoreDisplay) scoreDisplay.innerText = score;
+      
       if (score > bestScore) bestScore = score;
       if (score % 5 === 0) flashTimer = 40;
       spawnPopup(bird.x, bird.y - 30);
@@ -346,39 +449,36 @@ function updatePipes(dt) {
     }
     if (p.x + PIPE_WIDTH < 0) pipes.splice(i, 1);
   }
+  
+  // Spawn new pipes based on frame counter (more reliable)
+  if (gameStarted && !gameOver && !paused) {
+    frameCounter++;
+    const currentSpacing = difficulties[currentDifficulty].pipeSpacing;
+    const requiredFrames = Math.floor(currentSpacing / pipeSpeed);
+    
+    if (frameCounter >= requiredFrames) {
+      frameCounter = 0;
+      createPipe();
+    }
+  }
 }
 
 // ─── HUD ──────────────────────────────────────────────────────────────────────
 function drawHUD() {
   ctx.save();
   ctx.textAlign   = 'center';
-  ctx.shadowColor = 'rgba(0,0,0,0.6)';
-  ctx.shadowBlur  = 8;
-  ctx.fillStyle   = 'white';
-  ctx.font        = '76px Flappy';
+  ctx.shadowColor = 'rgba(0,0,0,0.8)';
+  ctx.shadowBlur  = 4;
+  ctx.fillStyle   = '#FFD700';
+  ctx.font        = 'bold 72px "Courier New", monospace';
   ctx.fillText(score, canvas.width / 2, 76);
+  ctx.font = '14px "Courier New", monospace';
+  ctx.fillStyle = '#FFA500';
+  ctx.fillText(`+${scoreMilestone} difficulty upgrades`, canvas.width / 2, 110);
   ctx.restore();
 
-  drawPill(12,                 10, `LVL ${Math.floor(score / 5) + 1}`, 'rgba(0,0,0,0.45)', '#ffe082');
-  drawPill(canvas.width - 165, 10, `BEST ${bestScore}`,               'rgba(0,0,0,0.45)', '#80cbc4');
-
-  const barW   = 140;
-  const barX   = canvas.width / 2 - barW / 2;
-  const barY   = 10;
-  const barH   = 6;
-  const filled = (pipeSpeed - BASE_SPEED) / (MAX_SPEED - BASE_SPEED);
-  ctx.save();
-  ctx.fillStyle = 'rgba(0,0,0,0.35)';
-  roundRect(ctx, barX, barY, barW, barH, 3);
-  if (filled > 0) {
-    ctx.fillStyle = filled > 0.75 ? '#ff5252' : filled > 0.4 ? '#ffe082' : '#80cbc4';
-    roundRect(ctx, barX, barY, Math.max(6, barW * filled), barH, 3);
-  }
-  ctx.fillStyle = 'rgba(255,255,255,0.35)';
-  ctx.font      = '11px Flappy';
-  ctx.textAlign = 'center';
-  ctx.fillText('SPEED', canvas.width / 2, barY + barH + 14);
-  ctx.restore();
+  drawPill(12, 10, `${difficulties[currentDifficulty].name}`, 'rgba(0,0,0,0.8)', '#FFD700');
+  drawPill(canvas.width - 165, 10, `BEST ${bestScore}`, 'rgba(0,0,0,0.8)', '#80cbc4');
 
   if (flashTimer > 0) {
     const a = flashTimer / 40;
@@ -387,7 +487,7 @@ function drawHUD() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.textAlign = 'center';
     ctx.fillStyle = `rgba(255,235,59,${a})`;
-    ctx.font      = `${46 + (40 - flashTimer)}px Flappy`;
+    ctx.font      = `${46 + (40 - flashTimer)}px "Courier New", monospace`;
     ctx.fillText(`${score} PTS!`, canvas.width / 2, canvas.height / 2 - 60);
     ctx.restore();
     flashTimer--;
@@ -396,13 +496,16 @@ function drawHUD() {
 
 function drawPill(x, y, text, bg, fg) {
   ctx.save();
-  const pad = 10, h = 30;
-  ctx.font = '16px Flappy';
+  const pad = 12, h = 32;
+  ctx.font = 'bold 16px "Courier New", monospace';
   const tw = ctx.measureText(text).width;
   ctx.fillStyle = bg;
-  roundRect(ctx, x, y, tw + pad * 2, h, 15);
+  roundRect(ctx, x, y, tw + pad * 2, h, 8);
   ctx.fillStyle = fg;
-  ctx.fillText(text, x + pad, y + 21);
+  ctx.shadowColor = 'rgba(0,0,0,0.5)';
+  ctx.shadowBlur = 2;
+  ctx.fillText(text, x + pad, y + 23);
+  ctx.shadowBlur = 0;
   ctx.restore();
 }
 
@@ -425,12 +528,12 @@ function drawStartScreen() {
   ctx.fillStyle = 'rgba(255,255,255,0.10)';
   roundRect(ctx, canvas.width / 2 - 240, canvas.height / 2 - 100, 480, 190, 18);
   ctx.textAlign = 'center';
-  ctx.fillStyle = '#fff';  ctx.font = '40px Flappy';
+  ctx.fillStyle = '#fff';  ctx.font = '40px "Courier New", monospace';
   ctx.fillText('Flappy Bird', canvas.width / 2, canvas.height / 2 - 34);
-  ctx.font = '21px Flappy'; ctx.fillStyle = 'rgba(255,255,255,0.80)';
+  ctx.font = '21px "Courier New", monospace'; ctx.fillStyle = 'rgba(255,255,255,0.80)';
   ctx.fillText('SPACE  /  Tap  to  Start', canvas.width / 2, canvas.height / 2 + 12);
-  ctx.font = '15px Flappy'; ctx.fillStyle = 'rgba(255,255,255,0.45)';
-  ctx.fillText('Difficulty rises every 5 points  ·  P to pause', canvas.width / 2, canvas.height / 2 + 48);
+  ctx.font = '15px "Courier New", monospace'; ctx.fillStyle = 'rgba(255,255,255,0.45)';
+  ctx.fillText('EASY (slow) · MEDIUM (normal) · HARD (fast) · P to pause', canvas.width / 2, canvas.height / 2 + 48);
   ctx.restore();
 }
 
@@ -443,30 +546,30 @@ function drawGameOver() {
   ctx.strokeStyle = 'rgba(255,80,80,0.5)'; ctx.lineWidth = 2;
   roundRectStroke(ctx, canvas.width / 2 - 280, 130, 560, 330, 24);
   ctx.textAlign = 'center';
-  ctx.fillStyle = '#ff5252'; ctx.font = '68px Flappy';
+  ctx.fillStyle = '#ff5252'; ctx.font = '68px "Courier New", monospace';
   ctx.fillText('GAME OVER', canvas.width / 2, 216);
   ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(canvas.width / 2 - 210, 232); ctx.lineTo(canvas.width / 2 + 210, 232);
   ctx.stroke();
-  ctx.font = '24px Flappy'; ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.font = '24px "Courier New", monospace'; ctx.fillStyle = 'rgba(255,255,255,0.7)';
   ctx.fillText('Score', canvas.width / 2 - 110, 272);
   ctx.fillText('Best',  canvas.width / 2 + 110, 272);
-  ctx.font = '40px Flappy';
+  ctx.font = '40px "Courier New", monospace';
   ctx.fillStyle = '#ffe082'; ctx.fillText(score,     canvas.width / 2 - 110, 322);
   ctx.fillStyle = '#80cbc4'; ctx.fillText(bestScore, canvas.width / 2 + 110, 322);
   const medal = getMedal(score);
   if (medal) {
     ctx.shadowColor = medal.glow; ctx.shadowBlur = 16;
-    ctx.fillStyle = medal.color; ctx.font = '20px Flappy';
+    ctx.fillStyle = medal.color; ctx.font = '20px "Courier New", monospace';
     ctx.fillText(medal.label, canvas.width / 2, 360);
     ctx.shadowBlur = 0;
   }
   if (score > 0 && score === bestScore) {
-    ctx.fillStyle = '#ffe082'; ctx.font = '15px Flappy';
+    ctx.fillStyle = '#ffe082'; ctx.font = '15px "Courier New", monospace';
     ctx.fillText('★  NEW BEST  ★', canvas.width / 2, medal ? 388 : 362);
   }
-  ctx.font = '19px Flappy'; ctx.fillStyle = 'rgba(255,255,255,0.55)';
+  ctx.font = '19px "Courier New", monospace'; ctx.fillStyle = 'rgba(255,255,255,0.55)';
   ctx.fillText('SPACE  /  Tap  to  Restart', canvas.width / 2, 424);
   ctx.restore();
 }
@@ -478,9 +581,9 @@ function drawPauseScreen() {
   ctx.fillStyle = 'rgba(255,255,255,0.10)';
   roundRect(ctx, canvas.width / 2 - 180, canvas.height / 2 - 70, 360, 140, 18);
   ctx.textAlign = 'center';
-  ctx.fillStyle = '#fff'; ctx.font = '52px Flappy';
+  ctx.fillStyle = '#fff'; ctx.font = '52px "Courier New", monospace';
   ctx.fillText('PAUSED', canvas.width / 2, canvas.height / 2 - 4);
-  ctx.font = '20px Flappy'; ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.font = '20px "Courier New", monospace'; ctx.fillStyle = 'rgba(255,255,255,0.6)';
   ctx.fillText('Press  P  to  resume', canvas.width / 2, canvas.height / 2 + 42);
   ctx.restore();
 }
@@ -506,7 +609,7 @@ function roundRectStroke(ctx, x, y, w, h, r) {
 // ─── Input ────────────────────────────────────────────────────────────────────
 function handleAction() {
   if (gameOver)     { restartGame(); return; }
-  if (!gameStarted) { gameStarted = true; scheduleNextPipe(); }
+  if (!gameStarted) { gameStarted = true; frameCounter = 0; }
   if (paused)       return;
   bird.flap();
 }
@@ -533,12 +636,25 @@ function restartGame() {
   paused      = false;
   flashTimer  = 0;
   deathShake  = 0;
-  pipeSpeed   = BASE_SPEED;
-  pipeGap     = BASE_GAP;
+  frameCounter = 0;
+  
+  // Reset to current difficulty base values
+  const config = difficulties[currentDifficulty];
+  pipeSpeed   = config.baseSpeed;
+  pipeGap     = config.baseGap;
+  pipeSpacing = config.pipeSpacing;
+  scoreMilestone = 0;
+  
   lastGapY    = (GAP_MIN_Y + GAP_MAX_Y) / 2;
   lastTime    = 0;
   bobTime     = 0;
   bgX         = 0;
+  groundX     = 0;
+  
+  const scoreDisplay = document.getElementById('scoreDisplay');
+  if (scoreDisplay) scoreDisplay.innerText = '0';
+  
+  console.log(`[RESTART] ${currentDifficulty} - Speed: ${pipeSpeed}, Gap: ${pipeGap}`);
 }
 
 // ─── Game Loop ────────────────────────────────────────────────────────────────
@@ -568,9 +684,7 @@ function draw() {
   ctx.translate(sx, sy);
   ctx.clearRect(-20, -20, canvas.width + 40, canvas.height + 40);
 
-  // Layer 0: tiled scrolling background (clean, no overlay)
   drawBackground();
-  // Layer 1: pipes, ground, particles, bird, HUD
   drawPipes();
   drawGround();
   drawParticles();
@@ -579,7 +693,6 @@ function draw() {
   drawHUD();
   ctx.restore();
 
-  // Overlays drawn outside the shake transform
   if (!gameStarted)        drawStartScreen();
   if (gameOver)            drawGameOver();
   if (paused && !gameOver) drawPauseScreen();
@@ -595,4 +708,6 @@ function gameLoop(now) {
   requestAnimationFrame(gameLoop);
 }
 
+// Make setDifficulty available globally
+window.setDifficulty = setDifficulty;
 requestAnimationFrame(gameLoop);

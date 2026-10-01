@@ -1,0 +1,105 @@
+/* ==========================================================================
+   1. Base Core Styles & Typography Configuration
+   ========================================================================== */
+@layer base {
+  body {
+    font-family: "Poppins", sans-serif;
+    background-color: #fffaf5;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ==========================================================================
+   2. Hardware Acceleration Hooks & Micro-interactions
+   ========================================================================== */
+.blur-transition {
+  will-change: filter, opacity, transform;
+  transition: filter 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom Modal Animation Overlay Matrix */
+.shepherd-modal-overlay-container {
+  will-change: opacity;
+  transition: opacity 0.3s ease-in-out !important;
+}
+
+/* Custom scrollbar handling for dropdown overlay panels */
+#searchResultsDropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+#searchResultsDropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#searchResultsDropdown::-webkit-scrollbar-thumb {
+  background: #e7e5e4;
+  border-radius: 10px;
+}
+
+#searchResultsDropdown::-webkit-scrollbar-thumb:hover {
+  background: #d6d3d1;
+}
+
+/* ==========================================================================
+   3. Shepherd Guided Onboarding Tour Library Design Overrides
+   ========================================================================== */
+.shepherd-element {
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.12) !important;
+  border-radius: 1.5rem !important;
+  border: 1px solid rgba(249, 115, 22, 0.1) !important;
+  padding: 1.5rem !important;
+  max-w: 28rem !important;
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  will-change: transform, opacity;
+}
+
+.shepherd-header {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.shepherd-content {
+  padding: 0 !important;
+}
+
+.shepherd-text {
+  padding: 0.75rem 0 1.25rem 0 !important;
+  color: #4b5563 !important;
+  font-size: 0.9375rem !important;
+  line-height: 1.6 !important;
+}
+
+.shepherd-cancel-icon {
+  color: #9ca3af !important;
+  font-size: 1.5rem !important;
+  font-weight: 300 !important;
+  transition: color 0.2s ease;
+  padding: 0 !important;
+  margin-top: -4px !important;
+}
+
+.shepherd-cancel-icon:hover {
+  color: #ef4444 !important;
+}
+
+/* ==========================================================================
+   4. Component Layer Layout Animations
+   ========================================================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

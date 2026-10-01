@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Postman - API Testing Tool</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>" />
+</head>
+<body data-theme="dark">
+
+  <!-- Toast Container -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- App Layout -->
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">⚡</span>
+          <span class="logo-text">Mini Postman</span>
+        </div>
+        <button class="btn-icon" id="toggle-sidebar" title="Toggle Sidebar" aria-label="Toggle Sidebar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Environment Variables -->
+      <div class="sidebar-section">
+        <div class="section-header" data-toggle="env-panel">
+          <span>Environments</span>
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+        <div class="section-content" id="env-panel">
+          <div class="env-selector-row">
+            <select id="env-select" aria-label="Select Environment">
+              <option value="">No Environment</option>
+            </select>
+            <button class="btn-icon" id="manage-env-btn" title="Manage Environments" aria-label="Manage Environments">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collections -->
+      <div class="sidebar-section">
+        <div class="section-header" data-toggle="collections-panel">
+          <span>Collections</span>
+          <div class="section-actions">
+            <button class="btn-icon" id="new-collection-btn" title="New Collection" aria-label="New Collection">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+            <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+        </div>
+        <div class="section-content" id="collections-panel">
+          <div class="collections-toolbar">
+            <button class="btn-sm" id="import-collection-btn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Import
+            </button>
+            <button class="btn-sm" id="export-collection-btn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              Export
+            </button>
+          </div>
+          <div id="collections-list" class="collections-list"></div>
+        </div>
+      </div>
+
+      <!-- History -->
+      <div class="sidebar-section">
+        <div class="section-header" data-toggle="history-panel">
+          <span>History</span>
+          <div class="section-actions">
+            <button class="btn-icon" id="clear-history-btn" title="Clear History" aria-label="Clear History">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
+              </svg>
+            </button>
+            <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+        </div>
+        <div class="section-content open" id="history-panel">
+          <div id="history-list" class="history-list"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="tabs-container">
+          <div class="tabs" id="tabs-container" role="tablist"></div>
+          <button class="btn-icon tab-add-btn" id="add-tab-btn" title="New Tab" aria-label="New Tab">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </button>
+        </div>
+        <div class="top-bar-actions">
+          <button class="btn-icon" id="theme-toggle" title="Toggle Theme" aria-label="Toggle Theme">
+            <svg id="theme-icon-dark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <svg id="theme-icon-light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+          <button class="btn-icon" id="keyboard-shortcuts-btn" title="Keyboard Shortcuts (Ctrl+/)" aria-label="Keyboard Shortcuts">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Request Panel -->
+      <section class="request-panel" aria-label="Request Configuration">
+
+        <!-- URL Bar -->
+        <div class="url-bar">
+          <select id="method-select" aria-label="HTTP Method" class="method-select">
+            <option value="GET"  class="method-get">GET</option>
+            <option value="POST" class="method-post">POST</option>
+            <option value="PUT"  class="method-put">PUT</option>
+            <option value="PATCH" class="method-patch">PATCH</option>
+            <option value="DELETE" class="method-delete">DELETE</option>
+          </select>
+          <div class="url-input-wrapper">
+            <input
+              type="text"
+              id="url-input"
+              class="url-input"
+              placeholder="Enter request URL  (e.g. https://api.example.com/users)"
+              autocomplete="off"
+              aria-label="Request URL"
+              list="url-suggestions"
+            />
+            <datalist id="url-suggestions"></datalist>
+          </div>
+          <button id="send-btn" class="btn-send" aria-label="Send Request">
+            <span class="btn-send-text">Send</span>
+            <span class="btn-send-loader" style="display:none">
+              <span class="spinner"></span>
+            </span>
+          </button>
+          <button id="save-to-collection-btn" class="btn-secondary" title="Save to Collection" aria-label="Save to Collection">Save</button>
+        </div>
+
+        <!-- Request Tabs -->
+        <div class="req-tabs" role="tablist">
+          <button class="req-tab active" data-tab="headers" role="tab" aria-selected="true" aria-controls="tab-headers">Headers</button>
+          <button class="req-tab" data-tab="body" role="tab" aria-selected="false" aria-controls="tab-body">Body</button>
+          <button class="req-tab" data-tab="auth" role="tab" aria-selected="false" aria-controls="tab-auth">Auth</button>
+          <button class="req-tab" data-tab="curl" role="tab" aria-selected="false" aria-controls="tab-curl">cURL</button>
+        </div>
+
+        <!-- Headers Tab -->
+        <div class="req-tab-content active" id="tab-headers" role="tabpanel">
+          <div class="headers-editor">
+            <div class="headers-toolbar">
+              <span class="headers-label">Request Headers</span>
+              <button class="btn-sm" id="add-header-btn">+ Add Header</button>
+            </div>
+            <div id="headers-list" class="headers-list">
+              <!-- Header rows injected by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Body Tab -->
+        <div class="req-tab-content" id="tab-body" role="tabpanel">
+          <div class="body-editor">
+            <div class="body-toolbar">
+              <div class="body-type-selector" role="radiogroup" aria-label="Body Type">
+                <label class="radio-label">
+                  <input type="radio" name="body-type" value="none" id="body-none" checked /> none
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="body-type" value="json" id="body-json" /> JSON
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="body-type" value="text" id="body-text" /> Text
+                </label>
+              </div>
+              <button class="btn-sm" id="format-json-btn" style="display:none">Format JSON</button>
+            </div>
+            <div id="body-editor-area">
+              <textarea
+                id="body-input"
+                class="code-editor"
+                placeholder="Request body (JSON)"
+                aria-label="Request Body"
+                spellcheck="false"
+              ></textarea>
+              <div id="json-error" class="json-error" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auth Tab -->
+        <div class="req-tab-content" id="tab-auth" role="tabpanel">
+          <div class="auth-editor">
+            <div class="auth-type-row">
+              <label for="auth-type">Auth Type:</label>
+              <select id="auth-type" aria-label="Auth Type">
+                <option value="none">None</option>
+                <option value="bearer">Bearer Token</option>
+                <option value="basic">Basic Auth</option>
+                <option value="api-key">API Key</option>
+              </select>
+            </div>
+            <div id="auth-fields"></div>
+          </div>
+        </div>
+
+        <!-- cURL Tab -->
+        <div class="req-tab-content" id="tab-curl" role="tabpanel">
+          <div class="curl-editor">
+            <div class="curl-toolbar">
+              <span>cURL Command</span>
+              <div class="curl-actions">
+                <button class="btn-sm" id="generate-curl-btn">Generate</button>
+                <button class="btn-sm" id="import-curl-btn">Import cURL</button>
+                <button class="btn-sm" id="copy-curl-btn">Copy</button>
+              </div>
+            </div>
+            <textarea id="curl-output" class="code-editor curl-textarea" placeholder="Click 'Generate' to create a cURL command, or paste a cURL command and click 'Import'" spellcheck="false" aria-label="cURL Command"></textarea>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Response Panel -->
+      <section class="response-panel" aria-label="Response">
+        <div class="response-header">
+          <span class="response-title">Response</span>
+          <div class="response-meta" id="response-meta" style="display:none">
+            <span class="meta-badge" id="status-badge"></span>
+            <span class="meta-item" id="time-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span id="response-time"></span>
+            </span>
+            <span class="meta-item" id="size-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <span id="response-size"></span>
+            </span>
+          </div>
+          <div class="response-actions">
+            <input type="text" id="response-search" class="response-search-input" placeholder="Search response..." aria-label="Search in response" style="display:none"/>
+            <button class="btn-icon" id="toggle-search-btn" title="Search in Response" aria-label="Toggle search">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </button>
+            <button class="btn-icon" id="copy-response-btn" title="Copy Response" aria-label="Copy Response" style="display:none">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </button>
+            <button class="btn-sm resp-view-btn active" id="resp-pretty-btn" data-view="pretty">Pretty</button>
+            <button class="btn-sm resp-view-btn" id="resp-raw-btn" data-view="raw">Raw</button>
+            <button class="btn-sm resp-view-btn" id="resp-tree-btn" data-view="tree">Tree</button>
+          </div>
+        </div>
+
+        <!-- Response Tabs (Headers / Body) -->
+        <div class="resp-tabs" role="tablist">
+          <button class="resp-tab active" data-resp-tab="body" role="tab" aria-selected="true" aria-controls="resp-tab-body">Body</button>
+          <button class="resp-tab" data-resp-tab="headers" role="tab" aria-selected="false" aria-controls="resp-tab-headers">Response Headers</button>
+        </div>
+
+        <div class="resp-tab-content active" id="resp-tab-body" role="tabpanel">
+          <div id="response-placeholder" class="response-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <p>Send a request to see the response here</p>
+            <p class="placeholder-hint">Ctrl+Enter to send</p>
+          </div>
+          <div id="response-loading" class="response-loading" style="display:none">
+            <div class="loading-spinner"></div>
+            <p>Sending request...</p>
+          </div>
+          <div id="response-output" class="response-output" style="display:none">
+            <pre id="response-body" class="response-body" tabindex="0" aria-label="Response body"></pre>
+          </div>
+          <div id="response-tree" class="response-tree" style="display:none"></div>
+        </div>
+
+        <div class="resp-tab-content" id="resp-tab-headers" role="tabpanel">
+          <div id="response-headers-list" class="response-headers-list"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Environment Manager Modal -->
+  <div class="modal-overlay" id="env-modal" role="dialog" aria-modal="true" aria-labelledby="env-modal-title" style="display:none">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="env-modal-title">Environment Manager</h2>
+        <button class="btn-icon modal-close" data-close="env-modal" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="env-manager-layout">
+          <div class="env-list-panel">
+            <div class="env-list-header">
+              <span>Environments</span>
+              <button class="btn-sm" id="add-env-btn">+ New</button>
+            </div>
+            <ul id="env-items-list" class="env-items-list" role="listbox" aria-label="Environments"></ul>
+          </div>
+          <div class="env-vars-panel">
+            <div id="env-vars-editor" class="env-vars-editor">
+              <p class="select-env-hint">Select or create an environment</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save to Collection Modal -->
+  <div class="modal-overlay" id="save-modal" role="dialog" aria-modal="true" aria-labelledby="save-modal-title" style="display:none">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h2 id="save-modal-title">Save Request</h2>
+        <button class="btn-icon modal-close" data-close="save-modal" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="save-req-name">Request Name</label>
+        <input type="text" id="save-req-name" class="modal-input" placeholder="My Request" />
+        <label for="save-collection-select" style="margin-top:12px">Collection</label>
+        <select id="save-collection-select" class="modal-input"></select>
+        <div class="modal-footer">
+          <button class="btn-secondary" data-close="save-modal">Cancel</button>
+          <button class="btn-primary" id="confirm-save-btn">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Collection Modal -->
+  <div class="modal-overlay" id="new-collection-modal" role="dialog" aria-modal="true" aria-labelledby="new-col-title" style="display:none">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h2 id="new-col-title">New Collection</h2>
+        <button class="btn-icon modal-close" data-close="new-collection-modal" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="new-collection-name">Collection Name</label>
+        <input type="text" id="new-collection-name" class="modal-input" placeholder="My Collection" />
+        <div class="modal-footer">
+          <button class="btn-secondary" data-close="new-collection-modal">Cancel</button>
+          <button class="btn-primary" id="confirm-new-collection-btn">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keyboard Shortcuts Modal -->
+  <div class="modal-overlay" id="shortcuts-modal" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title" style="display:none">
+    <div class="modal modal-md">
+      <div class="modal-header">
+        <h2 id="shortcuts-title">Keyboard Shortcuts</h2>
+        <button class="btn-icon modal-close" data-close="shortcuts-modal" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body shortcuts-list">
+        <div class="shortcut-row"><kbd>Ctrl</kbd>+<kbd>Enter</kbd><span>Send Request</span></div>
+        <div class="shortcut-row"><kbd>Ctrl</kbd>+<kbd>T</kbd><span>New Tab</span></div>
+        <div class="shortcut-row"><kbd>Ctrl</kbd>+<kbd>W</kbd><span>Close Tab</span></div>
+        <div class="shortcut-row"><kbd>Ctrl</kbd>+<kbd>L</kbd><span>Focus URL</span></div>
+        <div class="shortcut-row"><kbd>Ctrl</kbd>+<kbd>S</kbd><span>Save to Collection</span></div>
+        <div class="shortcut-row"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd><span>Format JSON Body</span></div>
+        <div class="shortcut-row"><kbd>Ctrl</kbd>+<kbd>D</kbd><span>Duplicate Tab</span></div>
+        <div class="shortcut-row"><kbd>Ctrl</kbd>+<kbd>/</kbd><span>Keyboard Shortcuts</span></div>
+        <div class="shortcut-row"><kbd>Esc</kbd><span>Close Modal</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import Collection (hidden file input) -->
+  <input type="file" id="import-file-input" accept=".json" style="display:none" aria-hidden="true" />
+
+  <script src="js/storage.js"></script>
+  <script src="js/collections.js"></script>
+  <script src="js/request.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

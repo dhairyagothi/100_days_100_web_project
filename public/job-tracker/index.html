@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Track</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+    <!-- Upcoming Interview Alerts Banner -->
+    <div id="alert-banner-container" class="alert-banner-container hidden">
+        <!-- Dynamic alarms -->
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-glow">
+                        <i data-lucide="briefcase" class="accent-glow-icon"></i>
+                    </div>
+                    <span class="logo-text">Job Track</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="list-view">
+                    <i data-lucide="list"></i>
+                    <span>Applications List</span>
+                </button>
+                <button class="nav-item" data-tab="kanban-view">
+                    <i data-lucide="kanban"></i>
+                    <span>Kanban Board</span>
+                </button>
+                <button class="nav-item" data-tab="calendar-view">
+                    <i data-lucide="calendar"></i>
+                    <span>Interview Calendar</span>
+                </button>
+                <button class="nav-item" data-tab="settings-view">
+                    <i data-lucide="settings"></i>
+                    <span>Settings & Backup</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <!-- Theme Toggle Switcher -->
+                <div class="theme-toggle-container">
+                    <span class="toggle-label"><i data-lucide="moon"></i> Dark Theme</span>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header section -->
+            <header class="main-header">
+                <div class="header-left">
+                    <h1 id="page-title">Dashboard Overview</h1>
+                    <p class="subheading" id="page-subtitle">Track, optimize, and organize your job applications.</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-primary" id="add-app-trigger-btn">
+                        <i data-lucide="plus"></i> Add Application
+                    </button>
+                </div>
+            </header>
+
+            <!-- Scrollable Page Container -->
+            <div class="content-viewport">
+                
+                <!-- 1. DASHBOARD VIEW -->
+                <section id="dashboard" class="tab-panel active">
+                    <!-- KPI Panel Row -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card glass-card">
+                            <div class="kpi-icon color-blue">
+                                <i data-lucide="file-text"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Total Applications</span>
+                                <h3 class="kpi-value" id="kpi-total-apps">0</h3>
+                                <span class="kpi-trend text-muted">All tracked jobs</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card glass-card">
+                            <div class="kpi-icon color-yellow">
+                                <i data-lucide="users"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Interviews Booked</span>
+                                <h3 class="kpi-value" id="kpi-interviews-count">0</h3>
+                                <span class="kpi-trend text-warning" id="kpi-next-interview">None upcoming</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card glass-card">
+                            <div class="kpi-icon color-green">
+                                <i data-lucide="award"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Offers Received</span>
+                                <h3 class="kpi-value" id="kpi-offers-count">0</h3>
+                                <span class="kpi-trend text-success" id="kpi-offer-pct">0% conversion</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card glass-card">
+                            <div class="kpi-icon color-purple">
+                                <i data-lucide="percent"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Success Rate</span>
+                                <h3 class="kpi-value" id="kpi-success-rate">0%</h3>
+                                <span class="kpi-trend text-muted">Ratio of offers/total</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Double Column -->
+                    <div class="dashboard-details-grid">
+                        <!-- Left: Main application volume chart & upcoming interviews list -->
+                        <div class="dashboard-left-col">
+                            <div class="glass-card widget-card">
+                                <div class="card-header">
+                                    <h3>Monthly Application Rate</h3>
+                                    <span class="badge">Volume</span>
+                                </div>
+                                <div class="card-body chart-body">
+                                    <canvas id="monthlyVolumeChart"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="glass-card widget-card">
+                                <div class="card-header">
+                                    <h3>Upcoming Interviews</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div id="upcoming-interviews-empty" class="empty-state-text">
+                                        No upcoming interviews. Keep applying!
+                                    </div>
+                                    <ul id="upcoming-interviews-list" class="upcoming-list">
+                                        <!-- Dynamic items -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Breakdown charts -->
+                        <div class="dashboard-right-col">
+                            <div class="glass-card widget-card">
+                                <div class="card-header">
+                                    <h3>Applications by Status</h3>
+                                </div>
+                                <div class="card-body chart-body">
+                                    <canvas id="statusBreakdownChart"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="glass-card widget-card">
+                                <div class="card-header">
+                                    <h3>USD ⇄ INR Quick Converter</h3>
+                                    <span class="badge">Calculator</span>
+                                </div>
+                                <div class="card-body" style="padding-top: 10px;">
+                                    <div class="currency-converter-container" style="display: flex; flex-direction: column; gap: 16px;">
+                                        <div class="converter-row" style="display: flex; align-items: center; gap: 12px;">
+                                            <div class="currency-input-wrapper" style="position: relative; flex: 1;">
+                                                <span class="currency-symbol-prefix" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-weight: 600; color: var(--text-muted);">$</span>
+                                                <input type="number" id="converter-usd" placeholder="USD" class="glass-input" style="padding-left: 28px; font-weight: 500;">
+                                            </div>
+                                            <i data-lucide="arrow-left-right" style="width: 18px; height: 18px; color: var(--text-muted); flex-shrink: 0;"></i>
+                                            <div class="currency-input-wrapper" style="position: relative; flex: 1;">
+                                                <span class="currency-symbol-prefix" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-weight: 600; color: var(--text-muted);">₹</span>
+                                                <input type="number" id="converter-inr" placeholder="INR" class="glass-input" style="padding-left: 28px; font-weight: 500;">
+                                            </div>
+                                        </div>
+                                        <div class="converter-rate-info" style="font-size: 0.8rem; color: var(--text-muted); text-align: center; font-weight: 500; border-top: 1px dashed var(--card-border); padding-top: 12px;">
+                                            Exchange Rate: <strong style="color: var(--text-primary);">1 USD = 83.50 INR</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="glass-card widget-card">
+                                <div class="card-header">
+                                    <h3>Overview Analytics</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="stats-table">
+                                        <div class="stats-row">
+                                            <span>Applications Pending Review</span>
+                                            <strong id="analytics-pending-count">0</strong>
+                                        </div>
+                                        <div class="stats-row">
+                                            <span>Active Interviews</span>
+                                            <strong id="analytics-interview-count">0</strong>
+                                        </div>
+                                        <div class="stats-row">
+                                            <span>Rejection Count</span>
+                                            <strong id="analytics-rejected-count" class="text-danger">0</strong>
+                                        </div>
+                                        <div class="stats-row">
+                                            <span>Applications Applied</span>
+                                            <strong id="analytics-applied-count">0</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 2. LIST VIEW -->
+                <section id="list-view" class="tab-panel">
+                    <div class="list-filters-bar glass-card">
+                        <div class="filter-controls-group">
+                            <div class="select-group">
+                                <label for="filter-status-select">Status</label>
+                                <select id="filter-status-select" class="glass-select">
+                                    <option value="all">All Statuses</option>
+                                    <option value="Applied">Applied</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Interview">Interview</option>
+                                    <option value="Offer">Offer</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </div>
+                            
+                            <div class="select-group">
+                                <label for="filter-priority-select">Priority</label>
+                                <select id="filter-priority-select" class="glass-select">
+                                    <option value="all">All Priorities</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+
+                            <div class="select-group">
+                                <label for="sort-select">Sort By</label>
+                                <select id="sort-select" class="glass-select">
+                                    <option value="dateApplied-desc">Applied Date (Newest)</option>
+                                    <option value="dateApplied-asc">Applied Date (Oldest)</option>
+                                    <option value="company-asc">Company (A-Z)</option>
+                                    <option value="salary-desc">Salary (Highest)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" id="reset-filters-btn">Clear Filters</button>
+                    </div>
+
+                    <!-- Cards Grid Container -->
+                    <div class="job-list-grid" id="job-cards-container">
+                        <!-- Dynamic job cards -->
+                    </div>
+                </section>
+
+
+                <!-- 3. KANBAN BOARD VIEW -->
+                <section id="kanban-view" class="tab-panel">
+                    <div class="kanban-board-container">
+                        <!-- 1. Applied -->
+                        <div class="kanban-column" data-status="Applied" id="column-applied">
+                            <div class="column-header">
+                                <div class="column-header-left">
+                                    <span class="column-indicator bg-applied"></span>
+                                    <h3>Applied</h3>
+                                </div>
+                                <span class="column-count-badge" id="count-applied">0</span>
+                            </div>
+                            <div class="kanban-cards-wrapper drop-zone" id="zone-applied">
+                                <!-- Draggable Cards -->
+                            </div>
+                        </div>
+
+                        <!-- 2. Pending -->
+                        <div class="kanban-column" data-status="Pending" id="column-pending">
+                            <div class="column-header">
+                                <div class="column-header-left">
+                                    <span class="column-indicator bg-pending"></span>
+                                    <h3>Pending</h3>
+                                </div>
+                                <span class="column-count-badge" id="count-pending">0</span>
+                            </div>
+                            <div class="kanban-cards-wrapper drop-zone" id="zone-pending">
+                                <!-- Draggable Cards -->
+                            </div>
+                        </div>
+
+                        <!-- 3. Interview -->
+                        <div class="kanban-column" data-status="Interview" id="column-interview">
+                            <div class="column-header">
+                                <div class="column-header-left">
+                                    <span class="column-indicator bg-interview"></span>
+                                    <h3>Interview</h3>
+                                </div>
+                                <span class="column-count-badge" id="count-interview">0</span>
+                            </div>
+                            <div class="kanban-cards-wrapper drop-zone" id="zone-interview">
+                                <!-- Draggable Cards -->
+                            </div>
+                        </div>
+
+                        <!-- 4. Offer -->
+                        <div class="kanban-column" data-status="Offer" id="column-offer">
+                            <div class="column-header">
+                                <div class="column-header-left">
+                                    <span class="column-indicator bg-offer"></span>
+                                    <h3>Offer</h3>
+                                </div>
+                                <span class="column-count-badge" id="count-offer">0</span>
+                            </div>
+                            <div class="kanban-cards-wrapper drop-zone" id="zone-offer">
+                                <!-- Draggable Cards -->
+                            </div>
+                        </div>
+
+                        <!-- 5. Rejected -->
+                        <div class="kanban-column" data-status="Rejected" id="column-rejected">
+                            <div class="column-header">
+                                <div class="column-header-left">
+                                    <span class="column-indicator bg-rejected"></span>
+                                    <h3>Rejected</h3>
+                                </div>
+                                <span class="column-count-badge" id="count-rejected">0</span>
+                            </div>
+                            <div class="kanban-cards-wrapper drop-zone" id="zone-rejected">
+                                <!-- Draggable Cards -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 4. CALENDAR VIEW -->
+                <section id="calendar-view" class="tab-panel">
+                    <div class="calendar-wrapper glass-card">
+                        <div class="calendar-controls">
+                            <div>
+                                <h2 id="calendar-month-year">June 2026</h2>
+                                <p class="text-muted">Interactive roadmap of scheduled company interviews.</p>
+                            </div>
+                            <div class="calendar-nav-buttons">
+                                <button class="btn btn-secondary btn-icon" id="prev-month-btn">
+                                    <i data-lucide="chevron-left"></i>
+                                </button>
+                                <button class="btn btn-secondary btn-sm" id="today-month-btn">Today</button>
+                                <button class="btn btn-secondary btn-icon" id="next-month-btn">
+                                    <i data-lucide="chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Calendar Grid -->
+                        <div class="calendar-grid">
+                            <!-- Weekdays Header -->
+                            <div class="weekday-header">Sun</div>
+                            <div class="weekday-header">Mon</div>
+                            <div class="weekday-header">Tue</div>
+                            <div class="weekday-header">Wed</div>
+                            <div class="weekday-header">Thu</div>
+                            <div class="weekday-header">Fri</div>
+                            <div class="weekday-header">Sat</div>
+                            
+                            <!-- Calendar Days cells injected dynamically -->
+                            <div class="calendar-days-container" id="calendar-days-grid" style="display: contents;"></div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 5. SETTINGS / BACKUP VIEW -->
+                <section id="settings-view" class="tab-panel">
+                    <div class="settings-grid">
+                        
+                        <!-- Configuration -->
+                        <div class="glass-card settings-card">
+                            <div class="card-header">
+                                <h2>Backup & Integration Panel</h2>
+                            </div>
+                            <div class="card-body">
+                                
+                                <!-- Export csv section -->
+                                <div class="settings-section">
+                                    <h3>Export Data</h3>
+                                    <p class="text-muted">Export all job applications, notes, salaries, and schedules into a standard CSV file format for spread-sheets.</p>
+                                    <button class="btn btn-primary margin-top-sm" id="export-csv-btn">
+                                        <i data-lucide="download"></i> Export to CSV
+                                    </button>
+                                </div>
+
+                                <hr class="settings-divider">
+
+                                <!-- Import csv section -->
+                                <div class="settings-section">
+                                    <h3>Import Backup Data</h3>
+                                    <p class="text-muted">Restore your tracking logs from a previously exported CSV file. Importing will merge records with existing logs.</p>
+                                    
+                                    <div class="file-upload-wrapper margin-top-sm">
+                                        <label for="import-file-input" class="custom-file-upload">
+                                            <i data-lucide="upload-cloud"></i> Select CSV File
+                                        </label>
+                                        <input type="file" id="import-file-input" accept=".csv" class="hidden">
+                                        <span id="import-filename" class="text-muted italic">No file chosen</span>
+                                    </div>
+                                    <button class="btn btn-secondary margin-top-sm" id="import-csv-btn" disabled>Import CSV Records</button>
+                                </div>
+
+                                <hr class="settings-divider">
+
+                                <!-- Preferences -->
+                                <div class="settings-section">
+                                    <h3>User Defaults</h3>
+                                    <div class="form-group margin-top-sm">
+                                        <label for="settings-currency">Display Currency</label>
+                                        <select id="settings-currency" class="glass-select">
+                                            <option value="$">USD ($)</option>
+                                            <option value="€">EUR (€)</option>
+                                            <option value="£">GBP (£)</option>
+                                            <option value="₹" selected>INR (₹)</option>
+                                            <option value="¥">JPY (¥)</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary" id="save-settings-btn">Save Preferences</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System stats & cleanup -->
+                        <div class="glass-card analytics-card">
+                            <div class="card-header">
+                                <h2>System Reset</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="settings-section Danger-zone">
+                                    <h3>Wipe Data Cache</h3>
+                                    <p class="text-muted">Permanently delete all tracked company folders, dates, status logs, and settings from localStorage. This action cannot be reversed.</p>
+                                    <button class="btn btn-sm btn-danger margin-top-sm" id="reset-app-data-btn">Reset All Data</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- APPLICATION MODALS -->
+
+    <!-- 1. Add / Edit Application Modal -->
+    <div class="modal-overlay hidden" id="app-form-modal">
+        <div class="modal-card glass-modal">
+            <div class="modal-header">
+                <h2 id="modal-form-title">Add Job Application</h2>
+                <button class="modal-close" id="app-modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="app-form">
+                    <input type="hidden" id="edit-app-id">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="app-company">Company Name *</label>
+                            <input type="text" id="app-company" placeholder="e.g. Google, Stripe" required class="glass-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="app-role">Job Title / Role *</label>
+                            <input type="text" id="app-role" placeholder="e.g. Software Engineer" required class="glass-input">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="app-status">Application Status</label>
+                            <select id="app-status" class="glass-select">
+                                <option value="Applied">Applied</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Interview">Interview</option>
+                                <option value="Offer">Offer</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="app-priority">Priority</label>
+                            <select id="app-priority" class="glass-select">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="app-date-applied">Date Applied</label>
+                            <input type="date" id="app-date-applied" class="glass-input">
+                        </div>
+                        <div class="form-group" id="interview-date-group">
+                            <label for="app-date-interview">Interview Date</label>
+                            <input type="date" id="app-date-interview" class="glass-input">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="app-domain">Company Website / Domain</label>
+                            <input type="text" id="app-domain" placeholder="e.g. stripe.com (for logo)" class="glass-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="app-salary">Annual Salary</label>
+                            <div class="salary-input-group" style="display: flex; gap: 8px;">
+                                <select id="app-salary-currency" class="glass-select" style="width: 85px; flex-shrink: 0; padding: 10px 8px;">
+                                    <option value="$">USD ($)</option>
+                                    <option value="€">EUR (€)</option>
+                                    <option value="£">GBP (£)</option>
+                                    <option value="₹">INR (₹)</option>
+                                    <option value="¥">JPY (¥)</option>
+                                </select>
+                                <input type="number" id="app-salary" placeholder="e.g. 1800000 (18 LPA)" class="glass-input" style="flex-grow: 1;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="app-job-url">Job Listing URL</label>
+                        <input type="url" id="app-job-url" placeholder="e.g. https://careers.google.com/jobs/..." class="glass-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="app-notes">Activity Notes & Interview Preparation</label>
+                        <textarea id="app-notes" placeholder="e.g. Review system design questions. Recruiter contact: Sarah (sarah@company.com)..." rows="4" class="glass-textarea"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="app-modal-cancel">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="app-modal-submit">Create Record</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. View Application Details Modal -->
+    <div class="modal-overlay hidden" id="app-details-modal">
+        <div class="modal-card glass-modal detail-modal-card">
+            <div class="modal-header">
+                <div class="detail-header-left">
+                    <img id="detail-company-logo" class="detail-logo" src="" alt="logo" onerror="this.style.display='none'">
+                    <div class="detail-logo-fallback" id="detail-company-fallback">CO</div>
+                    <div>
+                        <h2 id="detail-company-name">Company Name</h2>
+                        <p id="detail-job-role" class="text-muted">Software Engineer</p>
+                    </div>
+                </div>
+                <button class="modal-close" id="details-modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-badges-row">
+                    <span class="status-badge" id="detail-status-badge">Applied</span>
+                    <span class="priority-indicator-pill" id="detail-priority-badge">medium</span>
+                </div>
+                
+                <div class="details-grid-info">
+                    <div class="detail-item">
+                        <span class="detail-label">Date Applied</span>
+                        <span class="detail-value" id="detail-date-applied">June 20, 2026</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Interview Scheduled</span>
+                        <span class="detail-value" id="detail-date-interview">None Scheduled</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Annual Salary</span>
+                        <span class="detail-value" id="detail-salary">$120,000</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Job Posting</span>
+                        <a href="#" target="_blank" class="detail-value text-link" id="detail-job-url">Link to listing</a>
+                    </div>
+                </div>
+
+                <div class="detail-notes-section">
+                    <h3>Tracking Notes</h3>
+                    <div class="notes-content-box" id="detail-notes">
+                        No notes provided.
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" id="detail-edit-btn">
+                        <i data-lucide="edit-3"></i> Edit
+                    </button>
+                    <button class="btn btn-danger btn-sm" id="detail-delete-btn">
+                        <i data-lucide="trash-2"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="kanban.js"></script>
+    <script src="calendar.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

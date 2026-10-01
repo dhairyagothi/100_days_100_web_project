@@ -1,5 +1,6 @@
-
-
+// =========================
+// ELEMENTS
+// =========================
 
 const btn = document.querySelector(".talk");
 const content = document.querySelector(".content");
@@ -9,1959 +10,616 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 let recognition;
 
-function safe(el) {
-  return el || { textContent: "" };
-}
+// Holds the initialized Google OAuth2 token client
+let googleTokenClient = null;
 
+// =========================
+// SPEAK FUNCTION
+// =========================
 
 function speak(text) {
-  window.speechSynthesis.cancel();
+    window.speechSynthesis.cancel();
 
-  const utterance = new SpeechSynthesisUtterance(text);
+    const utterance = new SpeechSynthesisUtterance(text);
 
-  utterance.rate = 1;
-  utterance.volume = 1;
-  utterance.pitch = 1;
+    utterance.rate = 1;
+    utterance.volume = 1;
+    utterance.pitch = 1;
 
-  window.speechSynthesis.speak(utterance);
+    window.speechSynthesis.speak(utterance);
 }
+
+// =========================
+// GREETING
+// =========================
 
 function wishMe() {
-  const hour = new Date().getHours();
-
-  if (hour < 12) {
-    speak("Good Morning Boss");
-  }
-
-  else if (hour < 17) {
-    speak("Good Afternoon Boss");
-  }
-
-  else {
-    speak("Good Evening Boss");
-  }
-}
-
-
-window.addEventListener("load", () => {
-
-
-  if (localStorage.getItem("loggedIn") === "true") {
-
-    document.getElementById("authContainer").style.display = "none";
-    document.getElementById("mainApp").style.display = "flex";
-
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    if (user?.username) {
-      speak(`Welcome back ${user.username}`);
-    }
-
-  } else {
-
-    document.getElementById("authContainer").style.display = "flex";
-    document.getElementById("mainApp").style.display = "none";
-
-  }
-
-  wishMe();
-});
-
-const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-
-if (SpeechRecognition) {
-
-  recognition = new SpeechRecognition();
-
-  recognition.continuous = false;
-  recognition.lang = "en-US";
-  recognition.interimResults = false;
-
- 
-  recognition.onresult = (event) => {
-
-    const transcript =
-      event.results[0][0].transcript;
-
-    safe(content).textContent = transcript;
-
-    takeCommand(transcript.toLowerCase());
-  };
-
- 
-  recognition.onerror = () => {
-
-    safe(statusText).textContent =
-      "Speech recognition error";
-
-    btn?.classList.remove("active");
-    wave?.classList.remove("active");
-  };
-
- 
-  recognition.onend = () => {
-
-    btn?.classList.remove("active");
-    wave?.classList.remove("active");
-
-    safe(content).textContent =
-      "Click to Speak";
-
-    safe(statusText).textContent =
-      "Idle";
-  };
-
- 
-  btn?.addEventListener("click", () => {
-
-    btn.classList.add("active");
-    wave?.classList.add("active");
-
-    safe(content).textContent =
-      "Listening...";
-
-    safe(statusText).textContent =
-      "Listening...";
-
-    recognition.start();
-  });
-
-} else {
-
-  alert("Speech Recognition is not supported in this browser.");
-
-}
-
-
-function takeCommand(message) {
-
-  if (
-    message.includes("hello") ||
-    message.includes("hey")
-  ) {
-
-    speak("Hello Boss, how can I help you?");
-
-  }
-
-  
-  else if (message.includes("open google")) {
-
-    window.open("https://google.com", "_blank");
-
-    speak("Opening Google");
-
-  }
-
-  
-  else if (message.includes("open youtube")) {
-
-    window.open("https://youtube.com", "_blank");
-
-    speak("Opening YouTube");
-
-  }
-
- 
-  else if (message.includes("time")) {
-
-    const time =
-      new Date().toLocaleTimeString();
-
-    speak(`The time is ${time}`);
-
-  }
-
- 
-  else if (message.includes("date")) {
-
-    const date =
-      new Date().toDateString();
-
-    speak(`Today's date is ${date}`);
-
-  }
-
-  
-  else if (message.includes("logout")) {
-
-    logout();
-
-  }
-
-  
-  else {
-
-    window.open(
-      `https://www.google.com/search?q=${message}`,
-      "_blank"
-    );
-
-    speak("Searching on Google");
-
-  }
-}
-
-function signup() {
-
-  const username =
-    document.getElementById("signupUsername").value.trim();
-
-  const email =
-    document.getElementById("signupEmail").value.trim();
-
-  const password =
-    document.getElementById("signupPassword").value.trim();
-
-  if (!username || !email || !password) {
-
-    document.getElementById("status").innerText =
-      "Please fill all fields";
-
-    return;
-  }
-
-  
-  const user = {
-    username,
-    email,
-    password: btoa(password)
-  };
-
-
-  localStorage.setItem(
-    "user",
-    JSON.stringify(user)
-  );
-
-  document.getElementById("status").innerText =
-    "Signup successful";
-
-  
-  document.getElementById("signupUsername").value = "";
-  document.getElementById("signupEmail").value = "";
-  document.getElementById("signupPassword").value = "";
-
-  
-  setTimeout(() => {
-
-    showLogin();
-
-    document.getElementById("status").innerText =
-      "";
-
-  }, 1000);
-}
-
-
-function login() {
-
-  const email =
-    document.getElementById("loginEmail").value.trim();
-
-  const password =
-    document.getElementById("loginPassword").value.trim();
-
-  if (!email || !password) {
-
-    document.getElementById("status").innerText =
-      "Please fill all fields";
-
-    return;
-  }
-
-  const user =
-    JSON.parse(localStorage.getItem("user"));
-
-  
-  if (
-    user &&
-    email === user.email &&
-    password === atob(user.password)
-  ) {
-
-    localStorage.setItem("loggedIn", "true");
-
-    document.getElementById("authContainer").style.display =
-      "none";
-
-    document.getElementById("mainApp").style.display =
-      "flex";
-
-    document.getElementById("status").innerText =
-      "";
-
-  
-    document.getElementById("loginEmail").value = "";
-    document.getElementById("loginPassword").value = "";
-
-    speak(`Welcome ${user.username}`);
-
-  } else {
-
-    document.getElementById("status").innerText =
-      "Invalid email or password";
-
-  }
-}
-
-function logout() {
-
-  localStorage.removeItem("loggedIn");
-
-  document.getElementById("authContainer").style.display =
-    "flex";
-
-  document.getElementById("mainApp").style.display =
-    "none";
-
-  
-  safe(content).textContent =
-    "Click to Speak";
-
-  safe(statusText).textContent =
-    "Idle";
-
-  btn?.classList.remove("active");
-  wave?.classList.remove("active");
-
-  speak("Logged out successfully");
-}
-
-
-logoutBtn?.addEventListener("click", logout);
-
-
-function showForgot() {
-
-  document.getElementById("signupBox").style.display =
-    "none";
-
-  document.getElementById("loginBox").style.display =
-    "none";
-
-  document.getElementById("forgotBox").style.display =
-    "block";
-
-  document.getElementById("status").innerText =
-    "";
-}
-
-function resetPassword() {
-
-  const email =
-    document.getElementById("forgotEmail").value.trim();
-
-  const newPassword =
-    document.getElementById("newPassword").value.trim();
-
-  const user =
-    JSON.parse(localStorage.getItem("user"));
-
-  if (!user) {
-
-    document.getElementById("status").innerText =
-      "No user found";
-
-    return;
-  }
-
-
-  if (user.email == email) {
-
-  if (user.email === email) {
-
-
-    user.password = btoa(newPassword);
-
-    localStorage.setItem(
-      "user",
-      JSON.stringify(user)
-    );
-
-    document.getElementById("status").innerText =
-      "Password reset successful";
-
-  
-    document.getElementById("forgotEmail").value = "";
-    document.getElementById("newPassword").value = "";
-
-    setTimeout(() => {
-
-      showLogin();
-
-      document.getElementById("status").innerText =
-        "";
-
-    }, 1000);
-
-  } else {
-
-    document.getElementById("status").innerText =
-      "Email not found";
-
-  }
-}
-
-
-function showSignup() {
-
-  document.getElementById("signupBox").style.display =
-    "block";
-
-  document.getElementById("loginBox").style.display =
-    "none";
-
-  document.getElementById("forgotBox").style.display =
-    "none";
-
-  document.getElementById("status").innerText =
-    "";
-}
-
-function showLogin() {
-
-  document.getElementById("signupBox").style.display =
-    "none";
-
-  document.getElementById("loginBox").style.display =
-    "block";
-
-  document.getElementById("forgotBox").style.display =
-    "none";
-
-  document.getElementById("status").innerText =
-    "";
-}
-
-const btn = document.querySelector('.talk');
-const content = document.querySelector('.content');
-const status = document.querySelector('.status-text');
-const wave =document.querySelector('.wave-container');
-function speak(text) {
-    const text_speak = new SpeechSynthesisUtterance(text);
-
-    text_speak.rate = 1;
-    text_speak.volume = 1;
-    text_speak.pitch = 1;
-
-    window.speechSynthesis.speak(text_speak);
-}
-
-function wishMe() {
-    var day = new Date();
-    var hour = day.getHours();
-
-    if (hour >= 0 && hour < 12) {
-        speak("Good Morning Boss...");
-    } else if (hour >= 12 && hour < 17) {
-        speak("Good Afternoon Master...");
-    } else {
-        speak("Good Evening Sir...");
-    }
-}
-
-window.addEventListener('load', () => {
-    speak("Initializing JARVIS...");
-    wishMe();
-});
-
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-if (!SpeechRecognition) {
-    alert("Speech Recognition is not supported in this browser.");
-    status.textContent = "Speech Recognition not supported";
-} else {
-    const recognition = new SpeechRecognition();
-
-recognition.onresult = (event) => {
-    const currentIndex = event.resultIndex;
-    const transcript = event.results[currentIndex][0].transcript;
-    content.textContent = transcript;
-    takeCommand(transcript.toLowerCase());
-};
-
-btn.addEventListener('click', () => {
-    btn.classList.add('active');
-    wave.classList.add('active');
-    content.textContent = "Listening...";
-    status.textContent ="Jarvis is listening";
-    recognition.start();
-});
-}
-
-recognition.onend = () => {
-    btn.classList.remove('active');
-    wave.classList.remove('active');
-    content.textContent ="Click here to speak";
-    status.textContent ="Idle";
-};
-
-function takeCommand(message) {
-    if (message.includes('hey') || message.includes('hello')) {
-        speak("Hello Sir, How May I Help You?");
-    } else if (message.includes("open google")) {
-        window.open("https://google.com", "_blank");
-        speak("Opening Google...");
-    } else if (message.includes("open youtube")) {
-        window.open("https://youtube.com", "_blank");
-        speak("Opening Youtube...");
-    } else if (message.includes("open facebook")) {
-        window.open("https://facebook.com", "_blank");
-        speak("Opening Facebook...");
-    } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
-        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-        const finalText = "This is what I found on the internet regarding " + message;
-        speak(finalText);
-    } else if (message.includes('wikipedia')) {
-        window.open(`https://en.wikipedia.org/wiki/${message.replace("wikipedia", "").trim()}`, "_blank");
-        const finalText = "This is what I found on Wikipedia regarding " + message;
-        speak(finalText);
-    } else if (message.includes('time')) {
-        const time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
-        const finalText = "The current time is " + time;
-        speak(finalText);
-    } else if (message.includes('date')) {
-        const date = new Date().toLocaleString(undefined, { month: "short", day: "numeric" });
-        const finalText = "Today's date is " + date;
-        speak(finalText);
-    } else if (message.includes('calculator')) {
-        window.open('Calculator:///');
-        const finalText = "Opening Calculator";
-        speak(finalText);
-    } else {
-        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-        const finalText = "I found some information for " + message + " on Google";
-        speak(finalText);
-    }
-}
-
-particlesJS("particles-js", {
-
-    particles: {
-        number: {value: 45,density: {enable: true,value_area: 800}},
-        color: {value: "#00bcd4"},
-        shape: {type: "circle"},
-        opacity: {value: 0.25},
-        size: { value: 2},
-        line_linked: {
-            enable: true,
-            distance: 140,
-            color: "#00bcd4",
-            opacity: 0.08,
-            width: 1
-        },
-        move: {
-            enable: true,
-            speed: 0.4
-        }
-    },
-
-    interactivity: {
-        detect_on: "canvas",
-        events: {
-            onhover: {enable: false},
-            resize: true
-        }
-    },
-    retina_detect: true
-});
-
-
-const btn = document.querySelector('.talk');
-const content = document.querySelector('.content');
-const typingText = document.getElementById('typing-text');
-const status = document.querySelector('.status-text');
-const wave =document.querySelector('.wave-container');
-function speak(text) {
-
-    const text_speak = new SpeechSynthesisUtterance(text);
-
-    text_speak.rate = 1;
-    text_speak.volume = 1;
-    text_speak.pitch = 1;
-
-    window.speechSynthesis.speak(text_speak);
-}
-
-function wishMe() {
-
     const hour = new Date().getHours();
 
-    if (hour >= 0 && hour < 12) {
-
+    if (hour < 12) {
         speak("Good Morning Boss");
-
-    } else if (hour >= 12 && hour < 17) {
-
+    } else if (hour < 17) {
         speak("Good Afternoon Boss");
-
     } else {
-
         speak("Good Evening Boss");
     }
 }
 
+// =========================
+// PAGE LOAD
+// =========================
 
+window.addEventListener("load", () => {
 
-window.addEventListener('load', () => {
+    // Check regular login (localStorage) OR Google session (sessionStorage)
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
+    const googleSession = JSON.parse(sessionStorage.getItem("jarvisGoogleUser") || "null");
+    const isAuthenticated = loggedIn || googleSession !== null;
 
-    speak("Initializing JARVIS");
+    const authContainer = document.getElementById("authContainer");
+    const mainApp = document.getElementById("mainApp");
 
-    typingAnimation();
+    if (authContainer && mainApp) {
 
-    setTimeout(() => {
-        wishMe();
-    }, 2000);
-});
+        if (isAuthenticated) {
 
+            authContainer.style.display = "none";
+            mainApp.style.display = "flex";
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            // Resolve the display name — prefer Google session name
+            const googleUser = googleSession;
+            const localUser = JSON.parse(localStorage.getItem("user") || "null");
+            const displayName = googleUser?.name || localUser?.username || null;
 
-if (!SpeechRecognition) {
-    alert("Speech Recognition is not supported in this browser.");
-    status.textContent = "Speech Recognition not supported";
-} else {
-    const recognition = new SpeechRecognition();
+            // Speak time-of-day greeting then welcome by name
+            setTimeout(() => { wishMe(); }, 500);
 
+            if (displayName) {
+                setTimeout(() => {
+                    speak(`Welcome back ${displayName}`);
+                }, 1800);
+            }
 
+        } else {
 
-const messages = [
-    "Initializing JARVIS...",
-    "AI Assistant Activated...",
-    "Listening for your commands...",
-    "Ready to assist you..."
-];
+            authContainer.style.display = "flex";
+            mainApp.style.display = "none";
 
-let messageIndex = 0;
-let charIndex = 0;
+            // Default to signup tab highlighted
+            document.getElementById("toggleSignup")?.classList.add("active-tab");
 
-function typingAnimation() {
-
-    if (!typingText) return;
-
-    typingText.textContent =
-        messages[messageIndex].slice(0, charIndex++);
-
-    if (charIndex > messages[messageIndex].length) {
-
-        charIndex = 0;
-
-        messageIndex++;
-
-        if (messageIndex >= messages.length) {
-            messageIndex = 0;
+            // No voice on auth screen
         }
     }
 
-    setTimeout(typingAnimation, 120);
-}
+    // Pre-initialise the Google OAuth2 token client so it is ready
+    // the moment the user clicks "Continue with Google"
+    initGoogleAuth();
+});
+
+// =========================
+// SPEECH RECOGNITION
+// =========================
 
 const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
-const recognition = new SpeechRecognition();
-recognition.onresult = (event) => {
+if (SpeechRecognition) {
 
-    const currentIndex = event.resultIndex;
+    recognition = new SpeechRecognition();
 
-    const transcript =
-        event.results[currentIndex][0].transcript;
+    recognition.continuous = false;
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
 
-    content.textContent = transcript;
+    recognition.onresult = (event) => {
 
-    takeCommand(transcript.toLowerCase());
-};
+        const transcript =
+            event.results[0][0].transcript;
 
-btn.addEventListener('click', () => {
+        if (content) {
+            content.textContent = transcript;
+        }
 
+        takeCommand(transcript.toLowerCase());
+    };
 
-    content.textContent = "Listening...";
+    recognition.onerror = () => {
 
-    btn.classList.add('active');
+        if (statusText) {
+            statusText.textContent =
+                "Speech Recognition Error";
+        }
 
-if (wave) {
-    wave.classList.add('active');
+        btn?.classList.remove("active");
+        wave?.classList.remove("active");
+    };
+
+    recognition.onend = () => {
+
+        btn?.classList.remove("active");
+        wave?.classList.remove("active");
+
+        if (content) {
+            content.textContent =
+                "Click to Speak";
+        }
+
+        if (statusText) {
+            statusText.textContent =
+                "Idle";
+        }
+    };
+
+    btn?.addEventListener("click", () => {
+
+        btn.classList.add("active");
+        wave?.classList.add("active");
+
+        if (content) {
+            content.textContent =
+                "Listening...";
+        }
+
+        if (statusText) {
+            statusText.textContent =
+                "Listening...";
+        }
+
+        recognition.start();
+    });
+
+} else {
+
+    console.error(
+        "Speech Recognition not supported"
+    );
 }
 
-content.textContent = "Listening...";
-
-if (status) {
-    status.textContent = "Jarvis is listening";
-}
-
-recognition.start();
-
-speak("Listening");
-    speak("Listening");
-});
-}
-
-recognition.onend = () => {
-    btn.classList.remove('active');
-    wave.classList.remove('active');
-    content.textContent ="Click here to speak";
-    status.textContent ="Idle";
-};
+// =========================
+// COMMANDS
+// =========================
 
 function takeCommand(message) {
 
-    btn.classList.remove("active");
-
     if (
-        message.includes('hey') ||
-        message.includes('hello')
+        message.includes("hello") ||
+        message.includes("hey")
     ) {
 
-        speak("Hello Boss, How May I Help You?");
-
-        content.textContent = "Hello Boss";
-
-    }
-
-    else if (message.includes("open google")) {
-
-        window.open("https://google.com", "_blank");
-
-        speak("Opening Google");
-
-    }
-
-    else if (message.includes("open youtube")) {
-
-        window.open("https://youtube.com", "_blank");
-
-        speak("Opening YouTube");
-
-    }
-
-    else if (message.includes("open facebook")) {
-
-        window.open("https://facebook.com", "_blank");
-
-        speak("Opening Facebook");
+        speak("Hello Boss, how can I help you?");
 
     }
 
     else if (
-        message.includes('what is') ||
-        message.includes('who is') ||
-        message.includes('what are')
+        message.includes("open google")
     ) {
 
         window.open(
-            `https://www.google.com/search?q=${message}`,
+            "https://google.com",
             "_blank"
         );
 
-        speak(
-            "Here is what I found on the internet regarding " +
-            message
-        );
+        speak("Opening Google");
     }
 
-    else if (message.includes('wikipedia')) {
+    else if (
+        message.includes("open youtube")
+    ) {
 
         window.open(
-            `https://en.wikipedia.org/wiki/${message.replace("wikipedia", "")}`,
+            "https://youtube.com",
+            "_blank"
+        );
+
+        speak("Opening YouTube");
+    }
+
+    else if (
+        message.includes("open facebook")
+    ) {
+
+        window.open(
+            "https://facebook.com",
+            "_blank"
+        );
+
+        speak("Opening Facebook");
+    }
+
+    else if (
+        message.includes("wikipedia")
+    ) {
+
+        const query =
+            message.replace("wikipedia", "").trim();
+
+        window.open(
+            `https://en.wikipedia.org/wiki/${query}`,
             "_blank"
         );
 
         speak("Opening Wikipedia");
     }
 
-    else if (message.includes('time')) {
+    else if (
+        message.includes("time")
+    ) {
 
-        const time = new Date().toLocaleString(
-            undefined,
-            {
-                hour: "numeric",
-                minute: "numeric"
-            }
-        );
+        const time =
+            new Date().toLocaleTimeString();
 
-        speak("The current time is " + time);
-
+        speak(`The time is ${time}`);
     }
 
-    else if (message.includes('date')) {
+    else if (
+        message.includes("date")
+    ) {
 
-        const date = new Date().toLocaleString(
-            undefined,
-            {
-                month: "short",
-                day: "numeric"
-            }
-        );
+        const date =
+            new Date().toDateString();
 
-        speak("Today's date is " + date);
-
+        speak(`Today's date is ${date}`);
     }
 
-    else if (message.includes('calculator')) {
+    else if (
+        message.includes("logout")
+    ) {
 
-        speak("Opening Calculator");
-
-        window.open('Calculator:///');
-
+        logout();
     }
 
     else {
 
         window.open(
-            `https://www.google.com/search?q=${message}`,
+            `https://www.google.com/search?q=${encodeURIComponent(message)}`,
             "_blank"
         );
 
-        speak(
-            "I found some information for " + message
-        );
+        speak("Searching on Google");
     }
 }
 
-particlesJS("particles-js", {
-
-    particles: {
-        number: {value: 45,density: {enable: true,value_area: 800}},
-        color: {value: "#00bcd4"},
-        shape: {type: "circle"},
-        opacity: {value: 0.25},
-        size: { value: 2},
-        line_linked: {
-            enable: true,
-            distance: 140,
-            color: "#00bcd4",
-            opacity: 0.08,
-            width: 1
-        },
-        move: {
-            enable: true,
-            speed: 0.4
-        }
-    },
-
-    interactivity: {
-        detect_on: "canvas",
-        events: {
-            onhover: {enable: false},
-            resize: true
-        }
-    },
-    retina_detect: true
- = document.querySelector('.talk');
-const content = document.querySelector('.content');
-const status = document.querySelector('.status-text');
-const wave =document.querySelector('.wave-container');
-function speak(text) {
-    const text_speak = new SpeechSynthesisUtterance(text);
-
-    text_speak.rate = 1;
-    text_speak.volume = 1;
-    text_speak.pitch = 1;
-
-    window.speechSynthesis.speak(text_speak);
-}
-
-function wishMe() {
-    var day = new Date();
-    var hour = day.getHours();
-
-    if (hour >= 0 && hour < 12) {
-        speak("Good Morning Boss...");
-    } else if (hour >= 12 && hour < 17) {
-        speak("Good Afternoon Master...");
-    } else {
-        speak("Good Evening Sir...");
-    }
-}
-
-window.addEventListener('load', () => {
-    speak("Initializing JARVIS...");
-    wishMe();
-});
-
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-if (!SpeechRecognition) {
-    alert("Speech Recognition is not supported in this browser.");
-    status.textContent = "Speech Recognition not supported";
-} else {
-    const recognition = new SpeechRecognition();
-
-recognition.onresult = (event) => {
-    const currentIndex = event.resultIndex;
-    const transcript = event.results[currentIndex][0].transcript;
-    content.textContent = transcript;
-    takeCommand(transcript.toLowerCase());
-};
-
-btn.addEventListener('click', () => {
-    btn.classList.add('active');
-    wave.classList.add('active');
-    content.textContent = "Listening...";
-    status.textContent ="Jarvis is listening";
-    recognition.start();
-});
-}
-
-recognition.onend = () => {
-    btn.classList.remove('active');
-    wave.classList.remove('active');
-    content.textContent ="Click here to speak";
-    status.textContent ="Idle";
-};
-
-function takeCommand(message) {
-    if (message.includes('hey') || message.includes('hello')) {
-        speak("Hello Sir, How May I Help You?");
-    } else if (message.includes("open google")) {
-        window.open("https://google.com", "_blank");
-        speak("Opening Google...");
-    } else if (message.includes("open youtube")) {
-        window.open("https://youtube.com", "_blank");
-        speak("Opening Youtube...");
-    } else if (message.includes("open facebook")) {
-        window.open("https://facebook.com", "_blank");
-        speak("Opening Facebook...");
-    } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
-        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-        const finalText = "This is what I found on the internet regarding " + message;
-        speak(finalText);
-    } else if (message.includes('wikipedia')) {
-        window.open(`https://en.wikipedia.org/wiki/${message.replace("wikipedia", "").trim()}`, "_blank");
-        const finalText = "This is what I found on Wikipedia regarding " + message;
-        speak(finalText);
-    } else if (message.includes('time')) {
-        const time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
-        const finalText = "The current time is " + time;
-        speak(finalText);
-    } else if (message.includes('date')) {
-        const date = new Date().toLocaleString(undefined, { month: "short", day: "numeric" });
-        const finalText = "Today's date is " + date;
-        speak(finalText);
-    } else if (message.includes('calculator')) {
-        window.open('Calculator:///');
-        const finalText = "Opening Calculator";
-        speak(finalText);
-    } else {
-        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-        const finalText = "I found some information for " + message + " on Google";
-        speak(finalText);
-    }
-}
-
-particlesJS("particles-js", {
-
-    particles: {
-        number: {value: 45,density: {enable: true,value_area: 800}},
-        color: {value: "#00bcd4"},
-        shape: {type: "circle"},
-        opacity: {value: 0.25},
-        size: { value: 2},
-        line_linked: {
-            enable: true,
-            distance: 140,
-            color: "#00bcd4",
-            opacity: 0.08,
-            width: 1
-        },
-        move: {
-            enable: true,
-            speed: 0.4
-        }
-    },
-
-    interactivity: {
-        detect_on: "canvas",
-        events: {
-            onhover: {enable: false},
-            resize: true
-        }
-    },
-    retina_detect: true
-});
-
-
-
-
-const btn = document.querySelector(".talk");
-const content = document.querySelector(".content");
-const statusText = document.querySelector(".status-text");
-const wave = document.querySelector(".wave-container");
-const logoutBtn = document.getElementById("logoutBtn");
-
-let recognition;
-
-function safe(el) {
-  return el || { textContent: "" };
-}
-
-
-function speak(text) {
-  window.speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(text);
-
-  utterance.rate = 1;
-  utterance.volume = 1;
-  utterance.pitch = 1;
-
-  window.speechSynthesis.speak(utterance);
-}
-
-function wishMe() {
-  const hour = new Date().getHours();
-
-  if (hour < 12) {
-    speak("Good Morning Boss");
-  }
-
-  else if (hour < 17) {
-    speak("Good Afternoon Boss");
-  }
-
-  else {
-    speak("Good Evening Boss");
-  }
-}
-
-
-window.addEventListener("load", () => {
-
-
-  if (localStorage.getItem("loggedIn") === "true") {
-
-    document.getElementById("authContainer").style.display = "none";
-    document.getElementById("mainApp").style.display = "flex";
-
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    if (user?.username) {
-      speak(`Welcome back ${user.username}`);
-    }
-
-  } else {
-
-    document.getElementById("authContainer").style.display = "flex";
-    document.getElementById("mainApp").style.display = "none";
-
-  }
-
-  wishMe();
-});
-
-const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-
-if (SpeechRecognition) {
-
-  recognition = new SpeechRecognition();
-
-  recognition.continuous = false;
-  recognition.lang = "en-US";
-  recognition.interimResults = false;
-
- 
-  recognition.onresult = (event) => {
-
-    const transcript =
-      event.results[0][0].transcript;
-
-    safe(content).textContent = transcript;
-
-    takeCommand(transcript.toLowerCase());
-  };
-
- 
-  recognition.onerror = () => {
-
-    safe(statusText).textContent =
-      "Speech recognition error";
-
-    btn?.classList.remove("active");
-    wave?.classList.remove("active");
-  };
-
- 
-  recognition.onend = () => {
-
-    btn?.classList.remove("active");
-    wave?.classList.remove("active");
-
-    safe(content).textContent =
-      "Click to Speak";
-
-    safe(statusText).textContent =
-      "Idle";
-  };
-
- 
-  btn?.addEventListener("click", () => {
-
-    btn.classList.add("active");
-    wave?.classList.add("active");
-
-    safe(content).textContent =
-      "Listening...";
-
-    safe(statusText).textContent =
-      "Listening...";
-
-    recognition.start();
-  });
-
-} else {
-
-  alert("Speech Recognition is not supported in this browser.");
-
-}
-
-
-function takeCommand(message) {
-
-  if (
-    message.includes("hello") ||
-    message.includes("hey")
-  ) {
-
-    speak("Hello Boss, how can I help you?");
-
-  }
-
-  
-  else if (message.includes("open google")) {
-
-    window.open("https://google.com", "_blank");
-
-    speak("Opening Google");
-
-  }
-
-  
-  else if (message.includes("open youtube")) {
-
-    window.open("https://youtube.com", "_blank");
-
-    speak("Opening YouTube");
-
-  }
-
- 
-  else if (message.includes("time")) {
-
-    const time =
-      new Date().toLocaleTimeString();
-
-    speak(`The time is ${time}`);
-
-  }
-
- 
-  else if (message.includes("date")) {
-
-    const date =
-      new Date().toDateString();
-
-    speak(`Today's date is ${date}`);
-
-  }
-
-  
-  else if (message.includes("logout")) {
-
-    logout();
-
-  }
-
-  
-  else {
-
-    window.open(
-      `https://www.google.com/search?q=${message}`,
-      "_blank"
-    );
-
-    speak("Searching on Google");
-
-  }
-}
+// =========================
+// SIGNUP
+// =========================
 
 function signup() {
 
-  const username =
-    document.getElementById("signupUsername").value.trim();
+    const username =
+        document.getElementById("signupUsername")?.value.trim();
 
-  const email =
-    document.getElementById("signupEmail").value.trim();
+    const email =
+        document.getElementById("signupEmail")?.value.trim();
 
-  const password =
-    document.getElementById("signupPassword").value.trim();
+    const password =
+        document.getElementById("signupPassword")?.value.trim();
 
-  if (!username || !email || !password) {
+    if (!username || !email || !password) {
 
-    document.getElementById("status").innerText =
-      "Please fill all fields";
+        alert("Please fill all fields");
+        return;
+    }
 
-    return;
-  }
+    const user = {
+        username,
+        email,
+        password: btoa(password)
+    };
 
-  
-  const user = {
-    username,
-    email,
-    password: btoa(password)
-  };
+    localStorage.setItem(
+        "user",
+        JSON.stringify(user)
+    );
 
-
-  localStorage.setItem(
-    "user",
-    JSON.stringify(user)
-  );
-
-  document.getElementById("status").innerText =
-    "Signup successful";
-
-  
-  document.getElementById("signupUsername").value = "";
-  document.getElementById("signupEmail").value = "";
-  document.getElementById("signupPassword").value = "";
-
-  
-  setTimeout(() => {
+    alert("Signup Successful");
 
     showLogin();
-
-    document.getElementById("status").innerText =
-      "";
-
-  }, 1000);
 }
 
+// =========================
+// LOGIN
+// =========================
 
 function login() {
 
-  const email =
-    document.getElementById("loginEmail").value.trim();
+    const email =
+        document.getElementById("loginEmail")?.value.trim();
 
-  const password =
-    document.getElementById("loginPassword").value.trim();
+    const password =
+        document.getElementById("loginPassword")?.value.trim();
 
-  if (!email || !password) {
+    const user =
+        JSON.parse(localStorage.getItem("user"));
 
-    document.getElementById("status").innerText =
-      "Please fill all fields";
+    if (
+        user &&
+        email === user.email &&
+        password === atob(user.password)
+    ) {
 
-    return;
-  }
+        localStorage.setItem(
+            "loggedIn",
+            "true"
+        );
 
-  const user =
-    JSON.parse(localStorage.getItem("user"));
+        speak(`Welcome ${user.username}`);
 
-  
-  if (
-    user &&
-    email === user.email &&
-    password === atob(user.password)
-  ) {
+        location.reload();
 
-    localStorage.setItem("loggedIn", "true");
+    } else {
 
-    document.getElementById("authContainer").style.display =
-      "none";
-
-    document.getElementById("mainApp").style.display =
-      "flex";
-
-    document.getElementById("status").innerText =
-      "";
-
-  
-    document.getElementById("loginEmail").value = "";
-    document.getElementById("loginPassword").value = "";
-
-    speak(`Welcome ${user.username}`);
-
-  } else {
-
-    document.getElementById("status").innerText =
-      "Invalid email or password";
-
-  }
+        alert("Invalid Email or Password");
+    }
 }
+
+// =========================
+// LOGOUT
+// =========================
 
 function logout() {
 
-  localStorage.removeItem("loggedIn");
+    localStorage.removeItem("loggedIn");
 
-  document.getElementById("authContainer").style.display =
-    "flex";
+    // Clear the temporary Google session too
+    sessionStorage.removeItem("jarvisGoogleUser");
 
-  document.getElementById("mainApp").style.display =
-    "none";
+    speak("Logged out successfully");
 
-  
-  safe(content).textContent =
-    "Click to Speak";
-
-  safe(statusText).textContent =
-    "Idle";
-
-  btn?.classList.remove("active");
-  wave?.classList.remove("active");
-
-  speak("Logged out successfully");
+    location.reload();
 }
 
-
-logoutBtn?.addEventListener("click", logout);
-
-
-function showForgot() {
-
-  document.getElementById("signupBox").style.display =
-    "none";
-
-  document.getElementById("loginBox").style.display =
-    "none";
-
-  document.getElementById("forgotBox").style.display =
-    "block";
-
-  document.getElementById("status").innerText =
-    "";
-}
+// =========================
+// FORGOT PASSWORD
+// =========================
 
 function resetPassword() {
 
-  const email =
-    document.getElementById("forgotEmail").value.trim();
+    const email =
+        document.getElementById("forgotEmail")?.value.trim();
 
-  const newPassword =
-    document.getElementById("newPassword").value.trim();
+    const newPassword =
+        document.getElementById("newPassword")?.value.trim();
 
-  const user =
-    JSON.parse(localStorage.getItem("user"));
+    const user =
+        JSON.parse(localStorage.getItem("user"));
 
-  if (!user) {
+    if (!user) {
+        alert("No User Found");
+        return;
+    }
 
-    document.getElementById("status").innerText =
-      "No user found";
+    if (user.email === email) {
 
-    return;
-  }
+        user.password = btoa(newPassword);
 
-  if (user.email === email) {
+        localStorage.setItem(
+            "user",
+            JSON.stringify(user)
+        );
 
-    user.password = btoa(newPassword);
+        alert("Password Reset Successful");
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify(user)
-    );
+        showLogin();
 
-    document.getElementById("status").innerText =
-      "Password reset successful";
+    } else {
 
-  
-    document.getElementById("forgotEmail").value = "";
-    document.getElementById("newPassword").value = "";
-
-    setTimeout(() => {
-
-      showLogin();
-
-      document.getElementById("status").innerText =
-        "";
-
-    }, 1000);
-
-  } else {
-
-    document.getElementById("status").innerText =
-      "Email not found";
-
-  }
+        alert("Email Not Found");
+    }
 }
 
+// =========================
+// UI SWITCHING
+// =========================
 
 function showSignup() {
 
-  document.getElementById("signupBox").style.display =
-    "block";
+    document.getElementById("signupBox").style.display =
+        "block";
 
-  document.getElementById("loginBox").style.display =
-    "none";
+    document.getElementById("loginBox").style.display =
+        "none";
 
-  document.getElementById("forgotBox").style.display =
-    "none";
+    document.getElementById("forgotBox").style.display =
+        "none";
 
-  document.getElementById("status").innerText =
-    "";
+    // Highlight active tab
+    document.getElementById("toggleSignup")?.classList.add("active-tab");
+    document.getElementById("toggleLogin")?.classList.remove("active-tab");
 }
 
 function showLogin() {
 
-  document.getElementById("signupBox").style.display =
-    "none";
+    document.getElementById("signupBox").style.display =
+        "none";
 
-  document.getElementById("loginBox").style.display =
-    "block";
+    document.getElementById("loginBox").style.display =
+        "block";
 
-  document.getElementById("forgotBox").style.display =
-    "none";
+    document.getElementById("forgotBox").style.display =
+        "none";
 
-  document.getElementById("status").innerText =
-    "";
+    // Highlight active tab
+    document.getElementById("toggleLogin")?.classList.add("active-tab");
+    document.getElementById("toggleSignup")?.classList.remove("active-tab");
 }
 
-const btn = document.querySelector('.talk');
-const content = document.querySelector('.content');
-const status = document.querySelector('.status-text');
-const wave =document.querySelector('.wave-container');
-function speak(text) {
-    const text_speak = new SpeechSynthesisUtterance(text);
+function showForgot() {
 
-    text_speak.rate = 1;
-    text_speak.volume = 1;
-    text_speak.pitch = 1;
+    document.getElementById("signupBox").style.display =
+        "none";
 
-    window.speechSynthesis.speak(text_speak);
+    document.getElementById("loginBox").style.display =
+        "none";
+
+    document.getElementById("forgotBox").style.display =
+        "block";
 }
 
-function wishMe() {
-    var day = new Date();
-    var hour = day.getHours();
+// =========================
+// GOOGLE AUTH
+// =========================
 
-    if (hour >= 0 && hour < 12) {
-        speak("Good Morning Boss...");
-    } else if (hour >= 12 && hour < 17) {
-        speak("Good Afternoon Master...");
-    } else {
-        speak("Good Evening Sir...");
+// ── Step 1: Initialise the token client once (called on page load) ──────────
+// Replace the placeholder below with your real OAuth 2.0 Client ID from
+// https://console.cloud.google.com/  →  APIs & Services  →  Credentials
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+
+function initGoogleAuth() {
+
+    // Detect a placeholder / unconfigured Client ID via pattern:
+    // A real ID looks like  "digits-alphanumeric.apps.googleusercontent.com"
+    const isPlaceholder = !GOOGLE_CLIENT_ID ||
+        GOOGLE_CLIENT_ID === "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com" ||
+        !/^\d+-.+\.apps\.googleusercontent\.com$/.test(GOOGLE_CLIENT_ID);
+
+    if (typeof google === "undefined" || !google.accounts || isPlaceholder) {
+        // GIS not loaded or Client ID not configured — skip silently
+        return;
     }
+
+    googleTokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: "https://www.googleapis.com/auth/userinfo.profile "
+            + "https://www.googleapis.com/auth/userinfo.email",
+        callback: handleGoogleToken
+    });
 }
 
-window.addEventListener('load', () => {
-    speak("Initializing JARVIS...");
-    wishMe();
-});
+// ── Step 2: Token callback — runs after Google popup is approved ─────────────
+function handleGoogleToken(tokenResponse) {
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!tokenResponse.access_token) return;
 
-if (!SpeechRecognition) {
-    alert("Speech Recognition is not supported in this browser.");
-    status.textContent = "Speech Recognition not supported";
-} else {
-    const recognition = new SpeechRecognition();
+    // Fetch the user's name & email from Google's userinfo endpoint
+    fetch(
+        "https://www.googleapis.com/oauth2/v3/userinfo",
+        { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } }
+    )
+        .then(res => res.json())
+        .then(profile => {
 
-recognition.onresult = (event) => {
-    const currentIndex = event.resultIndex;
-    const transcript = event.results[currentIndex][0].transcript;
-    content.textContent = transcript;
-    takeCommand(transcript.toLowerCase());
-};
+            // ── Store only what we need, temporarily in sessionStorage ──
+            // sessionStorage lives for the current browser tab session only.
+            // It is automatically cleared when the tab is closed — no
+            // persistent personal data is written to localStorage.
+            const tempUser = {
+                name: profile.name,
+                email: profile.email,
+                picture: profile.picture,
+                provider: "google"
+            };
+            sessionStorage.setItem("jarvisGoogleUser", JSON.stringify(tempUser));
 
-btn.addEventListener('click', () => {
-    btn.classList.add('active');
-    wave.classList.add('active');
-    content.textContent = "Listening...";
-    status.textContent ="Jarvis is listening";
-    recognition.start();
-});
+            // ── Transition to main app without a page reload ─────────────
+            document.getElementById("authContainer").style.display = "none";
+            document.getElementById("mainApp").style.display = "flex";
+
+            // ── Jarvis speaks the name fetched from the Google token ──────
+            setTimeout(() => { wishMe(); }, 400);
+            setTimeout(() => {
+                speak(`Hello ${profile.name}. I am Jarvis, your virtual assistant.`);
+            }, 1600);
+        })
+        .catch(() => {
+            alert("Google sign-in failed. Please try again.");
+        });
 }
 
-recognition.onend = () => {
-    btn.classList.remove('active');
-    wave.classList.remove('active');
-    content.textContent ="Click here to speak";
-    status.textContent ="Idle";
-};
+// ── Step 3: Button click handler ─────────────────────────────────────────────
+function googleAuth() {
 
-function takeCommand(message) {
-    if (message.includes('hey') || message.includes('hello')) {
-        speak("Hello Sir, How May I Help You?");
-    } else if (message.includes("open google")) {
-        window.open("https://google.com", "_blank");
-        speak("Opening Google...");
-    } else if (message.includes("open youtube")) {
-        window.open("https://youtube.com", "_blank");
-        speak("Opening Youtube...");
-    } else if (message.includes("open facebook")) {
-        window.open("https://facebook.com", "_blank");
-        speak("Opening Facebook...");
-    } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
-        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-        const finalText = "This is what I found on the internet regarding " + message;
-        speak(finalText);
-    } else if (message.includes('wikipedia')) {
-        window.open(`https://en.wikipedia.org/wiki/${message.replace("wikipedia", "").trim()}`, "_blank");
-        const finalText = "This is what I found on Wikipedia regarding " + message;
-        speak(finalText);
-    } else if (message.includes('time')) {
-        const time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
-        const finalText = "The current time is " + time;
-        speak(finalText);
-    } else if (message.includes('date')) {
-        const date = new Date().toLocaleString(undefined, { month: "short", day: "numeric" });
-        const finalText = "Today's date is " + date;
-        speak(finalText);
-    } else if (message.includes('calculator')) {
-        window.open('Calculator:///');
-        const finalText = "Opening Calculator";
-        speak(finalText);
-    } else {
-        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-        const finalText = "I found some information for " + message + " on Google";
-        speak(finalText);
-    }
-}
-
-particlesJS("particles-js", {
-
-    particles: {
-        number: {value: 45,density: {enable: true,value_area: 800}},
-        color: {value: "#00bcd4"},
-        shape: {type: "circle"},
-        opacity: {value: 0.25},
-        size: { value: 2},
-        line_linked: {
-            enable: true,
-            distance: 140,
-            color: "#00bcd4",
-            opacity: 0.08,
-            width: 1
-        },
-        move: {
-            enable: true,
-            speed: 0.4
-        }
-    },
-
-    interactivity: {
-        detect_on: "canvas",
-        events: {
-            onhover: {enable: false},
-            resize: true
-        }
-    },
-    retina_detect: true
-});
-
-
-const btn = document.querySelector('.talk');
-const content = document.querySelector('.content');
-const typingText = document.getElementById('typing-text');
-const status = document.querySelector('.status-text');
-const wave =document.querySelector('.wave-container');
-function speak(text) {
-
-    const text_speak = new SpeechSynthesisUtterance(text);
-
-    text_speak.rate = 1;
-    text_speak.volume = 1;
-    text_speak.pitch = 1;
-
-    window.speechSynthesis.speak(text_speak);
-}
-
-function wishMe() {
-
-    const hour = new Date().getHours();
-
-    if (hour >= 0 && hour < 12) {
-
-        speak("Good Morning Boss");
-
-    } else if (hour >= 12 && hour < 17) {
-
-        speak("Good Afternoon Boss");
+    if (googleTokenClient) {
+        // Real GIS flow — opens the Google account picker popup
+        googleTokenClient.requestAccessToken();
 
     } else {
-
-        speak("Good Evening Boss");
-    }
-}
-
-
-
-window.addEventListener('load', () => {
-
-    speak("Initializing JARVIS");
-
-    typingAnimation();
-
-    setTimeout(() => {
-        wishMe();
-    }, 2000);
-});
-
-
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-if (!SpeechRecognition) {
-    alert("Speech Recognition is not supported in this browser.");
-    status.textContent = "Speech Recognition not supported";
-} else {
-    const recognition = new SpeechRecognition();
-
-
-
-const messages = [
-    "Initializing JARVIS...",
-    "AI Assistant Activated...",
-    "Listening for your commands...",
-    "Ready to assist you..."
-];
-
-let messageIndex = 0;
-let charIndex = 0;
-
-function typingAnimation() {
-
-    if (!typingText) return;
-
-    typingText.textContent =
-        messages[messageIndex].slice(0, charIndex++);
-
-    if (charIndex > messages[messageIndex].length) {
-
-        charIndex = 0;
-
-        messageIndex++;
-
-        if (messageIndex >= messages.length) {
-            messageIndex = 0;
+        // Client ID not configured — show a clear message instead of
+        // silently faking a login
+        const statusEl = document.getElementById("status");
+        if (statusEl) {
+            statusEl.textContent =
+                "⚠️ Google Client ID not configured. See app.js → GOOGLE_CLIENT_ID.";
+            statusEl.style.color = "#f87171";
+        } else {
+            alert("Google sign-in requires a valid Client ID.\nSee GOOGLE_CLIENT_ID in app.js.");
         }
     }
-
-    setTimeout(typingAnimation, 120);
 }
 
-const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
+// =========================
+// LOGOUT BUTTON
+// =========================
 
-const recognition = new SpeechRecognition();
-recognition.onresult = (event) => {
+logoutBtn?.addEventListener(
+    "click",
+    logout
+);
 
-    const currentIndex = event.resultIndex;
+// =========================
+// PARTICLES
+// =========================
 
-    const transcript =
-        event.results[currentIndex][0].transcript;
+if (
+    typeof particlesJS !== "undefined" &&
+    document.getElementById("particles-js")
+) {
 
-    content.textContent = transcript;
+    particlesJS("particles-js", {
 
-    takeCommand(transcript.toLowerCase());
-};
+        particles: {
 
-btn.addEventListener('click', () => {
+            number: {
+                value: 45,
+                density: {
+                    enable: true,
+                    value_area: 800
+                }
+            },
 
+            color: {
+                value: "#00bcd4"
+            },
 
-    content.textContent = "Listening...";
+            shape: {
+                type: "circle"
+            },
 
-    btn.classList.add('active');
+            opacity: {
+                value: 0.25
+            },
 
-if (wave) {
-    wave.classList.add('active');
-}
+            size: {
+                value: 2
+            },
 
-content.textContent = "Listening...";
+            line_linked: {
+                enable: true,
+                distance: 140,
+                color: "#00bcd4",
+                opacity: 0.08,
+                width: 1
+            },
 
-if (status) {
-    status.textContent = "Jarvis is listening";
-}
-
-recognition.start();
-
-speak("Listening");
-    speak("Listening");
-});
-}
-
-recognition.onend = () => {
-    btn.classList.remove('active');
-    wave.classList.remove('active');
-    content.textContent ="Click here to speak";
-    status.textContent ="Idle";
-};
-
-function takeCommand(message) {
-
-    btn.classList.remove("active");
-
-    if (
-        message.includes('hey') ||
-        message.includes('hello')
-    ) {
-
-        speak("Hello Boss, How May I Help You?");
-
-        content.textContent = "Hello Boss";
-
-    }
-
-    else if (message.includes("open google")) {
-
-        window.open("https://google.com", "_blank");
-
-        speak("Opening Google");
-
-    }
-
-    else if (message.includes("open youtube")) {
-
-        window.open("https://youtube.com", "_blank");
-
-        speak("Opening YouTube");
-
-    }
-
-    else if (message.includes("open facebook")) {
-
-        window.open("https://facebook.com", "_blank");
-
-        speak("Opening Facebook");
-
-    }
-
-    else if (
-        message.includes('what is') ||
-        message.includes('who is') ||
-        message.includes('what are')
-    ) {
-
-        window.open(
-            `https://www.google.com/search?q=${message}`,
-            "_blank"
-        );
-
-        speak(
-            "Here is what I found on the internet regarding " +
-            message
-        );
-    }
-
-    else if (message.includes('wikipedia')) {
-
-        window.open(
-            `https://en.wikipedia.org/wiki/${message.replace("wikipedia", "")}`,
-            "_blank"
-        );
-
-        speak("Opening Wikipedia");
-    }
-
-    else if (message.includes('time')) {
-
-        const time = new Date().toLocaleString(
-            undefined,
-            {
-                hour: "numeric",
-                minute: "numeric"
+            move: {
+                enable: true,
+                speed: 0.4
             }
-        );
+        },
 
-        speak("The current time is " + time);
+        interactivity: {
 
-    }
+            detect_on: "canvas",
 
-    else if (message.includes('date')) {
-
-        const date = new Date().toLocaleString(
-            undefined,
-            {
-                month: "short",
-                day: "numeric"
+            events: {
+                onhover: {
+                    enable: false
+                },
+                resize: true
             }
-        );
-
-        speak("Today's date is " + date);
-
-    }
-
-    else if (message.includes('calculator')) {
-
-        speak("Opening Calculator");
-
-        window.open('Calculator:///');
-
-    }
-
-    else {
-
-        window.open(
-            `https://www.google.com/search?q=${message}`,
-            "_blank"
-        );
-
-        speak(
-            "I found some information for " + message
-        );
-    }
-}
-
-particlesJS("particles-js", {
-
-    particles: {
-        number: {value: 45,density: {enable: true,value_area: 800}},
-        color: {value: "#00bcd4"},
-        shape: {type: "circle"},
-        opacity: {value: 0.25},
-        size: { value: 2},
-        line_linked: {
-            enable: true,
-            distance: 140,
-            color: "#00bcd4",
-            opacity: 0.08,
-            width: 1
         },
-        move: {
-            enable: true,
-            speed: 0.4
-        }
-    },
 
-    interactivity: {
-        detect_on: "canvas",
-        events: {
-            onhover: {enable: false},
-            resize: true
-        }
-    },
-    retina_detect: true
- = document.querySelector('.talk');
-const content = document.querySelector('.content');
-const status = document.querySelector('.status-text');
-const wave =document.querySelector('.wave-container');
-function speak(text) {
-    const text_speak = new SpeechSynthesisUtterance(text);
-
-    text_speak.rate = 1;
-    text_speak.volume = 1;
-    text_speak.pitch = 1;
-
-    window.speechSynthesis.speak(text_speak);
+        retina_detect: true
+    });
 }
-
-function wishMe() {
-    var day = new Date();
-    var hour = day.getHours();
-
-    if (hour >= 0 && hour < 12) {
-        speak("Good Morning Boss...");
-    } else if (hour >= 12 && hour < 17) {
-        speak("Good Afternoon Master...");
-    } else {
-        speak("Good Evening Sir...");
-    }
-}
-
-window.addEventListener('load', () => {
-    speak("Initializing JARVIS...");
-    wishMe();
-});
-
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-if (!SpeechRecognition) {
-    alert("Speech Recognition is not supported in this browser.");
-    status.textContent = "Speech Recognition not supported";
-} else {
-    const recognition = new SpeechRecognition();
-
-recognition.onresult = (event) => {
-    const currentIndex = event.resultIndex;
-    const transcript = event.results[currentIndex][0].transcript;
-    content.textContent = transcript;
-    takeCommand(transcript.toLowerCase());
-};
-
-btn.addEventListener('click', () => {
-    btn.classList.add('active');
-    wave.classList.add('active');
-    content.textContent = "Listening...";
-    status.textContent ="Jarvis is listening";
-    recognition.start();
-});
-}
-
-recognition.onend = () => {
-    btn.classList.remove('active');
-    wave.classList.remove('active');
-    content.textContent ="Click here to speak";
-    status.textContent ="Idle";
-};
-
-function takeCommand(message) {
-    if (message.includes('hey') || message.includes('hello')) {
-        speak("Hello Sir, How May I Help You?");
-    } else if (message.includes("open google")) {
-        window.open("https://google.com", "_blank");
-        speak("Opening Google...");
-    } else if (message.includes("open youtube")) {
-        window.open("https://youtube.com", "_blank");
-        speak("Opening Youtube...");
-    } else if (message.includes("open facebook")) {
-        window.open("https://facebook.com", "_blank");
-        speak("Opening Facebook...");
-    } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
-        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-        const finalText = "This is what I found on the internet regarding " + message;
-        speak(finalText);
-    } else if (message.includes('wikipedia')) {
-        window.open(`https://en.wikipedia.org/wiki/${message.replace("wikipedia", "").trim()}`, "_blank");
-        const finalText = "This is what I found on Wikipedia regarding " + message;
-        speak(finalText);
-    } else if (message.includes('time')) {
-        const time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
-        const finalText = "The current time is " + time;
-        speak(finalText);
-    } else if (message.includes('date')) {
-        const date = new Date().toLocaleString(undefined, { month: "short", day: "numeric" });
-        const finalText = "Today's date is " + date;
-        speak(finalText);
-    } else if (message.includes('calculator')) {
-        window.open('Calculator:///');
-        const finalText = "Opening Calculator";
-        speak(finalText);
-    } else {
-        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-        const finalText = "I found some information for " + message + " on Google";
-        speak(finalText);
-    }
-}
-
-particlesJS("particles-js", {
-
-    particles: {
-        number: {value: 45,density: {enable: true,value_area: 800}},
-        color: {value: "#00bcd4"},
-        shape: {type: "circle"},
-        opacity: {value: 0.25},
-        size: { value: 2},
-        line_linked: {
-            enable: true,
-            distance: 140,
-            color: "#00bcd4",
-            opacity: 0.08,
-            width: 1
-        },
-        move: {
-            enable: true,
-            speed: 0.4
-        }
-    },
-
-    interactivity: {
-        detect_on: "canvas",
-        events: {
-            onhover: {enable: false},
-            resize: true
-        }
-    },
-    retina_detect: true
-});
-
-

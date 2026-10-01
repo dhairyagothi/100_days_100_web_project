@@ -558,6 +558,7 @@ function updateParallax(event) {
 }
 
 function resetParallax() {
+    if(card){
     card.style.setProperty(
         "--card-tilt-x",
         "0deg"
@@ -567,6 +568,8 @@ function resetParallax() {
         "--card-tilt-y",
         "0deg"
     );
+
+}
 
     progressRing.style.setProperty(
         "--ring-tilt-x",
@@ -979,22 +982,19 @@ function resetMagneticHover(event) {
         "translate(0, 0)";
 }
 
-startButton.addEventListener(
-    "click",
-    startProgress
-);
+if (startButton) {
+    startButton.addEventListener("click", startProgress);
+}
 
-stopButton.addEventListener(
-    "click",
-    () => stopProgress({
-        keepRunTime: true,
-    })
-);
+if (stopButton) {
+    stopButton.addEventListener("click", () => {
+        stopProgress({ keepRunTime: true });
+    });
+}
 
-resetButton.addEventListener(
-    "click",
-    resetProgress
-);
+if (resetButton) {
+    resetButton.addEventListener("click", resetProgress);
+}
 
 if (autoLoopToggle) {
     autoLoopToggle.checked = false;
@@ -1035,6 +1035,7 @@ presetButtons.forEach((button) => {
     });
 });
 
+if (progressRing) {
 progressRing.addEventListener(
     "pointerdown",
     handlePointerDown
@@ -1064,6 +1065,8 @@ progressRing.addEventListener(
     "keydown",
     handleKeyControls
 );
+
+}
 
 document.addEventListener(
     "pointermove",
@@ -1095,6 +1098,7 @@ document.addEventListener(
     stopButton,
     resetButton
 ].forEach((button) => {
+    if(button){
     button.addEventListener(
         "mousemove",
         applyMagneticHover
@@ -1104,8 +1108,10 @@ document.addEventListener(
         "mouseleave",
         resetMagneticHover
     );
+}
 });
 
+if (progressRing) {
 updateModeButtons("linear");
 
 updateProgressRing();
@@ -1113,3 +1119,33 @@ updateProgressRing();
 updateStopButtonState();
 
 renderHistory();
+}
+
+const themeToggles = document.querySelectorAll(".theme");
+const themeIcon = document.getElementById("themeIcon");
+
+
+let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+
+
+function updateTheme() {
+  if (isLightMode) {
+    document.body.classList.add("light-theme");
+    themeIcon.textContent = "🌙"; 
+  } else {
+    document.body.classList.remove("light-theme");
+    themeIcon.textContent = "☀️"; 
+  }
+}
+
+
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    isLightMode = !isLightMode;
+    localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+    updateTheme();
+  });
+});
+
+
+updateTheme();

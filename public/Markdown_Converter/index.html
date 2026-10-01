@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        if (!window.location.pathname.endsWith('/') && !window.location.pathname.endsWith('.html')) {
+            window.location.replace(window.location.pathname + '/');
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Real-Time Markdown to HTML Converter and Previewer">
+    <title>Markdown to HTML Converter</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- DOMPurify for sanitization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js" integrity="sha384-cwS6YdhLI7XS60eoDiC+egV0qHp8zI+Cms46R0nbn8JrmoAzV9uFL60etMZhAnSu" crossorigin="anonymous"></script>
+    <!-- Marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
+    <!-- Highlight.js for code block syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css" integrity="sha384-oaMLBGEzBOJx3UHwac0cVndtX5fxGQIfnAeFZ35RTgqPcYlbprH9o9PUV/F8Le07" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js" integrity="sha384-g4mRvs7AO0/Ol5LxcGyz4Doe21pVhGNnC3EQw5shw+z+aXDN86HqUdwXWO+Gz2zI" crossorigin="anonymous"></script>
+    <!-- Phosphor Icons for UI buttons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3/src/index.js" integrity="sha384-hiKKzPWrwThyepBYcEjt4rzb2Xw5k8w1YWCgv0v1lh8FwLKwQAs1Z4yPmBifZZl8" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <i class="ph ph-markdown-logo"></i>
+                <h1>Markdown Previewer</h1>
+            </div>
+            <div class="actions">
+                <button id="download-md" class="btn btn-secondary">
+                    <i class="ph ph-file-text"></i> Download .md
+                </button>
+                <button id="download-html" class="btn btn-primary">
+                    <i class="ph ph-code"></i> Download .html
+                </button>
+            </div>
+        </header>
+
+        <main class="split-pane">
+            <!-- Left Pane: Editor -->
+            <section class="pane editor-pane">
+                <div class="pane-header">
+                    <h2><i class="ph ph-terminal-window"></i> Markdown Editor</h2>
+                </div>
+                <textarea id="markdown-input" placeholder="Type your markdown here..."></textarea>
+            </section>
+
+            <!-- Right Pane: Preview -->
+            <section class="pane preview-pane">
+                <div class="pane-header">
+                    <h2><i class="ph ph-browser"></i> Live Preview</h2>
+                </div>
+                <div id="html-preview" class="markdown-body"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

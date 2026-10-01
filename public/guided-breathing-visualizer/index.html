@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guided Zen Breathing Visualizer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-workspace">
+      <header class="app-header">
+        <div class="header-controls">
+          <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+          </button>
+        </div>
+        <h1>Zen Breathing Visualizer</h1>
+        <p>Sync your breath with fluid geometric loops to alleviate stress</p>
+      </header>
+
+      <main class="visualizer-container">
+        <div class="breathing-node-wrapper">
+          <svg class="breathing-svg" viewBox="0 0 200 200">
+            <circle
+              class="pulse-ring ring-outer"
+              cx="100"
+              cy="100"
+              r="80"
+            ></circle>
+            <circle
+              class="pulse-ring ring-mid"
+              cx="100"
+              cy="100"
+              r="60"
+            ></circle>
+            <circle
+              class="pulse-ring ring-core"
+              cx="100"
+              cy="100"
+              r="40"
+            ></circle>
+          </svg>
+          <div class="status-overlay" id="breathingText">Ready</div>
+        </div>
+
+        <div class="cycle-counter">
+          Completed Cycles: <span id="cycleCount">0</span>
+        </div>
+        <div class="countdown-container">
+          <div id="phaseName">Ready</div>
+          <div id="countdownTimer">0</div>
+        </div>
+      </main>
+
+      <footer class="controls-panel">
+        <!-- Audio Controls -->
+        <div class="audio-controls">
+          <div class="audio-toggle-group">
+            <button id="soundEffectsToggle" class="audio-toggle-btn active">
+              <span class="audio-icon">🔊</span> Sound FX
+            </button>
+            <button id="voiceGuidanceToggle" class="audio-toggle-btn">
+              <span class="audio-icon">🗣️</span> Voice Guide
+            </button>
+            <button id="ambientSoundToggle" class="audio-toggle-btn">
+              <span class="audio-icon">🌊</span> Ambient
+            </button>
+          </div>
+          
+          <div id="ambientSelector" class="ambient-selector hidden">
+            <button class="ambient-btn" data-sound="rain">🌧️ Rain</button>
+            <button class="ambient-btn" data-sound="ocean">🌊 Ocean</button>
+            <button class="ambient-btn" data-sound="forest">🌲 Forest</button>
+            <button class="ambient-btn" data-sound="fire">🔥 Fire</button>
+          </div>
+          
+          <div class="volume-control">
+            <label for="volumeSlider">Volume</label>
+            <input type="range" id="volumeSlider" min="0" max="100" value="50" />
+          </div>
+        </div>
+
+        <div class="preset-selector">
+          <button class="preset-btn active" data-preset="box">
+            Box Breathing (4-4-4-4)
+          </button>
+          <button class="preset-btn" data-preset="relax">
+            Relaxing Breath (4-7-8)
+          </button>
+          <button class="preset-btn" data-preset="equal">
+            Equal Breathing (4-4)
+          </button>
+          <button class="preset-btn" data-preset="custom">
+            Custom Pattern
+          </button>
+        </div>
+        
+        <div id="customPatternPanel" class="custom-pattern-panel hidden">
+          <h3>Custom Breathing Pattern</h3>
+
+          <div class="input-group">
+            <label for="inhaleDuration">Inhale (seconds)</label>
+            <input
+              type="number"
+              id="inhaleDuration"
+              min="1"
+              max="30"
+              value="4"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="holdDuration">Hold (seconds)</label>
+            <input
+              type="number"
+              id="holdDuration"
+              min="0"
+              max="30"
+              value="4"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="exhaleDuration">Exhale (seconds)</label>
+            <input
+              type="number"
+              id="exhaleDuration"
+              min="1"
+              max="30"
+              value="4"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="secondHoldDuration">Second Hold (seconds)</label>
+            <input
+              type="number"
+              id="secondHoldDuration"
+              min="0"
+              max="30"
+              value="4"
+            />
+          </div>
+
+          <button id="saveCustomPattern" class="action-btn-primary">
+            Save Pattern
+          </button>
+
+          <p id="validationMessage" class="validation-message"></p>
+        </div>
+        
+        <div class="action-row">
+          <button id="startStopBtn" class="action-btn-primary">
+            Begin Session
+          </button>
+        </div>
+      </footer>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

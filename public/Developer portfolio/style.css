@@ -588,19 +588,17 @@ a {
     top: 90px;
     left: 20px;
     z-index: 999;
-    padding: 10px 18px;
-    border-radius: 50px;
-    background: rgba(34, 34, 34, 0.9);
-    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: #1e293b;
+    color: #3b82f6;
     text-decoration: none;
     font-weight: 500;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.2s ease;
+    border: 1px solid #3b82f6;
 }
 
 .back-home:hover {
-    background: white;
-    color: #161513;
-    transform: translateY(-2px);
+    background: #3b82f6;
+    color: #fff;
 }

@@ -1,0 +1,186 @@
+/* Base & CSS Variables */
+:root {
+    --bg-color: #f4f7f6;
+    --text-color: #333;
+    --card-bg: #fff;
+    --primary-color: #4a90e2;
+    --border-color: #ddd;
+    --star-color: #ccc;
+    --star-active: #ffd700;
+    --danger: #e74c3c;
+}
+
+[data-theme="dark"] {
+    --bg-color: #1a1a2e;
+    --text-color: #e6e6e6;
+    --card-bg: #16213e;
+    --primary-color: #e94560;
+    --border-color: #0f3460;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#theme-toggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Layout */
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 2rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .container {
+        grid-template-columns: 1fr 1.5fr;
+    }
+}
+
+/* Form Styles */
+.form-section, .display-section {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.required {
+    color: var(--danger);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Interactive Elements (Stars & Emojis) */
+.star-rating span, .emoji-reaction span {
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--star-color);
+    transition: 0.2s;
+}
+
+.star-rating span.active, .star-rating span:hover, .star-rating span:hover ~ span {
+    color: var(--star-active);
+}
+
+/* Fix CSS hover direction for stars (left to right) */
+.star-rating {
+    display: flex;
+    flex-direction: row;
+}
+
+.emoji-reaction span {
+    opacity: 0.5;
+}
+.emoji-reaction span.active {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* Buttons */
+.submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.submit-btn:hover {
+    opacity: 0.9;
+}
+
+/* Feedback Controls & Display */
+.controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+}
+
+.feedback-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.feedback-card {
+    background: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.feedback-card img {
+    max-width: 100%;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.feedback-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.delete-btn {
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+}

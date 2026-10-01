@@ -1,0 +1,30 @@
+.text-saver-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  background: #2563eb;
+  color: white;
+
+  padding: 10px 18px;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  z-index: 999999;
+
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

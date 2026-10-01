@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delizia Restaurant</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        <i class="fa-solid fa-utensils"></i>
+        <span>Delizia</span>
+    </div>
+
+    <nav class="navbar">
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="#" class="nav-link active" data-page="home">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="#" class="nav-link" data-page="menu">
+                    Menu
+                </a>
+            </li>
+
+            <li>
+                <a href="#" class="nav-link" data-page="gallery">
+                    Gallery
+                </a>
+            </li>
+
+            <li>
+                <a href="#" class="nav-link" data-page="reservation">
+                    Reservation
+                </a>
+            </li>
+
+            <li>
+                <a href="#" class="nav-link" data-page="about">
+                    About
+                </a>
+            </li>
+
+            <li>
+                <a href="#" class="nav-link" data-page="contact">
+                    Contact
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+    <div class="header-actions">
+
+        <button id="themeToggle" class="theme-btn">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <button class="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+    </div>
+
+</header>
+
+<main>
+
+<!-- ================= HOME ================= -->
+
+<section id="home" class="page active-page">
+
+<div class="hero">
+
+<div class="hero-overlay">
+
+<div class="hero-content">
+
+<h1>
+Taste the Best Food in Town
+</h1>
+
+<p>
+Fresh ingredients, authentic recipes, and unforgettable dining experiences await you.
+</p>
+
+<button
+class="primary-btn"
+id="viewMenuBtn">
+View Menu
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<section class="features">
+
+<div class="feature-card">
+
+<i class="fa-solid fa-pizza-slice"></i>
+
+<h3>Fresh Food</h3>
+
+<p>
+Prepared daily using premium ingredients.
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<i class="fa-solid fa-bowl-food"></i>
+
+<h3>Quality Ingredients</h3>
+
+<p>
+Locally sourced vegetables and spices.
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<i class="fa-solid fa-mug-hot"></i>
+
+<h3>Hot Drinks</h3>
+
+<p>
+Fresh coffee, tea and handcrafted beverages.
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<i class="fa-solid fa-heart"></i>
+
+<h3>Made With Love</h3>
+
+<p>
+Every meal is prepared by experienced chefs.
+</p>
+
+</div>
+
+</section>
+
+<section class="special-section">
+
+<h2>Today's Specials</h2>
+
+<div class="special-grid">
+
+<div class="special-card">
+
+<img
+src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=700"
+alt="Pizza">
+
+<h3>Italian Pizza</h3>
+
+<p>
+Stone baked pizza with mozzarella and basil.
+</p>
+
+<span>$14</span>
+
+</div>
+
+<div class="special-card">
+
+<img
+src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=700"
+alt="Burger">
+
+<h3>Classic Burger</h3>
+
+<p>
+Double patty burger served with fries.
+</p>
+
+<span>$12</span>
+
+</div>
+
+<div class="special-card">
+
+<img
+src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700"
+alt="Pasta">
+
+<h3>Creamy Pasta</h3>
+
+<p>
+Rich creamy sauce with parmesan cheese.
+</p>
+
+<span>$16</span>
+
+</div>
+
+</div>
+
+</section>
+
+</section>
+
+<!-- ================= MENU ================= -->
+
+<section id="menu" class="page">
+
+<div class="section-title">
+
+<h2>Our Menu</h2>
+
+<p>
+Choose your favorite dishes.
+</p>
+
+</div>
+
+<div class="filter-buttons">
+
+<button class="filter-btn active" data-filter="all">
+All
+</button>
+
+<button class="filter-btn" data-filter="pizza">
+Pizza
+</button>
+
+<button class="filter-btn" data-filter="burger">
+Burger
+</button>
+
+<button class="filter-btn" data-filter="pasta">
+Pasta
+</button>
+
+<button class="filter-btn" data-filter="drinks">
+Drinks
+</button>
+
+</div>
+
+<div class="menu-grid">
+
+<div class="menu-card pizza">
+
+<img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=700">
+
+<h3>Margherita Pizza</h3>
+
+<p>
+Fresh mozzarella, basil & tomato.
+</p>
+
+<span>$15</span>
+
+<button>Add to Cart</button>
+
+</div>
+
+<div class="menu-card burger">
+
+<img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=700">
+
+<h3>Cheese Burger</h3>
+
+<p>
+Loaded with cheddar cheese.
+</p>
+
+<span>$13</span>
+
+<button>Add to Cart</button>
+
+</div>
+
+<div class="menu-card pasta">
+
+<img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700">
+
+<h3>White Sauce Pasta</h3>
+
+<p>
+Creamy pasta with herbs.
+</p>
+
+<span>$16</span>
+
+<button>Add to Cart</button>
+
+</div>
+
+<div class="menu-card drinks">
+
+<img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=700">
+
+<h3>Cold Coffee</h3>
+
+<p>
+Chocolate flavored iced coffee.
+</p>
+
+<span>$6</span>
+
+<button>Add to Cart</button>
+
+</div>
+        <div class="menu-card pizza">
+
+            <img src="https://images.unsplash.com/photo-1548365328-9f547fb0953f?w=700" alt="Pepperoni Pizza">
+
+            <h3>Pepperoni Pizza</h3>
+
+            <p>
+                Crispy crust topped with pepperoni and mozzarella.
+            </p>
+
+            <span>$18</span>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="menu-card burger">
+
+            <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=700" alt="Chicken Burger">
+
+            <h3>Chicken Burger</h3>
+
+            <p>
+                Juicy grilled chicken with lettuce and cheese.
+            </p>
+
+            <span>$14</span>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="menu-card pasta">
+
+            <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=700" alt="Spaghetti">
+
+            <h3>Spaghetti Bolognese</h3>
+
+            <p>
+                Traditional Italian meat sauce with parmesan.
+            </p>
+
+            <span>$17</span>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="menu-card drinks">
+
+            <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=700" alt="Lemonade">
+
+            <h3>Fresh Lemonade</h3>
+
+            <p>
+                Refreshing homemade lemonade with mint.
+            </p>
+
+            <span>$5</span>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="menu-card pizza">
+
+            <img src="https://images.unsplash.com/photo-1594007654729-407eedc4be65?w=700" alt="Veg Pizza">
+
+            <h3>Veg Supreme Pizza</h3>
+
+            <p>
+                Loaded with fresh vegetables and olives.
+            </p>
+
+            <span>$16</span>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="menu-card drinks">
+
+            <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=700" alt="Orange Juice">
+
+            <h3>Fresh Orange Juice</h3>
+
+            <p>
+                100% freshly squeezed oranges.
+            </p>
+
+            <span>$7</span>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= GALLERY ================= -->
+
+<section id="gallery" class="page">
+
+    <div class="section-title">
+
+        <h2>Gallery</h2>
+
+        <p>
+            A glimpse of our delicious food and beautiful restaurant.
+        </p>
+
+    </div>
+
+    <div class="gallery-grid">
+
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900" alt="Restaurant Interior">
+        </div>
+
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=900" alt="Dining Area">
+        </div>
+
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=900" alt="Pizza">
+        </div>
+
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=900" alt="Burger">
+        </div>
+
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=900" alt="Pasta">
+        </div>
+
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=900" alt="Coffee">
+        </div>
+
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=900" alt="Dessert">
+        </div>
+
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?w=900" alt="Dining">
+        </div>
+
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900" alt="Restaurant">
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= LIGHTBOX ================= -->
+
+<div id="lightbox" class="lightbox">
+
+    <span class="close-lightbox">&times;</span>
+
+    <img id="lightbox-img" src="" alt="Preview">
+
+</div>
+
+<!-- ================= RESERVATION ================= -->
+
+<section id="reservation" class="page">
+
+    <div class="section-title">
+
+        <h2>Reserve Your Table</h2>
+
+        <p>
+            Book your dining experience with us.
+        </p>
+
+    </div>
+
+    <div class="reservation-container">
+
+        <form id="reservationForm">
+
+            <div class="input-group">
+
+                <label>Name</label>
+
+                <input
+                    type="text"
+                    id="resName"
+                    placeholder="Your Name"
+                    required>
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    id="resEmail"
+                    placeholder="Your Email"
+                    required>
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Date</label>
+
+                <input
+                    type="date"
+                    id="resDate"
+                    required>
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Time</label>
+
+                <input
+                    type="time"
+                    id="resTime"
+                    required>
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Guests</label>
+
+                <input
+                    type="number"
+                    id="guests"
+                    min="1"
+                    max="20"
+                    placeholder="Number of Guests"
+                    required>
+
+            </div>
+
+            <button type="submit" class="primary-btn">
+                Book Now
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+<!-- ================= ABOUT ================= -->
+
+<section id="about" class="page">
+
+    <div class="section-title">
+
+        <h2>About Us</h2>
+
+        <p>
+            Passion, quality, and unforgettable dining experiences.
+        </p>
+
+    </div>
+
+    <div class="about-container">
+
+        <div class="about-image">
+
+            <img
+                src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=900"
+                alt="Restaurant">
+
+        </div>
+
+        <div class="about-content">
+
+            <h3>Our Story</h3>
+
+            <p>
+                Delizia Restaurant was founded with one simple mission:
+                serve delicious food prepared with fresh ingredients while
+                creating memorable dining experiences for every guest.
+            </p>
+
+            <p>
+                From authentic Italian pizzas to handcrafted burgers,
+                creamy pasta, refreshing beverages, and delightful desserts,
+                every dish is prepared by experienced chefs who are
+                passionate about great food.
+            </p>
+
+            <p>
+                Whether you're celebrating a special occasion, enjoying
+                dinner with family, or meeting friends, we promise warm
+                hospitality and exceptional flavors.
+            </p>
+
+            <div class="about-features">
+
+                <div class="about-box">
+
+                    <i class="fa-solid fa-award"></i>
+
+                    <h4>10+ Years</h4>
+
+                    <p>Serving delicious meals.</p>
+
+                </div>
+
+                <div class="about-box">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <h4>20,000+</h4>
+
+                    <p>Happy Customers</p>
+
+                </div>
+
+                <div class="about-box">
+
+                    <i class="fa-solid fa-kitchen-set"></i>
+
+                    <h4>Expert Chefs</h4>
+
+                    <p>Professional kitchen team.</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= CONTACT ================= -->
+
+<section id="contact" class="page">
+
+    <div class="section-title">
+
+        <h2>Contact Us</h2>
+
+        <p>
+            We'd love to hear from you.
+        </p>
+
+    </div>
+
+    <div class="contact-container">
+
+        <div class="contact-info">
+
+            <div class="info-card">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <div>
+
+                    <h3>Address</h3>
+
+                    <p>
+                        123 Food Street,
+                        Downtown,
+                        New York, USA
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="info-card">
+
+                <i class="fa-solid fa-phone"></i>
+
+                <div>
+
+                    <h3>Phone</h3>
+
+                    <p>
+                        +1 234 567 890
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="info-card">
+
+                <i class="fa-solid fa-envelope"></i>
+
+                <div>
+
+                    <h3>Email</h3>
+
+                    <p>
+                        contact@delizia.com
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="info-card">
+
+                <i class="fa-solid fa-clock"></i>
+
+                <div>
+
+                    <h3>Opening Hours</h3>
+
+                    <p>
+                        Mon - Sun
+                        <br>
+                        10:00 AM - 11:00 PM
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="contact-form">
+
+            <form id="contactForm">
+
+                <div class="input-group">
+
+                    <label>Name</label>
+
+                    <input
+                        type="text"
+                        id="contactName"
+                        placeholder="Enter your name"
+                        required>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Email</label>
+
+                    <input
+                        type="email"
+                        id="contactEmail"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Message</label>
+
+                    <textarea
+                        id="contactMessage"
+                        rows="6"
+                        placeholder="Write your message..."
+                        required></textarea>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Send Message
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div class="footer-logo">
+
+                <h2>
+                    <i class="fa-solid fa-utensils"></i>
+                    Delizia
+                </h2>
+
+                <p>
+                    Serving fresh, delicious meals with passion and
+                    exceptional hospitality since 2014.
+                </p>
+
+            </div>
+
+            <div class="footer-links">
+
+                <h3>Quick Links</h3>
+
+                <ul>
+
+                    <li><a href="#" class="nav-link" data-page="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-page="menu">Menu</a></li>
+                    <li><a href="#" class="nav-link" data-page="gallery">Gallery</a></li>
+                    <li><a href="#" class="nav-link" data-page="reservation">Reservation</a></li>
+                    <li><a href="#" class="nav-link" data-page="about">About</a></li>
+                    <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+
+                </ul>
+
+            </div>
+
+            <div class="footer-contact">
+
+                <h3>Contact</h3>
+
+                <p>
+                    <i class="fa-solid fa-location-dot"></i>
+                    123 Food Street, Downtown
+                </p>
+
+                <p>
+                    <i class="fa-solid fa-phone"></i>
+                    +1 234 567 890
+                </p>
+
+                <p>
+                    <i class="fa-solid fa-envelope"></i>
+                    contact@delizia.com
+                </p>
+
+            </div>
+
+            <div class="footer-social">
+
+                <h3>Follow Us</h3>
+
+                <div class="social-icons">
+
+                    <a href="#">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Delizia Restaurant.
+                All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+</main>
+
+<!-- ================= TOAST ================= -->
+
+<div id="toast" class="toast">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    <span id="toastMessage">
+        Success!
+    </span>
+
+</div>
+
+<!-- ================= SCROLL TO TOP ================= -->
+
+<button id="scrollTopBtn" class="scroll-top">
+
+    <i class="fa-solid fa-arrow-up"></i>
+
+</button>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script src="script.js"></script>
+
+</body>
+</html>

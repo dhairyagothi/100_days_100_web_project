@@ -9,6 +9,7 @@ let timerInterval;
 let currentDifficulty = "easy";
 let undoStack = [];
 let maxMistakes = 7;
+let hintsLeft = 0;
 
 const difficultyCount = {
     easy: 30,
@@ -316,13 +317,32 @@ function createNumberPad() {
     }
 }
 
+function setHintsByDifficulty(difficulty) {
+    if (difficulty === "easy") hintsLeft = 5;
+    else if (difficulty === "medium") hintsLeft = 3;
+    else if (difficulty === "hard") hintsLeft = 2;
+    updateHintsUI();
+}
+
+function updateHintsUI() {
+    const hintsSpan = document.getElementById("hintsRemaining");
+    if (hintsSpan) hintsSpan.innerText = hintsLeft;
+}
+
 function giveHint() {
     if (paused) return;
+    
+    if (hintsLeft <= 0) {
+    showNoHintsPopup();  // This calls the popup function
+    return;
+}
     
     for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
             if (board[r][c] === 0 || board[r][c] !== solution[r][c]) {
                 board[r][c] = solution[r][c];
+                hintsLeft--;
+                updateHintsUI();
                 
                 let currentSelected = selectedCell ? { row: selectedCell.dataset.row, col: selectedCell.dataset.col } : null;
                 
@@ -342,6 +362,38 @@ function giveHint() {
         }
     }
 }
+
+function showNoHintsPopup() {
+    // Remove existing popup if any
+    const existingPopup = document.querySelector(".hint-overlay");
+    if (existingPopup) {
+        existingPopup.remove();
+    }
+    
+    // Create overlay
+    const overlay = document.createElement("div");
+    overlay.className = "hint-overlay";
+    
+    // Create popup
+    const popup = document.createElement("div");
+    popup.className = "hint-popup";
+    popup.innerHTML = `
+        <p>🔒 No hints remaining!</p>
+        <button onclick="this.closest('.hint-overlay').remove()">OK</button>
+    `;
+    
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
+    
+    // Close when clicking overlay
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            overlay.remove();
+        }
+    });
+}
+
+
 
 function undoMove() {
     if (undoStack.length === 0 || paused) return;
@@ -367,6 +419,7 @@ function checkWin() {
 function newGame(level) {
     maxMistakes = difficultyMistakes[level];
     currentDifficulty = level;
+    setHintsByDifficulty(level);
     paused = false;
 
     document.getElementById("pauseBtn").innerText = "⏸";

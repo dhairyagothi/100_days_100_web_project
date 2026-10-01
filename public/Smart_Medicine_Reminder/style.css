@@ -1,0 +1,525 @@
+:root {
+    /* Light Mode Variables */
+    --bg-color: #f0f4f8;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --success: #10b981;
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --border: #e2e8f0;
+    --orb-1: #818cf8;
+    --orb-2: #c084fc;
+    --orb-3: #38bdf8;
+}
+
+[data-theme="dark"] {
+    /* Dark Mode Variables */
+    --bg-color: #0f172a;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --border: #334155;
+    --orb-1: #4f46e5;
+    --orb-2: #9333ea;
+    --orb-3: #0284c7;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Animated Background Orbs */
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    animation: float 20s infinite alternate;
+}
+
+.orb-1 {
+    top: -10%;
+    left: -10%;
+    width: 50vw;
+    height: 50vw;
+    background: var(--orb-1);
+    animation-delay: 0s;
+}
+
+.orb-2 {
+    bottom: -10%;
+    right: -10%;
+    width: 60vw;
+    height: 60vw;
+    background: var(--orb-2);
+    animation-delay: -5s;
+}
+
+.orb-3 {
+    top: 40%;
+    left: 50%;
+    width: 40vw;
+    height: 40vw;
+    background: var(--orb-3);
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(5%, 5%) scale(1.1); }
+    66% { transform: translate(-5%, 10%) scale(0.9); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+/* Layout */
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Glassmorphism Classes */
+.glass-header {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Buttons */
+.icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn:hover {
+    transform: scale(1.1);
+    color: var(--primary);
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.w-100 {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Dashboard Grid */
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto auto;
+    gap: 2rem;
+}
+
+.progress-section {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+}
+
+.medicine-list-section {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+}
+
+.notes-section {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Progress Ring */
+.progress-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress-ring__circle {
+    transition: stroke-dashoffset 0.8s ease-in-out;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    stroke-linecap: round;
+}
+
+.progress-text {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#progress-percentage {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+/* Medicine List */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.medicine-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.medicine-list::-webkit-scrollbar {
+    width: 6px;
+}
+.medicine-list::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 10px;
+}
+
+.medicine-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s;
+}
+
+.medicine-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary);
+}
+
+.med-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.checkbox-container {
+    position: relative;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+}
+
+.checkbox-container input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 24px;
+    width: 24px;
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--success);
+    border-color: var(--success);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+    left: 7px;
+    top: 3px;
+    width: 4px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.med-details h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+    transition: color 0.3s;
+}
+
+.medicine-item.taken .med-details h3 {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+}
+
+.med-details p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.med-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.med-actions button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.med-actions .edit-btn:hover { color: var(--primary); }
+.med-actions .delete-btn:hover { color: var(--danger); }
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--text-secondary);
+    display: none;
+}
+.empty-state.visible {
+    display: block;
+}
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Notes Textarea */
+#health-notes {
+    width: 100%;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+    color: var(--text-primary);
+    resize: none;
+    transition: border-color 0.3s;
+}
+
+#health-notes:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.save-status {
+    font-size: 0.85rem;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.save-status.visible {
+    opacity: 1;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal {
+    width: 90%;
+    max-width: 400px;
+    transform: translateY(20px);
+    transition: transform 0.3s;
+}
+
+.modal-overlay.visible .modal {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+label {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    color: var(--text-primary);
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+    .progress-section {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+    }
+    .medicine-list-section {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+    }
+    .notes-section {
+        grid-column: 1 / 2;
+        grid-row: 3 / 4;
+    }
+}

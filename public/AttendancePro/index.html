@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Attendance Dashboard</h1>
+        <div>
+            <button class="btn btn-add" onclick="openModal()">+ New Subject</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Total Classes</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                    <th>Current %</th>
+                    <th>Required / Remaining</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody id="attendance-body"></tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h3>Recent History</h3>
+        <div id="history-log" class="history-list"></div>
+    </div>
+</div>
+
+<div id="addModal" class="modal-overlay">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2>Add New Subject</h2>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <form id="newSubjectForm" onsubmit="addSubject(event)">
+            <div class="form-group">
+                <label for="subName">Subject Name</label>
+                <input type="text" id="subName" placeholder="enter subject name" required>
+            </div>
+            <div class="form-group">
+                <label for="subTotal">Estimated Total Classes</label>
+                <input type="number" id="subTotal" value="45" min="1" required>
+            </div>
+            <div class="form-group">
+                <label for="subTarget">Target Percentage (%)</label>
+                <input type="number" id="subTarget" value="75" min="1" max="100" required>
+            </div>
+            <button type="submit" class="btn btn-add" style="width: 100%; padding: 12px; margin-top: 10px;">Add Subject</button>
+        </form>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

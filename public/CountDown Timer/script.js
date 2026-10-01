@@ -226,10 +226,12 @@ function handleTimerComplete() {
   const session = {
     type: state.mode === 'pomodoro' ? `Pomodoro ${state.pomoPhase}` : 'Custom',
     duration: formatSeconds(state.totalSeconds),
-    completedAt: new Date().toLocaleString(),
+    completedAt: new Date().toLocaleString(undefined, { calendar: 'gregory' }),
     timestamp: Date.now()
   };
   sessionHistory.unshift(session);
+  state.sessionCount++;
+  els.sessionLabel.textContent = `Session ${state.sessionCount}`;
   if (sessionHistory.length > 50) sessionHistory.pop();
   localStorage.setItem('ft_history', JSON.stringify(sessionHistory));
 
@@ -520,8 +522,13 @@ document.addEventListener('fullscreenchange', () => {
 // =============================================
 function openStats() {
   const total = sessionHistory.length;
+  // Focus Time = work-phase pomodoros + Custom timers. Pomodoro rows are
+  // stored as `Pomodoro work` / `Pomodoro break` / `Pomodoro longbreak` at
+  // save time (line 227), so the old filter `s.type.includes('Focus')` never
+  // matched any pomodoro row and Focus Time was capped at Custom-only.
+  // See issue #10335.
   const totalFocusMs = sessionHistory
-    .filter(s => s.type.includes('Focus') || s.type === 'Custom')
+    .filter(s => s.type === 'Custom' || s.type === 'Pomodoro work')
     .reduce((sum, s) => {
       const parts = s.duration.split(':').map(Number);
       const secs = parts.length === 3
@@ -530,7 +537,10 @@ function openStats() {
       return sum + secs;
     }, 0);
 
-  const pomoSessions = sessionHistory.filter(s => s.type.includes('Pomodoro')).length;
+  // Only work phases count as pomodoros. The old `includes('Pomodoro')`
+  // filter also matched `Pomodoro break` and `Pomodoro longbreak`, so one
+  // work + one short break made the counter say "2 pomodoros".
+  const pomoSessions = sessionHistory.filter(s => s.type === 'Pomodoro work').length;
 
   els.statsGrid.innerHTML = [
     ['📅', 'Total Sessions', total],

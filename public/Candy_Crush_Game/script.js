@@ -1,5 +1,4 @@
-
-var candies = ["Blue", "Orange", "Green", "Yellow", "Red", "Purple"];
+﻿var candies = ["Blue", "Orange", "Green", "Yellow", "Red", "Purple"];
 var board = [];
 var rows = 9;
 var columns = 9;
@@ -8,9 +7,13 @@ var score = 0;
 var currTile;
 var otherTile;
 var isProcessing = false;
+var hintTimer;
+var HINT_DELAY = 7000;
 
 window.onload = function() {
     startGame();
+    resetHintTimer();
+
     // Reset button functionality
     document.getElementById("Reset").addEventListener("click", function() {
         if (isProcessing) return;
@@ -19,6 +22,7 @@ window.onload = function() {
         board = [];
         document.getElementById("board").innerHTML = "";
         startGame();
+        resetHintTimer();
     });
 }
     
@@ -47,6 +51,7 @@ function startGame() {
                 (r >= 2 && board[r - 1][c].src.includes(candy) && board[r - 2][c].src.includes(candy))
             );
             let tile = document.createElement("img");
+            tile.draggable = true;
             tile.id = r + "-" + c;
             tile.src = "./images/" + candy + ".png";
 
@@ -70,6 +75,8 @@ function startGame() {
 
 function dragStart() {
     if (isProcessing) return;
+    clearHint();
+    resetHintTimer();
     //this refers to tile that was clicked on for dragging
     currTile = this;
 }
@@ -129,6 +136,7 @@ async function dragEnd() {
         }
     }
     otherTile = null;
+    resetHintTimer();
 }
 
 function findMatches() {
@@ -167,6 +175,8 @@ function checkValid() {
 }
 
 async function resolveCascades() {
+    clearHint();
+    clearTimeout(hintTimer);
     isProcessing = true;
     let combo = 1;
     while (true) {
@@ -197,6 +207,7 @@ async function resolveCascades() {
     }
     
     isProcessing = false;
+    resetHintTimer();
 }
 
 async function slideAndRefill() {
@@ -225,6 +236,48 @@ async function slideAndRefill() {
     }
     
     await new Promise(resolve => setTimeout(resolve, 200));
+}
+
+function resetHintTimer() {
+    clearHint();
+    clearTimeout(hintTimer);
+
+    hintTimer = setTimeout(() => {
+        if (!isProcessing) {
+            showHint();
+        }
+    }, HINT_DELAY);
+}
+
+function clearHint() {
+    document.querySelectorAll(".candy-hint").forEach(tile => {
+        tile.classList.remove("candy-hint");
+    });
+}
+
+function findAvailableMove() {
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns; c++) {
+            if (c < columns - 1 && testSwap(r, c, r, c + 1)) {
+                return [board[r][c], board[r][c + 1]];
+            }
+
+            if (r < rows - 1 && testSwap(r, c, r + 1, c)) {
+                return [board[r][c], board[r + 1][c]];
+            }
+        }
+    }
+
+    return [];
+}
+
+function showHint() {
+    clearHint();
+
+    const hintTiles = findAvailableMove();
+    hintTiles.forEach(tile => {
+        tile.classList.add("candy-hint");
+    });
 }
 
 function hasAvailableMoves() {
@@ -261,6 +314,8 @@ function testSwap(r1, c1, r2, c2) {
 }
 
 function shuffleBoard() {
+    clearHint();
+
     let allCandies = [];
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < columns; c++) {

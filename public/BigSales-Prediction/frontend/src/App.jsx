@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import PredictPage from "./pages/PredictPage";
 import HistoryPage from "./pages/HistoryPage";

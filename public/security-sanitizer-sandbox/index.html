@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Sanitizer & Secure DOM Purifier Laboratory</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div class="security-container">
+        <!-- Control Room Sidebar -->
+        <div class="telemetry-panel">
+            <h2>SECURITY SANITIZER CORE</h2>
+            <hr class="divider">
+
+            <div class="metric-box">
+                <span class="label">PURIFICATION LEVEL</span>
+                <div class="value warning">Strict Entity Isolation</div>
+            </div>
+
+            <div class="metric-box">
+                <span class="label">MUTATION DEFENSE</span>
+                <div class="value safe">Active Tokenization</div>
+            </div>
+
+            <div class="instruction-pad">
+                <h3>VULNERABILITY SIMULATOR</h3>
+                <p>Type a malicious XSS payload (e.g., <code>&lt;img src=x onerror="alert('Hacked!')"&gt;</code>) into
+                    the input box and watch how the security engine neutralizes it in real time.</p>
+            </div>
+        </div>
+
+        <!-- Terminal Playground Workspace -->
+        <div class="viewport-area">
+            <div class="viewport-header">
+                <span class="status-dot blinking"></span>
+                <span class="title-text">SECURE_DOM // PAYLOAD_TOKENIZER</span>
+            </div>
+
+            <div class="playground">
+                <div class="input-section">
+                    <label>INJECT XSS TEST STRINGS:</label>
+                    <textarea id="payloadInput" placeholder="Enter payload string here..."></textarea>
+                </div>
+
+                <div class="output-grid">
+                    <div class="output-box vulnerability">
+                        <h4>VULNERABLE VIEWPORT (Using raw innerHTML)</h4>
+                        <div id="vulnerableOutput" class="display-panel"></div>
+                    </div>
+                    <div class="output-box defensive">
+                        <h4>SECURE VIEWPORT (Using custom DOMPurifier)</h4>
+                        <div id="secureOutput" class="display-panel"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./app.js"></script>
+</body>
+
+</html>

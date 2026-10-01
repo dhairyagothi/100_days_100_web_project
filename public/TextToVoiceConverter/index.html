@@ -1,54 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text to Voice Converter</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voice & Text Studio</title>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="favicon.png">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-    <div class="whole">
-    <div class="container">
-        <h1 class="title">Text to Voice Converter</h1>
+    <!-- Floating Theme Toggle -->
+    <button id="theme-toggle" class="theme-btn" aria-label="Toggle dark mode">🌙</button>
 
-        <!-- Added multilingual feature (3 languages for now)-->
-        <label>Select Language:</label>
-        <select id="language">
-            <option value="en-US">English</option>
-            <option value="hi-IN">Hindi</option>
-            <option value="es-ES">Spanish</option>
-        </select>
-
-        <div class="input-area">
-            <textarea class="textarea1" id ="text-input" placeholder="Enter text here..."></textarea>
-            <button id="convert-btn">Convert to Speech</button>
-
-            <!-- Changed Id for stop btn -->
-            <button id="stop-btn-text" disabled>Stop</button>
+    <!-- Top Navigation Bar / Back Button -->
+    <header class="app-header">
+        <a href="/" class="back-btn">← Back to Home</a>
+        <div class="app-title-container">
+            <h1 class="main-title">Voice & Text Studio</h1>
+            <p class="subtitle">Convert text to high-quality audio or transcribe your voice instantly</p>
         </div>
-    </div>
+    </header>
 
-    <div class="container2">
-        <h1 class="title">Voice to Text Converter</h1>
+    <main class="wrapper">
+        <!-- TEXT TO SPEECH CARD -->
+        <section class="container card tts-card">
+            <div class="card-header">
+                <h2>🔊 Text to Speech</h2>
+                <span class="status-badge" id="speaking-status">Ready</span>
+            </div>
+            
+            <div class="input-group">
+                <label for="tts-language">Select Language</label>
+                <div class="select-wrapper">
+                    <select id="tts-language"></select>
+                </div>
+            </div>
 
-        <!-- Added multilingual feature (3 languages for now)-->
-        <label>Select Language:</label>
-        <select id="language">
-            <option value="en-US">English</option>
-            <option value="hi-IN">Hindi</option>
-            <option value="es-ES">Spanish</option>
-        </select>
-        
-        <button id="start-btn">Speak</button>
+            <div class="input-group">
+                <label for="voice-select">Select Voice</label>
+                <div class="select-wrapper">
+                    <select id="voice-select">
+                        <option value="">Detecting voices...</option>
+                    </select>
+                </div>
+            </div>
 
-        <!-- Id matched with other Stop so changed this one too -->
-        <button id="stop-btn-voice" disabled>Stop</button> 
+            <div class="input-group relative">
+                <label for="text-input">Text Input</label>
+                <textarea id="text-input" placeholder="Type or paste your text here..."></textarea>
+                <div class="textarea-footer">
+                    <span id="char-count">Characters: 0</span>
+                </div>
+            </div>
 
-        <textarea class="textarea2" id="output" placeholder="Your speech will appear here..."></textarea>
-    </div>
-</div>
+            <div class="btn-group">
+                <button id="convert-btn" class="primary-btn">
+                    <span class="btn-icon">▶</span> Convert to Speech
+                </button>
+                <button id="stop-btn-text" class="stop-btn" disabled>
+                    <span class="btn-icon">■</span> Stop
+                </button>
+                <button id="clear-text" class="secondary-btn">
+                    Clear
+                </button>
+            </div>
+        </section>
+
+        <!-- VOICE TO TEXT CARD -->
+        <section class="container card stt-card">
+            <div class="card-header">
+                <h2>🎤 Speech to Text</h2>
+                <span class="status-badge" id="listening-status">Ready</span>
+            </div>
+            
+            <div class="input-group">
+                <label for="stt-language">Select Language</label>
+                <div class="select-wrapper">
+                    <select id="stt-language"></select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="output">Transcript Output</label>
+                <textarea id="output" placeholder="Your spoken words will appear here in real-time..." readonly></textarea>
+            </div>
+
+            <div class="btn-group main-controls">
+                <button id="start-btn" class="record-btn">
+                    <span class="mic-dot"></span> Speak
+                </button>
+                <button id="stop-btn-voice" class="stop-btn" disabled>
+                    <span class="btn-icon">■</span> Stop
+                </button>
+            </div>
+
+            <div class="btn-group action-controls">
+                <button id="copy-btn" class="action-btn">
+                    <span class="btn-icon">📋</span> Copy
+                </button>
+                <button id="download-btn" class="action-btn">
+                    <span class="btn-icon">📥</span> Download
+                </button>
+                <button id="clear-output" class="secondary-btn">
+                    Clear
+                </button>
+            </div>
+        </section>
+    </main>
+
     <script src="script.js"></script>
 </body>
 </html>

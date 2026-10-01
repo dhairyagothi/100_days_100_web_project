@@ -1,0 +1,164 @@
+/* styles.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f7f7f7;
+  font-family: "Courier New", Courier, monospace;
+  overflow: hidden;
+  color: white;
+}
+
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #535353 0%, #2a2a2a 100%);
+  position: relative;
+}
+
+.position-relative {
+  position: relative;
+}
+
+canvas {
+  border: 6px solid #fff;
+  image-rendering: pixelated; /* Important for retro pixel look */
+  background: #ffffff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  display: block;
+}
+
+/* Score Display */
+.score-display {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: bold;
+  text-shadow:
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;
+  z-index: 100;
+  letter-spacing: 4px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Overlay Screens */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.start-screen,
+.game-over-screen {
+  background: rgba(0, 0, 0, 0.92);
+  border: 6px solid #fff;
+  padding: 40px 60px;
+  text-align: center;
+  pointer-events: all;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+  max-width: 90%;
+}
+
+.start-screen h1 {
+  font-size: 42px;
+  margin-bottom: 20px;
+  text-shadow: 4px 4px 0 #000;
+  color: #ffd700;
+}
+
+.start-screen p {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.start-screen small {
+  display: block;
+  font-size: 16px;
+  margin-top: 20px;
+  opacity: 0.9;
+}
+
+/* Game Over Screen */
+.game-over-screen h2 {
+  font-size: 48px;
+  margin-bottom: 20px;
+  text-shadow: 4px 4px 0 #000;
+  letter-spacing: 3px;
+}
+
+.game-over-screen p {
+  font-size: 20px;
+  margin: 8px 0;
+}
+
+.game-over-screen .btn {
+  margin-top: 15px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  canvas {
+    width: 95vw;
+    height: auto;
+    max-height: 280px;
+  }
+
+  .score-display {
+    font-size: 22px;
+    top: 15px;
+    right: 20px;
+  }
+
+  .start-screen,
+  .game-over-screen {
+    padding: 30px 40px;
+  }
+
+  .start-screen h1 {
+    font-size: 32px;
+  }
+
+  .game-over-screen h2 {
+    font-size: 36px;
+  }
+}
+
+/* Touch feedback for mobile */
+canvas {
+  touch-action: none;
+}
+
+/* Optional: Blink animation for instructions */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.blink {
+  animation: blink 1s step-start infinite;
+}

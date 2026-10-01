@@ -1,0 +1,24 @@
+# dependencies
+node_modules/
+
+# environment variables
+.env
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# build folders
+dist/
+build/
+
+# system files
+.DS_Store
+Thumbs.db
+
+# optional (VS Code)
+.vscode/
+
+# optional (Mac/Linux temp)
+*.swp

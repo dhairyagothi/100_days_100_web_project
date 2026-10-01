@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Water Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app" aria-labelledby="appTitle">
+    <header class="app-header">
+      <h1 id="appTitle">Water Tracker</h1>
+      <p class="app-subtitle">Stay hydrated throughout the day</p>
+    </header>
+
+    <section class="goal-section" aria-labelledby="goalHeading">
+      <h2 id="goalHeading" class="visually-hidden">Daily goal</h2>
+      <label class="goal-label" for="dailyGoal">Daily goal (ml)</label>
+      <div class="goal-row">
+        <input
+          type="number"
+          id="dailyGoal"
+          class="goal-input"
+          min="250"
+          max="10000"
+          step="50"
+          value="2000"
+          inputmode="numeric"
+          aria-describedby="goalHint"
+        />
+        <button type="button" class="btn btn-secondary" id="saveGoalBtn">Update goal</button>
+      </div>
+      <p id="goalHint" class="hint">Default is 2000 ml. Progress resets each calendar day.</p>
+    </section>
+
+    <section class="progress-section" aria-labelledby="progressHeading">
+      <h2 id="progressHeading" class="visually-hidden">Today's progress</h2>
+
+      <div class="glass" role="img" aria-labelledby="progressText">
+        <div class="glass-inner">
+          <div class="water" id="waterLevel" style="--fill: 0%">
+            <div class="wave wave-1" aria-hidden="true"></div>
+            <div class="wave wave-2" aria-hidden="true"></div>
+          </div>
+          <div class="glass-shine" aria-hidden="true"></div>
+        </div>
+        <p class="progress-text" id="progressText">
+          <span id="consumedAmount">0</span> / <span id="goalAmount">2000</span> ml
+        </p>
+        <p class="progress-percent" id="progressPercent" aria-live="polite">0%</p>
+      </div>
+
+      <p class="status-message" id="statusMessage" aria-live="polite"></p>
+    </section>
+
+    <section class="actions-section" aria-labelledby="actionsHeading">
+      <h2 id="actionsHeading" class="section-title">Quick add</h2>
+      <div class="quick-add" role="group" aria-label="Add water amounts">
+        <button type="button" class="btn btn-add" data-amount="250">+250 ml<br><span class="btn-sub">Cup</span></button>
+        <button type="button" class="btn btn-add" data-amount="500">+500 ml<br><span class="btn-sub">Bottle</span></button>
+        <button type="button" class="btn btn-add" data-amount="750">+750 ml<br><span class="btn-sub">Large</span></button>
+        <button type="button" class="btn btn-add" data-amount="1000">+1 L<br><span class="btn-sub">Pitcher</span></button>
+      </div>
+
+      <div class="custom-add">
+        <label class="custom-label" for="customAmount">Custom amount (ml)</label>
+        <div class="custom-row">
+          <input
+            type="number"
+            id="customAmount"
+            class="custom-input"
+            min="1"
+            max="5000"
+            step="10"
+            placeholder="e.g. 300"
+            inputmode="numeric"
+          />
+          <button type="button" class="btn btn-primary" id="customAddBtn">Add</button>
+        </div>
+      </div>
+
+      <div class="secondary-actions">
+        <button type="button" class="btn btn-ghost" id="undoBtn" disabled>Undo last</button>
+        <button type="button" class="btn btn-ghost btn-danger" id="resetBtn">Reset today</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

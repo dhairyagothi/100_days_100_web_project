@@ -22,3 +22,24 @@
     color: var(--text-brand, #2563eb);
     font-weight:bold;
 }
+
+.navbar .user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.navbar .theme-btn {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--clr-text-main, #111);
+    font-size: 1.1rem;
+    transition: 0.2s ease;
+}
+
+.navbar .theme-btn:hover {
+    background: rgba(0, 0, 0, 0.15);
+}

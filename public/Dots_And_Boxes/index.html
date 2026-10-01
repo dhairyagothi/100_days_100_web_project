@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dots and Boxes Multiplayer Strategy Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <header class="top-bar glass-card">
+      <div class="brand">
+        <div class="logo-grid" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div>
+          <h1>Dots <span>&amp;</span> Boxes</h1>
+          <p>Connect lines. Claim boxes. Win the board.</p>
+        </div>
+      </div>
+
+      <button class="new-game-button" id="restartButton" type="button">
+        <span aria-hidden="true">↻</span>
+        New Game
+      </button>
+    </header>
+
+    <section class="game-layout" aria-label="Dots and boxes game">
+      <aside class="side-column left-column">
+        <article class="player-card glass-card active-player" id="playerOneCard">
+          <p class="eyebrow">Player 1</p>
+          <div class="avatar blue-avatar" aria-hidden="true">P1</div>
+          <h2>Blue Player</h2>
+          <p class="score-label">Score</p>
+          <p class="player-score blue-score" id="playerOneScore">0</p>
+        </article>
+
+        <article class="info-card glass-card turn-card">
+          <p class="eyebrow">Turn</p>
+          <p class="turn-player" id="turnIndicator">Player 1's Turn</p>
+        </article>
+
+        <article class="info-card glass-card">
+          <p class="eyebrow">Stats</p>
+          <div class="stat-row">
+            <span>Total Moves</span>
+            <strong id="moveCount">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Completed Boxes</span>
+            <strong id="completedBoxes">0</strong>
+          </div>
+        </article>
+      </aside>
+
+      <section class="board-section">
+        <div class="board-card glass-card">
+          <div class="board" id="gameBoard" aria-label="4 by 4 dots game board"></div>
+        </div>
+
+        <div class="message-card glass-card" role="status" aria-live="polite">
+          <div class="message-icon" aria-hidden="true">★</div>
+          <p id="gameMessage">Click any open line between adjacent dots to begin.</p>
+        </div>
+      </section>
+
+      <aside class="side-column right-column">
+        <article class="player-card glass-card" id="playerTwoCard">
+          <p class="eyebrow">Player 2</p>
+          <div class="avatar red-avatar" aria-hidden="true">P2</div>
+          <h2>Red Player</h2>
+          <p class="score-label">Score</p>
+          <p class="player-score red-score" id="playerTwoScore">0</p>
+        </article>
+
+        <article class="info-card glass-card">
+          <p class="eyebrow">Game Info</p>
+          <div class="stat-row">
+            <span>Players</span>
+            <strong>2</strong>
+          </div>
+          <div class="stat-row">
+            <span>Grid Size</span>
+            <strong>4 × 4</strong>
+          </div>
+          <div class="stat-row">
+            <span>Total Boxes</span>
+            <strong>9</strong>
+          </div>
+        </article>
+
+        <article class="info-card glass-card">
+          <p class="eyebrow">Legend</p>
+          <div class="legend-row">
+            <span class="legend-line blue-line"></span>
+            <span>Player 1</span>
+          </div>
+          <div class="legend-row">
+            <span class="legend-line red-line"></span>
+            <span>Player 2</span>
+          </div>
+        </article>
+      </aside>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

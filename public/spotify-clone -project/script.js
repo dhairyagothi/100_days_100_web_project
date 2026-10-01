@@ -19,8 +19,11 @@ const coverImage = document.querySelector('.cover-image');
 
 // Auth DOM Selectors (Dhyan se dekhna yeh HTML se match hone chahiye)
 const loginAuthBtn = document.getElementById('loginAuthBtn');
+const signUpBtn = document.getElementById("signUpBtn");
 const loginModal = document.getElementById('loginModal');
+const signUpModel = document.getElementById('signUpModel');
 const closeModal = document.getElementById('closeModal');
+const closeSignUpModal = document.getElementById('closeSignUpModal');
 const loginForm = document.getElementById('loginForm');
 const authContainer = document.getElementById('auth-container');
 
@@ -45,6 +48,14 @@ function togglePlay() {
 }
 
 if(playBtn) playBtn.addEventListener('click', togglePlay);
+if(playBtn) {
+    playBtn.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            togglePlay();
+        }
+    });
+}
 
 function startPlaybackTimer() {
     clearInterval(timerInterval);
@@ -85,7 +96,7 @@ function handleTrackEnded() {
 
 // 5. Grid Cards Event binding system
 document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('click', () => {
+    const selectTrackFromCard = () => {
         const selectedId = card.getAttribute('data-song');
         if (songs[selectedId]) {
             currentSongKey = selectedId;
@@ -103,8 +114,42 @@ document.querySelectorAll('.card').forEach(card => {
             isPlaying = false; 
             togglePlay();
         }
+    };
+
+    card.addEventListener('click', selectTrackFromCard);
+    card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            selectTrackFromCard();
+        }
     });
 });
+
+if (signUpForm) {
+    signUpForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById("signUpUsername").value.trim();
+        const email = document.getElementById("signUpEmail").value.trim();
+        const password = document.getElementById("signUpPassword").value.trim();
+
+        if (!username || !email || !password) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        const user = {
+            username,
+            email,
+            password
+        };
+
+        localStorage.setItem("spotifyUser", JSON.stringify(user));
+
+        alert("Signup successful! Please log in.");
+        signUpModel.classList.remove("active");
+    });
+}
 
 // 6. Login Modal Event Handlers
 if (loginAuthBtn) {
@@ -113,10 +158,24 @@ if (loginAuthBtn) {
     });
 }
 
+// Sign Up Button Event Handler
+if(signUpBtn) {
+    signUpBtn.addEventListener('click', () => {
+        //Redirect to Signup Page
+        if (signUpModel) signUpModel.classList.add('active');
+    })
+}
+
 if (closeModal) {
     closeModal.addEventListener('click', () => {
         if (loginModal) loginModal.classList.remove('active');
     });
+}
+
+if(closeSignUpModal) {
+    closeSignUpModal.addEventListener('click', ()=> {
+        if(signUpModel) signUpModel.classList.remove('active');
+    })
 }
 
 window.addEventListener('click', (e) => {
@@ -128,12 +187,31 @@ window.addEventListener('click', (e) => {
 if (loginForm) {
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const userInputValue = document.getElementById('username').value;
-        
-        if (userInputValue.trim() !== "") {
-            if (loginModal) loginModal.classList.remove('active');
-            executeDynamicUserLoginState(userInputValue);
-        }
+const usernameOrEmail = document.getElementById("username").value.trim();
+const password = document.getElementById("password").value.trim();
+
+if (!usernameOrEmail || !password) {
+    alert("Please enter both username/email and password.");
+    return;
+}
+
+const storedUser = JSON.parse(localStorage.getItem("spotifyUser"));
+
+if (!storedUser) {
+    alert("No account found. Please sign up first.");
+    return;
+}
+
+if (
+    (usernameOrEmail === storedUser.username ||
+     usernameOrEmail === storedUser.email) &&
+    password === storedUser.password
+) {
+    loginModal.classList.remove("active");
+    executeDynamicUserLoginState(storedUser.username);
+} else {
+    alert("Invalid username/email or password.");
+}
     });
 }
 

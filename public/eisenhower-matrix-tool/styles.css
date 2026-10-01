@@ -1,0 +1,219 @@
+:root {
+  --bg-dark: #0a0f1d;
+  --panel-bg: #121829;
+  --border-color: rgba(255, 255, 255, 0.06);
+  --text-primary: #f8fafc;
+  --text-muted: #64748b;
+  --q1-color: #ef4444;
+  --q2-color: #f59e0b;
+  --q3-color: #3b82f6;
+  --q4-color: #10b981;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+}
+
+.matrix-wrapper {
+  width: 100%;
+  max-width: 1100px;
+}
+
+.matrix-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.matrix-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.matrix-header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+}
+
+/* Entry Bar Design */
+.task-entry-bar {
+  display: flex;
+  gap: 0.75rem;
+  background-color: var(--panel-bg);
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.task-entry-bar input {
+  flex: 2;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  padding: 0.6rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.task-entry-bar input:focus {
+  border-color: #3b82f6;
+}
+
+.task-entry-bar select {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  padding: 0.6rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+}
+
+.task-entry-bar button {
+  background-color: #3b82f6;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.task-entry-bar button:hover {
+  background-color: #2563eb;
+}
+
+/* Symmetrical 2x2 Grid Framework Layout */
+.matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .matrix-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.quadrant {
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.85rem;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.quadrant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.quadrant-header h2 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.quadrant-header.q1 h2 {
+  color: var(--q1-color);
+}
+.quadrant-header.q2 h2 {
+  color: var(--q2-color);
+}
+.quadrant-header.q3 h2 {
+  color: var(--q3-color);
+}
+.quadrant-header.q4 h2 {
+  color: var(--q4-color);
+}
+
+.task-count {
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+}
+
+.dropzone {
+  flex-grow: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.dropzone.dragover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Individual Task Item Layout Injectable Cards */
+.task-card {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: grab;
+  user-select: none;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+.task-card:active {
+  cursor: grabbing;
+}
+
+.task-text {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  word-break: break-word;
+  margin-right: 0.5rem;
+}
+
+.delete-task-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0 0.25rem;
+}
+
+.delete-task-btn:hover {
+  color: var(--q1-color);
+}

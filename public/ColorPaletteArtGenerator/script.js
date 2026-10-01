@@ -11,9 +11,18 @@ imageUpload.addEventListener('change', function (event) {
     const file = event.target.files[0];
 
     if (file) {
-        if (!file.type.match('image.*')) {
-            statusMsg.textContent = "Please select a valid image file (JPG, PNG, WEBP).";
-            statusMsg.style.color = "#ba1a1a"; // Error color
+        const allowedTypes = [
+            "image/png",
+            "image/jpeg",
+            "image/webp"
+        ];
+
+        if (!allowedTypes.includes(file.type)) {
+            statusMsg.textContent =
+                "Please upload PNG, JPG or WEBP image.";
+
+            statusMsg.style.color = "#ba1a1a";
+
             return;
         }
 
@@ -39,6 +48,8 @@ previewImage.addEventListener('load', function () {
     } catch (error) {
         console.error("Extraction failed:", error);
         statusMsg.textContent = "Failed to extract colors. Please try a different image.";
+        swatchesContainer.innerHTML = "";
+        resultSection.style.display = "none";
     }
 });
 
@@ -52,7 +63,21 @@ function renderPalette(paletteArray) {
 
         const wrapper = document.createElement('div');
         wrapper.className = 'swatch-wrapper';
+
+        wrapper.tabIndex = 0;
+
+        wrapper.setAttribute(
+            "aria-label",
+            `Copy color ${hex}`
+        );
+
         wrapper.onclick = () => copyToClipboard(hex);
+
+        wrapper.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                copyToClipboard(hex);
+            }
+        });
 
         const swatch = document.createElement('div');
         swatch.className = 'swatch';
@@ -75,18 +100,48 @@ function rgbToHex(r, g, b) {
 
 
 function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        showToast(`Copied ${text}`);
-    }).catch(err => {
-        console.error('Failed to copy text: ', err);
-    });
+
+    if (navigator.clipboard && window.isSecureContext) {
+
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                showToast(`Copied ${text}`);
+            })
+            .catch(() => fallbackCopy(text));
+
+    } else {
+        fallbackCopy(text);
+    }
+}
+function fallbackCopy(text) {
+
+    const textArea = document.createElement("textarea");
+
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.left = "-9999px";
+
+    document.body.appendChild(textArea);
+
+    textArea.focus();
+    textArea.select();
+
+    document.execCommand("copy");
+
+    document.body.removeChild(textArea);
+
+    showToast(`Copied ${text}`);
 }
 
+let toastTimer;
+
 function showToast(message) {
+    clearTimeout(toastTimer);
+
     toast.textContent = message;
     toast.classList.add('show');
 
-    setTimeout(() => {
+    toastTimer = setTimeout(() => {
         toast.classList.remove('show');
     }, 2500);
 }

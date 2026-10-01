@@ -1,0 +1,147 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Inter,Segoe UI,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
+}
+
+/* 🌐 BACKGROUND FLOATERS */
+.background{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+}
+
+.circle{
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  animation:float 10s infinite ease-in-out;
+}
+
+.circle:nth-child(1){
+  width:250px;
+  height:250px;
+  top:-60px;
+  left:-70px;
+}
+
+.circle:nth-child(2){
+  width:180px;
+  height:180px;
+  bottom:50px;
+  right:100px;
+  animation-delay:2s;
+}
+
+.circle:nth-child(3){
+  width:120px;
+  height:120px;
+  top:60%;
+  left:15%;
+  animation-delay:4s;
+}
+
+/* 🧊 MAIN CARD */
+.card{
+  position:relative;
+  z-index:10;
+  width:320px;
+  padding:25px;
+  border-radius:24px;
+  backdrop-filter:blur(15px);
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
+  animation:fade .8s ease;
+}
+
+/* DISPLAY */
+.display{
+  margin-bottom:15px;
+}
+
+#display{
+  width:100%;
+  height:70px;
+  border:none;
+  outline:none;
+  border-radius:14px;
+  font-size:32px;
+  text-align:right;
+  padding:10px;
+  color:#fff;
+  background:rgba(255,255,255,.15);
+}
+
+/* 🔢 BUTTON GRID */
+.buttons{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+
+/* BUTTONS */
+button{
+  height:55px;
+  border:none;
+  border-radius:14px;
+  font-size:18px;
+  cursor:pointer;
+  background:rgba(255,255,255,.18);
+  color:#fff;
+  transition:.2s;
+}
+
+button:hover{
+  transform:translateY(-3px);
+  background:rgba(255,255,255,.28);
+}
+
+button:active{
+  transform:scale(.96);
+}
+
+/* OPERATORS */
+.op{
+  background:rgba(255,255,255,.35);
+  font-weight:bold;
+}
+
+/* EQUAL BUTTON */
+.eq{
+  background:#fbbf24;
+  color:#111;
+  font-weight:bold;
+}
+
+/* ZERO BIG */
+.zero{
+  grid-column:span 2;
+}
+
+/* ANIMATIONS */
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-25px);}
+}
+
+@keyframes fade{
+  from{
+    opacity:0;
+    transform:translateY(30px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}

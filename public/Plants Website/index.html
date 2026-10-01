@@ -22,10 +22,15 @@
 
     <header class="header">
       <!-- logo name  -->
-      <a href="#" class="logo"><i class="fas fa-tree"></i>TREE.</a>
+      <a href="#" class="logo"><i aria-hidden="true" class="fas fa-tree"></i>TREE.</a>
 
       <!-- navbar icons  -->
-      <div class="fas fa-bars"></div>
+      <!-- hamburger button -->
+      <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
       <!-- navbar link  -->
       <nav class="navbar">
         <ul>
@@ -39,6 +44,8 @@
         </ul>
       </nav>
     </header>
+    <!-- mobile nav overlay -->
+    <div class="nav-overlay" id="nav-overlay"></div>
 
     <!-- home section start  -->
 

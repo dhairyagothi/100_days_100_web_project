@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusOS - Campus Management System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="app-sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <i data-lucide="graduation-cap"></i>
+                </div>
+                <h2>CampusOS</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-view="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-view="attendance">
+                    <i data-lucide="user-check"></i>
+                    <span>Attendance</span>
+                </button>
+                <button class="nav-item" data-view="timetable">
+                    <i data-lucide="calendar"></i>
+                    <span>Timetable</span>
+                </button>
+                <button class="nav-item" data-view="assignments">
+                    <i data-lucide="book-open"></i>
+                    <span>Assignments</span>
+                </button>
+                <button class="nav-item" data-view="clubs-events">
+                    <i data-lucide="users"></i>
+                    <span>Clubs & Events</span>
+                </button>
+                <button class="nav-item" data-view="notes">
+                    <i data-lucide="file-text"></i>
+                    <span>Notes Board</span>
+                </button>
+                <button class="nav-item" data-view="placement">
+                    <i data-lucide="briefcase"></i>
+                    <span>Placement Portal</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="student-avatar">JD</div>
+                <div class="student-meta">
+                    <span class="student-name">Sanjana</span>
+                    <span class="student-id">CS-2024-089</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Viewport Area -->
+        <main class="app-main">
+            <!-- Topbar Header -->
+            <header class="app-header">
+                <div>
+                    <h1 id="view-title">Dashboard Overview</h1>
+                    <p class="subtitle" id="current-date">Saturday, July 25, 2026</p>
+                </div>
+                <div class="header-student-tag">
+                    <span class="badge badge-accent">B.Tech CS - Sem V</span>
+                </div>
+            </header>
+
+            <!-- View Containers -->
+            <div class="view-content">
+
+                <!-- 1. DASHBOARD OVERVIEW VIEW -->
+                <div id="view-dashboard" class="module-view active">
+                    <div class="kpi-grid">
+                        <div class="kpi-card" data-shortcut="attendance">
+                            <div class="kpi-icon icon-emerald">
+                                <i data-lucide="user-check"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Attendance</span>
+                                <span class="kpi-value" id="db-attendance">0%</span>
+                                <span class="kpi-subtext">Overall target: 75%</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card" data-shortcut="timetable">
+                            <div class="kpi-icon icon-indigo">
+                                <i data-lucide="clock"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Next Lecture</span>
+                                <span class="kpi-value" id="db-next-class">None</span>
+                                <span class="kpi-subtext" id="db-next-class-time">-</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card" data-shortcut="assignments">
+                            <div class="kpi-icon icon-amber">
+                                <i data-lucide="alert-circle"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Pending Tasks</span>
+                                <span class="kpi-value" id="db-assignments">0</span>
+                                <span class="kpi-subtext">Assignments due</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card" data-shortcut="placement">
+                            <div class="kpi-icon icon-purple">
+                                <i data-lucide="briefcase"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Job Postings</span>
+                                <span class="kpi-value" id="db-placements">0</span>
+                                <span class="kpi-subtext">Applied companies</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-details-grid">
+                        <!-- Left pane: Today's schedule -->
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3>Today's Schedule</h3>
+                                <button class="btn-link" onclick="switchView('timetable')">View Full</button>
+                            </div>
+                            <div class="schedule-timeline" id="db-timeline">
+                                <!-- Dynamic entries -->
+                            </div>
+                        </div>
+
+                        <!-- Right pane: Urgent tasks -->
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3>Important Alerts</h3>
+                                <button class="btn-link" onclick="switchView('assignments')">View All</button>
+                            </div>
+                            <div class="alerts-list" id="db-alerts">
+                                <!-- Dynamic list -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. ATTENDANCE VIEW -->
+                <div id="view-attendance" class="module-view">
+                    <div class="overview-grid">
+                        <div class="summary-circular-card">
+                            <div class="circular-progress-group">
+                                <div class="attendance-large-num" id="attn-big-percent">0%</div>
+                                <p>Overall Attendance</p>
+                            </div>
+                            <div class="attendance-summary-footer">
+                                <div class="sum-item">
+                                    <span class="dot dot-emerald"></span>
+                                    <span>Safe Classes: <strong id="attn-safe-classes">0</strong></span>
+                                </div>
+                                <div class="sum-item">
+                                    <span class="dot dot-danger"></span>
+                                    <span>Low Attendance Subjects: <strong id="attn-low-subjects">0</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3>Course Attendance Log</h3>
+                            </div>
+                            <div class="table-container">
+                                <table class="minimal-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Subject</th>
+                                            <th>Present / Total</th>
+                                            <th>Percentage</th>
+                                            <th style="text-align: right;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="attendance-list">
+                                        <!-- Dynamic subject rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. TIMETABLE VIEW -->
+                <div id="view-timetable" class="module-view">
+                    <div class="timetable-container content-card">
+                        <div class="day-tabs-container">
+                            <div class="day-tabs" id="timetable-day-tabs">
+                                <button class="day-tab active" data-day="Monday">Mon</button>
+                                <button class="day-tab" data-day="Tuesday">Tue</button>
+                                <button class="day-tab" data-day="Wednesday">Wed</button>
+                                <button class="day-tab" data-day="Thursday">Thu</button>
+                                <button class="day-tab" data-day="Friday">Fri</button>
+                            </div>
+                            <span class="badge" id="timetable-day-label">Monday</span>
+                        </div>
+
+                        <div class="timetable-list" id="timetable-slots-list">
+                            <!-- Dynamic class slots -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. ASSIGNMENTS VIEW -->
+                <div id="view-assignments" class="module-view">
+                    <div class="split-viewport-grid">
+                        <!-- Left Column: Tasks list -->
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3>Due Assignments</h3>
+                                <div class="task-filters">
+                                    <button class="filter-btn active" data-task-filter="all">All</button>
+                                    <button class="filter-btn" data-task-filter="pending">Pending</button>
+                                    <button class="filter-btn" data-task-filter="completed">Completed</button>
+                                </div>
+                            </div>
+                            <ul class="task-list" id="assignments-list">
+                                <!-- Dynamic assignments -->
+                            </ul>
+                        </div>
+
+                        <!-- Right Column: Add Form -->
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3>Create Assignment</h3>
+                            </div>
+                            <form id="assignment-form" class="minimal-form">
+                                <div class="form-group">
+                                    <label for="assign-title">Assignment Title</label>
+                                    <input type="text" id="assign-title" placeholder="e.g. Design Pattern Report" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="assign-subject">Subject</label>
+                                        <select id="assign-subject" required>
+                                            <!-- Dynamically filled with courses -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="assign-deadline">Due Date</label>
+                                        <input type="date" id="assign-deadline" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Create Assignment</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. CLUBS & EVENTS VIEW -->
+                <div id="view-clubs-events" class="module-view">
+                    <div class="split-viewport-grid">
+                        <!-- Left Column: Clubs Directory -->
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3>Active Clubs</h3>
+                            </div>
+                            <div class="clubs-grid" id="clubs-list">
+                                <!-- Dynamic club cards -->
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Events Calendar -->
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3>Upcoming Campus Events</h3>
+                            </div>
+                            <div class="events-list" id="events-list">
+                                <!-- Dynamic event listings -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. NOTES BOARD VIEW -->
+                <div id="view-notes" class="module-view">
+                    <div class="notes-workspace">
+                        <!-- Left sidebar: Notes index list -->
+                        <aside class="notes-sidebar">
+                            <button class="btn btn-primary" id="btn-add-note" style="width: 100%; justify-content: center; margin-bottom: 1rem;">
+                                <i data-lucide="plus"></i>
+                                <span>New Note</span>
+                            </button>
+                            <ul class="notes-list" id="notes-index-list">
+                                <!-- Dynamic note references -->
+                            </ul>
+                        </aside>
+
+                        <!-- Right pane: Notepad editor -->
+                        <div class="notes-editor content-card">
+                            <div id="notes-editor-empty" class="notes-editor-empty">
+                                <i data-lucide="sticky-note"></i>
+                                <p>Select a note from the index, or create a new note.</p>
+                            </div>
+                            <div id="notes-editor-active" class="notes-editor-active" style="display: none;">
+                                <input type="text" id="note-editor-title" placeholder="Note Title...">
+                                <textarea id="note-editor-content" placeholder="Start typing details here..."></textarea>
+                                <div class="note-editor-actions">
+                                    <button class="btn btn-secondary" id="btn-delete-note">
+                                        <i data-lucide="trash-2"></i>
+                                        <span>Delete Note</span>
+                                    </button>
+                                    <span class="note-status-saved" id="note-save-status">Saved</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. PLACEMENT PORTAL VIEW -->
+                <div id="view-placement" class="module-view">
+                    <div class="placement-portal-wrapper">
+                        <!-- Search & stats header -->
+                        <div class="placement-header-card content-card">
+                            <div class="placement-search-bar">
+                                <i data-lucide="search" class="search-icon"></i>
+                                <input type="text" id="placement-search-input" placeholder="Search companies or roles...">
+                            </div>
+                            <div class="placement-stats">
+                                <div class="p-stat-item">
+                                    <span class="p-stat-num" id="p-stat-total">0</span>
+                                    <span class="p-stat-lbl">Active Openings</span>
+                                </div>
+                                <div class="p-stat-item">
+                                    <span class="p-stat-num" id="p-stat-applied">0</span>
+                                    <span class="p-stat-lbl">Applications Sent</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Placement Jobs Grid -->
+                        <div class="jobs-grid" id="placement-jobs-list">
+                            <!-- Dynamic job cards -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>

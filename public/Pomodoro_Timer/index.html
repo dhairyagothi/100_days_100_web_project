@@ -84,17 +84,14 @@
             <input type="range" id="musicVol" min="0" max="1" step="0.05" value="0.4" aria-label="Music volume">
         </div>
     </div>
-
     <div class="music-category">
         <div class="music-cat-label">Focus Music</div>
         <div class="music-grid" id="focusMusicGrid"></div>
     </div>
-
     <div class="music-category">
         <div class="music-cat-label">Science-Backed</div>
         <div class="music-grid" id="scienceMusicGrid"></div>
     </div>
-
     <button class="music-off-btn" id="musicOffBtn">⏹ Stop Music</button>
 </div>
 
@@ -122,6 +119,12 @@
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
+            <span class="stat-label">Focus</span>
+            <span class="stat-value" id="statsTodayMins">0</span>
+            <span class="stat-label">min</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
             <span class="stat-label">Streak</span>
             <span class="stat-value" id="statsStreak">0</span> 🔥
         </div>
@@ -132,8 +135,11 @@
         </div>
     </div>
 
-    <!-- Weekly bar chart -->
-    <div class="weekly-chart" id="weeklyChart"></div>
+    <!-- Weekly bar chart (div-based) -->
+    <div class="weekly-chart-wrap">
+        <div class="weekly-chart" id="weeklyChart" aria-label="Weekly focus pomodoros chart" role="img"></div>
+        <div class="best-day-label" id="bestDayLabel"></div>
+    </div>
 
     <!-- Timer Card -->
     <div class="timer-card" id="timerCard">
@@ -154,7 +160,6 @@
 
         <div class="session-dots" id="sessionDots" aria-label="Session progress"></div>
 
-        <!-- Now-playing strip inside timer card -->
         <div class="now-playing" id="nowPlaying" style="display:none" aria-live="polite">
             <span class="np-dot"></span>
             <span id="nowPlayingLabel">-</span>
@@ -172,6 +177,21 @@
         <div class="task-number" id="sessionLabel">Session #1</div>
         <div class="task-current" id="currentTaskDisplay">No task selected</div>
     </div>
+
+    <!-- ── SESSION HISTORY DRAWER ──────────────────────────── -->
+    <div class="history-section">
+        <button class="history-toggle" id="historyToggle" aria-expanded="false" aria-controls="historyDrawer">
+            <span>📋 Session History</span>
+            <span class="history-chevron" id="historyChevron">▾</span>
+        </button>
+        <div class="history-drawer" id="historyDrawer" hidden>
+            <div class="history-controls">
+                <button class="history-clear-btn" id="clearHistoryBtn" aria-label="Clear all session history">🗑 Clear history</button>
+            </div>
+            <div class="history-list" id="historyList" role="list" aria-label="Completed sessions"></div>
+        </div>
+    </div>
+    <!-- ── END SESSION HISTORY DRAWER ─────────────────────── -->
 
     <!-- Task Section -->
     <div class="task-section">

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>Drawing App</title>
+</head>
+
+<body>
+
+<div id="app">
+
+    <!-- LEFT TOOLBAR -->
+
+    <aside id="left">
+
+        <h1>
+            <i class="fa-solid fa-palette"></i>
+            Drawing App
+        </h1>
+
+        <hr>
+
+        <!-- Drawing Tools -->
+
+        <div class="section-title">
+            Tools
+        </div>
+
+        <div class="tool-grid">
+
+            <button class="tool active" id="brush" title="Brush">
+                <i class="fa-solid fa-paintbrush"></i>
+            </button>
+
+            <button class="tool" id="eraser" title="Eraser">
+                <i class="fa-solid fa-eraser"></i>
+            </button>
+
+            <button class="tool" id="lineTool" title="Line">
+                <i class="fa-solid fa-minus"></i>
+            </button>
+
+            <button class="tool" id="rectTool" title="Rectangle">
+                <i class="fa-regular fa-square"></i>
+            </button>
+
+            <button class="tool" id="circleTool" title="Circle">
+                <i class="fa-regular fa-circle"></i>
+            </button>
+
+            <button class="tool" id="pickerTool" title="Color Picker">
+                <i class="fa-solid fa-eye-dropper"></i>
+            </button>
+
+        </div>
+
+        <hr>
+
+        <!-- Brush -->
+
+        <div class="controller">
+
+            <label>
+
+                Brush Size
+
+                <span class="width-val">5</span>
+
+            </label>
+
+            <input
+                type="range"
+                id="brushSize"
+                min="1"
+                max="50"
+                value="5">
+
+        </div>
+
+        <!-- Line Color -->
+
+        <div class="controller">
+
+            <label>Primary Color</label>
+
+            <input
+                type="color"
+                id="color-picker"
+                value="#000000">
+
+        </div>
+
+        <!-- Background -->
+
+        <div class="controller">
+
+            <label>Canvas Background</label>
+
+            <input
+                type="color"
+                id="bg-color"
+                value="#ffffff">
+
+        </div>
+
+        <!-- Fill -->
+
+        <div class="controller">
+
+            <button class="btn" id="fillCanvas">
+                <i class="fa-solid fa-fill-drip"></i>
+                Fill Canvas
+            </button>
+
+        </div>
+
+        <!-- File -->
+
+        <div class="section-title">
+
+            File
+
+        </div>
+
+        <button class="btn clear">
+
+            <i class="fa-solid fa-trash"></i>
+
+            Clear Canvas
+
+        </button>
+
+        <button class="btn" id="undo">
+
+            <i class="fa-solid fa-rotate-left"></i>
+
+            Undo
+
+        </button>
+
+        <button class="btn" id="redo">
+
+            <i class="fa-solid fa-rotate-right"></i>
+
+            Redo
+
+        </button>
+
+        <button class="btn" id="download">
+
+            <i class="fa-solid fa-download"></i>
+
+            Download
+
+        </button>
+
+        <button class="btn" id="openImage">
+
+            <i class="fa-solid fa-folder-open"></i>
+
+            Open Image
+
+        </button>
+
+        <input
+            type="file"
+            id="imageLoader"
+            accept="image/*"
+            hidden>
+
+        <hr>
+
+        <div class="tips">
+
+            <strong>Shortcuts</strong>
+
+            <p>Ctrl + Z → Undo</p>
+
+            <p>Ctrl + Y → Redo</p>
+
+            <p>Ctrl + S → Download</p>
+
+        </div>
+
+    </aside>
+
+    <!-- RIGHT SIDE -->
+
+    <main id="right">
+
+        <div class="topbar">
+
+            <span id="currentTool">
+
+                Brush
+
+            </span>
+
+            <span id="mousePos">
+
+                X:0 Y:0
+
+            </span>
+
+        </div>
+
+        <canvas id="canvas"></canvas>
+
+        <div class="statusbar">
+
+            <span id="canvasSize">
+
+                Canvas
+
+            </span>
+
+            <span id="zoom">
+
+                100%
+
+            </span>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="index.js"></script>
+
+</body>
+</html>

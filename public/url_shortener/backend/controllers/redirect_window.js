@@ -31,5 +31,16 @@ exports.Redirect_window = async (req, res) => {
         deviceInfo: req.headers['user-agent']
     });
 
-    res.redirect(link.originalLink);
+    // Defense in depth: never redirect to a non http(s) destination, even if one was already stored
+    let destination;
+    try {
+        destination = new URL(link.originalLink);
+    } catch (e) {
+        return res.redirect(`${BASE_URL}/error?type=invalid`);
+    }
+    if (destination.protocol !== "http:" && destination.protocol !== "https:") {
+        return res.redirect(`${BASE_URL}/error?type=invalid`);
+    }
+
+    res.redirect(destination.href);
 };

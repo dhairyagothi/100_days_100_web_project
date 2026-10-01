@@ -1,6 +1,6 @@
 // Emergency Help Buttons
 
-const emergencyButtons = document.querySelectorAll(".emergency-grid button");
+const emergencyButtons = document.querySelectorAll(".emergency-btn");
 
 emergencyButtons.forEach((button) => {
 

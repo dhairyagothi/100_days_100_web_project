@@ -3,220 +3,583 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DocNow</title>
-  <link rel="stylesheet" href="docstyle.css">
+  <title>DocNow — Smart Card Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="docstyle.css" />
 </head>
 <body>
-  <div class="overlay" id="modal-overlay">
-    <div class="modal">
-      <h2 id="modal-title">New Card</h2>
-      <div>
-        <label>Title</label>
-        <input type="text" id="input-title" placeholder="Card title" />
+
+  <!-- ══ CONFIRM DIALOG ══ -->
+  <div id="confirm-overlay">
+    <div class="confirm-box">
+      <div class="confirm-danger-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"/>
+          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+          <path d="M10 11v6"/><path d="M14 11v6"/>
+          <path d="M9 6V4h6v2"/>
+        </svg>
       </div>
-      <div>
-        <label>Content</label>
-        <textarea id="input-content" placeholder="Notes, info, reference…"></textarea>
-      </div>
-      <div>
-        <label>Category</label>
-        <select id="input-category">
-          <option value="note">Note</option>
-          <option value="link">Link</option>
-          <option value="reminder">Reminder</option>
-          <option value="reference">Reference</option>
-          <option value="work">Work</option>
-        </select>
-      </div>
-      <div>
-        <label>URL (optional)</label>
-        <input type="text" id="input-url" placeholder="https://…" />
-      </div>
-      <div class="modal-footer">
-        <button id="btn-cancel">Cancel</button>
-        <button id="btn-save">Save</button>
+      <h3>Delete Card?</h3>
+      <p>This action cannot be undone. The card will be permanently removed.</p>
+      <div class="confirm-actions">
+        <button id="confirm-no">Keep it</button>
+        <button id="confirm-yes">Delete</button>
       </div>
     </div>
   </div>
 
+  <!-- ══ MODAL ══ -->
+  <div class="overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title-row">
+          <div class="modal-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+          </div>
+          <h2 id="modal-title">New Card</h2>
+        </div>
+        <button class="modal-close" id="btn-cancel-x" title="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" id="input-title" placeholder="Give your card a title…" autocomplete="off" />
+      </div>
+
+      <div class="form-group">
+        <label>Content</label>
+        <textarea id="input-content" placeholder="Notes, info, references…"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Category</label>
+        <div class="cat-selector" id="cat-selector"></div>
+      </div>
+
+      <div class="form-group">
+        <label>
+          URL
+          <span style="font-size:10px; color:var(--text-3); text-transform:none; letter-spacing:0; font-weight:400;">
+            (optional)
+          </span>
+        </label>
+        <input type="url" id="input-url" placeholder="https://…" />
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" id="btn-cancel">Cancel</button>
+        <button class="btn-save" id="btn-save">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Save Card
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOAST ══ -->
+  <div id="toast">
+    <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    <span id="toast-msg">Card saved!</span>
+  </div>
+
+  <!-- ══ NAV ══ -->
   <nav>
-    <h1>DocNow</h1>
-    <input type="text" id="search-input" placeholder="Search cards…" />
-    <button id="btn-theme" title="Toggle theme">☀︎</button>
-    <button id="btn-new">+ New</button>
+    <a class="nav-brand" href="#">
+      <div class="nav-brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </div>
+      <h1>DocNow</h1>
+    </a>
+
+    <div class="nav-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="search-input" placeholder="Search cards…" autocomplete="off" />
+    </div>
+
+    <button class="icon-btn" id="btn-theme" title="Toggle theme">
+      <svg id="theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <svg id="theme-icon-light" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+
+    <button id="btn-new">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      New Card
+    </button>
   </nav>
 
-  <div class="filters" id="filter-bar"></div>
+  <!-- ══ FILTER BAR ══ -->
+  <div class="filter-section" id="filter-bar"></div>
 
-  <div class="card-grid" id="card-grid"></div>
-  <p id="empty-message" style="display:none">No cards found.</p>
+  <!-- ══ STATS BAR ══ -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-num" id="stat-total">0</span>
+      <span class="stat-lbl">Total</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num" id="stat-filtered">0</span>
+      <span class="stat-lbl">Showing</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num" id="stat-today">0</span>
+      <span class="stat-lbl">Today</span>
+    </div>
+    <div class="view-toggle">
+      <button class="view-btn active" id="view-grid" title="Grid view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/>
+          <rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/>
+        </svg>
+      </button>
+      <button class="view-btn" id="view-list" title="List view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6"/>
+          <line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="3.01" y2="6"/>
+          <line x1="3" y1="12" x2="3.01" y2="12"/>
+          <line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ MAIN ══ -->
+  <main>
+    <div class="card-grid" id="card-grid"></div>
+    <div id="empty-message">
+      <div class="empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+      </div>
+      <h3 id="empty-title">No cards yet</h3>
+      <p id="empty-desc">Create your first card to get started. Notes, links, reminders — all in one place.</p>
+      <button class="empty-cta" id="empty-btn-new">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Create First Card
+      </button>
+    </div>
+  </main>
 
   <script>
-    let cards = JSON.parse(localStorage.getItem("docnow-cards") || "[]");
-    let activeFilter = "all";
-    let editingId = null;
+    /* ════════════════════════════════════════
+       CATEGORY CONFIG
+    ════════════════════════════════════════ */
+    const CATS = {
+      note:      { label: 'Note',      color: '#6c63ff', icon: '📝' },
+      link:      { label: 'Link',      color: '#06b6d4', icon: '🔗' },
+      reminder:  { label: 'Reminder',  color: '#f59e0b', icon: '⏰' },
+      reference: { label: 'Reference', color: '#10b981', icon: '📚' },
+      work:      { label: 'Work',      color: '#ec4899', icon: '💼' },
+    };
 
-    function saveToStorage() {
-      localStorage.setItem("docnow-cards", JSON.stringify(cards));
+    /* ════════════════════════════════════════
+       STATE
+    ════════════════════════════════════════ */
+    let cards         = JSON.parse(localStorage.getItem('docnow-cards') || '[]');
+    let activeFilter  = 'all';
+    let editingId     = null;
+    let selectedCat   = 'note';
+    let viewMode      = 'grid';
+    let pendingDeleteId = null;
+    let toastTimer;
+
+    /* ════════════════════════════════════════
+       STORAGE
+    ════════════════════════════════════════ */
+    function save() {
+      localStorage.setItem('docnow-cards', JSON.stringify(cards));
     }
 
-    function renderCards() {
-      const searchText = document.getElementById("search-input").value.toLowerCase();
+    /* ════════════════════════════════════════
+       TOAST
+    ════════════════════════════════════════ */
+    function showToast(msg, type = 'success') {
+      const toast  = document.getElementById('toast');
+      const msgEl  = document.getElementById('toast-msg');
+      const iconEl = toast.querySelector('.toast-icon');
+      msgEl.textContent = msg;
+      toast.className = 'show toast-' + type;
+      iconEl.innerHTML = type === 'success'
+        ? '<polyline points="20 6 9 17 4 12"/>'
+        : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>';
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+    }
 
-      const filteredCards = cards.filter(function(card) {
-        const matchesCategory = activeFilter === "all" || card.category === activeFilter;
-        const matchesSearch = card.title.toLowerCase().includes(searchText) ||
-                              card.content.toLowerCase().includes(searchText);
-        return matchesCategory && matchesSearch;
+    /* ════════════════════════════════════════
+       CONFIRM DIALOG
+    ════════════════════════════════════════ */
+    function openConfirm(id) {
+      pendingDeleteId = id;
+      document.getElementById('confirm-overlay').classList.add('open');
+    }
+    function closeConfirm() {
+      pendingDeleteId = null;
+      document.getElementById('confirm-overlay').classList.remove('open');
+    }
+
+    document.getElementById('confirm-no').addEventListener('click', closeConfirm);
+    document.getElementById('confirm-yes').addEventListener('click', () => {
+      if (!pendingDeleteId) return;
+      cards = cards.filter(c => c.id !== pendingDeleteId);
+      save();
+      renderCards();
+      renderFilters();
+      updateStats();
+      closeConfirm();
+      showToast('Card deleted.');
+    });
+    document.getElementById('confirm-overlay').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeConfirm();
+    });
+
+    /* ════════════════════════════════════════
+       CATEGORY SELECTOR (in modal)
+    ════════════════════════════════════════ */
+    function renderCatSelector() {
+      const container = document.getElementById('cat-selector');
+      container.innerHTML = '';
+      Object.entries(CATS).forEach(([key, cat]) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'cat-pill' + (key === selectedCat ? ' selected' : '');
+        if (key === selectedCat) {
+          btn.style.background   = cat.color + '22';
+          btn.style.borderColor  = cat.color + '66';
+          btn.style.color        = cat.color;
+        }
+        btn.innerHTML = `<span class="cdot" style="background:${cat.color}"></span>${cat.label}`;
+        btn.addEventListener('click', () => {
+          selectedCat = key;
+          renderCatSelector();
+        });
+        container.appendChild(btn);
       });
+    }
 
-      const grid = document.getElementById("card-grid");
-      const emptyMessage = document.getElementById("empty-message");
-
-      grid.innerHTML = "";
-
-      if (filteredCards.length === 0) {
-        emptyMessage.style.display = "block";
-        return;
-      }
-
-      emptyMessage.style.display = "none";
-
-      filteredCards.forEach(function(card) {
-        const cardElement = document.createElement("div");
-        cardElement.className = "card";
-        cardElement.innerHTML = `
-          <div class="category">${card.category}</div>
-          <h3>${card.title}</h3>
-          <p>${card.content}</p>
-          ${card.url ? `<a href="${card.url}" target="_blank">${card.url}</a>` : ""}
-          <div class="card-footer">
-            <span>${formatDate(card.createdAt)}</span>
-            <div style="display:flex; gap:6px">
-              <button data-id="${card.id}" data-action="edit">Edit</button>
-              <button data-id="${card.id}" data-action="delete">Delete</button>
-            </div>
-          </div>
-        `;
-        grid.appendChild(cardElement);
-      });
+    /* ════════════════════════════════════════
+       FILTERS
+    ════════════════════════════════════════ */
+    function getCatCount(cat) {
+      return cat === 'all' ? cards.length : cards.filter(c => c.category === cat).length;
     }
 
     function renderFilters() {
-      const categories = ["all", "note", "link", "reminder", "reference", "work"];
-      const filterBar = document.getElementById("filter-bar");
-      filterBar.innerHTML = "";
-
-      categories.forEach(function(category) {
-        const button = document.createElement("button");
-        button.textContent = category;
-        if (category === activeFilter) {
-          button.style.outline = "2px solid #60a5fa";
-        }
-        button.addEventListener("click", function() {
-          activeFilter = category;
+      const bar = document.getElementById('filter-bar');
+      bar.innerHTML = '<span class="filter-label">Filter</span>';
+      const allCats = ['all', ...Object.keys(CATS)];
+      allCats.forEach(cat => {
+        const btn   = document.createElement('button');
+        btn.className = 'filter-btn' + (cat === activeFilter ? ' active' : '');
+        const count = getCatCount(cat);
+        const label = cat === 'all' ? 'All' : CATS[cat].label;
+        const color = cat === 'all' ? 'var(--accent)' : CATS[cat].color;
+        btn.innerHTML = `<span class="dot" style="background:${color}"></span>${label}<span class="filter-count">${count}</span>`;
+        btn.addEventListener('click', () => {
+          activeFilter = cat;
           renderFilters();
           renderCards();
+          updateStats();
         });
-        filterBar.appendChild(button);
+        bar.appendChild(btn);
       });
     }
 
+    /* ════════════════════════════════════════
+       STATS
+    ════════════════════════════════════════ */
+    function updateStats() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      const filtered = cards.filter(c => {
+        const matchCat    = activeFilter === 'all' || c.category === activeFilter;
+        const matchSearch = c.title.toLowerCase().includes(q) || c.content.toLowerCase().includes(q);
+        return matchCat && matchSearch;
+      });
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      document.getElementById('stat-total').textContent    = cards.length;
+      document.getElementById('stat-filtered').textContent = filtered.length;
+      document.getElementById('stat-today').textContent    = cards.filter(c => c.createdAt >= today.getTime()).length;
+    }
+
+    /* ════════════════════════════════════════
+       HELPERS
+    ════════════════════════════════════════ */
+    function escHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function formatDate(ts) {
+      const diff = Date.now() - ts;
+      if (diff < 60000)    return 'Just now';
+      if (diff < 3600000)  return Math.floor(diff / 60000) + 'm ago';
+      if (diff < 86400000) return Math.floor(diff / 3600000) + 'h ago';
+      if (diff < 604800000) return Math.floor(diff / 86400000) + 'd ago';
+      return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    /* ════════════════════════════════════════
+       RENDER CARDS
+    ════════════════════════════════════════ */
+    function renderCards() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      const filtered = cards.filter(c => {
+        const matchCat    = activeFilter === 'all' || c.category === activeFilter;
+        const matchSearch = c.title.toLowerCase().includes(q) || c.content.toLowerCase().includes(q);
+        return matchCat && matchSearch;
+      });
+
+      const grid    = document.getElementById('card-grid');
+      const emptyEl = document.getElementById('empty-message');
+      grid.innerHTML = '';
+
+      if (filtered.length === 0) {
+        emptyEl.style.display = 'flex';
+        const isSearching = q || activeFilter !== 'all';
+        document.getElementById('empty-title').textContent = isSearching ? 'No cards found' : 'No cards yet';
+        document.getElementById('empty-desc').textContent  = isSearching
+          ? "Try adjusting your search or filter to find what you're looking for."
+          : 'Create your first card to get started. Notes, links, reminders — all in one place.';
+        document.getElementById('empty-btn-new').style.display = isSearching ? 'none' : 'inline-flex';
+        updateStats();
+        return;
+      }
+
+      emptyEl.style.display = 'none';
+
+      filtered.forEach(card => {
+        const cat      = CATS[card.category] || {};
+        const color    = cat.color || 'var(--accent)';
+        const icon     = cat.icon  || '📄';
+        const catLabel = cat.label || card.category;
+
+        const linkHtml = card.url
+          ? `<a class="card-link" href="${card.url}" target="_blank" rel="noopener noreferrer">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                 <polyline points="15 3 21 3 21 9"/>
+                 <line x1="10" y1="14" x2="21" y2="3"/>
+               </svg>
+               ${escHtml(card.url)}
+             </a>`
+          : '';
+
+        const el = document.createElement('div');
+        el.className = 'card';
+        el.style.setProperty('--cat-color', color);
+        el.innerHTML = `
+          <div class="card-top">
+            <span class="cat-badge" style="--cat-color:${color}">
+              <svg viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+              ${icon} ${catLabel}
+            </span>
+          </div>
+          <h3>${escHtml(card.title)}</h3>
+          <p class="card-content">${escHtml(card.content)}</p>
+          ${linkHtml}
+          <div class="card-meta">
+            <span class="card-date">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              ${formatDate(card.createdAt)}
+            </span>
+            <div class="card-actions">
+              <button class="card-btn" data-id="${card.id}" data-action="edit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+                Edit
+              </button>
+              <button class="card-btn del" data-id="${card.id}" data-action="delete">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                  <path d="M10 11v6"/><path d="M14 11v6"/>
+                  <path d="M9 6V4h6v2"/>
+                </svg>
+                Delete
+              </button>
+            </div>
+          </div>`;
+        grid.appendChild(el);
+      });
+
+      updateStats();
+    }
+
+    /* ════════════════════════════════════════
+       MODAL
+    ════════════════════════════════════════ */
     function openModal(card = null) {
-      editingId = card ? card.id : null;
-      document.getElementById("modal-title").textContent = card ? "Edit Card" : "New Card";
-      document.getElementById("input-title").value = card ? card.title : "";
-      document.getElementById("input-content").value = card ? card.content : "";
-      document.getElementById("input-category").value = card ? card.category : "note";
-      document.getElementById("input-url").value = card ? card.url : "";
-      document.getElementById("modal-overlay").classList.add("open");
+      editingId   = card ? card.id : null;
+      selectedCat = card ? card.category : 'note';
+      document.getElementById('modal-title').textContent   = card ? 'Edit Card' : 'New Card';
+      document.getElementById('input-title').value         = card ? card.title : '';
+      document.getElementById('input-content').value       = card ? card.content : '';
+      document.getElementById('input-url').value           = card ? (card.url || '') : '';
+      renderCatSelector();
+      document.getElementById('modal-overlay').classList.add('open');
+      setTimeout(() => document.getElementById('input-title').focus(), 80);
     }
 
     function closeModal() {
-      document.getElementById("modal-overlay").classList.remove("open");
+      document.getElementById('modal-overlay').classList.remove('open');
       editingId = null;
     }
 
     function saveCard() {
-      const title = document.getElementById("input-title").value.trim();
-      const content = document.getElementById("input-content").value.trim();
+      const title   = document.getElementById('input-title').value.trim();
+      const content = document.getElementById('input-content').value.trim();
+      if (!title)   { showToast('Title is required.', 'error');   document.getElementById('input-title').focus();   return; }
+      if (!content) { showToast('Content is required.', 'error'); document.getElementById('input-content').focus(); return; }
 
-      if (!title || !content) {
-        alert("Title and content are required.");
-        return;
-      }
-
-      const cardData = {
-        title: title,
-        content: content,
-        category: document.getElementById("input-category").value,
-        url: document.getElementById("input-url").value.trim(),
+      const data = {
+        title,
+        content,
+        category: selectedCat,
+        url: document.getElementById('input-url').value.trim(),
       };
 
       if (editingId) {
-        const index = cards.findIndex(function(c) { return c.id === editingId; });
-        cards[index] = Object.assign(cards[index], cardData);
+        const idx = cards.findIndex(c => c.id === editingId);
+        cards[idx] = { ...cards[idx], ...data };
+        showToast('Card updated!');
       } else {
-        cardData.id = Date.now().toString();
-        cardData.createdAt = Date.now();
-        cards.unshift(cardData);
+        data.id        = Date.now().toString();
+        data.createdAt = Date.now();
+        cards.unshift(data);
+        showToast('Card created!');
       }
 
-      saveToStorage();
+      save();
       closeModal();
       renderCards();
+      renderFilters();
     }
 
-    function deleteCard(id) {
-      if (!confirm("Delete this card?")) return;
-      cards = cards.filter(function(c) { return c.id !== id; });
-      saveToStorage();
+    /* ════════════════════════════════════════
+       EVENT LISTENERS
+    ════════════════════════════════════════ */
+    document.getElementById('btn-new').addEventListener('click', () => openModal());
+    document.getElementById('empty-btn-new').addEventListener('click', () => openModal());
+    document.getElementById('btn-cancel').addEventListener('click', closeModal);
+    document.getElementById('btn-cancel-x').addEventListener('click', closeModal);
+    document.getElementById('btn-save').addEventListener('click', saveCard);
+
+    document.getElementById('search-input').addEventListener('input', () => {
       renderCards();
-    }
-
-    function formatDate(timestamp) {
-      const diff = Date.now() - timestamp;
-      if (diff < 3600000) return Math.floor(diff / 60000) + "m ago";
-      if (diff < 86400000) return Math.floor(diff / 3600000) + "h ago";
-      return Math.floor(diff / 86400000) + "d ago";
-    }
-
-    document.getElementById("btn-new").addEventListener("click", function() {
-      openModal();
+      renderFilters();
     });
 
-    document.getElementById("btn-cancel").addEventListener("click", function() {
-      closeModal();
+    document.getElementById('btn-theme').addEventListener('click', function () {
+      document.body.classList.toggle('light');
+      const isDark = !document.body.classList.contains('light');
+      document.getElementById('theme-icon-dark').style.display  = isDark ? '' : 'none';
+      document.getElementById('theme-icon-light').style.display = isDark ? 'none' : '';
+      localStorage.setItem('docnow-theme', isDark ? 'dark' : 'light');
     });
 
-    document.getElementById("btn-save").addEventListener("click", function() {
-      saveCard();
+    document.getElementById('modal-overlay').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeModal();
     });
 
-    document.getElementById("search-input").addEventListener("input", function() {
-      renderCards();
+    document.getElementById('card-grid').addEventListener('click', e => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      const id = btn.dataset.id;
+      if (btn.dataset.action === 'edit')   openModal(cards.find(c => c.id === id));
+      if (btn.dataset.action === 'delete') openConfirm(id);
     });
 
-    document.getElementById("btn-theme").addEventListener("click", function() {
-      document.body.classList.toggle("light");
-      this.textContent = document.body.classList.contains("light") ? "☾" : "☀︎";
+    // view toggle
+    document.getElementById('view-grid').addEventListener('click', () => {
+      viewMode = 'grid';
+      document.getElementById('card-grid').classList.remove('list-view');
+      document.getElementById('view-grid').classList.add('active');
+      document.getElementById('view-list').classList.remove('active');
+    });
+    document.getElementById('view-list').addEventListener('click', () => {
+      viewMode = 'list';
+      document.getElementById('card-grid').classList.add('list-view');
+      document.getElementById('view-list').classList.add('active');
+      document.getElementById('view-grid').classList.remove('active');
     });
 
-    document.getElementById("modal-overlay").addEventListener("click", function(event) {
-      if (event.target === this) closeModal();
-    });
-
-    document.getElementById("card-grid").addEventListener("click", function(event) {
-      const button = event.target.closest("button[data-action]");
-      if (!button) return;
-      const id = button.dataset.id;
-      if (button.dataset.action === "edit") {
-        openModal(cards.find(function(c) { return c.id === id; }));
+    // keyboard shortcuts
+    document.addEventListener('keydown', e => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        document.getElementById('search-input').focus();
       }
-      if (button.dataset.action === "delete") {
-        deleteCard(id);
+      if (e.key === 'Escape') { closeModal(); closeConfirm(); }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        if (document.getElementById('modal-overlay').classList.contains('open')) saveCard();
       }
     });
+
+    /* ════════════════════════════════════════
+       INIT
+    ════════════════════════════════════════ */
+    if (localStorage.getItem('docnow-theme') === 'light') {
+      document.body.classList.add('light');
+      document.getElementById('theme-icon-dark').style.display  = 'none';
+      document.getElementById('theme-icon-light').style.display = '';
+    }
 
     renderFilters();
     renderCards();

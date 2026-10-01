@@ -1,0 +1,178 @@
+/* ===========================
+   Global Styles
+=========================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0f172a;
+    color: #e2e8f0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ===========================
+   Headings
+=========================== */
+
+h2 {
+    color: #38bdf8;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 2rem;
+}
+
+h4 {
+    margin: 20px 0 12px;
+    color: #cbd5e1;
+    width: 500px;
+}
+
+/* ===========================
+   Console Log
+=========================== */
+
+#trie-log {
+    width: 500px;
+    min-height: 80px;
+    background: #020617;
+    color: #00ff95;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 15px;
+    font-family: Consolas, monospace;
+    font-size: 14px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    margin-bottom: 25px;
+    box-shadow: 0 0 15px rgba(0, 255, 150, 0.15);
+}
+
+/* ===========================
+   Search Panel
+=========================== */
+
+fieldset {
+    width: 500px;
+    border: 2px solid #38bdf8;
+    border-radius: 10px;
+    padding: 18px;
+    background: #1e293b;
+}
+
+legend {
+    color: #38bdf8;
+    font-weight: 600;
+    padding: 0 8px;
+}
+
+#trie-search {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #475569;
+    background: #0f172a;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    transition: 0.25s;
+}
+
+#trie-search::placeholder {
+    color: #94a3b8;
+}
+
+#trie-search:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+}
+
+/* ===========================
+   Results Container
+=========================== */
+
+#results-view {
+    width: 500px;
+    min-height: 220px;
+    background: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 10px;
+    padding: 15px;
+    overflow-y: auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+#trie-results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ===========================
+   Result Cards
+=========================== */
+
+#trie-results div {
+    background: #0f172a;
+    border-left: 5px solid #38bdf8;
+    padding: 12px;
+    border-radius: 6px;
+    transition: 0.2s;
+    font-size: 15px;
+}
+
+#trie-results div:hover {
+    background: #1d4ed8;
+    cursor: pointer;
+    transform: translateX(4px);
+}
+
+/* ===========================
+   Scrollbar
+=========================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* ===========================
+   Responsive Design
+=========================== */
+
+@media (max-width: 600px) {
+
+    #trie-log,
+    fieldset,
+    #results-view,
+    h4 {
+        width: 100%;
+    }
+
+    body {
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}

@@ -1,0 +1,112 @@
+body {
+  background-color: #f8f9fa;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sidebar {
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.main-content {
+  margin-left: 16.666667%;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: relative;
+    min-height: auto;
+    width: 100%;
+  }
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+.nav-link {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  transition: all 0.3s ease;
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white !important;
+  transform: translateX(4px);
+}
+
+.card {
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.topic-item {
+  transition: all 0.2s ease;
+}
+
+.topic-item:hover {
+  background-color: #f8f9fa;
+  transform: translateX(4px);
+}
+
+.status-not-started {
+  color: #6c757d;
+}
+.status-in-progress {
+  color: #ffc107;
+}
+.status-completed {
+  color: #28a745;
+}
+
+.progress {
+  background-color: #e9ecef;
+  border-radius: 50px;
+}
+
+.category-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.category-header:hover {
+  background-color: #f8f9fa;
+}
+
+.roadmap-card {
+  cursor: pointer;
+  height: 100%;
+}
+
+.modal-content {
+  border-radius: 12px;
+}
+
+.btn {
+  border-radius: 8px;
+}
+
+/* Scrollbar styling for sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}

@@ -1,0 +1,295 @@
+:root {
+    --bg-color: #0d0d12;
+    --term-bg: rgba(15, 20, 25, 0.7);
+    --term-border: rgba(0, 255, 204, 0.2);
+    
+    --text-primary: #00ffcc;
+    --text-secondary: #00b38f;
+    --text-accent: #ff007f;
+    --text-muted: #6b7280;
+    
+    --font-main: 'JetBrains Mono', monospace;
+    
+    --dot-red: #ff5f56;
+    --dot-yellow: #ffbd2e;
+    --dot-green: #27c93f;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 255, 204, 0.05), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(255, 0, 127, 0.05), transparent 30%);
+    font-family: var(--font-main);
+    color: var(--text-primary);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.background-animation {
+    position: absolute;
+    top: -50%; left: -50%; width: 200vw; height: 200vh;
+    background-image: 
+        linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+    transform: rotateX(60deg) translateY(-100px);
+    perspective: 1000px;
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { transform: rotateX(60deg) translateY(0); }
+    100% { transform: rotateX(60deg) translateY(40px); }
+}
+
+.terminal-container {
+    width: 90%;
+    max-width: 900px;
+    height: 80vh;
+    background: var(--term-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--term-border);
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6), 
+                0 0 15px rgba(0, 255, 204, 0.1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 10;
+}
+
+.terminal-container::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 100;
+    border-radius: 12px;
+}
+
+.terminal-header {
+    height: 40px;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    border-bottom: 1px solid var(--term-border);
+    position: relative;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.mac-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.mac-buttons span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.close { background: var(--dot-red); }
+.minimize { background: var(--dot-yellow); }
+.maximize { background: var(--dot-green); }
+
+.terminal-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+}
+
+.terminal-body {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    cursor: text;
+    font-size: 0.95rem;
+}
+
+.terminal-body::-webkit-scrollbar {
+    width: 8px;
+}
+.terminal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+.terminal-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 204, 0.3);
+    border-radius: 4px;
+}
+.terminal-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 204, 0.5);
+}
+
+#output-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.input-line {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    word-break: break-all;
+}
+
+.prompt {
+    color: var(--text-accent);
+    margin-right: 8px;
+    white-space: nowrap;
+}
+
+.cursor {
+    display: inline-block;
+    width: 8px;
+    height: 18px;
+    background: var(--text-primary);
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+    vertical-align: text-bottom;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+#hidden-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.command-output {
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.error-text { color: var(--dot-red); }
+.info-text { color: #58a6ff; }
+.success-text { color: var(--text-primary); }
+
+.help-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 6px 10px;
+    margin-top: 8px;
+}
+
+.skill-bar-container {
+    display: flex;
+    align-items: center;
+    margin: 6px 0;
+}
+.skill-name {
+    width: 100px;
+    color: var(--text-secondary);
+}
+.skill-bar {
+    flex: 1;
+    max-width: 250px;
+    height: 12px;
+    border: 1px solid var(--text-primary);
+    margin-left: 10px;
+    position: relative;
+    background: rgba(0, 0, 0, 0.3);
+}
+.skill-fill {
+    height: 100%;
+    background: var(--text-primary);
+    box-shadow: 0 0 5px var(--text-primary);
+}
+
+.project-item {
+    margin-bottom: 15px;
+    padding-left: 12px;
+    border-left: 2px solid var(--text-accent);
+    background: rgba(255, 0, 127, 0.03);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.project-name {
+    color: var(--text-accent);
+    font-weight: bold;
+    font-size: 1.05em;
+    margin-bottom: 4px;
+}
+.project-tech {
+    font-size: 0.9em;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+.contact-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 8px;
+}
+.contact-item span {
+    width: 80px;
+    color: var(--text-secondary);
+}
+.contact-item a {
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--text-primary);
+    transition: all 0.2s ease;
+}
+.contact-item a:hover {
+    color: var(--text-accent);
+    border-bottom-color: var(--text-accent);
+    text-shadow: 0 0 5px var(--text-accent);
+}
+
+@media (max-width: 600px) {
+    .terminal-container {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+        border: none;
+    }
+    .terminal-container::after {
+        border-radius: 0;
+    }
+    .terminal-header {
+        border-radius: 0;
+    }
+    .terminal-body {
+        padding: 15px;
+        font-size: 0.85rem;
+    }
+    .help-grid {
+        grid-template-columns: 70px 1fr;
+    }
+    .skill-bar {
+        max-width: 150px;
+    }
+}

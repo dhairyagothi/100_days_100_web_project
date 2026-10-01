@@ -1,0 +1,76 @@
+name: Smart Issue Claim System
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+
+jobs:
+  process-claim:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Process assignment request
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const comment = context.payload.comment.body.toLowerCase();
+            const issueNumber = context.issue.number;
+
+            const claimKeywords = [
+              "assign me",
+              "i would like to work on this",
+              "can i work on this"
+            ];
+
+            const wantsAssignment = claimKeywords.some(keyword =>
+              comment.includes(keyword)
+            );
+
+            if (!wantsAssignment) {
+              return;
+            }
+
+            core.info(`Assignment request detected on issue #${issueNumber}`);
+
+
+            core.info(`Assignment request detected on issue #${issueNumber}`);
+
+const issue = await github.rest.issues.get({
+  owner: context.repo.owner,
+  repo: context.repo.repo,
+  issue_number: issueNumber
+});
+
+const assignees = issue.data.assignees || [];
+const requester = context.payload.comment.user.login;
+
+if (assignees.some(a => a.login === requester)) {
+  return;
+}
+
+if (assignees.length >= 3) {
+  await github.rest.issues.createComment({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    issue_number: issueNumber,
+    body: `Sorry @${requester}, all assignment slots are currently filled.`
+  });
+  return;
+}
+
+await github.rest.issues.addAssignees({
+  owner: context.repo.owner,
+  repo: context.repo.repo,
+  issue_number: issueNumber,
+  assignees: [requester]
+});
+
+await github.rest.issues.createComment({
+  owner: context.repo.owner,
+  repo: context.repo.repo,
+  issue_number: issueNumber,
+  body: `✅ @${requester} has been assigned to this issue.`
+});

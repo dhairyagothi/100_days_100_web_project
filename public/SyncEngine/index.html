@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OmniStore Sync Engine</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding: 50px; background: #f0f2f5; }
+        .card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 300px; }
+        h1 { color: #2c3e50; }
+        .count { font-size: 48px; margin: 20px 0; color: #3498db; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; background: #3498db; color: white; }
+        button:hover { background: #2980b9; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Sync Engine</h1>
+    <div class="count" id="counter">0</div>
+    <button onclick="increment()">Increment Counter</button>
+    <p style="font-size: 12px; color: #7f8c8d; margin-top: 20px;">Open this file in multiple tabs to test!</p>
+</div>
+
+<script>
+    const channel = new BroadcastChannel('omni_sync');
+    let count = 0;
+    function increment() {
+        count++;
+        updateUI();
+        channel.postMessage({ type: 'SYNC_COUNTER', value: count });
+    }
+
+    function updateUI() {
+        document.getElementById('counter').innerText = count;
+    }
+    channel.onmessage = (event) => {
+        if (event.data.type === 'SYNC_COUNTER') {
+            count = event.data.value;
+            updateUI();
+        }
+    };
+</script>
+</body>

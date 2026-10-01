@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <style>
+    /* Cozy Digital Planner CSS Design System */
+
+:root {
+  /* Dynamic colors overridden by active theme washi-tape */
+  --paper-bg: #fffdeb;
+  --grid-color: rgba(69, 26, 3, 0.05);
+  --margin-line: rgba(239, 68, 68, 0.3);
+  --text-color: #451a03;
+  --text-muted: #8c6046;
+  --accent-color: #facc15;
+  --border-color: #451a03;
+  --tab-glow: 0 4px 10px rgba(69, 26, 3, 0.1);
+}
+
+/* Theme variable sets */
+body.theme-custard {
+  --paper-bg: #fffdeb;
+  --grid-color: rgba(255, 255, 255, 0.05);
+  --accent-color: #facc15;
+}
+
+body.theme-sakura {
+  --paper-bg: #fff1f2;
+  --grid-color: rgba(219, 39, 119, 0.05);
+  --accent-color: #f472b6;
+}
+
+body.theme-matcha {
+  --paper-bg: #f7fee7;
+  --grid-color: rgba(22, 163, 74, 0.05);
+  --accent-color: #a3e635;
+}
+
+body.theme-sky {
+  --paper-bg: #f0fdfa;
+  --grid-color: rgba(13, 148, 136, 0.05);
+  --accent-color: #38bdf8;
+}
+
+body.theme-lavender {
+  --paper-bg: #faf5ff;
+  --grid-color: rgba(147, 51, 234, 0.05);
+  --accent-color: #c084fc;
+}
+
+/* Reset and Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Gaegu', cursive, sans-serif;
+  color: var(--text-color);
+  background-color: #7c2d12;
+  font-size: 18px;
+}
+
+/* Desk backdrop - warm wood plank texture using CSS gradients */
+#desk-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  background-image: url('assets/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* MAIN NOTEBOOK LAYOUT */
+#notebook-container {
+  position: relative;
+  width: 92%;
+  max-width: 1100px;
+  height: 80%;
+  max-height: 720px;
+  z-index: 5;
+}
+
+/* Decorative Charm hanging off the top-left of the planner cover */
+.notebook-charm {
+  position: absolute;
+  top: -30px;
+  left: -60px;
+  width: 125px;
+  height: auto;
+  z-index: 12;
+  /* Float above the binder cover but below picker popover */
+  pointer-events: auto;
+  filter: drop-shadow(3px 4px 6px rgba(0, 0, 0, 0.18));
+  transform-origin: top center;
+  animation: gentle-swing 4s ease-in-out infinite;
+  transition: filter 0.3s ease;
+}
+
+.notebook-charm:hover {
+  animation: gentle-swing-hover 1.2s ease-in-out infinite;
+  filter: drop-shadow(5px 8px 12px rgba(0, 0, 0, 0.28));
+}
+
+.notebook-charm img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@keyframes gentle-swing {
+  0% {
+    transform: rotate(-2deg);
+  }
+
+  50% {
+    transform: rotate(2deg);
+  }
+
+  100% {
+    transform: rotate(-2deg);
+  }
+}
+
+@keyframes gentle-swing-hover {
+  0% {
+    transform: rotate(-8deg);
+  }
+
+  50% {
+    transform: rotate(8deg);
+  }
+
+  100% {
+    transform: rotate(-8deg);
+  }
+}
+
+
+/* Side washi-tape theme tabs */
+#theme-washi-tabs {
+  position: absolute;
+  top: 40px;
+  right: -80px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 10;
+}
+
+.washi-tab {
+  border: 1.5px solid var(--border-color);
+  padding: 6px 14px;
+  font-family: 'Gaegu', cursive;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  outline: none;
+  transform: rotate(5deg);
+}
+
+.washi-tab:hover {
+  transform: translateX(-5px) rotate(-2deg);
+}
+
+.washi-tab.active {
+  transform: translateX(-10px) rotate(0deg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-right: none;
+  font-weight: 700;
+}
+
+.tab-custard {
+  background: #fef08a;
+  color: #854d0e;
+}
+
+.tab-sakura {
+  background: #fbcfe8;
+  color: #9d174d;
+}
+
+.tab-matcha {
+  background: #d9f99d;
+  color: #166534;
+}
+
+.tab-sky {
+  background: #bae6fd;
+  color: #075985;
+}
+
+.tab-lavender {
+  background: #e9d5ff;
+  color: #6b21a8;
+}
+
+/* Notebook Pages Spread */
+#notebook-spread {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border: 3.5px solid var(--border-color);
+  border-radius: 28px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Binding Spiral Rings Seam */
+.notebook-binding {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 15;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.06));
+}
+
+.notebook-binding .ring {
+  width: 32px;
+  height: 16px;
+  background: linear-gradient(to bottom, #d1d5db, #9ca3af, #4b5563);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+  transform: rotate(4deg);
+}
+
+/* Individual Page */
+.notebook-page {
+  flex: 1;
+  height: 100%;
+  background-color: var(--paper-bg);
+  /* Notebook paper grid design */
+  background-image:
+    linear-gradient(var(--grid-color) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, var(--grid-color) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  position: relative;
+  padding: 20px 30px;
+  overflow: hidden;
+  transition: background-color 0.8s ease-in-out;
+}
+
+.page-left {
+  border-right: 1.5px dashed rgba(69, 26, 3, 0.2);
+}
+
+.page-right {
+  border-left: 1.5px dashed rgba(69, 26, 3, 0.2);
+}
+
+/* Ruled margin lines */
+.page-margin-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background-color: var(--margin-line);
+}
+
+.left-line {
+  left: 30px;
+  border-right: 1.5px solid var(--margin-line);
+}
+
+.right-line {
+  right: 30px;
+  border-left: 1.5px solid var(--margin-line);
+}
+
+.page-content-wrapper {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 8;
+}
+
+/* LEFT PAGE: CALENDAR */
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.month-title-group {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+#calendar-year-label {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-left: 6px;
+  font-weight: normal;
+}
+
+.nav-arrow-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--text-color);
+  padding: 0 10px;
+  transition: transform 0.15s;
+}
+
+.nav-arrow-btn:hover {
+  transform: scale(1.25);
+}
+
+.weekdays-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 4px;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 1fr;
+  flex-grow: 1;
+  gap: 4px;
+  min-height: 250px;
+}
+
+/* Calendar Day Cell */
+.day-cell {
+  position: relative;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px dashed rgba(69, 26, 3, 0.12);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 6px;
+  transition: all 0.2s;
+  overflow: hidden;
+}
+
+.day-cell:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+}
+
+.day-number {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.day-cell.other-month {
+  opacity: 0.3;
+}
+
+/* Dotted note lines inside small cell */
+.cell-lines {
+  flex-grow: 1;
+  margin-top: 4px;
+  background-image: linear-gradient(rgba(69, 26, 3, 0.1) 1px, transparent 1px);
+  background-size: 100% 6px;
+}
+
+/* Selected calendar day hand-drawn ring highlight */
+.day-cell.selected {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 0 10px rgba(69, 26, 3, 0.15);
+}
+
+.day-cell.selected .day-number {
+  color: var(--accent-color);
+  text-shadow: 1px 1px 0px var(--text-color);
+}
+
+/* Indicators on calendar cell */
+.cell-indicator {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-size: 10px;
+}
+
+/* LEFT PAGE FOOTER DECORATIONS */
+.left-page-footer {
+  margin-top: auto;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 2px dashed rgba(69, 26, 3, 0.15);
+  padding-top: 6px;
+}
+
+.left-page-note {
+  flex-grow: 1;
+  margin-left: 14px;
+}
+
+.written-note {
+  font-size: 18px;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* RIGHT PAGE: DETAILED PLANNER */
+.day-details-header {
+  margin-bottom: 12px;
+  border-bottom: 2.5px solid var(--border-color);
+  padding-bottom: 4px;
+}
+
+.day-details-header h2 {
+  font-size: 32px;
+  line-height: 1.1;
+  color: var(--text-color);
+}
+
+.journal-tag {
+  font-size: 15px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* TASK CHECKLIST AREA */
+.planner-checklist-area {
+  margin-bottom: 12px;
+}
+
+.planner-checklist-area h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.checklist-items-list {
+  list-style: none;
+  max-height: 160px;
+  overflow-y: auto;
+  padding-right: 6px;
+  margin-bottom: 12px;
+}
+
+.checklist-items-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.checklist-items-list::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 2px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1.5px dashed rgba(69, 26, 3, 0.15);
+  animation: scaleUp 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+}
+
+/* Hand drawn custom checkbox */
+.handdrawn-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--text-color);
+  border-radius: 4px;
+  margin-right: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.task-text {
+  font-size: 18px;
+  cursor: pointer;
+  word-break: break-word;
+}
+
+/* Completed task scribbled look */
+.task-item.completed .handdrawn-checkbox::after {
+  content: '✓';
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.task-item.completed .task-text {
+  text-decoration: line-through;
+  text-decoration-thickness: 2.5px;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.delete-task-btn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: auto;
+  padding: 2px 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.task-item:hover .delete-task-btn {
+  opacity: 1;
+}
+
+/* Add task input line */
+.checklist-add-form {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 6px;
+}
+
+#new-task-input {
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Gaegu', cursive;
+  font-size: 18px;
+  color: var(--text-color);
+}
+
+#new-task-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.add-task-btn {
+  background: var(--text-color);
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.add-task-btn:hover {
+  transform: scale(1.1) rotate(90deg);
+}
+
+/* REFLECTIONS NOTES AREA */
+.planner-notes-area {
+  margin-bottom: 12px;
+}
+
+.planner-notes-area h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* Ruled notepad lines */
+.ruled-notepad {
+  position: relative;
+  background: rgba(255, 255, 255, 0.4);
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  padding: 10px 16px;
+  overflow: hidden;
+}
+
+#daily-notes-input {
+  width: 100%;
+  height: 112px;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: 'Gaegu', cursive;
+  font-size: 18px;
+  line-height: 28px;
+  color: var(--text-color);
+  background-image: linear-gradient(rgba(69, 26, 3, 0.08) 1px, transparent 1px);
+  background-size: 100% 28px;
+}
+
+/* RIGHT PAGE FOOTER */
+.right-page-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-top: 2px dashed rgba(69, 26, 3, 0.15);
+  padding-top: 6px;
+  height: 70px;
+}
+
+.planner-utils {
+  display: flex;
+  gap: 12px;
+}
+
+.util-btn {
+  background: transparent;
+  border: 1.5px solid var(--border-color);
+  font-family: 'Gaegu', cursive;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.3);
+  transition: all 0.2s;
+}
+
+.util-btn:hover {
+  background-color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+.util-btn.text-danger {
+  color: #ef4444;
+  border-color: #fca5a5;
+  background-color: rgba(254, 226, 226, 0.4);
+}
+
+.util-btn.text-danger:hover {
+  background-color: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
+
+.util-btn.icon-only {
+  font-size: 18px;
+  padding: 2px 6px;
+}
+
+/* FLOATING STICKER PICKER POPOVER */
+.sticker-popover {
+  position: fixed;
+  display: none;
+  z-index: 150;
+  width: 220px;
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(69, 26, 3, 0.2);
+  border: 2.5px solid var(--border-color);
+  background: var(--paper-bg);
+  transform: translate(-50%, -105%);
+  /* Position nicely relative to target */
+}
+
+.sticker-popover.active {
+  display: block;
+  animation: scaleUp 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+}
+
+.popover-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  color: var(--text-color);
+  border-bottom: 1.5px dashed rgba(69, 26, 3, 0.15);
+  padding-bottom: 4px;
+}
+
+.btn-close-popover {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 4px;
+  transition: transform 0.15s;
+}
+
+.btn-close-popover:hover {
+  transform: scale(1.2) rotate(90deg);
+  color: #ef4444;
+}
+
+.popover-stickers-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.popover-sticker-item {
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.popover-sticker-item:hover {
+  transform: scale(1.15) rotate(-3deg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background: var(--accent-color);
+}
+
+.popover-sticker-item img {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+}
+
+/* STICKER RESIZE HANDLE */
+.sticker-resize-handle {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--accent-color);
+  border: 1.5px solid var(--border-color);
+  border-radius: 50%;
+  cursor: se-resize;
+  display: none;
+  z-index: 35;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.placed-sticker:hover .sticker-resize-handle,
+.placed-sticker.draggable-active .sticker-resize-handle {
+  display: block;
+}
+
+/* STICKER DELETE HANDLE */
+.sticker-delete-handle {
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  width: 14px;
+  height: 14px;
+  background-color: #fee2e2;
+  border: 1.5px solid var(--border-color);
+  color: #ef4444;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  z-index: 35;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Gaegu', cursive;
+  font-size: 10px;
+  font-weight: bold;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.placed-sticker:hover .sticker-delete-handle,
+.placed-sticker.draggable-active .sticker-delete-handle {
+  display: flex;
+}
+
+/* PLACED STICKERS ON THE SPREAD */
+.placed-sticker {
+  position: absolute;
+  cursor: move;
+  z-index: 25;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: auto;
+  filter: drop-shadow(2px 3px 4px rgba(0, 0, 0, 0.15));
+  transition: filter 0.2s ease;
+}
+
+.placed-sticker:hover {
+  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.25));
+}
+
+.placed-sticker svg,
+.placed-sticker img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.placed-sticker:hover svg,
+.placed-sticker:hover img {
+  transform: scale(1.1);
+}
+
+.placed-sticker.draggable-active {
+  z-index: 30;
+  filter: drop-shadow(6px 10px 12px rgba(0, 0, 0, 0.3));
+}
+
+.placed-sticker.draggable-active svg,
+.placed-sticker.draggable-active img {
+  transform: scale(1.1) rotate(2deg);
+  transition: none;
+}
+
+/* PLACING HOVER TARGET CURSOR */
+.place-sticker-mode {
+  cursor: cell !important;
+}
+
+/* GLASS CARD STYLING */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2px solid var(--border-color);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(69, 26, 3, 0.15);
+}
+
+/* Animations */
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* RESPONSIVE LAYOUT */
+@media (max-width: 992px) {
+  body {
+    overflow-y: auto;
+  }
+
+  #desk-wrapper {
+    height: auto;
+    min-height: 100%;
+    padding: 20px 10px 140px;
+    flex-direction: column;
+  }
+
+  #notebook-container {
+    height: auto;
+    max-height: none;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  #notebook-spread {
+    flex-direction: column;
+    height: auto;
+    border-radius: 16px;
+  }
+
+  .notebook-binding {
+    display: none;
+  }
+
+  .page-left {
+    border-right: none;
+    border-bottom: 2px dashed rgba(69, 26, 3, 0.2);
+    height: auto;
+    min-height: 500px;
+  }
+
+  .page-right {
+    border-left: none;
+    height: auto;
+    min-height: 550px;
+  }
+
+  #theme-washi-tabs {
+    flex-direction: row;
+    top: -50px;
+    right: 20px;
+  }
+
+  .washi-tab {
+    transform: rotate(0deg);
+  }
+
+  .washi-tab:hover {
+    transform: translateY(-5px);
+  }
+
+  .washi-tab.active {
+    transform: translateY(-8px);
+    border-right: 1.5px solid var(--border-color);
+    border-bottom: none;
+  }
+}
+
+/* HANDDRAWN & TIMETABLE SPECIFIC STYLES */
+.handdrawn-border {
+  border: 3px solid var(--border-color) !important;
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+}
+
+/* Notebook wobbly edge */
+#notebook-spread {
+  border: 4px solid var(--border-color);
+  border-radius: 28px 32px 26px 34px / 32px 26px 34px 28px;
+}
+
+/* Day cell slight wobbles */
+.day-cell {
+  border-radius: 12px 6px 14px 8px / 6px 14px 8px 12px !important;
+}
+
+/* Wobbly bubble banner for timetable */
+.wobbly-bubble {
+  background-color: var(--accent-color);
+  border: 2.5px solid var(--border-color);
+  border-radius: 200px 30px 180px 40px/40px 180px 30px 200px;
+  padding: 8px 30px;
+  display: inline-block;
+  margin: 10px auto 16px;
+  box-shadow: 2px 4px 0px var(--border-color);
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  width: fit-content;
+  align-self: center;
+  transition: all 0.3s;
+}
+
+/* View Mode buttons */
+.view-mode-selector {
+  display: flex;
+  background-color: rgba(69, 26, 3, 0.08);
+  padding: 3px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-color);
+  margin: 0 auto;
+}
+
+.toggle-view-btn {
+  background: transparent;
+  border: none;
+  font-family: 'Gaegu', cursive;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 4px 14px;
+  cursor: pointer;
+  border-radius: 8px;
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+
+.toggle-view-btn.active {
+  background-color: white;
+  color: var(--text-color);
+  box-shadow: 0 2px 6px rgba(69, 26, 3, 0.15);
+}
+
+.month-selector-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+/* TIMETABLE LAYOUT GRID */
+#timetable-view-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  position: relative;
+}
+
+/* Timetable "Click to edit" guide hint bubble */
+.timetable-hint {
+  position: absolute;
+  top: 50px;
+  left: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-muted);
+  font-family: 'Gaegu', cursive;
+  font-size: 16px;
+  z-index: 10;
+  pointer-events: none;
+  animation: float-hint 2s ease-in-out infinite;
+}
+
+.timetable-hint .hint-text {
+  background: #fce7f3;
+  /* Light pink bubble background */
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-color);
+  font-weight: bold;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  color: var(--text-color);
+}
+
+.timetable-hint .hint-arrow {
+  margin-top: 4px;
+  color: var(--border-color);
+  transform: rotate(-15deg);
+}
+
+@keyframes float-hint {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.timetable-grid {
+  display: grid;
+  grid-template-columns: 32px repeat(5, 1fr);
+  grid-auto-rows: 1fr;
+  flex-grow: 1;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 10px;
+  min-height: 250px;
+  overflow: hidden;
+  /* Clip inner cells to the wobbly parent handdrawn-border */
+}
+
+.timetable-header-cell {
+  background-color: rgba(14, 165, 233, 0.15);
+  /* Soft marker look */
+  border-bottom: 2.5px solid var(--border-color);
+  border-right: 1.5px dashed rgba(69, 26, 3, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 4px 0;
+  color: var(--text-color);
+}
+
+.timetable-header-cell:last-child {
+  border-right: none;
+}
+
+.period-header {
+  font-size: 16px;
+  color: var(--accent-color);
+  background-color: transparent;
+}
+
+.period-num-cell {
+  border-right: 2.5px solid var(--border-color);
+  border-bottom: 1.5px dashed rgba(69, 26, 3, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  color: var(--text-muted);
+  background-color: rgba(69, 26, 3, 0.03);
+}
+
+.timetable-cell {
+  border-right: 1.5px dashed rgba(69, 26, 3, 0.2);
+  border-bottom: 1.5px dashed rgba(69, 26, 3, 0.2);
+  padding: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: bold;
+  min-height: 38px;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.timetable-cell:hover {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.timetable-header-cell:nth-child(6n),
+.timetable-cell:nth-child(6n) {
+  border-right: none;
+}
+
+/* Marker highlighters */
+.marker-highlight {
+  padding: 2px 6px;
+  display: inline-block;
+  max-width: 95%;
+  word-break: break-word;
+  /* Uneven wobbly borders to resemble marker strokes */
+  border-radius: 125px 15px 95px 12px/15px 95px 12px 125px;
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.highlight-pink {
+  background-color: rgba(244, 114, 182, 0.5);
+  color: #831843;
+}
+
+.highlight-yellow {
+  background-color: rgba(253, 224, 71, 0.6);
+  color: #713f12;
+}
+
+.highlight-green {
+  background-color: rgba(163, 230, 53, 0.5);
+  color: #14532d;
+}
+
+.highlight-blue {
+  background-color: rgba(125, 211, 252, 0.6);
+  color: #0c4a6e;
+}
+
+.highlight-purple {
+  background-color: rgba(216, 180, 254, 0.55);
+  color: #581c87;
+}
+
+/* MODALS */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(69, 26, 3, 0.4);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 440px;
+  padding: 24px;
+  border-radius: 24px;
+}
+
+.modal-content h3 {
+  font-size: 24px;
+  margin-bottom: 4px;
+  color: var(--text-color);
+}
+
+#timetable-cell-info {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
+.timetable-input-group input {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 2px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.7);
+  font-family: 'Gaegu', cursive;
+  font-size: 18px;
+  color: var(--text-color);
+  outline: none;
+  margin-bottom: 20px;
+}
+
+.marker-color-picker {
+  margin-bottom: 24px;
+}
+
+.marker-color-picker p {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.color-options {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.marker-color-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  cursor: pointer;
+  transition: transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Gaegu', cursive;
+  font-size: 14px;
+  outline: none;
+}
+
+.marker-color-btn:hover {
+  transform: scale(1.15);
+}
+
+.marker-color-btn.active {
+  transform: scale(1.15);
+  box-shadow: 0 0 8px rgba(69, 26, 3, 0.4);
+  font-weight: bold;
+}
+
+.marker-color-btn.color-pink {
+  background-color: #f472b6;
+}
+
+.marker-color-btn.color-yellow {
+  background-color: #facc15;
+}
+
+.marker-color-btn.color-green {
+  background-color: #a3e635;
+}
+
+.marker-color-btn.color-blue {
+  background-color: #38bdf8;
+}
+
+.marker-color-btn.color-purple {
+  background-color: #c084fc;
+}
+
+.marker-color-btn.color-none {
+  background-color: #ffffff;
+  color: #ef4444;
+}
+
+/* Modal content wobbly border contour */
+.modal-content {
+  background: var(--paper-bg);
+  border: 3.5px solid var(--border-color);
+  border-radius: 24px 20px 28px 22px / 20px 28px 22px 24px;
+  box-shadow: 0 16px 40px rgba(69, 26, 3, 0.25);
+  width: 90%;
+  max-width: 440px;
+  padding: 24px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+/* Core handwriting buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 20px;
+  border-radius: 14px;
+  font-family: 'Gaegu', cursive;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+  border: 2px solid var(--border-color);
+  background: white;
+  color: var(--text-color);
+  box-shadow: 2px 3px 0px var(--border-color);
+  transition: all 0.15s;
+  outline: none;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 4px 0px var(--border-color);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 1px 1px 0px var(--border-color);
+}
+
+.btn-primary {
+  background: var(--accent-color);
+  color: var(--text-color);
+}
+.day-details-header {
+    margin-bottom: 40px;
+}
+
+#selected-day-label {
+    margin: 0;
+    line-height: 1.2;
+}
+
+.journal-tag {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.page-content-wrapper {
+    padding-top: 20px;
+}
+.btn-outline {
+  background: transparent;
+}
+    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✏️Digital Planner</title>
+  <meta name="description"
+    content="Plan your days digitally with this hand-drawn, cute, cozy notebook diary. Set checklists, write diary entries, select cute doodle stickers, and swap custom washi-tape themes.">
+    
+  <!-- Cute Handwriting Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+
+<body class="theme-custard">
+
+  <!-- Wooden Desk Wrapper -->
+  <main id="desk-wrapper">
+
+    <!-- MAIN NOTEBOOK SPREAD -->
+    <div id="notebook-container">
+
+      <!-- Decorative Charm hanging off the top-left of the planner -->
+      <div class="notebook-charm" title="Cozy Keychain Charm">
+        <img src="assets/charm.png" alt="Keychain Charm">
+      </div>
+
+      <!-- Color Theme Side Tabs (Washi Tape style) -->
+      <nav id="theme-washi-tabs">
+        <button class="washi-tab tab-custard active" data-theme="custard" title="Custard Yellow">Custard</button>
+        <button class="washi-tab tab-sakura" data-theme="sakura" title="Sakura Pink">Sakura</button>
+        <button class="washi-tab tab-matcha" data-theme="matcha" title="Matcha Green">Matcha</button>
+        <button class="washi-tab tab-sky" data-theme="sky" title="Sky Blue">Sky</button>
+        <button class="washi-tab tab-lavender" data-theme="lavender" title="Lavender Dusk">Lavender</button>
+      </nav>
+
+      <div id="notebook-spread">
+
+        <!-- Binding spirals overlay down the center seam -->
+        <div class="notebook-binding">
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+        </div>
+
+        <!-- LEFT PAGE: Calendar monthly view -->
+        <section class="notebook-page page-left">
+          <div class="page-margin-line left-line"></div>
+
+          <div class="page-content-wrapper">
+            <!-- View Toggles and Header controls -->
+            <header class="calendar-header">
+              <div class="view-mode-selector">
+                <button id="toggle-calendar-btn" class="toggle-view-btn active">📅 Calendar</button>
+                <button id="toggle-timetable-btn" class="toggle-view-btn">✏️ Timetable</button>
+              </div>
+            </header>
+
+            <!-- 1. Calendar View Container -->
+            <div id="calendar-view-container">
+              <div class="month-selector-bar">
+                <button id="prev-month-btn" class="nav-arrow-btn">◀</button>
+                <div class="month-title-group">
+                  <span id="calendar-month-name">January</span>
+                  <span id="calendar-year-label">2024</span>
+                </div>
+                <button id="next-month-btn" class="nav-arrow-btn">▶</button>
+              </div>
+
+              <!-- Week days labels -->
+              <div class="weekdays-grid">
+                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+              </div>
+
+              <!-- Month grid of cells -->
+              <div id="calendar-days-grid" class="days-grid">
+                <!-- Dynamically populated day cells -->
+              </div>
+            </div>
+
+            <!-- 2. Timetable View Container -->
+            <div id="timetable-view-container" style="display: none;">
+              <!-- Handdrawn title banner bubble -->
+              <div class="timetable-banner-title wobbly-bubble">
+                <span id="timetable-banner-text" contenteditable="true" title="Click to edit title">My TimeTable</span>
+              </div>
+
+              <!-- Dotted "Click to edit" hint pointer (only visible when table is empty) -->
+              <div id="timetable-hint-pointer" class="timetable-hint">
+                <span class="hint-text">Click to edit</span>
+                <svg class="hint-arrow" viewBox="0 0 50 50" width="30" height="30">
+                  <path d="M25 5 C 25 25, 18 35, 12 38" fill="none" stroke="currentColor" stroke-width="3.5"
+                    stroke-linecap="round" />
+                  <path d="M6 31 L12 38 L20 34" fill="none" stroke="currentColor" stroke-width="3.5"
+                    stroke-linecap="round" />
+                </svg>
+              </div>
+
+              <div class="timetable-grid handdrawn-border">
+                <!-- Headers -->
+                <div class="timetable-header-cell period-header">★</div>
+                <div class="timetable-header-cell">Mon</div>
+                <div class="timetable-header-cell">Tue</div>
+                <div class="timetable-header-cell">Wed</div>
+                <div class="timetable-header-cell">Thu</div>
+                <div class="timetable-header-cell">Fri</div>
+
+                <!-- Periods rows -->
+                <!-- Row 1 -->
+                <div class="period-num-cell">1</div>
+                <div class="timetable-cell" data-day="Mon" data-period="1"></div>
+                <div class="timetable-cell" data-day="Tue" data-period="1"></div>
+                <div class="timetable-cell" data-day="Wed" data-period="1"></div>
+                <div class="timetable-cell" data-day="Thu" data-period="1"></div>
+                <div class="timetable-cell" data-day="Fri" data-period="1"></div>
+
+                <!-- Row 2 -->
+                <div class="period-num-cell">2</div>
+                <div class="timetable-cell" data-day="Mon" data-period="2"></div>
+                <div class="timetable-cell" data-day="Tue" data-period="2"></div>
+                <div class="timetable-cell" data-day="Wed" data-period="2"></div>
+                <div class="timetable-cell" data-day="Thu" data-period="2"></div>
+                <div class="timetable-cell" data-day="Fri" data-period="2"></div>
+
+                <!-- Row 3 -->
+                <div class="period-num-cell">3</div>
+                <div class="timetable-cell" data-day="Mon" data-period="3"></div>
+                <div class="timetable-cell" data-day="Tue" data-period="3"></div>
+                <div class="timetable-cell" data-day="Wed" data-period="3"></div>
+                <div class="timetable-cell" data-day="Thu" data-period="3"></div>
+                <div class="timetable-cell" data-day="Fri" data-period="3"></div>
+
+                <!-- Row 4 -->
+                <div class="period-num-cell">4</div>
+                <div class="timetable-cell" data-day="Mon" data-period="4"></div>
+                <div class="timetable-cell" data-day="Tue" data-period="4"></div>
+                <div class="timetable-cell" data-day="Wed" data-period="4"></div>
+                <div class="timetable-cell" data-day="Thu" data-period="4"></div>
+                <div class="timetable-cell" data-day="Fri" data-period="4"></div>
+
+                <!-- Row 5 -->
+                <div class="period-num-cell">5</div>
+                <div class="timetable-cell" data-day="Mon" data-period="5"></div>
+                <div class="timetable-cell" data-day="Tue" data-period="5"></div>
+                <div class="timetable-cell" data-day="Wed" data-period="5"></div>
+                <div class="timetable-cell" data-day="Thu" data-period="5"></div>
+                <div class="timetable-cell" data-day="Fri" data-period="5"></div>
+
+                <!-- Row 6 -->
+                <div class="period-num-cell">6</div>
+                <div class="timetable-cell" data-day="Mon" data-period="6"></div>
+                <div class="timetable-cell" data-day="Tue" data-period="6"></div>
+                <div class="timetable-cell" data-day="Wed" data-period="6"></div>
+                <div class="timetable-cell" data-day="Thu" data-period="6"></div>
+                <div class="timetable-cell" data-day="Fri" data-period="6"></div>
+
+                <!-- Row 7 -->
+                <div class="period-num-cell">7</div>
+                <div class="timetable-cell" data-day="Mon" data-period="7"></div>
+                <div class="timetable-cell" data-day="Tue" data-period="7"></div>
+                <div class="timetable-cell" data-day="Wed" data-period="7"></div>
+                <div class="timetable-cell" data-day="Thu" data-period="7"></div>
+                <div class="timetable-cell" data-day="Fri" data-period="7"></div>
+              </div>
+            </div>
+
+            <!-- Cute bottom decorations (Matching bottom left of picture) -->
+            <footer class="left-page-footer">
+              <div class="left-page-note">
+                <p class="written-note">"Let's write a beautiful day!"</p>
+              </div>
+            </footer>
+
+          </div>
+        </section>
+
+        <!-- RIGHT PAGE: Selected Day task planner -->
+        <section class="notebook-page page-right">
+          <div class="page-margin-line right-line"></div>
+
+          <div class="page-content-wrapper">
+            <!-- Selected day title display -->
+            <header class="day-details-header">
+              <h2 id="selected-day-label">Monday, Jan 8, 2024</h2>
+              <p class="journal-tag">Daily Plan & Thoughts</p>
+            </header>
+
+            <!-- TODO Checklist grid -->
+            <section class="planner-checklist-area">
+              <h3>🌸 Today's Checklist:</h3>
+              <ul id="checklist-items" class="checklist-items-list">
+                <!-- Dynamically loaded checklists rows -->
+              </ul>
+
+              <!-- Checklist Input -->
+              <form id="add-task-form" class="checklist-add-form">
+                <input type="text" id="new-task-input" placeholder="Add a cozy task..." maxlength="45">
+                <button type="submit" class="add-task-btn">+</button>
+              </form>
+            </section>
+
+            <!-- Rule Notepad text area -->
+            <section class="planner-notes-area">
+              <h3>✏️ Cozy Reflections & Thoughts:</h3>
+              <div class="ruled-notepad">
+                <textarea id="daily-notes-input"
+                  placeholder="Write down memories, cute ideas, or a cozy journal entry here..." rows="4"></textarea>
+              </div>
+            </section>
+
+            <!-- Right page footer - mini mailbox illustration (Right side of photo) -->
+            <footer class="right-page-footer">
+              <!-- Audio, sound control, and clear layouts -->
+              <div class="planner-utils">
+                <button id="stickers-toggle-btn" class="util-btn" title="Open Stickers Menu">✨ Stickers</button>
+                <button id="sound-toggle-btn" class="util-btn icon-only" title="Toggle audio feedback">🔊</button>
+                <button id="clear-page-btn" class="util-btn text-danger">Reset Day</button>
+              </div>
+            </footer>
+
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Floating Sticker Picker Popover -->
+    <div id="sticker-picker-popover" class="sticker-popover glass-card">
+      <div class="popover-header">
+        <span>🌸 Pick a Sticker:</span>
+        <button id="close-popover-btn" class="btn-close-popover">✕</button>
+      </div>
+      <div id="popover-stickers-list" class="popover-stickers-grid">
+        <!-- Loaded dynamically from stickers.js -->
+      </div>
+    </div>
+
+    <!-- Timetable Entry Editor Modal -->
+    <div id="timetable-modal" class="modal-overlay">
+      <div class="modal-content glass-card animate-pop">
+        <h3>✏️ Edit Timetable Entry</h3>
+        <p id="timetable-cell-info">Monday, Period 1</p>
+
+        <div class="timetable-input-group">
+          <input type="text" id="timetable-subject-input" placeholder="e.g. Chemistry II, Calculus, lunch..."
+            maxlength="22">
+        </div>
+
+        <div class="marker-color-picker">
+          <p>Choose Highlighter Pen:</p>
+          <div class="color-options">
+            <button class="marker-color-btn color-pink active" data-color="pink" title="Pink Marker"></button>
+            <button class="marker-color-btn color-yellow" data-color="yellow" title="Yellow Marker"></button>
+            <button class="marker-color-btn color-green" data-color="green" title="Green Marker"></button>
+            <button class="marker-color-btn color-blue" data-color="blue" title="Blue Marker"></button>
+            <button class="marker-color-btn color-purple" data-color="purple" title="Purple Marker"></button>
+            <button class="marker-color-btn color-none" data-color="none" title="Clear Marker">🚫</button>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="save-timetable-btn" class="btn btn-primary">Save Subject</button>
+          <button id="close-timetable-btn" class="btn btn-outline">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+</body>
+
+</html>

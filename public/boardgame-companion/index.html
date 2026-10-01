@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dice & Trivia Board Game Companion</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="game-container">
+      <h1>Dice & Trivia Companion</h1>
+
+      <div class="scoreboard">
+        <div class="player-card active" id="player1-card">
+          <h2>Player 1</h2>
+          <p class="score" id="p1-score">0</p>
+          <span class="turn-indicator">Current Turn</span>
+        </div>
+        <div class="player-card" id="player2-card">
+          <h2>Player 2</h2>
+          <p class="score" id="p2-score">0</p>
+          <span class="turn-indicator">Current Turn</span>
+        </div>
+      </div>
+
+      <div class="dice-scene">
+        <div class="cube" id="dice">
+          <div class="cube-face front">1</div>
+          <div class="cube-face back">2</div>
+          <div class="cube-face right">3</div>
+          <div class="cube-face left">4</div>
+          <div class="cube-face top">5</div>
+          <div class="cube-face bottom">6</div>
+        </div>
+      </div>
+
+      <button id="roll-btn" class="btn">Roll Dice</button>
+
+      <div class="trivia-box hidden" id="trivia-box">
+        <div class="category-badge" id="category-badge">
+          Category: General Knowledge
+        </div>
+        <p id="question-text">Loading trivia question...</p>
+
+        <button id="reveal-btn" class="btn btn-secondary">Reveal Answer</button>
+        <div id="answer-block" class="answer-block hidden">
+          <p id="answer-text">The Answer is here</p>
+          <div class="scoring-actions">
+            <button id="correct-btn" class="btn btn-success">
+              Correct (+1 Pt)
+            </button>
+            <button id="wrong-btn" class="btn btn-danger">Incorrect</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

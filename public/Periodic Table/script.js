@@ -809,57 +809,25 @@ document.getElementById(
 "searchInput"
 );
 
-searchInput.addEventListener(
-"input",
+searchInput.addEventListener("input", function () {
+    const query = this.value.trim().toLowerCase();
 
-function(){
+    document.querySelectorAll(".element").forEach(el => {
+        el.classList.remove("search-active", "matched", "unmatched");
 
-const query =
-this.value
-.trim()
-.toLowerCase();
+        if (query === "") return;
 
-document
-.querySelectorAll(".element")
+        const name = el.dataset.name || "";
+        const symbol = el.dataset.symbol || "";
 
-.forEach(el=>{
+        const match = name.startsWith(query) || symbol === query;
 
-// Remove previous search state
-el.classList.remove(
-"search-active"
-);
-
-// Empty search → no popup
-if(query===""){
-return;
-}
-
-const name =
-el.dataset.name || "";
-
-const symbol =
-el.dataset.symbol || "";
-
-const match =
-
-name.startsWith(query)
-
-||
-
-symbol === query;
-
-
-// If matched → show popup
-if(match){
-
-el.classList.add(
-"search-active"
-);
-
-}
-
-});
-
+        if (match) {
+            el.classList.add("matched");
+        } else {
+            el.classList.add("unmatched");
+        }
+    });
 });
 const trendDefinitions={
 
@@ -1452,7 +1420,7 @@ async function exportPeriodicTablePDF(){
     const captureWidth =
     Math.ceil(
     Math.max(area.scrollWidth, areaRect.width)
-    );
+    ) + 500;
 
     const captureHeight =
     Math.ceil(
@@ -1498,35 +1466,53 @@ async function exportPeriodicTablePDF(){
         windowHeight:captureHeight,
         scrollX:0,
         scrollY:0,
-        onclone:(clonedDocument)=>{
-            const clonedArea =
-            clonedDocument.getElementById("pdfExportArea");
+        onclone: (clonedDocument) => {
 
-            const clonedMain =
-            clonedDocument.querySelector(".main-container");
+    const clonedArea =
+        clonedDocument.getElementById("pdfExportArea");
 
-            if(clonedMain){
-                clonedMain.style.alignItems =
-                "flex-start";
-            }
+    const clonedMain =
+        clonedDocument.querySelector(".main-container");
 
-            if(clonedArea){
-                clonedArea.style.width =
-                `${captureWidth}px`;
+    if (clonedMain) {
+        clonedMain.style.alignItems = "flex-start";
+    }
 
-                clonedArea.style.height =
-                `${captureHeight}px`;
+    if (clonedArea) {
 
-                clonedArea.style.overflow =
-                "visible";
+        clonedArea.style.width =
+            `${captureWidth}px`;
 
-                clonedArea
-                .querySelectorAll(".element")
-                .forEach(element=>{
-                    element.style.animation =
-                    "none";
-                });
-            }
+        clonedArea.style.height =
+            `${captureHeight}px`;
+
+        clonedArea.style.overflow =
+            "visible";
+
+        // Disable animations
+        clonedArea
+            .querySelectorAll(".element")
+            .forEach(element => {
+                element.style.animation = "none";
+            });
+
+        // Make symbol/icon backgrounds transparent
+        clonedArea
+            .querySelectorAll(".element-symbol")
+            .forEach(symbol => {
+                symbol.style.background = "transparent";
+                symbol.style.boxShadow = "none";
+                symbol.style.backdropFilter = "none";
+                symbol.style.border = "none";
+            });
+
+        // Optional: remove heavy shadows from cards
+        clonedArea
+            .querySelectorAll(".element")
+            .forEach(element => {
+                element.style.boxShadow = "none";
+            });
+    }
         }
     });
 
@@ -1593,9 +1579,6 @@ const imgHeight =
 (canvas.height * contentWidth)
 / canvas.width;
 
-let heightLeft =
-imgHeight;
-
 let position =
 contentTop;
 
@@ -1619,34 +1602,7 @@ contentWidth,
 imgHeight
 );
 
-heightLeft -= contentHeight;
 
-while(heightLeft > 0){
-
-position =
-contentTop - (imgHeight - heightLeft);
-
-pdf.addPage();
-
-pdf.setFontSize(18);
-
-pdf.text(
-`Periodic Table - ${propertyName}`,
-margin,
-margin
-);
-
-pdf.addImage(
-imgData,
-"PNG",
-margin,
-position,
-contentWidth,
-imgHeight
-);
-
-heightLeft -= contentHeight;
-}
 
   
 

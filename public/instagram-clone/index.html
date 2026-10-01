@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <!-- Google Fonts: Inter for general UI, Cookie for logo text fallbacks -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cookie&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode">
+
+    <!-- MAIN APP VIEW (Simulated Dashboard Landing Page) -->
+    <div id="feed-container" class="app-viewport">
+        <!-- COLLAPSED/EXPANDED SIDEBAR NAVIGATION -->
+        <nav class="sidebar">
+            <div class="sidebar-logo-container">
+                <a href="#" onclick="switchTab('feed')" class="logo-link">
+                    <img src="assets/images/instagram_logo.svg" alt="Instagram" class="sidebar-logo">
+                    <i class="fa-brands fa-instagram sidebar-logo-icon"></i>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-item active" onclick="switchTab('feed', event)" data-tab="feed">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" onclick="toggleDrawer('search', event)" data-drawer="search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Search</span>
+                </a>
+                <a href="#" class="nav-item" onclick="switchTab('explore', event)" data-tab="explore">
+                    <i class="fa-regular fa-compass"></i>
+                    <span>Explore</span>
+                </a>
+                <a href="#" class="nav-item" onclick="switchTab('reels', event)" data-tab="reels">
+                    <i class="fa-solid fa-clapperboard"></i>
+                    <span>Reels</span>
+                </a>
+                <a href="#" class="nav-item" onclick="switchTab('messages', event)" data-tab="messages">
+                    <i class="fa-regular fa-paper-plane"></i>
+                    <span>Messages</span>
+                    <span class="badge" id="unread-messages-badge">2</span>
+                </a>
+                <a href="#" class="nav-item" onclick="toggleDrawer('notifications', event)" data-drawer="notifications">
+                    <i class="fa-regular fa-heart"></i>
+                    <span>Notifications</span>
+                    <span class="badgeDot" id="notification-dot"></span>
+                </a>
+                <a href="#" class="nav-item" onclick="openModal('create-post-modal', event)">
+                    <i class="fa-regular fa-square-plus"></i>
+                    <span>Create</span>
+                </a>
+                <a href="#" class="nav-item" onclick="switchTab('profile', event)" data-tab="profile">
+                    <img src="assets/images/user_avatar.png" alt="Profile" class="nav-avatar">
+                    <span>Profile</span>
+                </a>
+            </div>
+
+            <!-- "More" menu button -->
+            <div class="sidebar-more">
+                <a href="#" class="nav-item" onclick="toggleMoreMenu(event)" id="more-menu-btn">
+                    <i class="fa-solid fa-bars"></i>
+                    <span>More</span>
+                </a>
+                <div id="more-dropdown" class="more-menu-dropdown hide">
+                    <a href="#" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i> Switch appearance</a>
+                    <a href="#" onclick="simulateLogout()"><i class="fa-solid fa-right-from-bracket"></i> Log out</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- DRAWERS (Slide out next to sidebar) -->
+        <div id="search-drawer" class="sidebar-drawer hide">
+            <div class="drawer-header">
+                <h2>Search</h2>
+                <div class="search-input-wrapper">
+                    <input type="text" placeholder="Search" id="drawer-search-input" oninput="handleSearchQuery(this.value)">
+                    <button class="clear-search-btn" onclick="clearSearchInput()"><i class="fa-solid fa-circle-xmark"></i></button>
+                </div>
+            </div>
+            <div class="drawer-content">
+                <div class="recent-header">
+                    <h4>Recent</h4>
+                    <button class="clear-all-recent-btn" onclick="clearAllRecentSearch()">Clear all</button>
+                </div>
+                <div class="recent-list" id="search-recent-list">
+                    <!-- Dynamic search items go here -->
+                </div>
+                <div class="search-results-list hide" id="search-results-list">
+                    <!-- Dynamic search filter results go here -->
+                </div>
+            </div>
+        </div>
+
+        <div id="notifications-drawer" class="sidebar-drawer hide">
+            <div class="drawer-header">
+                <h2>Notifications</h2>
+            </div>
+            <div class="drawer-content scrollable">
+                <div class="notification-section">
+                    <h4>This Week</h4>
+                    <div class="notification-list" id="notification-list-week">
+                        <!-- Dynamic notifications go here -->
+                    </div>
+                </div>
+                <div class="notification-section">
+                    <h4>Earlier</h4>
+                    <div class="notification-list" id="notification-list-earlier">
+                        <!-- Dynamic notifications go here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN VIEWPORTS CONTAINER -->
+        <main class="app-main-content">
+            
+            <!-- VIEW: FEED -->
+            <div id="view-feed" class="app-view active">
+                <div class="feed-layout">
+                    <!-- Left side: Stories & Posts -->
+                    <div class="feed-column">
+                        <!-- Stories Bar -->
+                        <div class="stories-wrapper">
+                            <div class="stories-container" id="stories-container">
+                                <!-- Dynamic stories rendered here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Posts list -->
+                        <div class="posts-container" id="feed-posts-container">
+                            <!-- Dynamic posts rendered here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Right side: User Profile Snippet & Suggestions -->
+                    <div class="feed-suggestions-sidebar">
+                        <div class="sidebar-user-profile">
+                            <img src="assets/images/user_avatar.png" alt="Your Avatar" class="user-avatar" onclick="switchTab('profile')">
+                            <div class="user-info" onclick="switchTab('profile')">
+                                <span class="username" id="logged-in-username">aesthetic_coder</span>
+                                <span class="fullname" id="logged-in-fullname">Aesthetic Coder</span>
+                            </div>
+                            <button class="btn-text-action" onclick="simulateLogout()">Switch</button>
+                        </div>
+                        <div class="suggestions-header">
+                            <span>Suggestions for you</span>
+                            <button class="btn-text-action dark">See All</button>
+                        </div>
+                        <div class="suggestions-list" id="suggestions-list">
+                            <!-- Dynamic suggestions -->
+                        </div>
+                        <div class="sidebar-footer">
+                            <p>About • Help • Press • API • Jobs • Privacy • Terms • Locations • Language • Meta Verified</p>
+                            <p class="copyright">© 2026 INSTAGRAM CLONE BY ANTIGRAVITY</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: EXPLORE -->
+            <div id="view-explore" class="app-view hide">
+                <div class="explore-grid" id="explore-grid">
+                    <!-- Dynamic Grid posts go here -->
+                </div>
+            </div>
+
+            <!-- VIEW: REELS -->
+            <div id="view-reels" class="app-view hide">
+                <div class="reels-container" id="reels-container">
+                    <!-- Dynamic vertical-scrolling reels play here -->
+                </div>
+            </div>
+
+            <!-- VIEW: MESSAGES (DM) -->
+            <div id="view-messages" class="app-view hide">
+                <div class="messages-layout">
+                    <!-- Left Panel: Chat List -->
+                    <div class="chat-list-panel">
+                        <div class="panel-header">
+                            <span class="header-username" id="logged-in-username-dm">aesthetic_coder</span>
+                            <button class="btn-new-chat"><i class="fa-regular fa-pen-to-square"></i></button>
+                        </div>
+                        <div class="chat-threads" id="chat-threads-container">
+                            <!-- Dynamic chat contacts go here -->
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: Active Chat Log -->
+                    <div class="chat-conversation-panel">
+                        <!-- Welcome Shell (shown if no chat selected) -->
+                        <div id="chat-empty-state" class="chat-empty-state">
+                            <div class="icon-circle"><i class="fa-regular fa-paper-plane"></i></div>
+                            <h3>Your Messages</h3>
+                            <p>Send private photos and messages to a friend.</p>
+                            <button class="btn-submit" onclick="selectFirstChat()">Send message</button>
+                        </div>
+
+                        <!-- Chat Viewport -->
+                        <div id="chat-active-state" class="chat-active-state hide">
+                            <div class="chat-header">
+                                <div class="chat-user-info">
+                                    <img src="assets/images/user_avatar.png" alt="Chat User" id="chat-header-avatar" class="chat-avatar">
+                                    <div class="name-status">
+                                        <span class="chat-name" id="chat-header-name">John Doe</span>
+                                        <span class="chat-status" id="chat-header-status">Active now</span>
+                                    </div>
+                                </div>
+                                <div class="chat-header-actions">
+                                    <button><i class="fa-solid fa-phone"></i></button>
+                                    <button><i class="fa-solid fa-video"></i></button>
+                                    <button><i class="fa-solid fa-circle-info"></i></button>
+                                </div>
+                            </div>
+                            <!-- Messages scroll list -->
+                            <div class="chat-messages-log scrollable" id="chat-messages-log">
+                                <!-- Dynamic message list -->
+                            </div>
+                            <!-- Typing indicator -->
+                            <div class="typing-indicator hide" id="typing-indicator">
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                            </div>
+                            <!-- Input footer -->
+                            <div class="chat-input-footer">
+                                <button class="btn-icon"><i class="fa-regular fa-face-smile"></i></button>
+                                <div class="chat-input-wrapper">
+                                    <input type="text" placeholder="Message..." id="chat-input-message" onkeydown="handleChatInputKeyDown(event)">
+                                </div>
+                                <button class="btn-text-send hide" id="btn-chat-send" onclick="sendChatMessage()">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: PROFILE -->
+            <div id="view-profile" class="app-view hide">
+                <div class="profile-header-container">
+                    <div class="profile-avatar-wrapper">
+                        <img src="assets/images/user_avatar.png" alt="Your Avatar" id="profile-page-avatar" class="profile-avatar">
+                    </div>
+                    <div class="profile-details-wrapper">
+                        <div class="profile-username-row">
+                            <h2 id="profile-page-username">aesthetic_coder</h2>
+                            <button class="btn-secondary" onclick="openEditProfileModal()">Edit profile</button>
+                            <button class="btn-secondary" onclick="openModal('view-archive-modal')">View Archive</button>
+                            <button class="btn-settings-icon"><i class="fa-solid fa-gear"></i></button>
+                        </div>
+                        <div class="profile-stats-row">
+                            <span><strong id="profile-posts-count">3</strong> posts</span>
+                            <span><strong>1,248</strong> followers</span>
+                            <span><strong>394</strong> following</span>
+                        </div>
+                        <div class="profile-bio-row">
+                            <h1 class="profile-fullname" id="profile-page-fullname">Aesthetic Coder</h1>
+                            <p class="profile-bio-text" id="profile-page-bio">💻 Transforming code into beautiful art. <br>✨ HTML | CSS | Vanilla JS enthusiast.<br>📍 DeepMind Sandbox</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs (Posts vs Saved) -->
+                <div class="profile-tabs-bar">
+                    <a href="#" class="tab-item active" onclick="switchProfileTab('posts', event)">
+                        <i class="fa-solid fa-table-cells"></i> POSTS
+                    </a>
+                    <a href="#" class="tab-item" onclick="switchProfileTab('saved', event)">
+                        <i class="fa-regular fa-bookmark"></i> SAVED
+                    </a>
+                    <a href="#" class="tab-item" onclick="switchProfileTab('tagged', event)">
+                        <i class="fa-regular fa-id-badge"></i> TAGGED
+                    </a>
+                </div>
+
+                <!-- Profile Grid -->
+                <div class="explore-grid" id="profile-posts-grid">
+                    <!-- Dynamic profile grid posts -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- GLOBAL DIALOGS / MODALS -->
+    
+    <!-- MODAL: CREATE POST -->
+    <div id="create-post-modal" class="modal-overlay hide">
+        <div class="modal-content create-post-card">
+            <div class="modal-header">
+                <button class="btn-close-modal text-danger" onclick="closeModal('create-post-modal')">Cancel</button>
+                <h3>Create new post</h3>
+                <button class="btn-close-modal text-primary font-bold hide" id="btn-share-post" onclick="submitCreatePost()">Share</button>
+            </div>
+            
+            <div class="create-post-body">
+                <!-- Dropzone viewport -->
+                <div id="create-post-dropzone" class="create-post-dropzone">
+                    <i class="fa-solid fa-photo-film upload-icon"></i>
+                    <h2>Select photos and videos here</h2>
+                    <p>Or choose one of our high-quality stock options to test:</p>
+                    <div class="stock-options-row">
+                        <button onclick="selectStockCreateImage('assets/images/travel_amalfi.png')">Amalfi Coast</button>
+                        <button onclick="selectStockCreateImage('assets/images/cafe_flatlay.png')">Cafe Flatlay</button>
+                        <button onclick="selectStockCreateImage('assets/images/mountain_sunset.png')">Mountain Sunset</button>
+                    </div>
+                </div>
+
+                <!-- Preview and editor editor (hidden initially) -->
+                <div id="create-post-editor" class="create-post-editor hide">
+                    <div class="editor-image-column">
+                        <img src="" alt="Post Preview" id="create-post-preview-img">
+                    </div>
+                    <div class="editor-details-column">
+                        <div class="editor-user-info">
+                            <img src="assets/images/user_avatar.png" alt="Your Avatar" class="user-avatar-sm">
+                            <span class="username">aesthetic_coder</span>
+                        </div>
+                        <textarea placeholder="Write a caption..." id="create-post-caption" rows="5"></textarea>
+                        <div class="editor-location-input">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <input type="text" id="create-post-location" placeholder="Add location">
+                        </div>
+                        <!-- Filters panel -->
+                        <div class="filters-panel">
+                            <h4>Filters (Aesthetic Overlay)</h4>
+                            <div class="filters-grid">
+                                <button class="filter-btn active" onclick="applyCSSFilter('none')">
+                                    <div class="filter-preview none"></div>
+                                    <span>Normal</span>
+                                </button>
+                                <button class="filter-btn" onclick="applyCSSFilter('sepia')">
+                                    <div class="filter-preview sepia"></div>
+                                    <span>Aden</span>
+                                </button>
+                                <button class="filter-btn" onclick="applyCSSFilter('grayscale')">
+                                    <div class="filter-preview grayscale"></div>
+                                    <span>Inkwell</span>
+                                </button>
+                                <button class="filter-btn" onclick="applyCSSFilter('saturate')">
+                                    <div class="filter-preview saturate"></div>
+                                    <span>Clarendon</span>
+                                </button>
+                                <button class="filter-btn" onclick="applyCSSFilter('cool')">
+                                    <div class="filter-preview cool"></div>
+                                    <span>Hudson</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: STORIES VIEWER -->
+    <div id="story-viewer-modal" class="modal-overlay hide" onclick="handleStoryModalClick(event)">
+        <div class="story-viewer-card" onclick="event.stopPropagation()">
+            <!-- Progress bars -->
+            <div class="story-progress-container" id="story-progress-container">
+                <!-- Dynamically populated progress bars -->
+            </div>
+            
+            <div class="story-header">
+                <div class="story-user-details">
+                    <img src="assets/images/user_avatar.png" alt="Story User" id="story-viewer-avatar">
+                    <span id="story-viewer-username">johndoe</span>
+                    <span class="story-timestamp" id="story-viewer-time">2h</span>
+                </div>
+                <div class="story-actions">
+                    <button onclick="event.stopPropagation(); toggleStoryPlayState(this)"><i class="fa-solid fa-pause"></i></button>
+                    <button onclick="event.stopPropagation(); closeStoryViewer()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+
+            <!-- Content Area (Image/Video) -->
+            <div class="story-body">
+                <button class="nav-story prev" onclick="navigateStory(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <img src="" alt="Story Content" id="story-viewer-img">
+                <button class="nav-story next" onclick="navigateStory(1)"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: POST DETAIL VIEW (For explore grid and profile grid clicks) -->
+    <div id="post-detail-modal" class="modal-overlay hide" onclick="closeModal('post-detail-modal')">
+        <div class="post-detail-card" onclick="event.stopPropagation()">
+            <div class="detail-image-side">
+                <img src="" alt="Post Image" id="detail-modal-img">
+            </div>
+            <div class="detail-comments-side">
+                <!-- Header -->
+                <div class="detail-header">
+                    <div class="detail-user">
+                        <img src="assets/images/user_avatar.png" alt="User Avatar" id="detail-modal-avatar">
+                        <div class="user-meta">
+                            <span class="username" id="detail-modal-username">johndoe</span>
+                            <span class="location" id="detail-modal-location">Rome, Italy</span>
+                        </div>
+                    </div>
+                    <button class="btn-more-options"><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+                <!-- Comments list -->
+                <div class="detail-comments-log scrollable" id="detail-modal-comments-log">
+                    <!-- Dynamic comments list -->
+                </div>
+                <!-- Actions -->
+                <div class="detail-actions-panel">
+                    <div class="actions-buttons-row">
+                        <div class="left-icons">
+                            <button onclick="toggleDetailLike()" id="detail-like-btn"><i class="fa-regular fa-heart"></i></button>
+                            <button onclick="focusDetailCommentInput()"><i class="fa-regular fa-comment"></i></button>
+                            <button><i class="fa-regular fa-paper-plane"></i></button>
+                        </div>
+                        <button onclick="toggleDetailBookmark()" id="detail-bookmark-btn"><i class="fa-regular fa-bookmark"></i></button>
+                    </div>
+                    <div class="likes-count" id="detail-likes-count">1,248 likes</div>
+                    <div class="post-date" id="detail-post-date">1 day ago</div>
+                </div>
+                <!-- Add comment -->
+                <div class="detail-add-comment-input">
+                    <i class="fa-regular fa-face-smile"></i>
+                    <input type="text" placeholder="Add a comment..." id="detail-comment-input" onkeydown="handleDetailCommentKeyDown(event)">
+                    <button class="btn-text-send" onclick="submitDetailComment()">Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: EDIT PROFILE -->
+    <div id="edit-profile-modal" class="modal-overlay hide">
+        <div class="modal-content edit-profile-card">
+            <div class="modal-header">
+                <h3>Edit profile</h3>
+                <button class="btn-close-modal" onclick="closeModal('edit-profile-modal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="edit-avatar-section">
+                    <img src="assets/images/user_avatar.png" alt="Avatar" class="avatar-edit-preview">
+                    <div class="avatar-edit-text">
+                        <span class="username" id="edit-username-placeholder">aesthetic_coder</span>
+                        <button class="btn-text-action text-primary" onclick="simulateAvatarChange()">Change profile photo</button>
+                    </div>
+                </div>
+                <div class="edit-field-group">
+                    <label for="edit-profile-fullname">Name</label>
+                    <input type="text" id="edit-profile-fullname" value="Aesthetic Coder">
+                    <span class="field-hint">Help people discover your account by using the name you're known by: either your full name, nickname, or business name.</span>
+                </div>
+                <div class="edit-field-group">
+                    <label for="edit-profile-bio">Bio</label>
+                    <textarea id="edit-profile-bio" rows="3">💻 Transforming code into beautiful art. &#10;✨ HTML | CSS | Vanilla JS enthusiast.&#10;📍 DeepMind Sandbox</textarea>
+                </div>
+                <div class="edit-actions-row">
+                    <button class="btn-primary" onclick="saveProfileChanges()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- APP LOADER SCREEN (Transitions during login) -->
+    <div id="app-global-loader" class="global-loader-screen hide">
+        <div class="loader-content">
+            <i class="fa-brands fa-instagram loader-icon"></i>
+            <div class="spinner"></div>
+            <div class="loader-meta-logo">
+                <span>from</span>
+                <span class="meta-text">Meta</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

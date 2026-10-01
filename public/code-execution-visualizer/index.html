@@ -1,154 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Code Execution Visualizer | Signature Edition</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body data-theme="dark">
-    <div id="loading-screen" class="loading-screen">
-      <div class="loader-core"></div>
-      <h1>Initializing Signature Learning HUD</h1>
-      <p>Preparing visual execution, memory maps, and call frames...</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Code Execution Visualizer | Learn How Code Runs</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-animation">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-circle c3"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">⚡</span>
+      <span>Code Visualizer</span>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle Theme">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="btn-icon" id="shareBtn" title="Copy Code">
+        <i class="fas fa-share-alt"></i>
+      </button>
+      <button class="btn-icon" id="resetAllBtn" title="Reset Everything">
+        <i class="fas fa-redo"></i>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">Visualize <span class="gradient-text">Code Execution</span></h1>
+      <p class="hero-sub">Step through code line by line and watch variables, call stack, and memory update in real time.</p>
+    </section>
+
+    <!-- Top Bar: Language + Examples + Controls -->
+    <div class="top-bar card">
+
+      <!-- Language Selector -->
+      <div class="lang-selector">
+        <button class="lang-btn active" data-lang="javascript">
+          <span class="lang-icon">🟨</span> JavaScript
+        </button>
+        <button class="lang-btn" data-lang="python">
+          <span class="lang-icon">🐍</span> Python
+        </button>
+        <button class="lang-btn" data-lang="cpp">
+          <span class="lang-icon">⚙️</span> C++
+        </button>
+        <button class="lang-btn" data-lang="java">
+          <span class="lang-icon">☕</span> Java
+        </button>
+      </div>
+
+      <!-- Examples -->
+      <div class="examples-wrap">
+        <div class="custom-select-wrap">
+          <select id="exampleSelect">
+            <option value="">📚 Load Example...</option>
+            <option value="fibonacci">Fibonacci Sequence</option>
+            <option value="factorial">Factorial (Recursion)</option>
+            <option value="bubbleSort">Bubble Sort</option>
+            <option value="binarySearch">Binary Search</option>
+            <option value="stackOps">Stack Operations</option>
+            <option value="closures">Closures & Scope</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Speed -->
+      <div class="speed-wrap">
+        <i class="fas fa-tachometer-alt speed-icon"></i>
+        <input type="range" id="speedSlider" min="1" max="10" value="5"/>
+        <span class="speed-label" id="speedLabel">5x</span>
+      </div>
+
     </div>
 
-    <canvas id="particle-canvas"></canvas>
-    <div id="toast-container" class="toast-container"></div>
+    <!-- Main Visualizer Grid -->
+    <div class="viz-grid">
 
-    <div class="app" id="app-root">
-      <aside class="sidebar glass floating">
-        <div class="brand">
-          <p class="brand-tag">EDU HUD</p>
-          <h1>Code Visualizer</h1>
+      <!-- LEFT: Code Editor -->
+      <div class="editor-panel">
+        <div class="card editor-card">
+          <div class="card-header">
+            <i class="fas fa-code"></i>
+            <h2>Code Editor</h2>
+            <div class="editor-actions">
+              <button class="btn-sm" id="clearCodeBtn" title="Clear Code">
+                <i class="fas fa-trash"></i>
+              </button>
+              <button class="btn-sm" id="formatBtn" title="Format Code">
+                <i class="fas fa-align-left"></i>
+              </button>
+            </div>
+          </div>
+          <div class="editor-wrap">
+            <div class="line-numbers" id="lineNumbers"></div>
+            <textarea id="codeEditor" spellcheck="false"
+              placeholder="// Write or paste your JavaScript code here...
+// Or load an example from the dropdown above
+
+let x = 5;
+let y = 10;
+let sum = x + y;
+console.log(sum);"></textarea>
+            <!-- Execution highlight overlay -->
+            <div class="exec-highlight" id="execHighlight"></div>
+          </div>
+          <!-- Breakpoints indicator -->
+          <div class="breakpoints-hint">
+            <i class="fas fa-circle" style="color:var(--danger)"></i>
+            Click line numbers to add breakpoints
+          </div>
         </div>
 
-        <label class="label" for="preset-select">Preset Programs</label>
-        <select id="preset-select">
-          <option value="variables">1. Variables</option>
-          <option value="loops">2. Loops</option>
-          <option value="arrays">3. Arrays</option>
-          <option value="bubbleSort">4. Bubble Sort</option>
-          <option value="binarySearch">5. Binary Search</option>
-          <option value="recursion">6. Recursion</option>
-        </select>
-        <button id="load-preset-btn" class="btn secondary" data-tooltip="Load selected preset">Load Preset</button>
-
-        <nav class="nav-links">
-          <button data-target="editor-panel">Editor</button>
-          <button data-target="steps-panel">Steps</button>
-          <button data-target="what-panel">What Happened</button>
-          <button data-target="memory-panel">Memory</button>
-          <button data-target="stack-panel">Call Stack</button>
-          <button data-target="recursion-panel">Recursion Tree</button>
-          <button data-target="sort-panel">Sorting</button>
-          <button data-target="complexity-panel">Complexity</button>
-        </nav>
-      </aside>
-
-      <section class="workspace">
-        <header class="topbar glass floating">
-          <div class="topbar-title">
-            <p class="brand-tag">VS Code x LeetCode x HUD</p>
-            <h2>Execution Dashboard</h2>
+        <!-- Execution Controls -->
+        <div class="card controls-card">
+          <div class="ctrl-row">
+            <button class="ctrl-btn" id="resetBtn" title="Reset (R)">
+              <i class="fas fa-step-backward"></i>
+            </button>
+            <button class="ctrl-btn" id="stepBackBtn" title="Step Back (←)">
+              <i class="fas fa-backward"></i>
+            </button>
+            <button class="ctrl-btn play-btn" id="playBtn" title="Play/Pause (Space)">
+              <i class="fas fa-play"></i>
+            </button>
+            <button class="ctrl-btn" id="stepFwdBtn" title="Step Forward (→)">
+              <i class="fas fa-forward"></i>
+            </button>
+            <button class="ctrl-btn run-btn" id="runBtn" title="Run All">
+              <i class="fas fa-bolt"></i> Run
+            </button>
           </div>
-          <div class="header-metrics">
-            <div class="metric"><span>Status</span><strong id="run-status">Idle</strong></div>
-            <div class="metric"><span>Current Line</span><strong id="current-line">-</strong></div>
-            <div class="metric"><span>Step</span><strong id="step-count">0</strong></div>
-          </div>
-          <div class="quick-actions">
-            <button id="theme-toggle" class="btn ghost" data-tooltip="Toggle dark or light">Theme</button>
-            <button id="focus-mode-btn" class="btn ghost" data-tooltip="Focus workspace only">Focus Mode</button>
-            <button id="fullscreen-btn" class="btn ghost" data-tooltip="Browser fullscreen">Fullscreen</button>
-          </div>
-        </header>
-
-        <main class="dashboard-grid">
-          <section id="editor-panel" class="panel glass floating active-panel">
-            <div class="panel-head"><h3>Code Editor</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
-            <div class="panel-body">
-              <div class="editor-wrap" id="editor-wrap">
-                <div id="line-numbers" class="line-numbers"></div>
-                <div class="code-layer">
-                  <pre id="syntax-view" class="syntax-view"></pre>
-                  <textarea id="code-input" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
-                  <div id="execution-line" class="execution-line"></div>
-                </div>
-              </div>
-              <div id="line-highlight" class="line-highlight">Waiting for execution...</div>
+          <div class="step-info">
+            <span class="step-counter" id="stepCounter">Step 0 / 0</span>
+            <div class="step-progress">
+              <div class="step-prog-fill" id="stepProgFill"></div>
             </div>
-          </section>
+          </div>
+        </div>
 
-          <section class="panel glass floating control-panel">
-            <div class="panel-head"><h3>Controls</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
-            <div class="panel-body">
-              <div class="controls">
-                <button id="run-btn" class="btn primary" data-tooltip="Space">Run</button>
-                <button id="pause-btn" class="btn secondary" data-tooltip="Space">Pause</button>
-                <button id="next-btn" class="btn secondary" data-tooltip="N">Next</button>
-                <button id="reset-btn" class="btn danger" data-tooltip="R">Reset</button>
-              </div>
-              <label class="slider-wrap" for="speed-slider">
-                Playback Speed
-                <input id="speed-slider" type="range" min="1" max="10" value="5" />
-                <span id="speed-value">5x</span>
-              </label>
-              <div id="execution-log" class="console"></div>
+        <!-- Console Output -->
+        <div class="card console-card">
+          <div class="card-header">
+            <i class="fas fa-terminal"></i>
+            <h2>Console Output</h2>
+            <button class="btn-sm" id="clearConsole">
+              <i class="fas fa-broom"></i>
+            </button>
+          </div>
+          <div class="console-output" id="consoleOutput">
+            <div class="console-placeholder">
+              <i class="fas fa-terminal"></i>
+              <span>Output will appear here...</span>
             </div>
-          </section>
+          </div>
+        </div>
 
-          <section id="steps-panel" class="panel glass floating">
-            <div class="panel-head"><h3>Execution Steps</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
-            <div class="panel-body"><ul id="step-list" class="step-list"></ul></div>
-          </section>
+      </div>
 
-          <section id="what-panel" class="panel glass floating">
-            <div class="panel-head"><h3>What Happened?</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
-            <div class="panel-body"><div id="what-happened" class="what-happened"></div></div>
-          </section>
+      <!-- CENTER: Step Explanation -->
+      <div class="explain-panel">
 
-          <section id="memory-panel" class="panel glass floating">
-            <div class="panel-head"><h3>Variable Memory</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
-            <div class="panel-body"><div id="memory-view" class="memory-grid"></div></div>
-          </section>
+        <!-- Current Step Explanation -->
+        <div class="card explain-card">
+          <div class="card-header">
+            <i class="fas fa-lightbulb"></i>
+            <h2>What's Happening</h2>
+          </div>
+          <div class="explain-content" id="explainContent">
+            <div class="explain-placeholder">
+              <div class="explain-icon">🎯</div>
+              <p>Press <strong>Run</strong> or <strong>Step Forward</strong> to start visualizing your code.</p>
+            </div>
+          </div>
+        </div>
 
-          <section id="stack-panel" class="panel glass floating">
-            <div class="panel-head"><h3>Call Stack</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
-            <div class="panel-body"><div id="stack-view" class="stack-view"></div></div>
-          </section>
+        <!-- Execution Timeline -->
+        <div class="card timeline-card">
+          <div class="card-header">
+            <i class="fas fa-history"></i>
+            <h2>Execution Timeline</h2>
+            <button class="btn-sm" id="clearTimeline">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="timeline-list" id="timelineList">
+            <div class="timeline-empty">
+              <i class="fas fa-stream"></i>
+              <span>Steps will appear here during execution</span>
+            </div>
+          </div>
+        </div>
 
-          <section class="panel glass floating">
-            <div class="panel-head"><h3>Loop Timeline</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
-            <div class="panel-body"><div id="loop-timeline" class="timeline"></div></div>
-          </section>
+      </div>
 
-          <section class="panel glass floating">
-            <div class="panel-head"><h3>Array Visualization</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
-            <div class="panel-body"><div id="array-view" class="array-view"></div></div>
-          </section>
+      <!-- RIGHT: Variable Tracker + Call Stack + Memory -->
+      <div class="state-panel">
 
-          <section id="sort-panel" class="panel glass floating">
-            <div class="panel-head"><h3>Sorting Animation</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
-            <div class="panel-body"><div id="sort-bars" class="sort-bars"></div></div>
-          </section>
+        <!-- Variable Tracker -->
+        <div class="card vars-card">
+          <div class="card-header">
+            <i class="fas fa-database"></i>
+            <h2>Variables</h2>
+            <span class="var-count" id="varCount">0</span>
+          </div>
+          <div class="vars-list" id="varsList">
+            <div class="vars-empty" id="varsEmpty">
+              <i class="fas fa-box-open"></i>
+              <span>No variables yet</span>
+            </div>
+          </div>
+        </div>
 
-          <section id="recursion-panel" class="panel glass floating">
-            <div class="panel-head"><h3>Recursion Tree</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
-            <div class="panel-body"><div id="recursion-tree" class="recursion-tree"></div></div>
-          </section>
+        <!-- Call Stack -->
+        <div class="card stack-card">
+          <div class="card-header">
+            <i class="fas fa-layer-group"></i>
+            <h2>Call Stack</h2>
+            <span class="stack-depth" id="stackDepth">Empty</span>
+          </div>
+          <div class="stack-list" id="stackList">
+            <div class="stack-empty" id="stackEmpty">
+              <i class="fas fa-layer-group"></i>
+              <span>Call stack is empty</span>
+            </div>
+          </div>
+        </div>
 
-          <section id="complexity-panel" class="panel glass floating">
-            <div class="panel-head"><h3>Complexity Estimator</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
-            <div class="panel-body"><div id="complexity-view" class="complexity-view"></div></div>
-          </section>
-        </main>
-      </section>
+        <!-- Memory / Heap -->
+        <div class="card memory-card">
+          <div class="card-header">
+            <i class="fas fa-memory"></i>
+            <h2>Heap Memory</h2>
+          </div>
+          <div class="memory-grid" id="memoryGrid">
+            <div class="memory-empty" id="memoryEmpty">
+              <i class="fas fa-microchip"></i>
+              <span>No objects allocated</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Panel -->
+        <div class="card error-card hidden" id="errorCard">
+          <div class="card-header">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h2>Error</h2>
+          </div>
+          <div class="error-content" id="errorContent"></div>
+        </div>
+
+      </div>
+
     </div>
 
-    <script src="script.js"></script>
-  </body>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="toast-icon fas fa-check-circle"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>

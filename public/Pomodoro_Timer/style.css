@@ -145,15 +145,25 @@ body {
 .stat-divider { width:1px; height:24px; background:rgba(255,255,255,0.25); }
 
 /* ─── Weekly bar chart ──────────────────────────────────────────────────────── */
+.weekly-chart-wrap {
+    margin-bottom:14px;
+}
 .weekly-chart {
     display:flex; align-items:flex-end; justify-content:center;
-    gap:6px; height:52px;
+    gap:6px;
     background:rgba(0,0,0,0.10); border-radius:10px;
-    padding:8px 14px 6px; margin-bottom:14px;
+    padding:28px 14px 6px; /* top padding leaves room for count labels */
+    position:relative;
+    min-height:72px;
 }
 .wk-bar-wrap {
     display:flex; flex-direction:column; align-items:center;
     gap:3px; flex:1; max-width:44px;
+    position:relative;
+}
+.wk-count {
+    font-size:10px; font-weight:700; color:rgba(255,255,255,0.8);
+    min-height:14px; line-height:14px; text-align:center;
 }
 .wk-bar {
     width:100%; border-radius:4px 4px 0 0;
@@ -162,11 +172,19 @@ body {
     min-height:3px;
 }
 .wk-bar.today { background:rgba(255,255,255,0.75); }
+.wk-bar.best  { background:rgba(255,220,80,0.85); } /* gold for best day */
+.wk-bar.today.best { background:rgba(255,230,100,0.9); }
 .wk-label {
     font-size:10px; color:rgba(255,255,255,0.55);
     font-weight:600; text-transform:uppercase; letter-spacing:0.3px;
 }
 .wk-label.today { color:rgba(255,255,255,0.9); }
+
+.best-day-label {
+    text-align:center; font-size:11px;
+    color:rgba(255,255,255,0.55); margin-top:4px;
+    min-height:16px;
+}
 
 /* ─── Timer card ───────────────────────────────────────────────────────────────── */
 .timer-card {
@@ -206,9 +224,7 @@ body {
     transition:background 0.3s, transform 0.3s, opacity 0.3s;
 }
 .dot.filled { background:rgba(255,255,255,0.9); transform:scale(1.15); }
-.dot.clearing {
-    transform:scale(0); opacity:0;
-}
+.dot.clearing { transform:scale(0); opacity:0; }
 
 .controls { display:flex; justify-content:center; align-items:center; gap:16px; }
 .ctrl-btn {
@@ -234,6 +250,111 @@ body {
 .task-info { text-align:center; margin:16px 0 14px; }
 .task-number  { font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:4px; }
 .task-current { font-size:16px; font-weight:600; }
+
+/* ─── Session History Drawer ────────────────────────────────────────────────── */
+.history-section {
+    width:100%; margin-bottom:16px;
+    background:rgba(0,0,0,0.12); border-radius:12px;
+    overflow:hidden;
+}
+
+.history-toggle {
+    width:100%; background:none; border:none; color:white;
+    padding:14px 16px; cursor:pointer;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:14px; font-weight:700;
+    transition:background 0.2s;
+}
+.history-toggle:hover { background:rgba(255,255,255,0.06); }
+
+.history-chevron {
+    font-size:18px; transition:transform 0.25s;
+    color:rgba(255,255,255,0.6);
+}
+.history-toggle[aria-expanded="true"] .history-chevron { transform:rotate(180deg); }
+
+.history-drawer {
+    padding:0 14px 14px;
+    animation:slideDown 0.2s ease;
+}
+.history-drawer[hidden] { display:none; }
+@keyframes slideDown { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+
+.history-controls {
+    display:flex; justify-content:flex-end; margin-bottom:10px;
+}
+.history-clear-btn {
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+    border-radius:6px; color:rgba(255,255,255,0.65);
+    font-size:12px; font-weight:600; padding:5px 12px;
+    cursor:pointer; transition:background 0.15s, color 0.15s;
+}
+.history-clear-btn:hover { background:rgba(255,80,80,0.18); color:#ff9999; border-color:rgba(255,80,80,0.3); }
+
+.history-list {
+    display:flex; flex-direction:column; gap:0;
+    max-height:360px; overflow-y:auto;
+}
+.history-list::-webkit-scrollbar { width:4px; }
+.history-list::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.2); border-radius:4px; }
+
+.history-empty {
+    text-align:center; padding:24px 16px;
+    color:rgba(255,255,255,0.45); font-size:13px; line-height:1.6;
+}
+
+/* Date group */
+.history-group { margin-bottom:10px; }
+.history-group:last-child { margin-bottom:0; }
+
+.history-group-header {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:6px 2px 4px;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+    margin-bottom:6px;
+}
+.history-date { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:rgba(255,255,255,0.5); }
+.history-date-count { font-size:12px; font-weight:700; color:rgba(255,255,255,0.7); }
+
+/* Individual history items */
+.history-item {
+    display:flex; align-items:center; gap:10px;
+    padding:8px 6px; border-radius:8px;
+    transition:background 0.15s;
+    margin-bottom:2px;
+}
+.history-item:hover { background:rgba(255,255,255,0.06); }
+.history-item.history-skipped { opacity:0.6; }
+
+.history-item-emoji { font-size:18px; flex-shrink:0; width:24px; text-align:center; }
+
+.history-item-info {
+    flex:1; display:flex; flex-direction:column; gap:2px;
+    min-width:0;
+}
+.history-item-type {
+    font-size:13px; font-weight:600; color:rgba(255,255,255,0.9);
+    display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+}
+.history-item-dur {
+    font-size:11px; color:rgba(255,255,255,0.45);
+}
+.history-item-time {
+    font-size:11px; color:rgba(255,255,255,0.4); white-space:nowrap; flex-shrink:0;
+}
+
+/* Tags inside history items */
+.history-tag-skipped {
+    font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.4px;
+    background:rgba(255,160,60,0.2); color:rgba(255,190,80,0.9);
+    border-radius:4px; padding:1px 5px;
+}
+.history-task-name {
+    font-size:10px; font-weight:600;
+    background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.65);
+    border-radius:4px; padding:1px 6px;
+    max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
 
 /* ─── Task section ──────────────────────────────────────────────────────────────── */
 .task-section { width:100%; }
@@ -373,5 +494,6 @@ body {
     #startBtn { padding:12px 36px; font-size:18px; min-width:130px; }
     .stats-bar { font-size:13px; gap:12px; }
     .music-grid { grid-template-columns:1fr; }
-    .weekly-chart { gap:4px; padding:8px 8px 6px; }
+    .weekly-chart { gap:4px; padding:28px 8px 6px; }
+    .history-task-name { max-width:100px; }
 }

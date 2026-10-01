@@ -1,0 +1,230 @@
+:root {
+  --bg-dark-space: #070a13;
+  --bg-surface-card: #0f1424;
+  --bg-inner-panel: #171f35;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --text-primary: #f8fafc;
+  --text-muted: #64748b;
+  --color-bullish: #10b981;
+  --color-bearish: #ef4444;
+  --accent-blue: #3b82f6;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background-color: var(--bg-dark-space);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.dashboard-container {
+  width: 100%;
+  max-width: 1040px;
+}
+
+/* App Header Alignment Layout */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.brand-info h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(to right, #3b82f6, #06b6d4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-info p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 0.3rem;
+}
+
+/* Sync Pricing Interface Trigger */
+.refresh-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--accent-blue);
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.refresh-action-btn:hover {
+  background-color: #2563eb;
+}
+
+.refresh-action-btn:active {
+  transform: scale(0.98);
+}
+
+.refresh-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+/* Crypto Dash Fluid Grid Architecture */
+.crypto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Token Dashboard Card Module Elements */
+.coin-card {
+  background-color: var(--bg-surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.coin-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.coin-identity-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.coin-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.coin-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.coin-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.coin-symbol {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  background: var(--bg-inner-panel);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  margin-left: 0.4rem;
+}
+
+.market-cap-rank {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  background: rgba(59, 130, 246, 0.1);
+  padding: 0.25rem 0.6rem;
+  border-radius: 1rem;
+}
+
+/* Card Price Display Layouts */
+.price-display-row {
+  margin-bottom: 1.25rem;
+}
+
+.coin-price {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Market Valuation Metrics Lists */
+.metrics-box {
+  background-color: var(--bg-inner-panel);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.metric-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.metric-line .label-span {
+  color: var(--text-muted);
+}
+
+.metric-line .value-span {
+  font-weight: 600;
+}
+
+.bullish {
+  color: var(--color-bullish);
+}
+.bearish {
+  color: var(--color-bearish);
+}
+
+/* System Status Messaging Alerts */
+.status-alert {
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--bg-surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.hidden {
+  display: none !important;
+}

@@ -319,8 +319,14 @@ function startGame() {
   players[0].name = p1n;
   players[1].name = p2n;
 
-  document.getElementById('p1-display-name').textContent = p1n;
-  document.getElementById('p2-display-name').textContent = p2n;
+  // Check AI mode
+  aiEnabled = document.getElementById('play-with-ai')?.checked || false;
+  if (aiEnabled) {
+    players[1].name = "AI Bot 🤖";
+  }
+
+  document.getElementById('p1-display-name').textContent = players[0].name;
+  document.getElementById('p2-display-name').textContent = players[1].name;
 
   document.getElementById('setup-screen').classList.remove('active');
   document.getElementById('game-screen').classList.add('active');
@@ -334,8 +340,14 @@ function startGame() {
     renderTokens();
     updateUI();
     addLog(`🎮 Game started! ${players[0].name} goes first.`, 'p1');
+
+    // If AI is enabled and AI goes first (rare case if you want AI as Player 1)
+    if (aiEnabled && currentPlayer === 1) {
+      setTimeout(() => rollDice(), 800);
+    }
   }, 100);
 }
+
 
 function updateUI() {
   players.forEach((p, i) => {
@@ -441,6 +453,12 @@ async function processMove(roll) {
   currentPlayer = 1 - currentPlayer;
   isAnimating = false;
   updateUI();
+
+  if (aiEnabled && currentPlayer === 1 && gameActive) {
+    setTimeout(() => {
+      rollDice(); 
+    }, 1000); 
+  }
 }
 
 async function animateMove(player, from, to) {
@@ -543,3 +561,32 @@ window.addEventListener('resize', () => {
     renderTokens();
   }
 });
+
+const themeToggles = document.querySelectorAll(".theme");
+const themeIcon = document.getElementById("themeIcon");
+
+// Default = DARK MODE
+let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+
+// Apply theme on load
+function updateTheme() {
+  if (isLightMode) {
+    document.body.classList.add("light-theme");
+    themeIcon.textContent = "🌙"; // show moon when light mode active
+  } else {
+    document.body.classList.remove("light-theme");
+    themeIcon.textContent = "☀️"; // show sun when dark mode active
+  }
+}
+
+// Toggle theme on any button click
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    isLightMode = !isLightMode;
+    localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+    updateTheme();
+  });
+});
+
+// Initialize on page load
+updateTheme();

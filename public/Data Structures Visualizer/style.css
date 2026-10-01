@@ -39,10 +39,64 @@ html {
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: #0B1110;
+    background: var(--bg-dark);
     color: var(--text-primary);
     min-height: 100vh;
     overflow-x: hidden;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Light theme overrides */
+body.light-theme {
+    --bg-dark: #F3FBF7;
+    --bg-dark-2: #E8F7F0;
+    --bg-glass: rgba(235, 247, 242, 0.85);
+    --bg-glass-light: rgba(220, 240, 232, 0.7);
+    
+    --text-primary: #122820;
+    --text-secondary: #3D5A4F;
+    --text-tertiary: #627F74;
+    
+    --shadow-sm: 0 8px 24px rgba(18, 40, 32, 0.06);
+    --shadow-md: 0 16px 38px rgba(18, 40, 32, 0.09);
+    --shadow-lg: 0 28px 64px rgba(18, 40, 32, 0.12);
+    --border-soft: rgba(39, 216, 156, 0.25);
+    --surface-card: #FFFFFF;
+    
+    --color-primary: #15803D; /* Darker green for accessibility */
+    --color-secondary: #16A34A;
+    --color-accent: #22C55E;
+}
+
+body.light-theme .hero-title {
+    background: linear-gradient(135deg, #122820 0%, #16A34A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body.light-theme .array-container {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 18px 44px rgba(18, 40, 32, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    border-color: rgba(39, 216, 156, 0.25);
+}
+
+body.light-theme .size-input,
+body.light-theme .stack-input,
+body.light-theme .queue-input,
+body.light-theme .ll-input,
+body.light-theme .search-input {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(39, 216, 156, 0.3);
+    color: #122820;
+}
+
+body.light-theme .size-input:focus,
+body.light-theme .stack-input:focus,
+body.light-theme .queue-input:focus,
+body.light-theme .ll-input:focus,
+body.light-theme .search-input:focus {
+    background: #FFFFFF;
 }
 
 .background-glow {

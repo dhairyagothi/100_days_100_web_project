@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styleguide — Design System | SEO Agency</title>
+    <meta name="description" content="Our brand design system — colors, typography, components, and UI patterns used across the SEO Agency website.">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* HERO */
+        .sg-hero {
+            background: linear-gradient(135deg, #0f172a, #111827, #1e1b4b);
+            color: white; padding: 110px 0 80px;
+            position: relative; overflow: hidden;
+        }
+        .sg-hero::before {
+            content: ''; position: absolute;
+            width: 700px; height: 700px;
+            background: conic-gradient(from 0deg, rgba(139,92,246,0.2), rgba(99,102,241,0.15), rgba(236,72,153,0.1), rgba(139,92,246,0.2));
+            filter: blur(100px); top: -200px; left: 50%; transform: translateX(-50%);
+        }
+        .sg-hero-content { position: relative; z-index: 2; text-align: center; }
+        .page-badge {
+            display: inline-block; padding: 8px 20px; border-radius: 30px;
+            background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3);
+            color: #c4b5fd; font-size: 14px; font-weight: 600; margin-bottom: 24px; letter-spacing: 1px;
+        }
+        .sg-hero h1 { font-size: 56px; font-weight: 800; margin-bottom: 18px; }
+        .sg-hero h1 span { color: #8b5cf6; }
+        .sg-hero p { font-size: 17px; color: #cbd5e1; max-width: 580px; margin: 0 auto; line-height: 1.8; }
+
+        /* LAYOUT */
+        .sg-body { background: #f8fafc; padding: 70px 0; }
+        .sg-layout { display: grid; grid-template-columns: 220px 1fr; gap: 50px; align-items: start; }
+
+        /* SIDEBAR NAV */
+        .sg-nav {
+            background: white; border-radius: 20px; padding: 28px;
+            border: 1px solid #e2e8f0; position: sticky; top: 80px;
+        }
+        .sg-nav h6 { font-size: 11px; font-weight: 700; color: #94a3b8; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; margin-top: 20px; }
+        .sg-nav h6:first-child { margin-top: 0; }
+        .sg-nav a {
+            display: block; padding: 8px 12px; border-radius: 10px;
+            color: #374151; font-size: 14px; font-weight: 600;
+            text-decoration: none; transition: 0.2s; margin-bottom: 2px;
+        }
+        .sg-nav a:hover, .sg-nav a.active { background: rgba(139,92,246,0.1); color: #8b5cf6; }
+
+        /* SECTIONS */
+        .sg-section {
+            background: white; border-radius: 24px; padding: 44px;
+            border: 1px solid #e2e8f0; margin-bottom: 28px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+        .sg-section-title {
+            font-size: 22px; font-weight: 800; color: #111827;
+            margin-bottom: 6px;
+            padding-bottom: 16px; border-bottom: 2px solid #f1f5f9;
+            margin-bottom: 30px; display: flex; align-items: center; gap: 10px;
+        }
+        .sg-section-title span { font-size: 20px; }
+
+        /* COLORS */
+        .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 14px; }
+        .color-swatch { border-radius: 14px; overflow: hidden; border: 1px solid #e2e8f0; }
+        .swatch-block { height: 80px; }
+        .swatch-info { padding: 10px 12px; background: white; }
+        .swatch-info h6 { font-size: 12px; font-weight: 700; color: #111827; margin-bottom: 2px; }
+        .swatch-info p  { font-size: 11px; color: #94a3b8; margin: 0; font-family: monospace; }
+
+        /* TYPOGRAPHY */
+        .type-row { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid #f1f5f9; }
+        .type-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .type-label { font-size: 12px; font-weight: 700; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+        .type-sample { color: #111827; }
+        .type-meta { font-size: 12px; color: #94a3b8; margin-top: 6px; font-family: monospace; }
+
+        /* BUTTONS */
+        .btn-showcase { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+        .btn-showcase .btn { cursor: default; }
+        .sg-btn-outline {
+            padding: 13px 28px; border-radius: 12px; font-weight: 600;
+            border: 2px solid #8b5cf6; color: #8b5cf6; background: transparent;
+            text-decoration: none; display: inline-block; transition: 0.3s;
+        }
+        .sg-btn-ghost {
+            padding: 13px 28px; border-radius: 12px; font-weight: 600;
+            border: 2px solid #e2e8f0; color: #64748b; background: transparent;
+            text-decoration: none; display: inline-block; transition: 0.3s;
+        }
+        .sg-btn-danger {
+            padding: 13px 28px; border-radius: 12px; font-weight: 600;
+            border: none; color: white; background: #ef4444;
+            text-decoration: none; display: inline-block; transition: 0.3s;
+        }
+        .sg-btn-sm { padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; }
+
+        /* ICONS */
+        .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 14px; }
+        .icon-item {
+            background: #f8fafc; border-radius: 14px; padding: 20px 10px;
+            text-align: center; border: 1px solid #e2e8f0; transition: 0.3s;
+        }
+        .icon-item:hover { background: rgba(139,92,246,0.08); border-color: #c4b5fd; }
+        .icon-item i { font-size: 22px; color: #8b5cf6; display: block; margin-bottom: 8px; }
+        .icon-item span { font-size: 11px; color: #94a3b8; font-weight: 600; }
+
+        /* CARDS */
+        .card-showcase { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+        .demo-card { background: #f8fafc; border-radius: 16px; padding: 24px; border: 1px solid #e2e8f0; }
+        .demo-card.elevated { box-shadow: 0 8px 30px rgba(0,0,0,0.08); background: white; }
+        .demo-card.gradient-card { background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; border: none; }
+        .demo-card.gradient-card p { color: rgba(255,255,255,0.8); }
+        .demo-card h4 { font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 8px; }
+        .demo-card p  { font-size: 14px; color: #64748b; margin: 0; line-height: 1.6; }
+        .gradient-card h4 { color: white; }
+
+        /* BADGES */
+        .badge-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .sg-badge { padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+        .badge-purple { background: rgba(139,92,246,0.1); color: #8b5cf6; }
+        .badge-blue   { background: rgba(59,130,246,0.1);  color: #3b82f6; }
+        .badge-green  { background: rgba(16,185,129,0.1);  color: #10b981; }
+        .badge-yellow { background: rgba(245,158,11,0.1);  color: #f59e0b; }
+        .badge-red    { background: rgba(239,68,68,0.1);   color: #ef4444; }
+        .badge-dark   { background: #1e293b; color: #94a3b8; }
+
+        /* FORM ELEMENTS */
+        .form-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .sg-input-group { display: flex; flex-direction: column; gap: 8px; }
+        .sg-input-group label { font-size: 13px; font-weight: 700; color: #374151; }
+        .sg-input-group input,
+        .sg-input-group select {
+            padding: 13px 16px; border: 2px solid #e2e8f0; border-radius: 10px;
+            font-size: 15px; outline: none; font-family: 'Inter', sans-serif; color: #111827;
+            transition: border-color 0.3s;
+        }
+        .sg-input-group input:focus,
+        .sg-input-group select:focus { border-color: #8b5cf6; }
+        .input-focused { border-color: #8b5cf6 !important; box-shadow: 0 0 0 4px rgba(139,92,246,0.1); }
+        .input-error   { border-color: #ef4444 !important; }
+
+        /* ALERTS */
+        .alert-row { display: flex; flex-direction: column; gap: 14px; }
+        .sg-alert {
+            padding: 16px 20px; border-radius: 14px;
+            display: flex; align-items: flex-start; gap: 14px;
+            font-size: 14px; line-height: 1.6;
+        }
+        .sg-alert i { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+        .alert-info    { background: rgba(59,130,246,0.08);  border: 1px solid rgba(59,130,246,0.2);  color: #1d4ed8; }
+        .alert-success { background: rgba(16,185,129,0.08);  border: 1px solid rgba(16,185,129,0.2);  color: #065f46; }
+        .alert-warning { background: rgba(245,158,11,0.08);  border: 1px solid rgba(245,158,11,0.25); color: #92400e; }
+        .alert-danger  { background: rgba(239,68,68,0.08);   border: 1px solid rgba(239,68,68,0.2);   color: #991b1b; }
+
+        /* SPACING */
+        .spacing-demo { display: flex; flex-direction: column; gap: 12px; }
+        .space-bar-wrap { display: flex; align-items: center; gap: 16px; }
+        .space-bar { background: linear-gradient(135deg, #8b5cf6, #6366f1); border-radius: 8px; height: 20px; }
+        .space-label { font-size: 13px; color: #64748b; font-family: monospace; min-width: 70px; }
+
+        /* GRADIENTS */
+        .gradient-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+        .grad-swatch { height: 80px; border-radius: 14px; }
+        .grad-label { font-size: 12px; color: #64748b; font-weight: 600; margin-top: 8px; text-align: center; }
+
+        /* FOOTER */
+        .footer-section { background: linear-gradient(135deg, #020617, #0f172a, #111827); color: white; padding: 50px 0 25px; }
+        .footer-section h5 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+        .footer-section p, .footer-section a { color: #cbd5e1; line-height: 1.9; text-decoration: none; }
+        .footer-section a:hover { color: #8b5cf6; }
+        .social-icons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .social-icons a { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: white; transition: 0.3s; }
+        .social-icons a:hover { background: #8b5cf6; transform: translateY(-3px); }
+
+        @media (max-width: 1000px) { .sg-layout { grid-template-columns: 1fr; } .sg-nav { position: static; } }
+        @media (max-width: 768px) {
+            .sg-hero h1 { font-size: 36px; }
+            .form-demo { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" id="navbar">
+        <a class="navbar-brand" href="index.html">WEB TEMPLATE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown">Service List</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="seo.html">SEO Optimization</a>
+                        <a class="dropdown-item" href="cm.html">Content Marketing</a>
+                        <a class="dropdown-item" href="google-ads.html">Google Ads</a>
+                        <a class="dropdown-item" href="web-development.html">Web Development</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="case-study.html">Case Study</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link active" href="styleguide.html">Styleguide</a></li>
+                <li class="nav-item ml-3"><button id="theme-toggle">🌙</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="sg-hero">
+        <div class="container sg-hero-content">
+            <span class="page-badge">🎨 DESIGN SYSTEM</span>
+            <h1>Brand <span>Styleguide</span></h1>
+            <p>Our complete design language — colors, typography, components, and patterns that create a consistent, premium experience across every page.</p>
+        </div>
+    </header>
+
+    <!-- Body -->
+    <div class="sg-body">
+        <div class="container">
+            <div class="sg-layout">
+
+                <!-- Sidebar -->
+                <nav class="sg-nav">
+                    <h6>Foundations</h6>
+                    <a href="#colors" class="active">Colors</a>
+                    <a href="#typography">Typography</a>
+                    <a href="#gradients">Gradients</a>
+                    <a href="#spacing">Spacing</a>
+                    <h6>Components</h6>
+                    <a href="#buttons">Buttons</a>
+                    <a href="#badges">Badges</a>
+                    <a href="#cards">Cards</a>
+                    <a href="#alerts">Alerts</a>
+                    <a href="#forms">Form Elements</a>
+                    <a href="#icons">Icons</a>
+                </nav>
+
+                <!-- Content -->
+                <div>
+
+                    <!-- COLORS -->
+                    <div class="sg-section" id="colors">
+                        <h2 class="sg-section-title"><span>🎨</span> Color Palette</h2>
+                        <p style="color:#64748b;margin-bottom:28px;font-size:15px;">Our curated color system built on HSL values for harmonious relationships across all UI elements.</p>
+                        <div class="color-grid">
+                            <div class="color-swatch"><div class="swatch-block" style="background:#8b5cf6"></div><div class="swatch-info"><h6>Primary</h6><p>#8b5cf6</p></div></div>
+                            <div class="color-swatch"><div class="swatch-block" style="background:#6366f1"></div><div class="swatch-info"><h6>Indigo</h6><p>#6366f1</p></div></div>
+                            <div class="color-swatch"><div class="swatch-block" style="background:#3b82f6"></div><div class="swatch-info"><h6>Blue</h6><p>#3b82f6</p></div></div>
+                            <div class="color-swatch"><div class="swatch-block" style="background:#10b981"></div><div class="swatch-info"><h6>Emerald</h6><p>#10b981</p></div></div>
+                            <div class="color-swatch"><div class="swatch-block" style="background:#f59e0b"></div><div class="swatch-info"><h6>Amber</h6><p>#f59e0b</p></div></div>
+                            <div class="color-swatch"><div class="swatch-block" style="background:#ef4444"></div><div class="swatch-info"><h6>Red</h6><p>#ef4444</p></div></div>
+                            <div class="color-swatch"><div class="swatch-block" style="background:#ec4899"></div><div class="swatch-info"><h6>Pink</h6><p>#ec4899</p></div></div>
+                            <div class="color-swatch"><div class="swatch-block" style="background:#111827"></div><div class="swatch-info"><h6>Dark</h6><p>#111827</p></div></div>
+                            <div class="color-swatch"><div class="swatch-block" style="background:#64748b"></div><div class="swatch-info"><h6>Slate</h6><p>#64748b</p></div></div>
+                            <div class="color-swatch"><div class="swatch-block" style="background:#e2e8f0"></div><div class="swatch-info"><h6>Border</h6><p>#e2e8f0</p></div></div>
+                            <div class="color-swatch"><div class="swatch-block" style="background:#f8fafc"></div><div class="swatch-info"><h6>Surface</h6><p>#f8fafc</p></div></div>
+                            <div class="color-swatch"><div class="swatch-block" style="background:#ffffff;border:1px solid #e2e8f0"></div><div class="swatch-info"><h6>White</h6><p>#ffffff</p></div></div>
+                        </div>
+                    </div>
+
+                    <!-- TYPOGRAPHY -->
+                    <div class="sg-section" id="typography">
+                        <h2 class="sg-section-title"><span>✏️</span> Typography</h2>
+                        <p style="color:#64748b;margin-bottom:28px;font-size:15px;">Font family: <strong>Inter</strong> — a modern, geometric sans-serif designed for screen readability.</p>
+                        <div class="type-row">
+                            <div class="type-label">HEADING 1</div>
+                            <div class="type-sample" style="font-size:56px;font-weight:800;line-height:1.1;">The Quick Brown Fox</div>
+                            <div class="type-meta">56px / Weight 800 / Line height 1.1</div>
+                        </div>
+                        <div class="type-row">
+                            <div class="type-label">HEADING 2</div>
+                            <div class="type-sample" style="font-size:44px;font-weight:800;line-height:1.2;">The Quick Brown Fox</div>
+                            <div class="type-meta">44px / Weight 800 / Line height 1.2</div>
+                        </div>
+                        <div class="type-row">
+                            <div class="type-label">HEADING 3</div>
+                            <div class="type-sample" style="font-size:30px;font-weight:700;">The Quick Brown Fox Jumps</div>
+                            <div class="type-meta">30px / Weight 700</div>
+                        </div>
+                        <div class="type-row">
+                            <div class="type-label">HEADING 4</div>
+                            <div class="type-sample" style="font-size:22px;font-weight:700;">The Quick Brown Fox Jumps Over The Lazy</div>
+                            <div class="type-meta">22px / Weight 700</div>
+                        </div>
+                        <div class="type-row">
+                            <div class="type-label">BODY LARGE</div>
+                            <div class="type-sample" style="font-size:18px;color:#64748b;line-height:1.8;">The quick brown fox jumps over the lazy dog. This is body text for hero descriptions and important paragraphs.</div>
+                            <div class="type-meta">18px / Weight 400 / Color: #64748b / Line height 1.8</div>
+                        </div>
+                        <div class="type-row">
+                            <div class="type-label">BODY REGULAR</div>
+                            <div class="type-sample" style="font-size:15px;color:#64748b;line-height:1.7;">The quick brown fox jumps over the lazy dog. Standard body text used throughout sections and card descriptions.</div>
+                            <div class="type-meta">15px / Weight 400 / Color: #64748b / Line height 1.7</div>
+                        </div>
+                        <div class="type-row">
+                            <div class="type-label">CAPTION / LABEL</div>
+                            <div class="type-sample" style="font-size:12px;font-weight:700;color:#94a3b8;letter-spacing:2px;text-transform:uppercase;">SECTION LABEL — ALL CAPS</div>
+                            <div class="type-meta">12px / Weight 700 / Uppercase / Letter spacing 2px</div>
+                        </div>
+                    </div>
+
+                    <!-- GRADIENTS -->
+                    <div class="sg-section" id="gradients">
+                        <h2 class="sg-section-title"><span>🌈</span> Gradients</h2>
+                        <div class="gradient-grid">
+                            <div><div class="grad-swatch" style="background:linear-gradient(135deg,#8b5cf6,#6366f1)"></div><div class="grad-label">Primary Gradient</div></div>
+                            <div><div class="grad-swatch" style="background:linear-gradient(135deg,#0f172a,#111827,#1e1b4b)"></div><div class="grad-label">Hero Dark</div></div>
+                            <div><div class="grad-swatch" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)"></div><div class="grad-label">Blue</div></div>
+                            <div><div class="grad-swatch" style="background:linear-gradient(135deg,#10b981,#059669)"></div><div class="grad-label">Emerald</div></div>
+                            <div><div class="grad-swatch" style="background:linear-gradient(135deg,#f59e0b,#d97706)"></div><div class="grad-label">Amber</div></div>
+                            <div><div class="grad-swatch" style="background:linear-gradient(135deg,#ec4899,#8b5cf6)"></div><div class="grad-label">Pink–Purple</div></div>
+                            <div><div class="grad-swatch" style="background:linear-gradient(135deg,#020617,#0f172a,#111827)"></div><div class="grad-label">Footer Dark</div></div>
+                            <div><div class="grad-swatch" style="background:linear-gradient(to bottom,#f8f9fa,#eef3f8)"></div><div class="grad-label">Surface Light</div></div>
+                        </div>
+                    </div>
+
+                    <!-- SPACING -->
+                    <div class="sg-section" id="spacing">
+                        <h2 class="sg-section-title"><span>📐</span> Spacing Scale</h2>
+                        <div class="spacing-demo">
+                            <div class="space-bar-wrap"><div class="space-bar" style="width:4px"></div><span class="space-label">4px</span><span style="font-size:13px;color:#94a3b8">xs — micro gaps</span></div>
+                            <div class="space-bar-wrap"><div class="space-bar" style="width:8px"></div><span class="space-label">8px</span><span style="font-size:13px;color:#94a3b8">sm — tight spacing</span></div>
+                            <div class="space-bar-wrap"><div class="space-bar" style="width:16px"></div><span class="space-label">16px</span><span style="font-size:13px;color:#94a3b8">md — element spacing</span></div>
+                            <div class="space-bar-wrap"><div class="space-bar" style="width:24px"></div><span class="space-label">24px</span><span style="font-size:13px;color:#94a3b8">lg — card padding</span></div>
+                            <div class="space-bar-wrap"><div class="space-bar" style="width:40px"></div><span class="space-label">40px</span><span style="font-size:13px;color:#94a3b8">xl — section padding</span></div>
+                            <div class="space-bar-wrap"><div class="space-bar" style="width:80px"></div><span class="space-label">80px</span><span style="font-size:13px;color:#94a3b8">2xl — section vertical padding</span></div>
+                            <div class="space-bar-wrap"><div class="space-bar" style="width:120px"></div><span class="space-label">120px</span><span style="font-size:13px;color:#94a3b8">3xl — hero padding</span></div>
+                        </div>
+                    </div>
+
+                    <!-- BUTTONS -->
+                    <div class="sg-section" id="buttons">
+                        <h2 class="sg-section-title"><span>🔘</span> Buttons</h2>
+                        <p style="color:#64748b;margin-bottom:24px;font-size:15px;">All buttons use 12px border-radius, Inter 600 font weight, and 0.3s transitions.</p>
+                        <div style="display:flex;flex-direction:column;gap:20px;">
+                            <div>
+                                <div class="type-label mb-2">VARIANTS</div>
+                                <div class="btn-showcase">
+                                    <a href="#" class="btn btn-primary">Primary Button</a>
+                                    <a href="#" class="sg-btn-outline">Outline Button</a>
+                                    <a href="#" class="btn btn-secondary">Glass Button</a>
+                                    <a href="#" class="sg-btn-ghost">Ghost Button</a>
+                                    <a href="#" class="sg-btn-danger">Danger Button</a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="type-label mb-2">SIZES</div>
+                                <div class="btn-showcase" style="align-items:center;">
+                                    <a href="#" class="btn btn-primary sg-btn-sm">Small</a>
+                                    <a href="#" class="btn btn-primary">Regular</a>
+                                    <a href="#" class="btn btn-primary" style="padding:18px 40px;font-size:17px;">Large</a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="type-label mb-2">WITH ICONS</div>
+                                <div class="btn-showcase">
+                                    <a href="#" class="btn btn-primary"><i class="fas fa-rocket mr-2"></i>Get Started</a>
+                                    <a href="#" class="sg-btn-outline"><i class="fas fa-paper-plane mr-2"></i>Send Message</a>
+                                    <a href="#" class="btn btn-secondary"><i class="fas fa-arrow-right ml-2" style="order:1;"></i>Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BADGES -->
+                    <div class="sg-section" id="badges">
+                        <h2 class="sg-section-title"><span>🏷️</span> Badges & Labels</h2>
+                        <div style="display:flex;flex-direction:column;gap:20px;">
+                            <div>
+                                <div class="type-label mb-2">COLORED BADGES</div>
+                                <div class="badge-row">
+                                    <span class="sg-badge badge-purple">SEO</span>
+                                    <span class="sg-badge badge-blue">Google Ads</span>
+                                    <span class="sg-badge badge-green">Content</span>
+                                    <span class="sg-badge badge-yellow">Analytics</span>
+                                    <span class="sg-badge badge-red">Trending</span>
+                                    <span class="sg-badge badge-dark">Featured</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="type-label mb-2">SECTION LABELS</div>
+                                <div class="badge-row">
+                                    <span class="sg-badge" style="background:rgba(139,92,246,0.1);color:#8b5cf6;letter-spacing:1px;font-size:12px;">SERVICES</span>
+                                    <span class="sg-badge" style="background:rgba(245,158,11,0.1);color:#f59e0b;letter-spacing:1px;font-size:12px;">CASE STUDIES</span>
+                                    <span class="sg-badge" style="background:rgba(16,185,129,0.1);color:#10b981;letter-spacing:1px;font-size:12px;">TESTIMONIALS</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="type-label mb-2">HERO BADGES (WITH BORDER)</div>
+                                <div class="badge-row">
+                                    <span class="sg-badge" style="background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);color:#c4b5fd;border-radius:30px;">🔍 SEO OPTIMIZATION</span>
+                                    <span class="sg-badge" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#fcd34d;border-radius:30px;">📢 GOOGLE ADS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARDS -->
+                    <div class="sg-section" id="cards">
+                        <h2 class="sg-section-title"><span>🃏</span> Cards</h2>
+                        <div class="card-showcase">
+                            <div class="demo-card">
+                                <h4>Default Card</h4>
+                                <p>Subtle background with border. Used for info boxes and secondary content areas.</p>
+                            </div>
+                            <div class="demo-card elevated">
+                                <h4>Elevated Card</h4>
+                                <p>White background with soft shadow. Used for service boxes and feature highlights.</p>
+                            </div>
+                            <div class="demo-card gradient-card">
+                                <h4>Gradient Card</h4>
+                                <p>Used for CTAs, newsletter widgets, and featured content that needs emphasis.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ALERTS -->
+                    <div class="sg-section" id="alerts">
+                        <h2 class="sg-section-title"><span>⚠️</span> Alerts</h2>
+                        <div class="alert-row">
+                            <div class="sg-alert alert-info"><i class="fas fa-info-circle"></i><div><strong>Information:</strong> This is an informational alert for general updates and helpful context messages.</div></div>
+                            <div class="sg-alert alert-success"><i class="fas fa-check-circle"></i><div><strong>Success!</strong> Your message was sent successfully. We'll get back to you within 24 hours.</div></div>
+                            <div class="sg-alert alert-warning"><i class="fas fa-exclamation-triangle"></i><div><strong>Warning:</strong> This action cannot be undone. Please review your changes before proceeding.</div></div>
+                            <div class="sg-alert alert-danger"><i class="fas fa-times-circle"></i><div><strong>Error:</strong> Something went wrong. Please check your input and try again.</div></div>
+                        </div>
+                    </div>
+
+                    <!-- FORMS -->
+                    <div class="sg-section" id="forms">
+                        <h2 class="sg-section-title"><span>📝</span> Form Elements</h2>
+                        <div class="form-demo">
+                            <div class="sg-input-group">
+                                <label>Default Input</label>
+                                <input type="text" placeholder="Enter your name">
+                            </div>
+                            <div class="sg-input-group">
+                                <label>Focused State</label>
+                                <input type="text" value="Focused input" class="input-focused">
+                            </div>
+                            <div class="sg-input-group">
+                                <label>Error State</label>
+                                <input type="email" value="invalid-email" class="input-error">
+                            </div>
+                            <div class="sg-input-group">
+                                <label>Select Dropdown</label>
+                                <select>
+                                    <option>Choose an option...</option>
+                                    <option>SEO Optimization</option>
+                                    <option>Google Ads</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ICONS -->
+                    <div class="sg-section" id="icons">
+                        <h2 class="sg-section-title"><span>⭐</span> Icon System</h2>
+                        <p style="color:#64748b;margin-bottom:24px;font-size:15px;">Using Font Awesome 5 for all UI icons. Primary icon color: <strong>#8b5cf6</strong>.</p>
+                        <div class="icon-grid">
+                            <div class="icon-item"><i class="fas fa-search"></i><span>search</span></div>
+                            <div class="icon-item"><i class="fas fa-chart-line"></i><span>chart-line</span></div>
+                            <div class="icon-item"><i class="fas fa-rocket"></i><span>rocket</span></div>
+                            <div class="icon-item"><i class="fas fa-pen-nib"></i><span>pen-nib</span></div>
+                            <div class="icon-item"><i class="fas fa-link"></i><span>link</span></div>
+                            <div class="icon-item"><i class="fas fa-laptop-code"></i><span>laptop-code</span></div>
+                            <div class="icon-item"><i class="fas fa-envelope"></i><span>envelope</span></div>
+                            <div class="icon-item"><i class="fas fa-phone-alt"></i><span>phone-alt</span></div>
+                            <div class="icon-item"><i class="fas fa-map-marker-alt"></i><span>map-marker</span></div>
+                            <div class="icon-item"><i class="fas fa-check-circle"></i><span>check-circle</span></div>
+                            <div class="icon-item"><i class="fas fa-arrow-right"></i><span>arrow-right</span></div>
+                            <div class="icon-item"><i class="fas fa-star"></i><span>star</span></div>
+                            <div class="icon-item"><i class="fab fa-google"></i><span>google</span></div>
+                            <div class="icon-item"><i class="fab fa-facebook-f"></i><span>facebook</span></div>
+                            <div class="icon-item"><i class="fab fa-linkedin-in"></i><span>linkedin</span></div>
+                            <div class="icon-item"><i class="fab fa-twitter"></i><span>twitter</span></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-4"><h5>About Us</h5><p>This styleguide documents our complete design system and brand language.</p></div>
+                <div class="col-md-4"><h5>Contact Info</h5><p><i class="fas fa-envelope mr-2"></i>info@seoagency.com</p><p><i class="fas fa-phone mr-2"></i>+123-456-7890</p></div>
+                <div class="col-md-4"><h5>Follow Us</h5><div class="social-icons mt-3"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a></div></div>
+            </div>
+            <p class="mt-4">&copy; 2026 SEO Agency. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

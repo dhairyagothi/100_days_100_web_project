@@ -1,0 +1,120 @@
+/* Modern Dark Theme - SnippetVault */
+:root {
+  --bg-primary: #0a0c10;
+  --bg-secondary: #161b22;
+  --bg-card: #21262d;
+  --accent: #58a6ff;
+  --text-primary: #c9d1d9;
+  --text-secondary: #8b949e;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+.sidebar {
+  background-color: var(--bg-secondary);
+  border-right: 1px solid #30363d;
+  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.main-content {
+  background-color: var(--bg-primary);
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid #30363d;
+  transition: all 0.25s ease;
+}
+
+.snippet-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+  border-color: var(--accent);
+}
+
+.language-badge {
+  font-size: 0.75rem;
+  padding: 0.4em 0.75em;
+}
+
+.code-preview {
+  font-family: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
+  font-size: 0.85rem;
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 1rem;
+  max-height: 145px;
+  overflow: hidden;
+  color: #8b949e;
+  white-space: pre;
+  line-height: 1.4;
+}
+
+.tag {
+  font-size: 0.8rem;
+  padding: 0.35em 0.75em;
+  background-color: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 9999px;
+  transition: all 0.2s;
+}
+
+.tag:hover {
+  background-color: var(--accent);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.form-control,
+.form-select {
+  background-color: #0d1117;
+  border-color: #30363d;
+  color: var(--text-primary);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #0d1117;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.25);
+}
+
+.modal-content {
+  background-color: var(--bg-secondary);
+  border: 1px solid #30363d;
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: white;
+  background-color: #21262d;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 20px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #484f58;
+}

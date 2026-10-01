@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <script>
+        // Ensure trailing slash for local dev
+        if (!window.location.pathname.endsWith('/') && !window.location.pathname.endsWith('.html')) {
+            window.location.replace(window.location.pathname + '/');
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Medicine Reminder</title>
+    <meta name="description" content="A beautiful and smart medicine reminder and health tracker.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3/src/index.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="app-container">
+        <header class="glass-header">
+            <div class="logo">
+                <i class="ph-fill ph-pill"></i>
+                <h1>MediTrack</h1>
+            </div>
+            <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
+                <i class="ph ph-sun"></i>
+            </button>
+        </header>
+
+        <main class="dashboard">
+            <!-- Progress Section -->
+            <section class="glass-card progress-section">
+                <h2>Today's Progress</h2>
+                <div class="progress-container">
+                    <svg class="progress-ring" width="120" height="120">
+                        <circle class="progress-ring__circle-bg" stroke="var(--border)" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+                        <circle id="progress-circle" class="progress-ring__circle" stroke="var(--primary)" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+                    </svg>
+                    <div class="progress-text">
+                        <span id="progress-percentage">0%</span>
+                        <small>Taken</small>
+                    </div>
+                </div>
+                <p id="progress-status">You have <strong id="pending-count">0</strong> medicines left today.</p>
+            </section>
+
+            <!-- Medicines List -->
+            <section class="glass-card medicine-list-section">
+                <div class="section-header">
+                    <h2>Your Medications</h2>
+                    <button id="add-medicine-btn" class="btn btn-primary">
+                        <i class="ph ph-plus"></i> Add New
+                    </button>
+                </div>
+                <ul id="medicine-list" class="medicine-list">
+                    <!-- Medicine items generated via JS -->
+                </ul>
+                <div id="empty-state" class="empty-state">
+                    <i class="ph-fill ph-prescription"></i>
+                    <p>No medicines added yet.</p>
+                </div>
+            </section>
+
+            <!-- Health Notes -->
+            <section class="glass-card notes-section">
+                <h2>Health Notes</h2>
+                <textarea id="health-notes" placeholder="Write down symptoms, doctor's advice, or general health notes here..."></textarea>
+                <div class="save-status" id="notes-save-status"><i class="ph ph-check-circle"></i> Saved</div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Medicine Modal -->
+    <div id="medicine-modal" class="modal-overlay hidden">
+        <div class="modal glass-card">
+            <div class="modal-header">
+                <h3 id="modal-title">Add Medicine</h3>
+                <button id="close-modal" class="icon-btn"><i class="ph ph-x"></i></button>
+            </div>
+            <form id="medicine-form">
+                <input type="hidden" id="med-id">
+                <div class="form-group">
+                    <label for="med-name">Medicine Name</label>
+                    <input type="text" id="med-name" placeholder="e.g., Vitamin C" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="med-dosage">Dosage</label>
+                        <input type="text" id="med-dosage" placeholder="e.g., 500mg" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="med-time">Time</label>
+                        <input type="time" id="med-time" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="med-notes">Instructions (Optional)</label>
+                    <input type="text" id="med-notes" placeholder="e.g., After food">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Save Medicine</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

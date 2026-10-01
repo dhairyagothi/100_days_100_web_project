@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Feedback Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Customer Feedback</h1>
+        <button id="theme-toggle" aria-label="Toggle Dark Mode">🌙</button>
+    </header>
+
+    <main class="container">
+        <!-- Form Section -->
+        <section class="form-section">
+            <form id="feedback-form">
+                <div class="form-group">
+                    <label for="name">Name <span class="required">*</span></label>
+                    <input type="text" id="name" required placeholder="John Doe">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email <span class="required">*</span></label>
+                    <input type="email" id="email" required placeholder="john@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Feedback Category</label>
+                    <select id="category" required>
+                        <option value="Suggestion">Suggestion</option>
+                        <option value="Bug">Bug Report</option>
+                        <option value="Complaint">Complaint</option>
+                        <option value="Compliment">Compliment</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Rating (1-5 stars) <span class="required">*</span></label>
+                    <div class="star-rating" id="star-rating">
+                        <span data-value="1">★</span>
+                        <span data-value="2">★</span>
+                        <span data-value="3">★</span>
+                        <span data-value="4">★</span>
+                        <span data-value="5">★</span>
+                    </div>
+                    <input type="hidden" id="rating-value" required>
+                </div>
+
+                <div class="form-group">
+                    <label>How are you feeling?</label>
+                    <div class="emoji-reaction" id="emoji-reaction">
+                        <span data-value="😡">😡</span>
+                        <span data-value="😕">😕</span>
+                        <span data-value="😐">😐</span>
+                        <span data-value="🙂">🙂</span>
+                        <span data-value="🤩">🤩</span>
+                    </div>
+                    <input type="hidden" id="emoji-value">
+                </div>
+
+                <div class="form-group">
+                    <label for="feedback-text">Your Feedback <span class="required">*</span></label>
+                    <textarea id="feedback-text" rows="4" required placeholder="Tell us more..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="image-upload">Optional Image/Screenshot</label>
+                    <input type="file" id="image-upload" accept="image/*">
+                </div>
+
+                <div class="form-group recommend-group">
+                    <label>Would you recommend us?</label>
+                    <label><input type="radio" name="recommend" value="Yes" checked> Yes</label>
+                    <label><input type="radio" name="recommend" value="No"> No</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" readonly>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Feedback</button>
+            </form>
+        </section>
+
+        <!-- Display Section -->
+        <section class="display-section">
+            <h2>Recent Feedback</h2>
+            
+            <div class="controls">
+                <input type="text" id="search-input" placeholder="Search feedback...">
+                <select id="filter-category">
+                    <option value="All">All Categories</option>
+                    <option value="Suggestion">Suggestion</option>
+                    <option value="Bug">Bug Report</option>
+                    <option value="Complaint">Complaint</option>
+                    <option value="Compliment">Compliment</option>
+                </select>
+            </div>
+
+            <div id="feedback-list" class="feedback-grid">
+                <!-- Cards will be injected here via JS -->
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

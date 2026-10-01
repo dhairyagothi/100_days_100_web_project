@@ -5,19 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cyber Typing Battle</title>
-
-  <link rel="stylesheet" href="/public/CYBER TYPE BATTLE/style.css">
+  <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
 
-  <!-- BACK BUTTON -->
-
   <button class="back-btn" id="backBtn">
-    ←
+    &larr;
   </button>
-
-  <!-- GITHUB BUTTON -->
 
   <a
     class="github-link"
@@ -31,67 +26,45 @@
     </svg>
   </a>
 
-  <!-- START SCREEN -->
-
   <div class="start-screen" id="startScreen">
-
     <h1>CYBER TYPING BATTLE</h1>
-
     <div class="difficulty-box">
-
       <button class="difficulty active" data-mode="easy">
         Easy
       </button>
-
       <button class="difficulty" data-mode="medium">
         Medium
       </button>
-
       <button class="difficulty" data-mode="hard">
         Hard
       </button>
-
     </div>
-
     <button class="start-btn" id="startBtn">
       START GAME
     </button>
-
   </div>
 
-  <!-- GAME UI -->
-
-  <div class="ui" style="display:none;">
-
+  <div class="ui" id="gameUi">
     <div>
       Target :
       <span id="targetWord">None</span>
     </div>
-
     <div>
       Score :
       <span id="score">0</span>
     </div>
-
   </div>
 
-  <!-- GAME OVER -->
-
   <div class="gameover" id="gameOverScreen">
-
     <h1>GAME OVER</h1>
-
     <button id="restartBtn">
       Restart
     </button>
-
   </div>
-
-  <!-- CANVAS -->
 
   <canvas id="game"></canvas>
 
-  <script type="module" src="/public/CYBER TYPE BATTLE/script.js"></script>
+  <script type="module" src="./script.js"></script>
 
 </body>
 

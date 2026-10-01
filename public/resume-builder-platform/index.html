@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Resume Builder Platform - Build ATS-friendly professional resumes dynamically with multiple templates, live preview, theme customization, AI recommendations, and PDF export.">
+  <title>Resume Builder Platform</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="templates.css">
+</head>
+
+<body>
+
+  <div id="app-container">
+
+    <!-- Top Action Navigation Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div>
+          <span class="logo-text">Resume.Craft</span>
+          <span class="logo-badge">ATS v2.1</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="btn-load-sample" class="btn btn-secondary btn-small" title="Load sample data to test instantly">
+          <span>&#128221;</span> Load Sample Data
+        </button>
+
+        <input type="file" id="file-input" style="display: none;" accept=".json">
+        <button id="btn-import-json" class="btn btn-secondary btn-small" title="Upload a previously saved resume JSON">
+          <span>&#128197;</span> Import JSON
+        </button>
+        <button id="btn-export-json" class="btn btn-secondary btn-small"
+          title="Download resume configuration in raw JSON format">
+          <span>&#128190;</span> Export JSON
+        </button>
+        <button id="btn-clear" class="btn btn-danger btn-small" title="Delete all details and start fresh">
+          <span>&#128465;</span> Reset
+        </button>
+
+        <span style="height: 24px; width: 1px; background-color: var(--border-color); margin: 0 4px;"></span>
+
+        <button id="theme-toggle" class="btn btn-secondary btn-small" style="font-size: 14px;"
+          title="Toggle dark/light mode">
+          &#9789;
+        </button>
+
+        <button id="btn-export-pdf" class="btn btn-primary btn-small"
+          title="Open the print layout and save your resume to PDF">
+          <span>&#128424;</span> Download PDF
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Builder Interface Workspace -->
+    <main class="dashboard-main">
+
+      <!-- Left Sidebar Form Sections Panel -->
+      <section class="sidebar-panel">
+
+        <nav class="sidebar-tabs">
+          <button class="tab-btn active" data-tab="content">
+            <span>&#9998;</span> Content
+          </button>
+          <button class="tab-btn" data-tab="style">
+            <span>&#127912;</span> Theme & Layout
+          </button>
+          <button class="tab-btn" data-tab="reorder">
+            <span>&#8645;</span> Reorder Sections
+          </button>
+        </nav>
+
+        <div class="sidebar-content">
+
+          <!-- TAB 1: FORM CONTENT FIELDS -->
+          <div id="content-tab" class="tab-content active">
+
+            <!-- Section 1: Personal details -->
+            <div class="form-accordion open">
+              <div class="accordion-header">
+                <div class="accordion-header-title">
+                  <span class="accordion-header-icon">&#128100;</span>
+                  <span>Personal Details</span>
+                </div>
+                <span class="accordion-arrow">&#9662;</span>
+              </div>
+              <div class="accordion-body">
+                <div class="form-group">
+                  <label for="p-fullName">Full Name</label>
+                  <input type="text" id="p-fullName" placeholder="e.g. Alex Morgan">
+                </div>
+                <div class="form-group">
+                  <label for="p-jobTitle">Professional Title</label>
+                  <input type="text" id="p-jobTitle" placeholder="e.g. Senior Software Engineer">
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="p-email">Email Address</label>
+                    <input type="email" id="p-email" placeholder="alex@example.com">
+                  </div>
+                  <div class="form-group">
+                    <label for="p-phone">Phone Number</label>
+                    <input type="text" id="p-phone" placeholder="+1 (555) 019-2834">
+                  </div>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="p-location">Location / City</label>
+                    <input type="text" id="p-location" placeholder="San Francisco, CA">
+                  </div>
+                  <div class="form-group">
+                    <label for="p-website">Personal Website</label>
+                    <input type="url" id="p-website" placeholder="https://alexmorgan.dev">
+                  </div>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="p-linkedin">LinkedIn Profile URL</label>
+                    <input type="text" id="p-linkedin" placeholder="linkedin.com/in/username">
+                  </div>
+                  <div class="form-group">
+                    <label for="p-github">GitHub Profile URL</label>
+                    <input type="text" id="p-github" placeholder="github.com/username">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 2: Summary -->
+            <div class="form-accordion">
+              <div class="accordion-header">
+                <div class="accordion-header-title">
+                  <span class="accordion-header-icon">&#128227;</span>
+                  <span>Professional Summary</span>
+                </div>
+                <span class="accordion-arrow">&#9662;</span>
+              </div>
+              <div class="accordion-body">
+                <div class="form-group">
+                  <label for="p-summary">Executive Summary</label>
+                  <textarea id="p-summary" style="min-height: 120px;"
+                    placeholder="Briefly describe your core skills, highlights of achievements, and targets..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 3: Work Experience -->
+            <div class="form-accordion">
+              <div class="accordion-header">
+                <div class="accordion-header-title">
+                  <span class="accordion-header-icon">&#128188;</span>
+                  <span>Work Experience</span>
+                </div>
+                <span class="accordion-arrow">&#9662;</span>
+              </div>
+              <div class="accordion-body">
+                <div id="experience-list-container"></div>
+                <button id="btn-add-experience" class="btn btn-secondary btn-add-item">+ Add Work Experience</button>
+              </div>
+            </div>
+
+            <!-- Section 4: Education -->
+            <div class="form-accordion">
+              <div class="accordion-header">
+                <div class="accordion-header-title">
+                  <span class="accordion-header-icon">&#127891;</span>
+                  <span>Education</span>
+                </div>
+                <span class="accordion-arrow">&#9662;</span>
+              </div>
+              <div class="accordion-body">
+                <div id="education-list-container"></div>
+                <button id="btn-add-education" class="btn btn-secondary btn-add-item">+ Add Education</button>
+              </div>
+            </div>
+
+            <!-- Section 5: Projects -->
+            <div class="form-accordion">
+              <div class="accordion-header">
+                <div class="accordion-header-title">
+                  <span class="accordion-header-icon">&#128205;</span>
+                  <span>Projects</span>
+                </div>
+                <span class="accordion-arrow">&#9662;</span>
+              </div>
+              <div class="accordion-body">
+                <div id="projects-list-container"></div>
+                <button id="btn-add-project" class="btn btn-secondary btn-add-item">+ Add Project</button>
+              </div>
+            </div>
+
+            <!-- Section 6: Skills -->
+            <div class="form-accordion">
+              <div class="accordion-header">
+                <div class="accordion-header-title">
+                  <span class="accordion-header-icon">&#9889;</span>
+                  <span>Skills</span>
+                </div>
+                <span class="accordion-arrow">&#9662;</span>
+              </div>
+              <div class="accordion-body">
+                <div id="skills-list-container"></div>
+                <button id="btn-add-skill" class="btn btn-secondary btn-add-item" style="margin-top: 10px;">+ Add
+                  Skill</button>
+              </div>
+            </div>
+
+            <!-- Section 7: Certifications -->
+            <div class="form-accordion">
+              <div class="accordion-header">
+                <div class="accordion-header-title">
+                  <span class="accordion-header-icon">&#127941;</span>
+                  <span>Certifications</span>
+                </div>
+                <span class="accordion-arrow">&#9662;</span>
+              </div>
+              <div class="accordion-body">
+                <div id="certifications-list-container"></div>
+                <button id="btn-add-certification" class="btn btn-secondary btn-add-item">+ Add Certification</button>
+              </div>
+            </div>
+
+            <!-- Section 8: Achievements -->
+            <div class="form-accordion">
+              <div class="accordion-header">
+                <div class="accordion-header-title">
+                  <span class="accordion-header-icon">&#127942;</span>
+                  <span>Achievements & Awards</span>
+                </div>
+                <span class="accordion-arrow">&#9662;</span>
+              </div>
+              <div class="accordion-body">
+                <div id="achievements-list-container"></div>
+                <button id="btn-add-achievement" class="btn btn-secondary btn-add-item">+ Add Achievement</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- TAB 2: TEMPLATE STYLING CONTROLS -->
+          <div id="style-tab" class="tab-content">
+
+            <div class="form-group">
+              <label for="template-select">Select Resume Template</label>
+              <select id="template-select">
+                <option value="classic">Classic Professional (Serif Corporate)</option>
+                <option value="modern">Modern Minimalist (Sleek Columns)</option>
+                <option value="creative">Tech Creative (Accent Tags & Icons)</option>
+                <option value="executive">Executive Bold (Colored Banner Head)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="font-select">Global Font Family</label>
+              <select id="font-select">
+                <option value="Inter">Inter (Clean Modern Sans-Serif)</option>
+                <option value="Outfit">Outfit (Tech Bold Accent)</option>
+                <option value="Merriweather">Merriweather (Elegant serif)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <label for="font-size-slider">Font Size</label>
+                <span id="font-size-val" style="font-size: 11px; font-weight:700; color:var(--text-muted);">10pt</span>
+              </div>
+              <input type="range" id="font-size-slider" min="8" max="14" step="0.5" value="10">
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <label for="line-height-slider">Line Spacing</label>
+                <span id="line-height-val" style="font-size: 11px; font-weight:700; color:var(--text-muted);">1.5</span>
+              </div>
+              <input type="range" id="line-height-slider" min="1.1" max="2.0" step="0.05" value="1.5">
+            </div>
+
+            <!-- Page Margins Section -->
+            <div style="margin: 24px 0 16px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+              <span
+                style="font-size: 11px; font-weight:800; color:var(--text-muted); display:block; text-transform:uppercase; margin-bottom: 12px; letter-spacing:0.5px;">Page
+                Margins (mm)</span>
+
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                  <label for="margin-top-slider">Top Margin</label>
+                  <span id="margin-top-val"
+                    style="font-size: 11px; font-weight:700; color:var(--text-muted);">15mm</span>
+                </div>
+                <input type="range" id="margin-top-slider" min="5" max="30" step="1" value="15">
+              </div>
+
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                  <label for="margin-bottom-slider">Bottom Margin</label>
+                  <span id="margin-bottom-val"
+                    style="font-size: 11px; font-weight:700; color:var(--text-muted);">15mm</span>
+                </div>
+                <input type="range" id="margin-bottom-slider" min="5" max="30" step="1" value="15">
+              </div>
+
+              <div class="form-group-row">
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                    <label for="margin-left-slider">Left Margin</label>
+                    <span id="margin-left-val"
+                      style="font-size: 11px; font-weight:700; color:var(--text-muted);">15mm</span>
+                  </div>
+                  <input type="range" id="margin-left-slider" min="5" max="30" step="1" value="15">
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                    <label for="margin-right-slider">Right Margin</label>
+                    <span id="margin-right-val"
+                      style="font-size: 11px; font-weight:700; color:var(--text-muted);">15mm</span>
+                  </div>
+                  <input type="range" id="margin-right-slider" min="5" max="30" step="1" value="15">
+                </div>
+              </div>
+            </div>
+
+            <!-- Primary Accent Color selector -->
+            <div style="margin: 24px 0 16px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+              <label style="margin-bottom: 8px;">Primary Accent Color</label>
+              <div id="color-swatches" class="color-swatch-group"></div>
+            </div>
+
+          </div>
+
+          <!-- TAB 3: SECTION DRAG AND DROP REORDER -->
+          <div id="reorder-tab" class="tab-content">
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px; line-height:1.4;">
+              Drag and drop items to customize the layout priority on your resume structure. Dynamic visual page
+              boundaries adjust instantly.
+            </p>
+            <div id="drag-reorder-list" class="drag-list"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Middle Preview Viewport Canvas -->
+      <section class="preview-panel">
+
+        <div class="preview-toolbar">
+          <div class="toolbar-group">
+            <span style="font-size: 12px; font-weight:700; color: var(--text-muted);">A4 Document Live Canvas</span>
+          </div>
+
+          <!-- Fit Screen Toolbar options -->
+          <div class="zoom-controls">
+            <button id="zoom-out" class="zoom-btn" title="Zoom Out">&#8722;</button>
+            <span id="zoom-val" class="zoom-text">100%</span>
+            <button id="zoom-in" class="zoom-btn" title="Zoom In">&#43;</button>
+            <button id="zoom-fit" class="zoom-btn" style="font-size: 10px; font-weight:800;"
+              title="Fit Scale">&#128308;</button>
+          </div>
+        </div>
+
+        <div class="preview-canvas">
+          <div id="zoom-wrapper" class="zoom-wrapper">
+            <!-- Physical Resume dynamic printable paper sheets -->
+            <div id="resume-preview-sheet" class="resume-preview-sheet template-classic"></div>
+          </div>
+        </div>
+
+        <!-- Float toggle drawer assistant button -->
+        <button id="drawer-toggle-btn" class="drawer-toggle-btn">
+          <span>&#10024;</span> AI Assistant & ATS Scanner
+        </button>
+
+      </section>
+
+      <!-- Right Panel Slide-out AI Drawer Assistant -->
+      <section id="tools-drawer" class="tools-drawer">
+        <div class="drawer-header">
+          <div class="drawer-title">
+            <span>&#10024;</span> AI Assistant Workbench
+          </div>
+          <button id="close-drawer-btn" class="close-drawer-btn">&times;</button>
+        </div>
+
+        <div class="drawer-content">
+
+          <!-- GitHub Importer -->
+          <div class="drawer-section">
+            <div class="drawer-section-title">
+              <span>&#128187;</span> GitHub Importer
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
+              Instantly fetch public profile statistics, contact fields, and repositories to populate project lists.
+            </p>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="github-username-input" placeholder="Enter GitHub username"
+                style="padding: 8px 10px;">
+              <button id="btn-import-github" class="btn btn-primary btn-small" style="flex-shrink: 0;">Import
+                Data</button>
+            </div>
+          </div>
+
+          <!-- AI Completeness Score Auditor -->
+          <div class="drawer-section">
+            <div class="drawer-section-title">
+              <span>&#128202;</span> Resume Completeness Audit
+            </div>
+            <div class="score-circle-wrapper">
+              <div id="audit-radial" class="score-radial">
+                <span id="audit-score-val" class="score-radial-text">0%</span>
+              </div>
+              <div>
+                <div style="font-weight: 700; font-size:13px;">Completion Rating</div>
+                <div class="score-desc">Calculated across basic resume parameters</div>
+              </div>
+            </div>
+            <!-- Alert List -->
+            <div id="ai-audit-list" class="ai-audit-list"></div>
+          </div>
+
+          <!-- ATS Score Checker & Keyword Matcher -->
+          <div class="drawer-section">
+            <div class="drawer-section-title">
+              <span>&#128205;</span> Job Description Keyword Matcher
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
+              Paste the target job description to match action verbs, engineering keywords, and compute an ATS
+              suitability score.
+            </p>
+            <div class="form-group">
+              <textarea id="jd-textarea" style="font-size: 12px; min-height: 100px;"
+                placeholder="Paste job advertisement description details here..."></textarea>
+            </div>
+            <button id="btn-analyze-jd" class="btn btn-primary btn-small" style="width: 100%; margin-bottom: 12px;">Scan
+              Job Description</button>
+
+            <!-- Match Score representation -->
+            <div class="score-circle-wrapper">
+              <div id="ats-radial" class="score-radial">
+                <span id="ats-score-val" class="score-radial-text">0%</span>
+              </div>
+              <div>
+                <div style="font-weight: 700; font-size:13px;">ATS Keywords Match</div>
+                <div id="ats-feedback-msg" class="score-desc" style="font-size: 11px;">Paste job description details and
+                  click scan.</div>
+              </div>
+            </div>
+
+            <!-- Scanned Tag Highlights -->
+            <div style="margin-top: 14px;">
+              <span
+                style="font-size: 11px; font-weight:700; color: var(--text-muted); text-transform: uppercase;">Matched
+                Keywords</span>
+              <div id="ats-matched-keywords" class="keyword-badge-list"></div>
+            </div>
+            <div style="margin-top: 12px;">
+              <span
+                style="font-size: 11px; font-weight:700; color: var(--text-muted); text-transform: uppercase;">Missing
+                Key Keywords</span>
+              <div id="ats-missing-keywords" class="keyword-badge-list"></div>
+            </div>
+          </div>
+
+          <!-- Cover Letter Generator -->
+          <div class="drawer-section">
+            <div class="drawer-section-title">
+              <span>&#9993;</span> AI Cover Letter Generator
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
+              Drafts a tailored cover letter using highlights of experiences matched against parsed keywords.
+            </p>
+            <div class="form-group">
+              <label for="cl-tone-select">Choose Tone</label>
+              <select id="cl-tone-select" style="padding: 6px 10px; font-size: 12px;">
+                <option value="professional">Standard Professional</option>
+                <option value="enthusiastic">Energetic / Passionate</option>
+                <option value="creative">Creative / Visionary</option>
+              </select>
+            </div>
+            <button id="btn-generate-cl" class="btn btn-secondary btn-small" style="width: 100%;">Draft Cover
+              Letter</button>
+
+            <textarea id="cl-output-textarea" class="cover-letter-output" style="display: none;" readonly></textarea>
+            <button id="btn-copy-cl" class="btn btn-primary btn-small"
+              style="display: none; width: 100%; margin-top: 8px;">Copy Letter Content</button>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Script Declarations -->
+  <script src="sample-data.js"></script>
+  <script src="ai-helper.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

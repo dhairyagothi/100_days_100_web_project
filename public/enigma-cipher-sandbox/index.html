@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historical Enigma Cipher Simulator</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div class="enigma-machine">
+        <h1>ENIGMA I CHRONICLE TERMINAL</h1>
+        <hr class="panel-line">
+
+        <div class="rotor-bay">
+            <h3>ROTOR SELECTION & POSITIONING</h3>
+            <div class="rotors-container">
+                <div class="rotor-pod">
+                    <label>LEFT (I)</label>
+                    <select id="rotorLeftType">
+                        <option value="I" selected>Rotor I</option>
+                        <option value="II">Rotor II</option>
+                        <option value="III">Rotor III</option>
+                    </select>
+                    <input type="text" id="posLeft" class="rotor-pos" value="A" maxlength="1">
+                </div>
+                <div class="rotor-pod">
+                    <label>MIDDLE (II)</label>
+                    <select id="rotorMidType">
+                        <option value="I">Rotor I</option>
+                        <option value="II" selected>Rotor II</option>
+                        <option value="III">Rotor III</option>
+                    </select>
+                    <input type="text" id="posMid" class="rotor-pos" value="A" maxlength="1">
+                </div>
+                <div class="rotor-pod">
+                    <label>RIGHT (III)</label>
+                    <select id="rotorRightType">
+                        <option value="I">Rotor I</option>
+                        <option value="II">Rotor II</option>
+                        <option value="III" selected>Rotor III</option>
+                    </select>
+                    <input type="text" id="posRight" class="rotor-pos" value="A" maxlength="1">
+                </div>
+            </div>
+        </div>
+
+        <div class="board-panel lampboard">
+            <div class="row" id="lampRow1"></div>
+            <div class="row" id="lampRow2"></div>
+            <div class="row" id="lampRow3"></div>
+        </div>
+
+        <div class="board-panel keyboard">
+            <div class="row" id="keyRow1"></div>
+            <div class="row" id="keyRow2"></div>
+            <div class="row" id="keyRow3"></div>
+        </div>
+
+        <div class="terminal-log">
+            <span class="prefix">CIPHERTEXT_STREAM_LOG://</span>
+            <span id="outputLog"></span>
+        </div>
+    </div>
+    <script src="./app.js"></script>
+</body>
+
+</html>

@@ -1376,3 +1376,12 @@ a:hover {
 .mobile-bottom-nav a.active-link {
   color: #0a66c2;
 }
+/* Like Button Liked State */
+.post-activity-link.liked {
+  color: #0a66c2 !important;
+  font-weight: 600 !important;
+}
+
+.post-activity-link.liked span {
+  color: #0a66c2 !important;
+}

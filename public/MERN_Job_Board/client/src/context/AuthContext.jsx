@@ -32,10 +32,7 @@ export const AuthProvider = ({ children }) => {
     if (user) {
       socket.connect();
 
-      // Join employer room for private notifications
-      if (user.role === "employer") {
-        socket.emit("joinRoom", `employer_${user._id}`);
-      }
+      // Employer rooms are joined server-side from the authenticated socket handshake
 
       socket.on("onlineCount", (count) => setOnlineCount(count));
 

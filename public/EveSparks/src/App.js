@@ -7,6 +7,7 @@ import Product from './MyComponents/product';
 
 function App() {
 
+  // ✅ Theme persisted in localStorage
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") || "light"
   );
@@ -23,9 +24,7 @@ function App() {
   return (
     <>
       <Header toggleTheme={toggleTheme} theme={theme} />
-
       <Product />
-
       <Footer />
     </>
   );

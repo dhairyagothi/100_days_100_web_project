@@ -1,0 +1,141 @@
+:root {
+    --bg-main: #0f172a;
+    --bg-pane: #1e293b;
+    --border-color: #334155;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-hover: #0ea5e9;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-header {
+    background-color: var(--bg-pane);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.app-header h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn {
+    background-color: var(--accent);
+    color: #0f172a;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background-color: var(--accent-hover);
+}
+
+.btn.secondary {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+}
+
+.btn.secondary:hover {
+    background: #273549;
+}
+
+.status-tag {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.workspace {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: calc(100vh - 110px);
+}
+
+.editor-pane,
+.preview-pane {
+    height: 100%;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+
+.editor-pane {
+    border-right: 1px solid var(--border-color);
+    padding: 0;
+}
+
+#markdown-input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    resize: none;
+    outline: none;
+    color: var(--text-main);
+    font-family: 'Fira Code', Consolas, Monaco, monospace;
+    font-size: 1rem;
+    line-height: 1.6;
+    padding: 1.5rem;
+}
+
+.preview-pane {
+    background-color: #111827;
+    line-height: 1.7;
+}
+
+/* Sample Markdown Styles in Preview */
+.preview-pane h1 {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+.preview-pane p {
+    margin-bottom: 1rem;
+}
+
+.preview-pane code {
+    background: #282c34;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.analytics-bar {
+    background-color: var(--bg-pane);
+    border-top: 1px solid var(--border-color);
+    padding: 0.5rem 2rem;
+    display: flex;
+    gap: 2rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}

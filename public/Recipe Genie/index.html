@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Genie — Loading Culinary Hub...</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #fffaf5;
+    }
+  </style>
+</head>
+<body class="text-stone-800 antialiased min-h-screen flex flex-col justify-center items-center">
+
+  <div class="relative flex flex-col items-center space-y-6 text-center px-4">
+    <div class="text-6xl animate-bounce duration-1000">🍱</div>
+    
+    <div class="space-y-2">
+      <h1 class="text-3xl font-black bg-gradient-to-r from-orange-500 via-amber-500 to-amber-600 bg-clip-text text-transparent tracking-tight">
+        Recipe Genie
+      </h1>
+      <p class="text-stone-400 font-medium text-sm tracking-wide animate-pulse">
+        Arranging ingredients and menu options...
+      </p>
+    </div>
+    
+    <div class="w-12 h-12 border-4 border-orange-100 border-t-orange-500 rounded-full animate-spin"></div>
+    
+    <noscript>
+      <div class="pt-4">
+        <a href="home.html" class="text-sm font-semibold text-orange-500 hover:text-orange-600 underline">
+          Click here to enter if not automatically redirected
+        </a>
+      </div>
+    </noscript>
+  </div>
+
+  <script>
+    // Performs an immediate seamless page transition once initial layout mounts safely
+    window.addEventListener("DOMContentLoaded", () => {
+      // Small timeout ensures clean cache clearance and prevents loading screen flashing
+      setTimeout(() => {
+        window.location.replace("home.html");
+      }, 400);
+    });
+  </script>
+</body>
+</html>

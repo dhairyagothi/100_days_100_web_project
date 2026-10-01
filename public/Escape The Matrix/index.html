@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ESCAPE THE MATRIX // CLASSIFIED</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Custom Cursor -->
+    <div class="cur" id="cur"></div>
+
+    <!-- Matrix Rain Canvas -->
+    <canvas id="mc"></canvas>
+
+    <!-- CRT Overlay Effects -->
+    <div class="crt"></div>
+    <div class="scl"></div>
+
+    <!-- App Root -->
+    <div id="app">
+      <!-- ── BOOT SCREEN ────────────────────────────────────── -->
+      <div id="sboot" class="scr on">
+        <div class="blogo glitch" data-text="ESCAPE THE MATRIX">
+          ESCAPE THE MATRIX
+        </div>
+        <div class="blog" id="blog"></div>
+        <div class="bpw">
+          <div class="bpl">
+            <span>SYSTEM INITIALIZATION</span>
+            <span id="bpct">0%</span>
+          </div>
+          <div class="pbw">
+            <div class="pbf" id="pbf"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MAIN MENU ──────────────────────────────────────── -->
+      <div id="smenu" class="scr">
+        <div class="mlogo glitch" data-text="ESCAPE THE MATRIX">
+          ESCAPE THE MATRIX
+        </div>
+        <div class="msub">// CLASSIFIED INFILTRATION PROTOCOL v4.2.1 //</div>
+        <div class="mbtns">
+          <button class="btn" id="btnNew">[ NEW MISSION ]</button>
+          <button class="btn btn-c" id="btnCont" style="display: none">
+            [ RESUME MISSION ]
+          </button>
+          <button class="btn" id="btnDiff">[ SELECT DIFFICULTY ]</button>
+          <button class="btn btn-r" id="btnSound">[ SOUND: ON ]</button>
+        </div>
+        <div class="msave" id="saveInfo"></div>
+      </div>
+
+      <!-- ── DIFFICULTY SELECTION ───────────────────────────── -->
+      <div id="sdiff" class="scr">
+        <div class="stit">SELECT DIFFICULTY PROTOCOL</div>
+        <div class="sdiv"></div>
+        <div class="dgrid">
+          <div class="dc easy" data-d="easy">
+            <div class="dn">EASY</div>
+            <div class="dd">
+              Extended timers<br />More attempts<br />Visible hints<br />Slow
+              trace speed
+            </div>
+          </div>
+          <div class="dc med sel" data-d="med">
+            <div class="dn">MEDIUM</div>
+            <div class="dd">
+              Standard timers<br />Limited attempts<br />Partial hints<br />Normal
+              trace speed
+            </div>
+          </div>
+          <div class="dc hard" data-d="hard">
+            <div class="dn">HARD</div>
+            <div class="dd">
+              Minimal time<br />Few attempts<br />No hints<br />Fast trace speed
+            </div>
+          </div>
+        </div>
+        <button class="btn" id="btnDiffOk">[ CONFIRM ]</button>
+        <br />
+        <button
+          class="btn btn-r btn-sm"
+          id="btnDiffBack"
+          style="margin-top: 10px"
+        >
+          [ BACK ]
+        </button>
+      </div>
+
+      <!-- ── GAME SCREEN ────────────────────────────────────── -->
+      <div id="sgame" class="scr">
+        <!-- Header Bar -->
+        <div class="ghdr">
+          <div class="hl">
+            <div class="glogo">// MATRIX OS //</div>
+            <div class="mbdg" id="mBadge">LEVEL 1</div>
+          </div>
+          <div class="hr">
+            <div class="hst">LEVEL: <span class="v" id="hLevel">1/5</span></div>
+            <div class="hst">DIFF: <span class="v" id="hDiff">MED</span></div>
+            <div class="hst" id="hTimerWrap" style="display: none">
+              TIME: <span class="v" id="hTimer">--:--</span>
+            </div>
+            <button class="ibtn" id="btnSnd">♪</button>
+            <button class="ibtn" id="btnMenu2">MENU</button>
+          </div>
+        </div>
+
+        <!-- Game Body: Terminal + Sidebar -->
+        <div class="gbdy">
+          <!-- Terminal Panel -->
+          <div class="tpnl">
+            <div class="ttbar">
+              <div class="tdot tdot-r"></div>
+              <div class="tdot tdot-y"></div>
+              <div class="tdot tdot-g"></div>
+              <div class="ttitle" id="tTitle">TERMINAL — MATRIX NODE #7731</div>
+            </div>
+            <div class="tout" id="tout"></div>
+            <div class="tia">
+              <span class="tpr" id="tpr">root@matrix:~$</span>
+              <input
+                class="ti"
+                id="ti"
+                type="text"
+                autocomplete="off"
+                spellcheck="false"
+                autocorrect="off"
+              />
+              <span class="cblk"></span>
+            </div>
+          </div>
+
+          <!-- Side Panel -->
+          <div class="spnl">
+            <!-- Mission Status -->
+            <div class="ss">
+              <div class="sst">MISSION STATUS</div>
+              <div class="msteps" id="msteps"></div>
+            </div>
+
+            <!-- Trace Detection -->
+            <div class="ss">
+              <div class="sst">TRACE DETECTION</div>
+              <div class="tbw">
+                <div class="tbf" id="tbf" style="width: 0%"></div>
+              </div>
+              <div class="tv s" id="tval">0% — SAFE</div>
+            </div>
+
+            <!-- Attempts -->
+            <div class="ss" id="sAttempts">
+              <div class="sst">ATTEMPTS</div>
+              <div class="adots" id="adots"></div>
+            </div>
+
+            <!-- Timer -->
+            <div class="ss" id="sTimer">
+              <div class="sst">TIME REMAINING</div>
+              <div class="tdsp" id="tdsp">--:--</div>
+            </div>
+
+            <!-- Intel / Hint -->
+            <div class="ss" id="sHint">
+              <div class="sst">INTEL</div>
+              <div
+                id="hintText"
+                style="
+                  font-size: 11px;
+                  color: rgba(0, 255, 65, 0.55);
+                  line-height: 1.7;
+                "
+              ></div>
+            </div>
+
+            <!-- Firewall Sequence Log (Level 4 only) -->
+            <div class="ss" id="sFirewall" style="display: none">
+              <div class="sst">SEQUENCE LOG</div>
+              <div class="seqd" id="seqd"></div>
+              <div
+                style="
+                  font-size: 10px;
+                  color: rgba(0, 255, 65, 0.4);
+                  margin-top: 6px;
+                "
+                id="seqStatus"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── VICTORY SCREEN ─────────────────────────────────── -->
+      <div id="svic" class="scr">
+        <div class="rst">
+          <div class="rtit suc glitch" data-text="MATRIX ESCAPED">
+            MATRIX ESCAPED
+          </div>
+          <div class="rtxt" id="vicTxt"></div>
+          <div class="rbtns">
+            <button class="btn" id="btnPlayAgain">[ PLAY AGAIN ]</button>
+            <button class="btn btn-c" id="btnMenuVic">[ MAIN MENU ]</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── GAME OVER SCREEN ───────────────────────────────── -->
+      <div id="sgov" class="scr">
+        <div class="rst">
+          <div class="rtit fal glitch" data-text="SYSTEM OVERRIDE">
+            SYSTEM OVERRIDE
+          </div>
+          <div class="rtxt" id="govTxt"></div>
+          <div class="rbtns">
+            <button class="btn btn-r" id="btnRetry">[ RETRY LEVEL ]</button>
+            <button class="btn btn-c" id="btnMenuGov">[ MAIN MENU ]</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /#app -->
+
+    <!-- Achievement Popup -->
+    <div class="ach" id="achPop">
+      <div class="acht" id="achTitle">ACHIEVEMENT</div>
+      <div id="achMsg"></div>
+    </div>
+
+    <!-- Game Script -->
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -217,6 +217,15 @@ Inspired by modern sneaker brands and premium e-commerce experiences with a focu
 
 ---
 
+## 👩‍💻 Authors
+ 
+| Role | Name |
+|---|---|
+| 💻 App Development | **Sanyogita Singh** |
+| 📝 Documentation | **Sanyogita Singh** |
+
+----
+
 ## 📜 License
 
 This project is licensed under the MIT License.

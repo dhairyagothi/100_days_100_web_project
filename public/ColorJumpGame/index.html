@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Color Jump Game</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1>Color Jump</h1>
+            <div class="score-board">
+                <p>Score: <span id="score">0</span></p>
+                <p>High Score: <span id="highScore">0</span></p>
+            </div>
+        </header>
+
+        <div class="difficulty-selector">
+            <label for="difficulty">Difficulty:</label>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium" selected>Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+
+        <main>
+            <div id="startScreen" class="overlay active">
+                <h2>Ready to Jump?</h2>
+                <p>Tap or press Spacebar to jump over the colored walls!</p>
+                <button id="startBtn">Start Game</button>
+            </div>
+
+            <div id="gameOverScreen" class="overlay">
+                <h2>Game Over!</h2>
+                <p>Your Score: <span id="finalScore">0</span></p>
+                <button id="restartBtn">Play Again</button>
+            </div>
+
+            <canvas id="gameCanvas"></canvas>
+        </main>
+        
+
+        <div class="controls-hint">Tap anywhere to jump</div>
+
+        <!-- Statistics Dashboard -->
+        <div class="stats-dashboard">
+            <button class="stats-toggle" id="statsToggle">📊 Game Statistics</button>
+            <div class="stats-content" id="statsContent" hidden>
+                <div class="stats-grid">
+                    <!-- Total Games Played -->
+                    <div class="stat-card" data-stat="totalGames">
+                        <div class="stat-icon">🎮</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Total Games</p>
+                            <p class="stat-value" id="totalGames">0</p>
+                        </div>
+                    </div>
+                    <!-- Total Jumps -->
+                    <div class="stat-card" data-stat="totalJumps">
+                        <div class="stat-icon">🦘</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Total Jumps</p>
+                            <p class="stat-value" id="totalJumps">0</p>
+                        </div>
+                    </div>
+                    <!-- Highest Score -->
+                    <div class="stat-card" data-stat="highestScore">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Highest Score</p>
+                            <p class="stat-value" id="highestScore">0</p>
+                        </div>
+                    </div>
+                    <!-- Average Score -->
+                    <div class="stat-card" data-stat="averageScore">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Average Score</p>
+                            <p class="stat-value" id="averageScore">0</p>
+                        </div>
+                    </div>
+                    <!-- Current Difficulty -->
+                    <div class="stat-card" data-stat="currentDifficulty">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Current Difficulty</p>
+                            <p class="stat-value" id="currentDifficultyStat">Medium</p>
+                        </div>
+                    </div>
+                    <!-- Longest Survival Time -->
+                    <div class="stat-card" data-stat="longestSurvival">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Longest Survival</p>
+                            <p class="stat-value" id="longestSurvival">0s</p>
+                        </div>
+                    </div>
+                    <!-- Total Play Time -->
+                    <div class="stat-card" data-stat="totalPlayTime">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Total Play Time</p>
+                            <p class="stat-value" id="totalPlayTime">0m</p>
+                        </div>
+                    </div>
+                    <!-- Best Streak -->
+                    <div class="stat-card" data-stat="bestStreak">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Best Streak</p>
+                            <p class="stat-value" id="bestStreak">0</p>
+                        </div>
+                    </div>
+                    <!-- Success Rate -->
+                    <div class="stat-card" data-stat="successRate">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Success Rate</p>
+                            <p class="stat-value" id="successRate">0%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bars Section -->
+                <div class="progress-section">
+                    <div class="progress-card">
+                        <div class="progress-header">
+                            <span class="progress-label">High Score Progress</span>
+                            <span class="progress-value" id="highScoreProgress">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="highScoreFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-card">
+                        <div class="progress-header">
+                            <span class="progress-label">Average Score</span>
+                            <span class="progress-value" id="avgScoreProgress">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="avgScoreFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-card">
+                        <div class="progress-header">
+                            <span class="progress-label">Survival Time</span>
+                            <span class="progress-value" id="survivalProgress">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="survivalFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reset Button -->
+                <button class="reset-stats-btn" id="resetStatsBtn">🗑️ Reset Statistics</button>
+            </div>
+        </div>
+
+        <!-- Confirmation Dialog -->
+        <div class="dialog-overlay" id="dialogOverlay">
+            <div class="dialog">
+                <h3>Reset Statistics?</h3>
+                <p>This will erase all your saved game data. This action cannot be undone.</p>
+                <div class="dialog-buttons">
+                    <button class="dialog-btn cancel" id="cancelBtn">Cancel</button>
+                    <button class="dialog-btn confirm" id="confirmBtn">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="./script.js"></script>
+</body>
+</html>

@@ -1,125 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Bandzzzz</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- FIX #1 — cleaned up title -->
+  <title>Music Bandz — Discover Artists, Events &amp; More</title>
+  <!-- FIX #2 — added meta description for SEO -->
+  <meta name="description" content="Music Bandz — discover artists, upcoming tours, events and connect with the music community.">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── FIX #9 — back button moved out of inline style ── */
+    .project-back-button {
+      position: fixed;
+      left: 18px;
+      top: 18px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #1e293b;
+      color: #3b82f6;
+      border: 1px solid #3b82f6;
+      text-decoration: none;
+      z-index: 9999;
+      font-weight: 700;
+      font-family: Inter, system-ui, sans-serif;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .project-back-button:hover {
+      background: #3b82f6;
+      color: #fff;
+    }
+
+    /* ── FIX #10 — heading & gradient classes instead of inline styles ── */
+    .sidebar-title {
+      background: linear-gradient(0deg, #bb7e1b, #c5bd21);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-align: center;
+      font-size: 30px;
+      margin: 0 0 0.5rem;
+    }
+    .main-title {
+      text-align: center;
+      font-size: 30px;
+      background: linear-gradient(90deg, #f7ff00, #db36a4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 0 0 0.75rem;
+    }
+
+    /* ── FIX #5 — text-decoration on <a> not <ul> ── */
+    /* ── FIX #15 — active state for sidebar links ── */
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar ul li a {
+      text-decoration: none;
+      display: block;
+      padding: 6px 12px;
+      border-radius: 4px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sidebar ul li a:hover {
+      background: rgba(255,255,255,0.07);
+    }
+    .sidebar ul li a.active {
+      color: #f7ff00;
+      font-weight: 600;
+      background: rgba(247,255,0,0.07);
+    }
+
+    /* ── FIX #12 — section subheadings as h3 ── */
+    .section-subheading {
+      font-size: 23px;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    /* ── FIX #13 — proper section + paragraph structure ── */
+    .maincontent section {
+      margin-bottom: 1.5rem;
+    }
+    .maincontent section p {
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+
+    /* ── FIX #8 — nav search input styling ── */
+    .nav-search {
+      margin-right: 20px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .nav-search:focus {
+      border-color: #3b82f6;
+    }
+
+    /* ── FIX #16 — mobile responsive layout ── */
+    @media (max-width: 768px) {
+      .data {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100% !important;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        padding-bottom: 1rem;
+      }
+    }
+
+    /* ── FIX #17 — footer ── */
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      border-top: 1px solid #333;
+      font-size: 13px;
+      color: #888;
+      margin-top: 2rem;
+    }
+    footer a {
+      color: #3b82f6;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-    
+  <!-- FIX #9 — back button: no inline style, no onmouseover/onmouseout -->
+  <a href="/" class="project-back-button">← Back to Home</a>
+
+  <!-- FIX #11 — taskbar is now a semantic <header> + <nav> -->
+  <header role="banner">
     <div class="taskbar">
-        <h1>Music Bandzzzz</h1>
-        
+      <!-- FIX #1 — removed "Bandzzzz" typo -->
+      <h1>Music Bandz</h1>
+      <nav aria-label="Main navigation">
         <div class="links">
-            <a href="#" style="text-decoration: none;color:white">Home</a>
-            <!-- <i class="fas fa-search"></i> -->
-            <input type="text" placeholder="Search..." style="margin-right:20px ;">
+          <!-- FIX #7 — Home link points to #top, not # -->
+          <a href="#top" style="text-decoration:none; color:white;">Home</a>
+          <!-- FIX #4 — removed commented-out dead search icon -->
+          <!-- FIX #6 — added aria-label to search input -->
+          <!-- FIX #8 — moved inline style to .nav-search class -->
+          <input
+            type="text"
+            id="siteSearch"
+            class="nav-search"
+            placeholder="Search..."
+            aria-label="Search artists and events"
+          >
         </div>
-        
-
+      </nav>
     </div>
-    <!-- <img class="imageb" src="back.jpg"> -->
-    <div class="cont">
-        
-    </div>
+  </header>
 
-    <div class="data">
-        <div class="sidebar">
-            <h4 style="background: linear-gradient(0deg,#bb7e1b,#c5bd21);
-    -webkit-background-clip: text;
-    color: transparent;text-align:center;font-size:30px">Content</h4>
-            <div class="line"></div>
-            <ul style="text-decoration: none;">
-                <li>
-                    <a href="#">Home Page</a>
-                    
-                </li>
-                <li>
-                    <a href="#">About</a>
-                    
-                </li>
-                <li>
-                    <a href="#">Artists</a>
-                    
-                </li>
-                <li>
-                    <a href="#">Tours & Events</a>
-                    
-                </li>
-                <li>
-                    <a href="#">Upcoming Events</a>
-                    
-                </li>
-                <li>
-                    <a href="#">Merchandise</a>
-                    
-                </li>
-                <li>
-                    <a href="#">Media & Gallery</a>
-                    
-                </li>
-                <li>
-                    <a href="#">News & Blog</a>
-                    
-                </li>
-                <li>
-                    <a href="#">Fan Club</a>
-                    
-                </li>
-                <li>
-                    <a href="#">Contact & Booking</a>
-                    
-                </li>
-            </ul>
-        </div>
-        <div class="maincontent">
-            <h2 style="text-align: center;font-size:30px;background: linear-gradient(90deg,#f7ff00,#db36a4);-webkit-background-clip: text;
-    color: transparent;">Music Bandzzzz</h2>
-            <div class="line"></div>
-            <p>
-                Our website serves as a vibrant online hub for music bands, artists, and music enthusiasts. Whether you’re a fan of live music, looking to book artists, or exploring the latest in the music scene, our platform offers a one-stop destination to connect, discover, and engage with everything related to music. The website is designed to meet the needs of both music creators and fans, making it easy for everyone to explore and enjoy the world of music.
-                <br>
-                <span style="text-align: center;font-size:23px">For Music Bands and Artists</span>
+  <!-- FIX #3 — removed empty <div class="cont"> -->
+  <!-- FIX #4 — removed commented-out <img class="imageb"> -->
 
-                
-                <br>
-The website provides music bands and solo artists with a platform to showcase their talents, promote their work, and connect with their audience. Each band has its own dedicated profile, where they can share information about their music, upcoming events, tours, and the latest releases. The profiles include embedded music tracks, video content, images, and links to social media pages, making it easy for fans to explore their music and stay updated with their activities.
+  <div class="data" id="top">
 
-Additionally, the website offers a simple yet powerful way for bands to manage bookings. Artists can list their availability for events and tours, allowing organizers to easily book them for gigs, festivals, and private performances. The booking system ensures that the process is efficient, secure, and straightforward, benefiting both the bands and their event organizers.
-<br>
-<span style="text-align: center;font-size:23px">For Fans and Music Enthusiasts</span>
+    <!-- FIX #11 — sidebar is now a semantic <nav> -->
+    <nav class="sidebar" aria-label="Page sections">
+      <!-- FIX #10 — gradient applied via class, not inline style -->
+      <h4 class="sidebar-title">Content</h4>
+      <div class="line"></div>
+      <!-- FIX #5  — removed style="text-decoration:none" from <ul> (invalid there) -->
+      <!-- FIX #7  — all links now use section IDs instead of "#" -->
+      <!-- FIX #15 — .active class toggled by IntersectionObserver in JS below -->
+      <ul>
+        <li><a href="#top">Home Page</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#for-artists">Artists</a></li>
+        <li><a href="#tours">Tours &amp; Events</a></li>
+        <li><a href="#tours">Upcoming Events</a></li>
+        <li><a href="#merchandise">Merchandise</a></li>
+        <li><a href="#media">Media &amp; Gallery</a></li>
+        <li><a href="#news">News &amp; Blog</a></li>
+        <li><a href="#fanclub">Fan Club</a></li>
+        <li><a href="#contact">Contact &amp; Booking</a></li>
+      </ul>
+    </nav>
 
+    <main class="maincontent">
+      <!-- FIX #10 — gradient via class, not inline style -->
+      <!-- FIX #1  — removed "Bandzzzz" typo -->
+      <h2 class="main-title">Music Bandz</h2>
+      <div class="line"></div>
 
-<br>
+      <!-- FIX #13 — content split into proper <section> blocks instead of one giant <p> -->
+      <!-- FIX #12 — subheadings are now <h3>, not <span> inside <p> -->
 
-For fans, the website serves as a go-to destination for discovering new bands, exploring upcoming music events, and staying connected to the music world. The homepage features a dynamic collection of music news, upcoming concerts, and featured artists. Fans can easily browse through different genres, listen to new tracks, and explore artist profiles to stay updated on their favorite musicians.
+      <section id="about">
+        <p>
+          Our website serves as a vibrant online hub for music bands, artists, and music
+          enthusiasts. Whether you're a fan of live music, looking to book artists, or
+          exploring the latest in the music scene, our platform offers a one-stop destination
+          to connect, discover, and engage with everything related to music. The website is
+          designed to meet the needs of both music creators and fans, making it easy for
+          everyone to explore and enjoy the world of music.
+        </p>
+      </section>
 
-The website also offers an interactive platform where fans can engage with their favorite bands directly. Fans can follow bands, leave comments, and share content on social media, creating a sense of community and connection. With a built-in messaging system, fans can easily communicate with bands for any queries or booking requests.
-<br>
-<span style="text-align:center;font-size:23px">Music Events and Tours</span>
+      <section id="for-artists">
+        <h3 class="section-subheading">For Music Bands and Artists</h3>
+        <p>
+          The website provides music bands and solo artists with a platform to showcase their
+          talents, promote their work, and connect with their audience. Each band has its own
+          dedicated profile, where they can share information about their music, upcoming events,
+          tours, and the latest releases. The profiles include embedded music tracks, video
+          content, images, and links to social media pages, making it easy for fans to explore
+          their music and stay updated with their activities.
+        </p>
+        <p>
+          Additionally, the website offers a simple yet powerful way for bands to manage bookings.
+          Artists can list their availability for events and tours, allowing organizers to easily
+          book them for gigs, festivals, and private performances. The booking system ensures that
+          the process is efficient, secure, and straightforward, benefiting both the bands and
+          their event organizers.
+        </p>
+      </section>
 
+      <section id="for-fans">
+        <h3 class="section-subheading">For Fans and Music Enthusiasts</h3>
+        <p>
+          For fans, the website serves as a go-to destination for discovering new bands, exploring
+          upcoming music events, and staying connected to the music world. The homepage features a
+          dynamic collection of music news, upcoming concerts, and featured artists. Fans can
+          easily browse through different genres, listen to new tracks, and explore artist profiles
+          to stay updated on their favorite musicians.
+        </p>
+        <p>
+          The website also offers an interactive platform where fans can engage with their favorite
+          bands directly. Fans can follow bands, leave comments, and share content on social media,
+          creating a sense of community and connection. With a built-in messaging system, fans can
+          easily communicate with bands for any queries or booking requests.
+        </p>
+      </section>
 
-<br>
-An integral part of the website is the section dedicated to music events and tours. Here, users can explore a calendar of upcoming music events, concerts, and festivals. The website includes detailed event information such as location, date, ticket prices, and a direct link to buy tickets. Bands can also use this platform to promote their tours and provide fans with all the information they need to attend their shows.
+      <section id="tours">
+        <h3 class="section-subheading">Music Events and Tours</h3>
+        <p>
+          An integral part of the website is the section dedicated to music events and tours. Here,
+          users can explore a calendar of upcoming music events, concerts, and festivals. The website
+          includes detailed event information such as location, date, ticket prices, and a direct
+          link to buy tickets. Bands can also use this platform to promote their tours and provide
+          fans with all the information they need to attend their shows.
+        </p>
+        <p>
+          The website ensures a seamless experience for both fans and event organizers, making it
+          easy to book tickets, find local music events, and stay informed on the latest happenings
+          in the music world.
+        </p>
+      </section>
 
-The website ensures a seamless experience for both fans and event organizers, making it easy to book tickets, find local music events, and stay informed on the latest happenings in the music world.
-<br>
-<span style="text-align: center;font-size:23px">Engagement and Community</span>
+      <section id="community">
+        <h3 class="section-subheading">Engagement and Community</h3>
+        <p>
+          Our platform promotes a sense of belonging within the music community. Bands, fans, and
+          music lovers can engage with one another through comments, forums, and community-driven
+          content. Fans can review concerts, share their favorite songs, and participate in contests
+          and giveaways. Bands can create personalized fan clubs, offering exclusive content, early
+          ticket access, and special promotions to their most dedicated followers.
+        </p>
+      </section>
 
+      <!-- Placeholder sections for sidebar links that have no content yet -->
+      <section id="merchandise"></section>
+      <section id="media"></section>
+      <section id="news"></section>
+      <section id="fanclub"></section>
+      <section id="contact"></section>
 
-<br>
-Our platform promotes a sense of belonging within the music community. Bands, fans, and music lovers can engage with one another through comments, forums, and community-driven content. Fans can review concerts, share their favorite songs, and participate in contests and giveaways. Bands can create personalized fan clubs, offering exclusive content, early ticket access, and special promotions to their most dedicated followers.
+    </main>
+  </div>
 
+  <!-- FIX #17 — added footer (was completely missing) -->
+  <footer>
+    <p>
+      <a href="#for-artists">Artists</a>
+      <a href="#tours">Events</a>
+      <a href="#fanclub">Fan Club</a>
+      <a href="#contact">Contact</a>
+    </p>
+    <p>&copy; 2025 Music Bandz. All rights reserved.</p>
+  </footer>
 
+  <script>
+    // ── FIX #14 — search input now actually filters sections ──────────────
+    document.getElementById('siteSearch').addEventListener('input', function () {
+      const q = this.value.toLowerCase().trim();
+      document.querySelectorAll('.maincontent section').forEach(function (sec) {
+        if (!sec.id || ['merchandise','media','news','fanclub','contact'].includes(sec.id)) return;
+        sec.style.display = (!q || sec.textContent.toLowerCase().includes(q)) ? '' : 'none';
+      });
+    });
 
-            </p>
-        </div>
-    </div>
-    
+    // ── FIX #15 — sidebar active state via IntersectionObserver ──────────
+    const sections = document.querySelectorAll('.maincontent section[id]');
+    const sidebarLinks = document.querySelectorAll('.sidebar a');
+
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          sidebarLinks.forEach(function (link) {
+            const href = link.getAttribute('href').replace('#', '');
+            link.classList.toggle('active', href === id);
+          });
+        }
+      });
+    }, { threshold: 0.4 });
+
+    sections.forEach(function (sec) { observer.observe(sec); });
+  </script>
 
 </body>
 </html>

@@ -1,0 +1,537 @@
+/* =========================
+   RESET
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0f172a;
+  --card: rgba(255,255,255,0.08);
+  --card-hover: rgba(255,255,255,0.12);
+  --border: rgba(255,255,255,0.12);
+  --text: #ffffff;
+  --text-light: #94a3b8;
+  --primary: #8b5cf6;
+  --secondary: #06b6d4;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --shadow: 0 15px 40px rgba(0,0,0,.25);
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background:
+    radial-gradient(circle at top left,#8b5cf625 0%,transparent 30%),
+    radial-gradient(circle at bottom right,#06b6d425 0%,transparent 30%),
+    var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+  background: rgba(15,23,42,.7);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: 1300px;
+  margin: auto;
+  padding: 18px 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.brand i {
+  color: var(--primary);
+  font-size: 1.8rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.icon-btn {
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 14px;
+  background: var(--card);
+  color: white;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  transition: .3s;
+}
+
+.icon-btn:hover {
+  background: var(--card-hover);
+  transform: translateY(-2px);
+}
+
+.fav-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--danger);
+  color: white;
+  font-size: .75rem;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  padding: 80px 20px;
+}
+
+.hero-inner {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+}
+
+.hero-eyebrow {
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 7vw, 5rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.gradient-text {
+  background: linear-gradient(
+    90deg,
+    var(--primary),
+    var(--secondary)
+  );
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.hero-sub {
+  color: var(--text-light);
+  max-width: 650px;
+  margin: 20px auto;
+  font-size: 1.1rem;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.detect-mood-btn,
+.surprise-btn,
+.surprise-btn-sm,
+.back-btn,
+.btn-confirm-mood,
+.btn-start-camera {
+  border: none;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.detect-mood-btn,
+.surprise-btn,
+.btn-confirm-mood,
+.btn-start-camera {
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--secondary)
+  );
+  color: white;
+  padding: 14px 24px;
+  border-radius: 16px;
+  font-weight: 600;
+}
+
+.detect-mood-btn:hover,
+.surprise-btn:hover,
+.btn-confirm-mood:hover {
+  transform: translateY(-3px);
+}
+
+.detect-mood-btn {
+  margin: 30px 0;
+}
+
+.surprise-btn {
+  margin-top: 25px;
+}
+
+.back-btn {
+  background: var(--card);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+}
+
+.surprise-btn-sm {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: var(--card);
+  color: white;
+}
+
+/* =========================
+   MOOD GRID
+========================= */
+
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+  gap: 18px;
+  margin-top: 40px;
+}
+
+.mood-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 25px;
+  cursor: pointer;
+  backdrop-filter: blur(20px);
+  transition: .3s;
+}
+
+.mood-card:hover {
+  transform: translateY(-8px);
+  background: var(--card-hover);
+}
+
+.mood-card .emoji {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   RECOMMENDATIONS
+========================= */
+
+.recs-section {
+  padding: 40px 20px 80px;
+}
+
+.recs-inner {
+  max-width: 1300px;
+  margin: auto;
+}
+
+.recs-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.recs-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.mood-emoji-large {
+  font-size: 3rem;
+}
+
+/* =========================
+   FILTERS
+========================= */
+
+.filters-row {
+  display: flex;
+  gap: 15px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+.search-wrap {
+  flex: 1;
+  min-width: 260px;
+  position: relative;
+}
+
+.search-wrap i {
+  position: absolute;
+  left: 15px;
+  top: 16px;
+  color: var(--text-light);
+}
+
+.search-wrap input,
+.genre-select {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: white;
+  border-radius: 14px;
+  padding: 14px 16px 14px 45px;
+}
+
+.genre-select {
+  width: 220px;
+  padding-left: 16px;
+}
+
+/* =========================
+   SONG GRID
+========================= */
+
+.song-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+  gap: 20px;
+}
+
+.song-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 20px;
+  backdrop-filter: blur(20px);
+  transition: .3s;
+}
+
+.song-card:hover {
+  transform: translateY(-5px);
+  background: var(--card-hover);
+}
+
+.song-cover {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.song-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 15px;
+}
+
+.song-artist {
+  color: var(--text-light);
+  margin-top: 5px;
+}
+
+/* =========================
+   FAVORITES DRAWER
+========================= */
+
+.fav-drawer {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 400px;
+  height: 100%;
+  background: #111827;
+  transition: .4s;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.fav-drawer.open {
+  right: 0;
+}
+
+.fav-drawer-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.fav-list {
+  list-style: none;
+  padding: 20px;
+}
+
+.fav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: .3s;
+}
+
+.fav-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.detector-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.75);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.detector-overlay.active {
+  display: flex;
+}
+
+.detector-modal {
+  width: 100%;
+  max-width: 750px;
+  background: #111827;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.detector-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.detector-body {
+  padding: 25px;
+}
+
+.detector-video-wrap {
+  position: relative;
+}
+
+#detectorVideo,
+#detectorCanvas {
+  width: 100%;
+  border-radius: 20px;
+}
+
+.detector-spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid rgba(255,255,255,.2);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #111827;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 12px;
+  transform: translateY(100px);
+  transition: .3s;
+  z-index: 5000;
+}
+
+.toast.show {
+  transform: translateY(0);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .hero {
+    padding-top: 50px;
+  }
+
+  .hero h1 {
+    font-size: 2.7rem;
+  }
+
+  .recs-topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters-row {
+    flex-direction: column;
+  }
+
+  .genre-select {
+    width: 100%;
+  }
+
+  .fav-drawer {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .brand span {
+    display: none;
+  }
+
+  .song-grid {
+    grid-template-columns: 1fr;
+  }
+}

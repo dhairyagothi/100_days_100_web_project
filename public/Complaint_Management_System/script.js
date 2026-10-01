@@ -25,13 +25,16 @@ class ComplaintApp {
         this.cacheDOM();
         this.bindEvents();
         this.initTheme();
-        
+        this.loadProfile();
+    
         // Initial Renders
         this.updateDashboardStats();
         this.renderRecentComplaints();
     }
 
     cacheDOM() {
+        this.closeProfileBtn =
+document.getElementById("close-profile");
         // Navigation
         this.navItems = document.querySelectorAll('.nav-item[data-view]');
         this.views = document.querySelectorAll('.view-section');
@@ -39,6 +42,9 @@ class ComplaintApp {
         this.sidebar = document.querySelector('.sidebar');
         this.pageTitle = document.getElementById('page-title');
         this.themeToggle = document.getElementById('theme-toggle');
+        this.userProfile = document.querySelector(".user-profile");
+this.userDropdown = document.getElementById("user-dropdown");
+this.profileBtn = document.getElementById("profile-btn");
         
         // Dashboard
         this.statTotal = document.getElementById('stat-total');
@@ -46,6 +52,25 @@ class ComplaintApp {
         this.statProgress = document.getElementById('stat-progress');
         this.statResolved = document.getElementById('stat-resolved');
         this.recentTableBody = document.getElementById('recent-table-body');
+        this.userProfile = document.getElementById("user-profile");
+
+this.profileModal = document.getElementById("profile-modal");
+
+this.profileName = document.getElementById("profile-name");
+
+this.profileEmail = document.getElementById("profile-email");
+
+this.profilePhone = document.getElementById("profile-phone");
+
+
+this.saveProfileBtn =
+document.getElementById("save-profile-btn");
+
+this.profileNameDisplay =
+document.getElementById("profile-name-display");
+
+this.profileAvatar =
+document.getElementById("profile-avatar");
         
         // Forms
         this.complaintForm = document.getElementById('complaint-form');
@@ -90,6 +115,30 @@ class ComplaintApp {
             });
         });
 
+        if (this.closeProfileBtn) {
+    this.closeProfileBtn.addEventListener("click", () => {
+        this.profileModal.classList.add("hidden");
+    });
+}
+
+        console.log(this.userProfile);
+console.log(this.profileModal);
+console.log(this.saveProfileBtn);
+
+if (this.userProfile) {
+    this.userProfile.addEventListener("click", () => {
+        this.profileModal.classList.remove("hidden");
+console.log(this.profileModal);
+    });
+}
+
+if (this.saveProfileBtn) {
+    this.saveProfileBtn.addEventListener("click", () => {
+        this.saveProfile();
+    });
+}
+    
+
         this.mobileToggle.addEventListener('click', () => {
             this.sidebar.classList.toggle('open');
         });
@@ -119,6 +168,12 @@ class ComplaintApp {
         
         // Admin Search
         this.adminSearch.addEventListener('input', () => this.renderAdminList());
+
+        if (this.saveProfileBtn) {
+    this.saveProfileBtn.addEventListener("click", () => {
+        this.saveProfile();
+    });
+}
     }
 
     // --- Theme & UI ---
@@ -131,16 +186,69 @@ class ComplaintApp {
         }
     }
 
+    saveProfile() {
+
+    const profile = {
+
+        name: this.profileName.value,
+
+        email: this.profileEmail.value,
+
+        phone: this.profilePhone.value,
+
+
+    };
+
+    localStorage.setItem("profile", JSON.stringify(profile));
+
+    this.loadProfile();
+
+    this.profileModal.classList.add("hidden");
+
+    this.showToast(
+        "Success",
+        "Profile updated successfully."
+    );
+    this.profileNameDisplay.textContent = this.profileName.value;
+    this.profileAvatar.src =
+`https://ui-avatars.com/api/?name=${encodeURIComponent(this.profileName.value)}&background=6366f1&color=fff`;
+this.profileModal.classList.add("hidden");
+}
+
+loadProfile() {
+
+    const profile =
+    JSON.parse(localStorage.getItem("profile"));
+
+    if(!profile) return;
+
+    this.profileName.value = profile.name;
+
+    this.profileEmail.value = profile.email;
+
+    this.profilePhone.value = profile.phone;
+
+    this.profileNameDisplay.textContent =
+        profile.name || "Current User";
+
+        this.profileAvatar.src =
+`https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name || "User")}&background=6366f1&color=fff`;
+
+}
+
     toggleTheme() {
-        const current = document.body.getAttribute('data-theme');
-        if (current === 'dark') {
-            document.body.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-        } else {
-            document.body.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-        }
+    const current = document.body.getAttribute('data-theme');
+    const btn = document.getElementById('theme-toggle');
+    if (current === 'dark') {
+        document.body.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+        if (btn) btn.innerHTML = '<i class="ph ph-sun"></i> Dark Mode';
+    } else {
+        document.body.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        if (btn) btn.innerHTML = '<i class="ph ph-moon"></i> Light Mode';
     }
+}
 
     showToast(title, message, type = 'success') {
         this.toastTitle.textContent = title;
@@ -182,7 +290,8 @@ class ComplaintApp {
             'submit': 'Submit Complaint',
             'listings': 'Complaint Directory',
             'details': 'Complaint Details',
-            'admin': 'Admin Panel'
+            'admin': 'Admin Panel',
+            'profile': 'My Profile'   // Add this
         };
         this.pageTitle.textContent = titles[viewId] || 'Portal';
 
@@ -570,6 +679,8 @@ class ComplaintApp {
         document.getElementById('admin-notes').value = '';
     }
 
+    
+
     saveAdminChanges() {
         if (!this.selectedAdminComplaint) return;
 
@@ -603,6 +714,8 @@ class ComplaintApp {
         }
     }
 }
+
+
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', () => {

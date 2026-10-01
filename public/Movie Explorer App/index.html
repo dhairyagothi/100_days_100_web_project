@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieHub | Explore Movies</title>
+    <meta name="description" content="Discover and save your favorite movies with MovieHub.">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode"> <!-- Default to dark mode for Netflix style -->
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" id="home-link">
+                <i class="fa-solid fa-clapperboard"></i> MovieHub
+            </a>
+            
+            <div class="nav-links" id="nav-links">
+                <a href="#" class="nav-item active" data-target="home-section">Home</a>
+                <a href="#movies-container" class="nav-item" data-target="movies-section">Movies</a>
+                <a href="#" class="nav-item" id="nav-favorites">Favorites <i class="fa-solid fa-heart"></i></a>
+                <a href="#" class="nav-item" id="nav-watchlist">Watchlist <i class="fa-solid fa-bookmark"></i></a>
+            </div>
+
+            <div class="nav-actions">
+                <div class="nav-search">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="nav-search-input" placeholder="Titles, genres...">
+                </div>
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle light/dark mode">
+                    <i class="fa-solid fa-sun"></i>
+                </button>
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <!-- Hero Section (Trending/Featured) -->
+        <header class="hero" id="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 id="hero-title">Inception</h1>
+                <div class="hero-meta">
+                    <span class="hero-rating"><i class="fa-solid fa-star"></i> 4.8</span>
+                    <span class="hero-year">2010</span>
+                    <span class="hero-genre badge">Sci-Fi</span>
+                </div>
+                <p id="hero-desc">A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O., but his tragic past may doom the project and his team to disaster.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="hero-play-btn"><i class="fa-solid fa-play"></i> Watch Trailer</button>
+                    <button class="btn btn-secondary" id="hero-details-btn"><i class="fa-solid fa-circle-info"></i> More Info</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Layout (Sidebar + Grid) -->
+        <div class="layout-container" id="movies-container">
+            
+            <!-- Mobile Filters Toggle -->
+            <div class="mobile-filters-bar">
+                <h2>Browse Movies</h2>
+                <button id="mobile-filters-btn" class="btn btn-outline"><i class="fa-solid fa-sliders"></i> Filters</button>
+            </div>
+
+            <!-- Sidebar Filters -->
+            <aside class="sidebar-filters" id="sidebar-filters">
+                <div class="filter-header-mobile">
+                    <h3>Filters</h3>
+                    <button id="close-filters-btn" class="icon-btn"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Sort By</h3>
+                    <select id="sort-select" class="custom-select">
+                        <option value="default">Recommended</option>
+                        <option value="rating-desc">Rating: High to Low</option>
+                        <option value="name-asc">Name: A to Z</option>
+                        <option value="name-desc">Name: Z to A</option>
+                        <option value="year-desc">Newest First</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Genres</h3>
+                    <ul class="genre-list" id="genre-list">
+                        <li><button class="genre-btn active" data-genre="All">All Genres</button></li>
+                        <li><button class="genre-btn" data-genre="Action">Action</button></li>
+                        <li><button class="genre-btn" data-genre="Comedy">Comedy</button></li>
+                        <li><button class="genre-btn" data-genre="Drama">Drama</button></li>
+                        <li><button class="genre-btn" data-genre="Horror">Horror</button></li>
+                        <li><button class="genre-btn" data-genre="Sci-Fi">Sci-Fi</button></li>
+                        <li><button class="genre-btn" data-genre="Romance">Romance</button></li>
+                        <li><button class="genre-btn" data-genre="Thriller">Thriller</button></li>
+                        <li><button class="genre-btn" data-genre="Animation">Animation</button></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Movies Grid Content -->
+            <section class="movies-content">
+                <div class="section-header">
+                    <h2 id="section-title">Trending Now</h2>
+                </div>
+                
+                <div class="movies-grid" id="movies-grid">
+                    <!-- Movies injected by JS -->
+                </div>
+
+                <!-- Empty State UI -->
+                <div class="empty-state hidden" id="empty-state">
+                    <i class="fa-solid fa-film empty-icon"></i>
+                    <h3>No movies found</h3>
+                    <p>Try adjusting your search or filters to find what you're looking for.</p>
+                    <button class="btn btn-primary" id="reset-filters-btn">Reset Filters</button>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <a href="#" class="logo footer-logo">
+                    <i class="fa-solid fa-clapperboard"></i> MovieHub
+                </a>
+                <p>Your ultimate destination for discovering the best movies across all genres. Enjoy the show.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Links</h3>
+                <a href="#">Home</a>
+                <a href="#">Movies</a>
+                <a href="#">Favorites</a>
+            </div>
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <a href="#">Terms of Use</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Cookie Preferences</a>
+            </div>
+            <div class="footer-col social-col">
+                <h3>Connect</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 MovieHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Overlay (for Modals and Mobile Sidebar) -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Movie Details Modal -->
+    <div class="modal" id="movie-modal">
+        <div class="modal-content">
+            <button class="close-modal icon-btn" id="close-movie-modal"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-hero" id="modal-hero">
+                <div class="modal-hero-overlay"></div>
+                <!-- Banner Image set by JS via background-image -->
+            </div>
+            <div class="modal-body">
+                <div class="modal-header-info">
+                    <h2 id="modal-title">Movie Title</h2>
+                    <div class="modal-meta">
+                        <span class="match-score">98% Match</span>
+                        <span id="modal-year">2023</span>
+                        <span class="age-rating">13+</span>
+                        <span id="modal-genre">Action</span>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-primary"><i class="fa-solid fa-play"></i> Play</button>
+                    <button class="icon-btn-large" id="modal-fav-btn" title="Add to Favorites"><i class="fa-regular fa-heart"></i></button>
+                    <button class="icon-btn-large" id="modal-watchlist-btn" title="Add to Watchlist"><i class="fa-regular fa-bookmark"></i></button>
+                    
+                    <div class="rating-ui" id="rating-ui">
+                        <span>Rate: </span>
+                        <div class="stars">
+                            <i class="fa-regular fa-star star-rate" data-val="1"></i>
+                            <i class="fa-regular fa-star star-rate" data-val="2"></i>
+                            <i class="fa-regular fa-star star-rate" data-val="3"></i>
+                            <i class="fa-regular fa-star star-rate" data-val="4"></i>
+                            <i class="fa-regular fa-star star-rate" data-val="5"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-details-grid">
+                    <div class="modal-desc-col">
+                        <p id="modal-desc">Movie description goes here...</p>
+                    </div>
+                    <div class="modal-cast-col">
+                        <p><strong>Cast:</strong> <span id="modal-cast">Actor 1, Actor 2, Actor 3</span></p>
+                        <p><strong>Director:</strong> <span id="modal-director">Director Name</span></p>
+                        <p><strong>Rating:</strong> <i class="fa-solid fa-star" style="color: var(--accent-color)"></i> <span id="modal-rating">4.5</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebars for Favorites & Watchlist -->
+    <!-- Favorites Sidebar -->
+    <div class="right-sidebar" id="favorites-sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fa-solid fa-heart"></i> My Favorites</h2>
+            <button class="close-right-sidebar icon-btn" id="close-fav-sidebar"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="sidebar-body" id="favorites-list">
+            <!-- Items injected by JS -->
+        </div>
+    </div>
+
+    <!-- Watchlist Sidebar -->
+    <div class="right-sidebar" id="watchlist-sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fa-solid fa-bookmark"></i> My Watchlist</h2>
+            <button class="close-right-sidebar icon-btn" id="close-watchlist-sidebar"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="sidebar-body" id="watchlist-list">
+            <!-- Items injected by JS -->
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Advanced Form Builder</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Inter,Segoe UI,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;
+}
+
+.background{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.circle{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    animation:float 10s infinite ease-in-out;
+}
+
+.circle:nth-child(1){
+    width:250px;
+    height:250px;
+    top:-60px;
+    left:-70px;
+}
+
+.circle:nth-child(2){
+    width:180px;
+    height:180px;
+    bottom:50px;
+    right:100px;
+    animation-delay:2s;
+}
+
+.circle:nth-child(3){
+    width:120px;
+    height:120px;
+    top:60%;
+    left:15%;
+    animation-delay:4s;
+}
+
+.card{
+    position:relative;
+    z-index:10;
+    width:min(90%,600px);
+    padding:45px;
+    text-align:center;
+    border-radius:24px;
+    backdrop-filter:blur(15px);
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
+    animation:fade .8s ease;
+}
+
+.icon{
+    font-size:70px;
+    margin-bottom:15px;
+}
+
+h1{
+    font-size:120px;
+    line-height:1;
+    margin-bottom:10px;
+}
+
+h2{
+    font-size:30px;
+    margin-bottom:15px;
+}
+
+p{
+    opacity:.9;
+    line-height:1.7;
+    margin-bottom:35px;
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    margin-top:10px;
+}
+
+.back{
+    display:inline-block;
+    padding:14px 30px;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:600;
+    text-decoration:none;
+    background:#fff;
+    color:#2563eb;
+    transition:.3s;
+}
+
+.back:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+@media(max-width:600px){
+    .back{
+        width:100%;
+        text-align:center;
+    }
+
+    h1{
+        font-size:90px;
+    }
+
+    h2{
+        font-size:24px;
+    }
+
+    .card{
+        padding:35px 25px;
+    }
+}
+
+@keyframes float{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-25px);
+    }
+}
+
+@keyframes fade{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="background">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+</div>
+
+<div class="card">
+
+    <div class="icon">📝</div>
+
+    <h1>404</h1>
+
+    <h2>Page Not Found</h2>
+
+    <p>
+        Oops! The form or page you're looking for doesn't exist,
+        may have been moved, or the URL is incorrect.
+    </p>
+
+    <div class="buttons">
+        <a href="index.html" class="back">
+            ← Back to Advanced Form Builder
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

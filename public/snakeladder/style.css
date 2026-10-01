@@ -445,3 +445,38 @@ body {
   .cell { width: 36px; height: 36px; }
   .token { width: 16px; height: 16px; font-size: 9px; }
 }
+#themeToggle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+
+  background: var(--card-bg);
+  color: var(--text-color);
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#themeToggle:hover {
+  transform: rotate(180deg);
+  border-color: var(--accent);
+}
+
+#themeIcon {
+  font-size: 1.2rem;
+}
+body.light-theme {
+  --bg-primary: #fff;
+}
+body.light-theme 
+{
+  background: var(--bg-primary);
+  background-attachment: fixed;
+
+  color: #000;
+}
+body.light-theme input
+{
+  color: #000;
+}

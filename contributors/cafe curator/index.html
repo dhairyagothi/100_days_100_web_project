@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cafe Curator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>C</text></svg>">
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Easy cafe finder</p>
+        <h1>Cafe Curator</h1>
+        <p class="hero-text">
+          Find nearby cafes in a simple and fun way. Check the place, see useful
+          details, and save the cafes you want to visit later.
+        </p>
+        <div class="hero-points">
+          <p>Simple enough for students and beginners</p>
+          <p>Swipe or use buttons to choose quickly</p>
+          <p>Save your favorite cafes in one click</p>
+        </div>
+      </div>
+
+      <section class="control-panel">
+        <div class="actions">
+          <button class="primary-button" onclick="getLocationCachedOrNew()">Find Cafes Near Me</button>
+          <button class="secondary-button" onclick="showSaved()">My Saved Cafes</button>
+        </div>
+        <p class="helper-text">Tip: click the first button to load cafes near your current location.</p>
+
+        <div class="toolbar">
+          <label class="field">
+            <span>Search Distance</span>
+            <select id="radius-select">
+              <option value="1500">1.5 km</option>
+              <option value="3000">3 km</option>
+              <option value="5000">5 km</option>
+              <option value="8000">8 km</option>
+              <option value="20000" selected>20 km</option>
+            </select>
+          </label>
+          <button class="ghost-button" onclick="refreshCurrentSearch()">Refresh List</button>
+        </div>
+
+        <div class="meta-row">
+          <p id="status" class="status-pill" aria-live="polite">Ready to explore nearby cafes.</p>
+          <p id="saved-count" class="saved-chip">0 saved</p>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span>Cards Left</span>
+            <strong id="deck-count">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Current Mode</span>
+            <strong id="view-mode">Ready</strong>
+          </article>
+        </div>
+      </section>
+    </header>
+
+    <main class="app-grid">
+      <section class="deck-column">
+        <div class="section-heading">
+          <p class="section-label">Cafe Cards</p>
+          <h2>Nearby Cafes</h2>
+        </div>
+        <div class="cards"></div>
+        <div class="deck-actions">
+          <button class="ghost-button" onclick="skipTopCard()">Skip</button>
+          <button class="primary-button" onclick="saveTopCard()">Save</button>
+        </div>
+      </section>
+
+      <aside class="info-column">
+        <div class="info-card">
+          <p class="section-label">How It Works</p>
+          <h3>Easy to use</h3>
+          <p>
+            Swipe left to skip a cafe. Swipe right to save it. You can also use the
+            Skip and Save buttons if you do not want to swipe.
+          </p>
+        </div>
+
+        <div class="info-card">
+          <p class="section-label">Extra Feature</p>
+          <h3>Powered by OpenStreetMap</h3>
+          <p>
+            This app uses OpenStreetMap data (Overpass and Nominatim) to find
+            nearby cafes, fill in address details, and load real cafe photos from
+            Wikimedia/Wikipedia when metadata is available.
+          </p>
+        </div>
+
+        <div class="info-card">
+          <p class="section-label">Saved List</p>
+          <h3>Keep your shortlist clean</h3>
+          <p>
+            Open your saved cafes anytime, remove the ones you do not need, or
+            clear everything and start fresh.
+          </p>
+          <button class="ghost-button" onclick="clearSavedCafes()">Clear Saved Cafes</button>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="data-attribution" aria-label="Data attribution">
+      <p>
+        Cafe data from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>,
+        via <a href="https://overpass-api.de/" target="_blank" rel="noopener noreferrer">Overpass API</a> and
+        <a href="https://nominatim.org/" target="_blank" rel="noopener noreferrer">Nominatim</a>.
+      </p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,7 +1,10 @@
-
-const hueSlider        = document.getElementById('hue');
+const hueSlider = document.getElementById('hue');
 const saturationSlider = document.getElementById('saturation');
-const lightnessSlider  = document.getElementById('lightness');
+const lightnessSlider = document.getElementById('lightness');
+
+if (!hueSlider || !saturationSlider || !lightnessSlider) {
+  throw new Error('Required slider elements are missing.');
+}
 
 const colorDisplay = document.getElementById('customColorDisplay');
 const colorValue = document.getElementById('colorValue');
@@ -31,9 +34,11 @@ function updateColor() {
   colorValue.textContent = hsl;
   colorDisplay.style.boxShadow = `0 8px 40px hsl(${hue}, ${saturation}%, ${lightness}%, 0.5)`;
 
-  orb1.style.background = hsl;
-  orb2.style.background = hsl;
-  orb3.style.background = hsl;
+  [orb1, orb2, orb3].forEach(orb => {
+  if (orb) {
+    orb.style.background = hsl;
+  }
+});
 
 }
 
@@ -48,9 +53,18 @@ copyBtn.addEventListener('click', () => {
   const lightness  = lightnessSlider.value;
   const hsl = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 
-  navigator.clipboard.writeText(hsl);
-  copyBtn.textContent = 'Copied!';
-  setTimeout(() => copyBtn.textContent = 'Copy Color', 1500);
+  navigator.clipboard.writeText(hsl)
+  .then(() => {
+    copyBtn.textContent = 'Copied!';
+  })
+  .catch(() => {
+    copyBtn.textContent = 'Copy Failed';
+  })
+  .finally(() => {
+    setTimeout(() => {
+      copyBtn.textContent = 'Copy Color';
+    }, 1500);
+  });
 });
 
 // Quick Color Palette Logic

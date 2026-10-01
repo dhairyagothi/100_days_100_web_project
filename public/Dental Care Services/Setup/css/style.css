@@ -348,3 +348,26 @@ h6,
     color: #FFFFFF;
     border: 1px solid red !important;
 }
+/* Newsletter section responsiveness improvement */
+
+@media (max-width: 768px) {
+
+    .bg-primary .mx-auto {
+        width: 100% !important;
+        padding: 0 15px;
+    }
+
+    .bg-primary .form-control {
+        width: 100% !important;
+        margin-bottom: 10px;
+    }
+
+    .bg-primary .btn {
+        width: 100%;
+    }
+
+    .bg-primary .position-relative {
+        display: flex;
+        flex-direction: column;
+    }
+}

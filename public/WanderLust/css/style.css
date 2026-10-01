@@ -1,13 +1,76 @@
+/* =========================================
+   1. THEME VARIABLES (LIGHT & DARK)
+   ========================================= */
+
+:root {
+    /* Light Mode Colors (Your original colors) */
+    --bg-main: #ffffff;
+    --bg-secondary: #f7f7f7;
+    --bg-tertiary: #eeeeee;
+    --text-main: #222222;
+    --border-color: #dddddd;
+    --border-input: #cccccc;
+    --accent-color: #ff385c;
+    --accent-hover: #e31c5f;
+    --btn-text: #ffffff;
+}
+
+.dark-theme {
+    /* Dark Mode Colors */
+    --bg-main: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-tertiary: #2c2c2c;
+    --text-main: #f5f5f5;
+    --border-color: #333333;
+    --border-input: #444444;
+    --accent-color: #ff4d6d; /* Slightly brighter for dark mode contrast */
+    --accent-hover: #ff385c;
+    --btn-text: #ffffff;
+}
+
+/* =========================================
+   2. BASE STYLES
+   ========================================= */
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* THEME VARIABLES */
+
+:root{
+    --bg:#ffffff;
+    --text:#222222;
+    --navbar-bg:#f7f7f7;
+    --card-bg:#ffffff;
+    --border:#dddddd;
+    --input-bg:#ffffff;
+    --footer-bg:#f7f7f7;
+    --map-bg:#eeeeee;
+    --accent:#ff385c;
+    --accent-hover:#e31c5f;
+}
+
+[data-theme="dark"]{
+    --bg:#121212;
+    --text:#f5f5f5;
+    --navbar-bg:#1e1e1e;
+    --card-bg:#1f1f1f;
+    --border:#333333;
+    --input-bg:#2a2a2a;
+    --footer-bg:#1e1e1e;
+    --map-bg:#2a2a2a;
+    --accent:#ff385c;
+    --accent-hover:#ff5a7d;
+}
+
 body{
-    background:#ffffff;
-    color:#222;
+    background:var(--bg);
+    color:var(--text);
+    transition:0.3s;
 }
 
 /* NAVBAR */
@@ -22,9 +85,9 @@ body{
 
     padding:0 35px;
 
-    background:#f7f7f7;
+    background:var(--navbar-bg);
 
-    border-bottom:1px solid #ddd;
+    border-bottom:1px solid var(--border);
 
     position:sticky;
     top:0;
@@ -32,36 +95,36 @@ body{
 }
 
 .logo{
-    display:flex;
-    align-items:center;
-    gap:12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .logo i{
-    color:#ff385c;
+    color:var(--accent);
     font-size:2rem;
 }
 
 .logo span{
-    font-size:1.3rem;
-    font-weight:500;
+    font-size: 1.3rem;
+    font-weight: 500;
 }
 
 .nav-center{
-    display:flex;
-    align-items:center;
-    gap:10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .nav-center input{
     width:260px;
-
     padding:14px 18px;
-
-    border:1px solid #ddd;
+    border:1px solid var(--border);
     border-radius:10px;
-
     font-size:1rem;
+
+    background:var(--input-bg);
+    color:var(--text);
 }
 
 .nav-center button{
@@ -70,35 +133,34 @@ body{
     border:none;
     border-radius:10px;
 
-    background:#ff385c;
+    background:var(--accent);
     color:white;
 
     font-size:1rem;
     font-weight:600;
 
     cursor:pointer;
-
     transition:0.3s;
 }
 
 .nav-center button:hover{
-    background:#e31c5f;
+    background:var(--accent-hover);
 }
 
 .nav-right{
-    display:flex;
-    align-items:center;
-    gap:25px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
 }
 
 .nav-right a{
     text-decoration:none;
-    color:#222;
+    color:var(--text);
     font-weight:600;
 }
 
 .nav-right a:hover{
-    color:#ff385c;
+    color:var(--accent);
 }
 
 /* FILTERS */
@@ -108,121 +170,166 @@ body{
     flex-wrap:wrap;
     justify-content:center;
     gap:2rem;
-
     margin:2rem 0;
 }
 
 .filter{
-    text-align:center;
-    opacity:0.7;
-    transition:0.3s;
+    text-align: center;
+    opacity: 0.7;
+    transition: 0.3s;
 }
 
 .filter:hover{
-    opacity:1;
-    cursor:pointer;
-    transform:translateY(-3px);
+    opacity: 1;
+    cursor: pointer;
+    transform: translateY(-3px);
 }
 
 .filter i{
-    font-size:1.3rem;
+    font-size: 1.3rem;
 }
 
 .filter p{
-    margin-top:0.5rem;
-    font-size:0.85rem;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
 }
 
 /* LISTINGS */
 
 .listing-container{
-    width:90%;
-    margin:auto;
-
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-
-    gap:2rem;
-
-    padding-bottom:4rem;
+    width: 90%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
+    gap: 2rem;
+    padding-bottom: 4rem;
 }
 
 .listing-link{
     text-decoration:none;
-    color:#222;
+    color:var(--text);
 }
 
-.listing-card{
-    transition:0.4s;
+/* 1. Main Card Container */
+.listing-card {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 400px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.listing-card:hover{
-    transform:translateY(-5px);
+.listing-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 60px rgba(255, 107, 107, 0.25);
 }
 
-.card-img-top{
-    width:100%;
-    height:320px;
-
-    object-fit:cover;
-
-    border-radius:20px;
+/* 2. Full-Height Image with Zoom Animation */
+.card-img-top {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
 }
 
-.card-body{
-    padding-top:1rem;
+.listing-card:hover .card-img-top {
+    transform: scale(1.08);
 }
 
-.card-text{
-    line-height:1.6;
-    font-size:1rem;
+/* 3. Dark Gradient Overlay (Makes white text readable) */
+.listing-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+    transition: background 0.4s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.listing-card:hover::after {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+/* 4. Glassmorphism Info Box at the Bottom */
+.card-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    transition: all 0.4s ease;
+    z-index: 2;
+}
+
+.listing-card:hover .card-body {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+}
+
+/* 5. Text Colors inside the Glass Box */
+.card-body * {
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.card-text {
+    line-height: 1.6;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* PROPERTY PAGE */
 
 .property-container{
-    width:75%;
-    margin:3rem auto;
+    width: 75%;
+    margin: 3rem auto;
 }
 
 .property-title{
-    font-size:2.5rem;
-    margin-bottom:2rem;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
 }
 
 .property-image{
-    width:100%;
-    max-width:900px;
-
-    height:420px;
-
-    object-fit:cover;
-
-    border-radius:20px;
-
-    display:block;
-    margin:auto;
+    width: 100%;
+    max-width: 900px;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 20px;
+    display: block;
+    margin: auto;
 }
 
 .property-details{
-    margin-top:2rem;
-    line-height:2;
-    font-size:1.1rem;
+    margin-top: 2rem;
+    line-height: 2;
+    font-size: 1.1rem;
 }
 
 .property-price{
-    font-size:1.5rem;
-    font-weight:bold;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 /* REVIEWS */
 
 .review-section{
-    margin-top:4rem;
+    margin-top: 4rem;
 }
 
 .review-card{
-    border:1px solid #ddd;
+    border:1px solid var(--border);
+    background:var(--card-bg);
     border-radius:1rem;
     padding:1rem;
     margin-top:1rem;
@@ -232,10 +339,13 @@ textarea{
     width:100%;
     padding:1rem;
 
-    border:1px solid #ccc;
+    border:1px solid var(--border);
     border-radius:0.5rem;
 
     margin-top:1rem;
+
+    background:var(--input-bg);
+    color:var(--text);
 }
 
 .submit-btn{
@@ -246,14 +356,14 @@ textarea{
     border:none;
     border-radius:0.5rem;
 
-    background:#ff385c;
+    background:var(--accent);
     color:white;
 
     cursor:pointer;
 }
 
 .submit-btn:hover{
-    background:#e31c5f;
+    background:var(--accent-hover);
 }
 
 /* MAP */
@@ -262,7 +372,7 @@ textarea{
     width:100%;
     height:300px;
 
-    background:#eeeeee;
+    background:var(--map-bg);
 
     border-radius:1rem;
 
@@ -276,66 +386,93 @@ textarea{
 /* FOOTER */
 
 footer{
-    background:#f7f7f7;
+    background:var(--footer-bg);
     padding:2rem;
     text-align:center;
     margin-top:4rem;
 }
 
 .footer-links{
-    margin-top:1rem;
+    margin-top: 1rem;
 }
 
 .footer-links a{
     text-decoration:none;
-    color:#222;
+    color:var(--text);
     margin:0 10px;
 }
 
 .footer-links a:hover{
-    text-decoration:underline;
+    text-decoration: underline;
+    color: var(--accent-color);
 }
 
 /* RESPONSIVE */
 
 @media(max-width:900px){
-
     .navbar{
-        flex-direction:column;
-        height:auto;
-
-        gap:1rem;
-
-        padding:1rem;
+        flex-direction: column;
+        height: auto;
+        gap: 1rem;
+        padding: 1rem;
     }
-
     .nav-center{
-        width:100%;
+        width: 100%;
     }
-
     .nav-center input{
-        width:100%;
+        width: 100%;
     }
-
     .property-container{
-        width:92%;
+        width: 92%;
     }
-
     .property-image{
-        height:280px;
+        height: 280px;
     }
+}
 
+#theme-toggle{
+    border:none;
+    background:#ff385c;
+    color:white;
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:1rem;
+}
+
+#theme-toggle:hover{
+    background:#e31c5f;
 }
 
 @media(max-width:600px){
-
     .nav-right{
-        gap:15px;
-        font-size:0.9rem;
+        gap: 15px;
+        font-size: 0.9rem;
     }
-
     .logo span{
-        font-size:1.1rem;
+        font-size: 1.1rem;
     }
+}
 
+/* THEME TOGGLE BUTTON */
+#theme-toggle {
+    background: var(--bg-main);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 30px;
+    padding: 8px 16px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#theme-toggle:hover {
+    background: var(--bg-secondary);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    border-color: var(--text-main);
 }

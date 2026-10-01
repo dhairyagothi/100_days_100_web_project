@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,26 +19,27 @@
       margin: 0;
     }
 
-   .screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
-  transition: margin 0.5s ease-out;
+    .screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      transition: margin 0.5s ease-out;
 
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6);
-}
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6);
+    }
 
-.screen.up {
-  margin-top: -100vh;
-}
+    .screen.up {
+      margin-top: -100vh;
+    }
 
-    h1, p {
+    h1,
+    p {
       margin: 10px 0;
       text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
     }
@@ -85,8 +87,8 @@
     }
 
     .choose-insect-btn p {
-    color: #000000 !important;
-    margin: 5px 0 !important;
+      color: #000000 !important;
+      margin: 5px 0 !important;
     }
 
     .choose-insect-btn:hover {
@@ -104,7 +106,8 @@
       position: relative;
     }
 
-    .time, .score {
+    .time,
+    .score {
       font-size: 1.2em;
       position: absolute;
       top: 20px;
@@ -149,18 +152,44 @@
       animation: float 2s infinite ease-in-out;
     }
 
+    .project-back-button {
+      position: fixed;
+      left: 18px;
+      top: 18px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #1e293b;
+      color: #3b82f6;
+      border: 1px solid #3b82f6;
+      text-decoration: none;
+      z-index: 9999;
+      font-weight: 700;
+      font-family: Inter, system-ui, sans-serif;
+      transition: all 0.2s ease;
+    }
+
+    .project-back-button:hover {
+      background: #3b82f6;
+      color: #1e293b;
+      border-color: #1e293b;
+    }
+
     @keyframes float {
-      0%, 100% {
+
+      0%,
+      100% {
         transform: translate(-50%, -50%) translateY(0);
       }
+
       50% {
         transform: translate(-50%, -50%) translateY(-10px);
       }
     }
   </style>
 </head>
+
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+  <a href="/" class="project-back-button">← Back to Home</a>
 
   <div class="screen">
     <h1>🐞 Catch The Insect 🐜</h1>
@@ -210,4 +239,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>

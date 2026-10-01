@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlashLearn - Interactive Flashcard Platform</title>
+  <meta name="description" content="A clean, minimal, and powerful flashcard learning platform to master any subject with spaced practice, 3D card flips, and local storage.">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- App Header & Navigation -->
+  <header class="app-header">
+    <div class="header-container container">
+      <div class="brand-logo" id="btn-logo">
+        <div class="logo-icon">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div class="logo-text">
+          <span class="brand-title">FlashLearn</span>
+          <span class="brand-tagline">Smart Learning</span>
+        </div>
+      </div>
+
+      <nav class="main-nav">
+        <button class="nav-tab active" data-tab="decks-view" id="nav-decks-btn">
+          <i class="fa-solid fa-layer-group"></i> <span>Decks</span>
+        </button>
+        <button class="nav-tab" data-tab="study-view" id="nav-study-btn">
+          <i class="fa-solid fa-graduation-cap"></i> <span>Study</span>
+        </button>
+        <button class="nav-tab" data-tab="manage-view" id="nav-manage-btn">
+          <i class="fa-solid fa-pen-to-square"></i> <span>Manage</span>
+        </button>
+        <button class="nav-tab" data-tab="stats-view" id="nav-stats-btn">
+          <i class="fa-solid fa-chart-pie"></i> <span>Stats</span>
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon" id="theme-icon"></i>
+        </button>
+        <button class="btn btn-secondary btn-sm icon-btn" id="quick-create-btn" title="Quick Add Card">
+          <i class="fa-solid fa-plus"></i> <span class="btn-text">New Card</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Body -->
+  <main class="app-main container">
+
+    <!-- VIEW 1: DECKS LIBRARY -->
+    <section id="decks-view" class="view-section active">
+      <div class="view-header">
+        <div>
+          <h1 class="view-title">Flashcard Decks</h1>
+          <p class="view-subtitle">Select a deck to start studying or create your own custom set.</p>
+        </div>
+        <button class="btn btn-primary" id="create-deck-modal-btn">
+          <i class="fa-solid fa-folder-plus"></i> Create Deck
+        </button>
+      </div>
+
+      <!-- Controls: Search & Category Filter -->
+      <div class="filter-bar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="deck-search-input" placeholder="Search decks by title or category..." aria-label="Search Decks">
+        </div>
+        <div class="category-pills" id="category-filters">
+          <button class="pill active" data-category="all">All Decks</button>
+          <button class="pill" data-category="Programming">Coding</button>
+          <button class="pill" data-category="Languages">Languages</button>
+          <button class="pill" data-category="Science">Science</button>
+          <button class="pill" data-category="General">General</button>
+        </div>
+      </div>
+
+      <!-- Decks Grid Container -->
+      <div class="decks-grid" id="decks-grid-container">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+
+    <!-- VIEW 2: INTERACTIVE STUDY MODE -->
+    <section id="study-view" class="view-section">
+      <div class="study-header-bar">
+        <button class="btn btn-ghost" id="back-to-decks-btn">
+          <i class="fa-solid fa-arrow-left"></i> Back to Decks
+        </button>
+        <div class="study-deck-info">
+          <h2 id="study-deck-title">Deck Title</h2>
+          <span class="badge" id="study-deck-badge">Category</span>
+        </div>
+        <div class="study-options">
+          <button class="icon-toggle-btn" id="btn-shuffle-deck" title="Shuffle Cards">
+            <i class="fa-solid fa-shuffle"></i>
+          </button>
+          <button class="icon-toggle-btn" id="btn-restart-study" title="Restart Session">
+            <i class="fa-solid fa-rotate"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Tracking Bar -->
+      <div class="study-progress-container">
+        <div class="progress-labels">
+          <span id="study-card-counter">Card 1 of 10</span>
+          <span id="study-mastery-score">Mastered: 0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="study-progress-fill" style="width: 10%;"></div>
+        </div>
+      </div>
+
+      <!-- 3D Flashcard Container -->
+      <div class="flashcard-wrapper">
+        <div class="flashcard-scene" id="flashcard-scene">
+          <div class="flashcard" id="flashcard-element">
+            
+            <!-- FRONT FACE -->
+            <div class="card-face card-front">
+              <div class="card-top-bar">
+                <span class="card-side-indicator"><i class="fa-solid fa-circle-question"></i> QUESTION</span>
+                <button class="speech-btn" id="btn-speech-front" title="Listen Question" aria-label="Listen Question">
+                  <i class="fa-solid fa-volume-high"></i>
+                </button>
+              </div>
+              <div class="card-body">
+                <p class="card-text" id="card-question-text">Question goes here...</p>
+              </div>
+              <div class="card-footer-prompt">
+                <span><i class="fa-solid fa-rotate-right"></i> Click or press <kbd>Space</kbd> to flip</span>
+              </div>
+            </div>
+
+            <!-- BACK FACE -->
+            <div class="card-face card-back">
+              <div class="card-top-bar">
+                <span class="card-side-indicator"><i class="fa-solid fa-lightbulb"></i> ANSWER</span>
+                <button class="speech-btn" id="btn-speech-back" title="Listen Answer" aria-label="Listen Answer">
+                  <i class="fa-solid fa-volume-high"></i>
+                </button>
+              </div>
+              <div class="card-body">
+                <p class="card-text" id="card-answer-text">Answer goes here...</p>
+                <div class="hint-container hidden" id="card-hint-box">
+                  <span class="hint-title"><i class="fa-solid fa-circle-info"></i> Hint:</span>
+                  <p id="card-hint-text">Hint content...</p>
+                </div>
+              </div>
+              <div class="card-footer-prompt">
+                <button class="btn-text-action" id="btn-toggle-hint">
+                  <i class="fa-solid fa-eye"></i> Show Hint
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation & Self Assessment Controls -->
+      <div class="study-controls-wrapper">
+        <div class="card-nav-controls">
+          <button class="btn btn-secondary" id="btn-prev-card" title="Previous Card (Left Arrow)">
+            <i class="fa-solid fa-chevron-left"></i> Previous
+          </button>
+          <button class="btn btn-primary btn-flip" id="btn-flip-card">
+            <i class="fa-solid fa-rotate"></i> Flip Card
+          </button>
+          <button class="btn btn-secondary" id="btn-next-card" title="Next Card (Right Arrow)">
+            Next <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <!-- Grade Assessment Buttons -->
+        <div class="assessment-bar">
+          <button class="btn btn-assessment btn-learning" id="btn-mark-learning">
+            <i class="fa-solid fa-xmark"></i> Still Learning <kbd>1</kbd>
+          </button>
+          <button class="btn btn-assessment btn-mastered" id="btn-mark-mastered">
+            <i class="fa-solid fa-check"></i> Mastered <kbd>2</kbd>
+          </button>
+        </div>
+      </div>
+
+      <!-- Shortcuts Keyboard Helper -->
+      <div class="keyboard-shortcuts-bar">
+        <span><kbd>Space</kbd> Flip</span>
+        <span><kbd>←</kbd> Prev</span>
+        <span><kbd>→</kbd> Next</span>
+        <span><kbd>1</kbd> Still Learning</span>
+        <span><kbd>2</kbd> Mastered</span>
+      </div>
+    </section>
+
+
+    <!-- VIEW 3: MANAGE DECKS & CARDS -->
+    <section id="manage-view" class="view-section">
+      <div class="view-header">
+        <div>
+          <h1 class="view-title">Deck & Card Manager</h1>
+          <p class="view-subtitle">Add new flashcards, update answers, or reorganize your study sets.</p>
+        </div>
+        <div class="view-header-actions">
+          <button class="btn btn-primary" id="btn-add-card-modal">
+            <i class="fa-solid fa-plus"></i> Add New Card
+          </button>
+        </div>
+      </div>
+
+      <div class="manager-layout">
+        <!-- Sidebar Select Deck -->
+        <aside class="manager-sidebar">
+          <h3 class="sidebar-title">Select Deck</h3>
+          <div class="deck-selector-list" id="manage-deck-list">
+            <!-- Deck items populated JS -->
+          </div>
+        </aside>
+
+        <!-- Main Cards List Table / Cards -->
+        <div class="manager-content">
+          <div class="content-header">
+            <div class="selected-deck-summary">
+              <h2 id="manager-deck-title">Select a deck</h2>
+              <span class="count-badge" id="manager-card-count">0 cards</span>
+            </div>
+            <div class="content-actions">
+              <button class="btn btn-secondary btn-sm" id="btn-edit-current-deck">
+                <i class="fa-solid fa-pen"></i> Edit Deck
+              </button>
+              <button class="btn btn-danger btn-sm" id="btn-delete-current-deck">
+                <i class="fa-solid fa-trash"></i> Delete Deck
+              </button>
+            </div>
+          </div>
+
+          <!-- Cards Table Container -->
+          <div class="cards-table-container">
+            <table class="cards-table">
+              <thead>
+                <tr>
+                  <th style="width: 5%;">#</th>
+                  <th style="width: 35%;">Question (Front)</th>
+                  <th style="width: 35%;">Answer (Back)</th>
+                  <th style="width: 13%;">Status</th>
+                  <th style="width: 12%; text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="manager-cards-tbody">
+                <!-- Rendered JS -->
+              </tbody>
+            </table>
+            <div class="empty-state hidden" id="empty-cards-state">
+              <div class="empty-icon"><i class="fa-regular fa-folder-open"></i></div>
+              <h3>No cards in this deck yet</h3>
+              <p>Click "Add New Card" to populate this deck with questions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- VIEW 4: STATS & DATA MANAGEMENT -->
+    <section id="stats-view" class="view-section">
+      <div class="view-header">
+        <div>
+          <h1 class="view-title">Learning Analytics</h1>
+          <p class="view-subtitle">Track your study performance, card mastery, and platform data.</p>
+        </div>
+      </div>
+
+      <!-- Stats Summary Cards Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon icon-blue"><i class="fa-solid fa-layer-group"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-total-decks">0</span>
+            <span class="stat-label">Total Decks</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-purple"><i class="fa-solid fa-clone"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-total-cards">0</span>
+            <span class="stat-label">Total Flashcards</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-green"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-mastered-cards">0</span>
+            <span class="stat-label">Cards Mastered</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-orange"><i class="fa-solid fa-chart-line"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-mastery-rate">0%</span>
+            <span class="stat-label">Overall Mastery Rate</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Backup & Reset Operations -->
+      <div class="settings-card">
+        <h3><i class="fa-solid fa-database"></i> Data Management</h3>
+        <p>Backup your decks to JSON file, import shared cards, or reset sample data.</p>
+        <div class="settings-actions">
+          <button class="btn btn-secondary" id="btn-export-json">
+            <i class="fa-solid fa-download"></i> Export Data (JSON)
+          </button>
+          <label class="btn btn-secondary" for="import-json-file">
+            <i class="fa-solid fa-upload"></i> Import Data (JSON)
+            <input type="file" id="import-json-file" accept=".json" style="display: none;">
+          </label>
+          <button class="btn btn-outline-danger" id="btn-reset-sample-data">
+            <i class="fa-solid fa-rotate-left"></i> Reset to Sample Data
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: CREATE / EDIT DECK -->
+  <div class="modal-overlay hidden" id="modal-deck">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-deck-title-text">Create New Deck</h3>
+        <button class="close-modal-btn" data-close="modal-deck">&times;</button>
+      </div>
+      <form id="form-deck">
+        <input type="hidden" id="input-deck-id">
+        <div class="form-group">
+          <label for="input-deck-title">Deck Title *</label>
+          <input type="text" id="input-deck-title" placeholder="e.g. JavaScript Fundamentals" required>
+        </div>
+        <div class="form-group">
+          <label for="input-deck-category">Category *</label>
+          <select id="input-deck-category" required>
+            <option value="Programming">Programming</option>
+            <option value="Languages">Languages</option>
+            <option value="Science">Science</option>
+            <option value="General">General</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="input-deck-icon">Icon Emoji</label>
+          <input type="text" id="input-deck-icon" placeholder="⚡" maxlength="4" value="⚡">
+        </div>
+        <div class="form-group">
+          <label for="input-deck-desc">Description</label>
+          <textarea id="input-deck-desc" rows="3" placeholder="Brief description of what this deck covers..."></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close="modal-deck">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-deck">Save Deck</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CREATE / EDIT CARD -->
+  <div class="modal-overlay hidden" id="modal-card">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-card-title-text">Add New Flashcard</h3>
+        <button class="close-modal-btn" data-close="modal-card">&times;</button>
+      </div>
+      <form id="form-card">
+        <input type="hidden" id="input-card-id">
+        <div class="form-group">
+          <label for="select-card-target-deck">Target Deck *</label>
+          <select id="select-card-target-deck" required>
+            <!-- Rendered JS -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="input-card-question">Front Side (Question) *</label>
+          <textarea id="input-card-question" rows="3" placeholder="Enter the prompt, question, or term..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="input-card-answer">Back Side (Answer) *</label>
+          <textarea id="input-card-answer" rows="4" placeholder="Enter the detailed answer, explanation, or definition..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="input-card-hint">Optional Hint</label>
+          <input type="text" id="input-card-hint" placeholder="Helpful memory clue or keyword...">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close="modal-card">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-card">Save Card</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Main JavaScript File -->
+  <script src="app.js"></script>
+</body>
+</html>

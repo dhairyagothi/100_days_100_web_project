@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Page Not Found</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111827;
+    color: white;
+    font-family: Arial, sans-serif;
+    perspective: 1000px;
+  }
+
+  .card {
+    width: 320px;
+    padding: 2rem;
+    text-align: center;
+    background: #1f2937;
+    border-radius: 16px;
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  }
+
+  .card:hover {
+    transform: rotateY(10deg) rotateX(10deg);
+  }
+
+  .profile {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 2px solid #3b82f6;
+    transform: translateZ(40px);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 48px;
+    color: #ef4444;
+    transform: translateZ(30px);
+  }
+
+  h2 {
+    margin: 10px 0;
+    transform: translateZ(20px);
+  }
+
+  p {
+    font-size: 14px;
+    opacity: 0.8;
+    transform: translateZ(10px);
+  }
+
+  a {
+    display: inline-block;
+    margin-top: 1.2rem;
+    padding: 10px 18px;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.2s;
+    transform: translateZ(30px);
+  }
+
+  a:hover {
+    background: #2563eb;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <img class="profile" src="https://i.pravatar.cc/150?img=12" alt="profile">
+
+  <h1>404</h1>
+  <h2>Page Not Found</h2>
+  <p>The page you're looking for doesn’t exist or has been moved.</p>
+
+  <!-- IMPORTANT: project home -->
+  <a href="./index.html">Go Back Home</a>
+</div>
+
+</body>
+</html>

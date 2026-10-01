@@ -1,0 +1,251 @@
+:root {
+    --bg-color: #0f0f1a;
+    --canvas-bg: #131326;
+    --text-color: #ffffff;
+    --accent-color: #ff3366;
+    --neon-blue: #00f0ff;
+    --emerald: #00e676;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image: 
+        radial-gradient(at 50% 0%, rgba(0, 240, 255, 0.08) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(255, 51, 102, 0.04) 0px, transparent 50%);
+    color: var(--text-color);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-height: 100vh;
+    padding: 10px;
+}
+
+/* Header Branding UI */
+.game-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.game-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: 5px;
+    color: #fff;
+}
+
+.game-title .highlight {
+    color: var(--accent-color);
+    text-shadow: 0 0 15px rgba(255, 51, 102, 0.6);
+}
+
+.game-subtitle {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 2px;
+    margin-top: 4px;
+    text-transform: uppercase;
+}
+
+/* Unified Game Board Frame Wrapper */
+.game-viewport {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Combined HUD Controls Bar */
+.hud-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.score-container {
+    background: rgba(19, 19, 38, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 6px 24px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    min-width: 100px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.score-label {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    color: var(--neon-blue);
+    font-weight: 700;
+}
+
+#score {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+/* Minimalist HUD Action Control Trigger Button */
+.hud-btn {
+    background: rgba(19, 19, 38, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.hud-btn:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--neon-blue);
+    color: var(--neon-blue);
+}
+
+/* Main Game Canvas config */
+canvas {
+    background: var(--canvas-bg);
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(0, 240, 255, 0.03);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    max-height: 70vh;
+    width: auto;
+}
+
+.instructions {
+    margin-top: 15px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 1.5px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+/* Universal Overlay Config Frame */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 20, 0.92);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    transition: opacity 0.25s ease;
+}
+
+.overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.overlay-content {
+    text-align: center;
+    padding: 30px;
+    max-width: 85%;
+}
+
+.overlay-content h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+}
+
+.neon-text {
+    color: var(--neon-blue);
+    text-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+.dead-text {
+    color: var(--accent-color);
+    text-shadow: 0 0 15px rgba(255, 51, 102, 0.4);
+}
+
+.overlay-content p {
+    font-size: 1rem;
+    margin-bottom: 30px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+}
+
+/* Standardized Menu Button Architecture Layouts */
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.menu-btn {
+    border: none;
+    padding: 14px 40px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 200px;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.menu-btn.primary {
+    background: linear-gradient(135deg, var(--accent-color), #ff5270);
+    color: white;
+    box-shadow: 0 5px 15px rgba(255, 51, 102, 0.3);
+}
+
+.menu-btn.primary:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 25px rgba(255, 51, 102, 0.5);
+}
+
+.menu-btn.secondary {
+    background: rgba(255, 255, 255, 0.06);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.menu-btn.secondary:hover {
+    transform: scale(1.04);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+}

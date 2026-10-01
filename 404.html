@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Page not found - return to 100 Days 100 Web Projects, a collection of 100+ creative web experiments.">
     <title>404 — Page Not Found | 100 Days 100 Web Projects</title>
     <link rel="icon" href="./public/favv.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="theme.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         * {
@@ -27,10 +30,19 @@
             padding: 2rem;
         }
 
-        .container {
-            max-width: 600px;
-            width: 100%;
-        }
+      .container {
+    max-width: 600px;
+    width: 100%;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+
 
         .error-code {
             font-size: 8rem;
@@ -154,6 +166,8 @@
 </head>
 <body>
 
+    <div id="navbar-container"></div>
+
     <!-- Starry background -->
     <div class="stars" id="stars"></div>
 
@@ -201,5 +215,6 @@
             starsContainer.appendChild(star);
         }
     </script>
+    <script src="navbar.js" defer></script>
 </body>
 </html>

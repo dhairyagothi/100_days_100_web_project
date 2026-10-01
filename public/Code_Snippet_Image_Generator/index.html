@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/public/Code_Snippet_Image_Generator/">
+    <title>Carbon Clone - Snippet Generator</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Prism CSS -->
+    <link id="prism-theme" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" integrity="sha384-wFjoQjtV1y5jVHbt0p35Ui8aV8GVpEZkyF99OXWqP/eNJDU93D3Ugxkoyh6Y2I4A" crossorigin="anonymous" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1" integrity="sha384-cPFV+/abYd3INVFHPmSKpBmcnH+Q+bTZW7dv/EiuShUNPkHyFmRF8PsL7Ibfvunk" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="logo">
+            <i class="ph-fill ph-code"></i>
+            <span>SnippetStudio</span>
+        </div>
+        <div class="nav-actions">
+            <button id="theme-toggle" class="icon-btn" title="Toggle Light/Dark Theme">
+                <i class="ph ph-sun"></i>
+            </button>
+            <button id="export-btn" class="primary-btn">
+                <i class="ph ph-download-simple"></i>
+                Export Image
+            </button>
+        </div>
+    </nav>
+
+    <div class="app-layout">
+        <main class="canvas-area">
+            <div class="canvas-bg"></div>
+            <div class="editor-wrapper" id="capture-area" style="background: linear-gradient(135deg, #FF6B6B, #556270); padding: 64px;">
+                <div class="mac-window">
+                    <div class="title-bar">
+                        <div class="window-controls">
+                            <span class="control close"></span>
+                            <span class="control minimize"></span>
+                            <span class="control maximize"></span>
+                        </div>
+                        <div class="window-title">untitled.js</div>
+                    </div>
+                    <div class="code-container">
+                        <textarea id="code-input" spellcheck="false" placeholder="Type or paste your code here...">function generateBeautifulSnippet() {
+  const design = "Modern & Unique";
+  const status = "Awesome!";
+  
+  return {
+    design,
+    status
+  };
+}</textarea>
+                        <pre><code id="code-output" class="language-javascript">function generateBeautifulSnippet() {
+  const design = "Modern & Unique";
+  const status = "Awesome!";
+  
+  return {
+    design,
+    status
+  };
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <aside class="properties-panel">
+            <div class="panel-header">
+                <h3>Settings</h3>
+            </div>
+            
+            <div class="panel-content">
+                <div class="setting-group">
+                    <label>Language</label>
+                    <div class="select-wrapper">
+                        <select id="language">
+                            <option value="javascript">JavaScript</option>
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="python">Python</option>
+                            <option value="typescript">TypeScript</option>
+                            <option value="java">Java</option>
+                        </select>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <label>Theme</label>
+                    <div class="select-wrapper">
+                        <select id="theme">
+                            <option value="prism-tomorrow.min.css">Dark (Tomorrow)</option>
+                            <option value="prism-okaidia.min.css">Okaidia</option>
+                            <option value="prism.min.css">Light</option>
+                            <option value="prism-twilight.min.css">Twilight</option>
+                        </select>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <label>Background</label>
+                    <div class="background-presets">
+                        <button class="preset active" data-bg="linear-gradient(135deg, #FF6B6B, #556270)" style="background: linear-gradient(135deg, #FF6B6B, #556270)"></button>
+                        <button class="preset" data-bg="linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)"></button>
+                        <button class="preset" data-bg="linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)" style="background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)"></button>
+                        <button class="preset" data-bg="linear-gradient(to right, #4facfe 0%, #00f2fe 100%)" style="background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%)"></button>
+                        <button class="preset" data-bg="linear-gradient(to right, #fa709a 0%, #fee140 100%)" style="background: linear-gradient(to right, #fa709a 0%, #fee140 100%)"></button>
+                        <div class="color-picker-wrapper">
+                            <input type="color" id="custom-bg" value="#333333">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <div class="flex-label">
+                        <label>Padding</label>
+                        <span class="value-display" id="padding-val">64px</span>
+                    </div>
+                    <input type="range" id="padding" min="16" max="128" value="64" class="slider">
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Prism JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha384-06z5D//U/xpvxZHuUz92xBvq3DqBBFi7Up53HRrbV7Jlv7Yvh/MZ7oenfUe9iCEt" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js" integrity="sha384-D44bgYYKvaiDh4cOGlj1dbSDpSctn2FSUj118HZGmZEShZcO2v//Q5vvhNy206pp" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js" integrity="sha384-WJdEkJKrbsqw0evQ4GB6mlsKe5cGTxBOw4KAEIa52ZLB7DDpliGkwdme/HMa5n1m" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js" integrity="sha384-DioAMZB4yk91W6LuFit5wJDh8c5Ov09f/MBvja94y0PodMqTpTZeBeejqpRUru7D" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js" integrity="sha384-0mV13Neu0xhJFylI+HV43C+XiR13bGSeL7D0/7e6hK7sJgvyvK6HVjeQwmvXTstY" crossorigin="anonymous"></script>
+    
+    <!-- html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+    
+    <script src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+/* SHADOW VAULT - Cinematic Dark Escape Room CSS */
+/* Pure dark/neon aesthetic — NO WHITE ANYWHERE */
+
+:root {
+  --neon-red: #ff0033;
+  --void-black: #050505;
+  --deep-gray: #111111;
+  --accent-cyan: #00f5ff;
+  --blood-red: #990000;
+  --glow-purple: #aa00ff;
+}
+
+body {
+  background-color: var(--void-black);
+  color: #cccccc;
+  font-family: "Courier New", monospace;
+  overflow-x: hidden;
+  height: 100vh;
+}
+
+.neon-text {
+  text-shadow:
+    0 0 5px var(--neon-red),
+    0 0 10px var(--neon-red),
+    0 0 20px var(--neon-red),
+    0 0 40px #ff3366;
+  letter-spacing: 3px;
+  font-weight: 900;
+}
+
+/* Navbar */
+.navbar {
+  background: linear-gradient(180deg, #1a0000, #0a0a0a) !important;
+  border-bottom: 4px solid var(--neon-red);
+  box-shadow: 0 4px 20px rgba(255, 0, 51, 0.7);
+}
+
+.nav-link {
+  color: #ddd !important;
+  transition: 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--neon-red) !important;
+  text-shadow: 0 0 10px var(--neon-red);
+}
+
+/* Cards */
+.card {
+  background-color: #0f0f0f !important;
+  border: 2px solid #440000 !important;
+  box-shadow: 0 0 30px rgba(153, 0, 0, 0.6);
+}
+
+.card-header {
+  background: #1f0000 !important;
+  border-bottom: 2px solid var(--neon-red) !important;
+}
+
+/* Progress Bar */
+.progress {
+  background-color: #220000;
+  border: 1px solid #550000;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #ff0033, #ff6699);
+  box-shadow: 0 0 15px var(--neon-red);
+}
+
+/* Room Area */
+#room-content {
+  background: radial-gradient(circle at 50% 30%, #2a0a0a 0%, #0a0a0a 70%);
+  min-height: 480px;
+  position: relative;
+  border-radius: 4px;
+}
+
+#room-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 0, 60, 0.12) 10%,
+    transparent 60%
+  );
+  animation: scanline 7s linear infinite;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(300%);
+  }
+}
+
+/* Terminal */
+#terminal-output {
+  background: #000000;
+  color: #00ff99;
+  text-shadow: 0 0 6px #00ff99;
+  font-family: "Courier New", monospace;
+  line-height: 1.7;
+}
+
+#terminal-input {
+  background: transparent;
+  border: none;
+  color: #00ffcc;
+  font-family: "Courier New", monospace;
+  font-size: 1.1rem;
+  caret-color: #00ff88;
+}
+
+#terminal-input:focus {
+  outline: none;
+  box-shadow: 0 0 15px #00ff99;
+}
+
+/* Buttons */
+.btn-danger,
+.btn-danger:hover {
+  background: linear-gradient(#aa0000, #660000);
+  border-color: #ff3366;
+  box-shadow: 0 0 15px #ff0033;
+}
+
+.btn-outline-danger {
+  color: #ff7777;
+  border-color: #660000;
+}
+
+.btn-outline-danger:hover {
+  background: #330000;
+  color: #ffaaaa;
+  border-color: var(--neon-red);
+}
+
+/* Map Nodes */
+.room-node {
+  background: #1a1a1a;
+  border-left: 5px solid #550000;
+  margin: 8px 0;
+  padding: 12px 16px;
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+
+.room-node:hover {
+  border-left-color: var(--neon-red);
+  background: #2a0000;
+  transform: translateX(12px);
+}
+
+.room-node.current {
+  border-left-color: #ffdd00;
+  background: #331100;
+  box-shadow: 0 0 15px #ffaa00;
+}
+
+.room-node.completed {
+  border-left-color: #00cc88;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+/* Modals */
+.modal-content {
+  background-color: #0a0a0a;
+  border: 3px solid var(--neon-red);
+  box-shadow: 0 0 60px rgba(255, 0, 50, 0.9);
+}
+
+.modal-header,
+.modal-footer {
+  border-color: #660000;
+}
+
+/* Theme Variants */
+.theme-cyber {
+  --neon-red: #00ddff;
+}
+.theme-horror {
+  --neon-red: #cc00cc;
+}
+.theme-matrix {
+  --neon-red: #00ff41;
+}
+
+/* Extra Effects */
+.glow-text {
+  animation: flicker 1.5s infinite alternate;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 1;
+  }
+}

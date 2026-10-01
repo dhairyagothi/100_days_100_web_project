@@ -1,0 +1,258 @@
+:root {
+    --bg-dark: #090d13;
+    --panel-bg: rgba(21, 26, 35, 0.7);
+    --border-color: #30363d;
+    --text-primary: #c9d1d9;
+    --text-muted: #8b949e;
+    --accent-blue: #58a6ff;
+    --neon-green: #3fb950;
+    --neon-red: #f85149;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden;
+}
+
+.studio-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 16px;
+    box-sizing: border-box;
+    gap: 16px;
+}
+
+/* Header & Control Actions Layout */
+.studio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    padding: 12px 20px;
+    border-radius: 8px;
+    backdrop-filter: blur(12px);
+}
+
+.brand h1 {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.brand p {
+    margin: 4px 0 0 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.telemetry-light {
+    width: 8px;
+    height: 8px;
+    background-color: var(--neon-green);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--neon-green);
+    display: inline-block;
+}
+
+.global-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload,
+.btn-primary,
+.btn-secondary {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.custom-file-upload {
+    background: #21262d;
+    border: 1px solid var(--border-color);
+}
+
+.custom-file-upload:hover {
+    background: #30363d;
+}
+
+.btn-primary {
+    background: #238636;
+    color: #fff;
+    border: 1px solid rgba(240, 246, 252, 0.1);
+}
+
+.btn-primary:hover {
+    background: var(--neon-green);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--neon-red);
+}
+
+.btn-secondary:hover {
+    background: rgba(248, 81, 73, 0.1);
+}
+
+/* Workspace Panels (CSS Grid) */
+.workspace-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    flex-grow: 1;
+    min-height: 0;
+}
+
+.panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+}
+
+.active-panel {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 8px rgba(88, 166, 255, 0.15);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.panel-header h3 {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dimensions-badge {
+    font-size: 0.75rem;
+    background: #161b22;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--accent-blue);
+    font-family: monospace;
+}
+
+.canvas-viewport {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #04060a;
+    padding: 10px;
+    overflow: auto;
+}
+
+canvas {
+    max-width: 100%;
+    max-height: 100%;
+    image-rendering: pixelated;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.panel-toolbar {
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid var(--border-color);
+}
+
+.tool-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+}
+
+.tool-instruction {
+    margin: 6px 0 0 0;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Monitoring Telemetry Console styling */
+.monitoring-console {
+    background: #161b22;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.metric-card {
+    background: #0d1117;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.metric-label {
+    color: var(--text-muted);
+}
+
+.metric-value {
+    font-family: monospace;
+    font-weight: 600;
+    color: var(--accent-blue);
+}
+
+.console-terminal {
+    background: #090d13;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    display: flex;
+    gap: 8px;
+}
+
+.terminal-prompt {
+    color: var(--neon-green);
+    user-select: none;
+}
+
+.terminal-text {
+    color: #e6edf3;
+}

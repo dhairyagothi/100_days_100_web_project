@@ -1,0 +1,785 @@
+/* Reset & Base Variables */
+:root {
+    --bg-primary: #fafaf9;
+    --card-bg: #ffffff;
+    --border-color: #e7e5e4;
+    --text-primary: #1c1917;
+    --text-secondary: #78716c;
+    --accent-color: #18181b;
+    --accent-hover: #3f3f46;
+    --accent-soft: #f5f5f4;
+    --accent-soft-hover: #e7e5e4;
+    --success-color: #16a34a;
+    --success-bg: #f0fdf4;
+    --success-border: #bbf7d0;
+    --error-color: #dc2626;
+    --error-bg: #fef2f2;
+    --error-border: #fecaca;
+    --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* App Layout Container */
+.app-container {
+    width: 100%;
+    max-width: 520px;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+}
+
+/* Header styling */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 32px;
+}
+
+.game-logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+}
+
+.icon-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+    color: var(--text-primary);
+    background-color: var(--accent-soft);
+    border-color: var(--text-secondary);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Main Workspace */
+.game-workspace {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    width: 100%;
+}
+
+.sidebar-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.game-area {
+    width: 100%;
+}
+
+/* Difficulty Selector */
+.difficulty-selector {
+    display: flex;
+    background-color: var(--accent-soft);
+    padding: 4px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    gap: 2px;
+}
+
+.diff-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    font-family: var(--font-family);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.diff-btn:hover {
+    color: var(--text-primary);
+}
+
+.diff-btn.active {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Stats Bar */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    gap: 12px;
+}
+
+.stat-item {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.stat-val {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Interactive Card */
+.game-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    width: 100%;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Card Timer */
+.timer-container {
+    height: 4px;
+    background-color: var(--accent-soft);
+    width: 100%;
+    overflow: hidden;
+}
+
+.timer-progress {
+    height: 100%;
+    width: 100%;
+    background-color: var(--accent-color);
+    transition: width 0.1s linear, background-color 0.5s ease;
+}
+
+.timer-progress.warning {
+    background-color: #f97316;
+}
+
+.timer-progress.danger {
+    background-color: var(--error-color);
+}
+
+/* Card Body */
+.card-body {
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+/* Scrambled Badges */
+.letters-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    width: 100%;
+    min-height: 48px;
+}
+
+.letter-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background-color: var(--card-bg);
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+    user-select: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.letter-badge.used {
+    background-color: var(--accent-soft);
+    color: var(--text-secondary);
+    border-style: dashed;
+    box-shadow: none;
+    transform: scale(0.95);
+    opacity: 0.6;
+}
+
+.letter-badge.placeholder {
+    color: var(--border-color);
+    border-style: dashed;
+    box-shadow: none;
+}
+
+/* Input Form */
+#guess-form {
+    width: 100%;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+#guess-input {
+    width: 100%;
+    padding: 16px 56px 16px 20px;
+    font-family: var(--font-family);
+    font-size: 1.125rem;
+    font-weight: 600;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    outline: none;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    transition: all 0.2s ease;
+    text-align: center;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+#guess-input::placeholder {
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+#guess-input:focus {
+    border-color: var(--text-primary);
+    background-color: var(--card-bg);
+    box-shadow: 0 0 0 4px rgba(24, 24, 27, 0.05);
+}
+
+.submit-btn {
+    position: absolute;
+    right: 8px;
+    height: 40px;
+    width: 40px;
+    background-color: var(--accent-color);
+    color: var(--card-bg);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.submit-btn:hover {
+    background-color: var(--accent-hover);
+}
+
+.submit-btn:active {
+    transform: scale(0.95);
+}
+
+/* Feedback Message */
+.feedback-msg {
+    min-height: 24px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 8px;
+    padding: 6px 16px;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: all 0.2s ease;
+}
+
+.feedback-msg.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.feedback-msg.correct {
+    color: var(--success-color);
+    background-color: var(--success-bg);
+    border: 1px solid var(--success-border);
+}
+
+.feedback-msg.incorrect {
+    color: var(--error-color);
+    background-color: var(--error-bg);
+    border: 1px solid var(--error-border);
+}
+
+.feedback-msg.info {
+    color: var(--text-secondary);
+    background-color: var(--accent-soft);
+    border: 1px solid var(--border-color);
+}
+
+/* Card Actions / Footer */
+.card-footer {
+    display: flex;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+}
+
+.action-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    font-family: var(--font-family);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.action-btn:first-child {
+    border-right: 1px solid var(--border-color);
+}
+
+.action-btn:hover {
+    color: var(--text-primary);
+    background-color: var(--accent-soft);
+}
+
+.action-btn svg {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.action-btn:hover svg {
+    opacity: 1;
+}
+
+/* Multiplier Pill */
+.multiplier-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.multiplier-pill {
+    background-color: var(--accent-soft);
+    border: 1px solid var(--border-color);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+#multiplier-val {
+    font-weight: 800;
+}
+
+.multiplier-details {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Footer Instructions */
+.app-footer {
+    text-align: center;
+    padding-top: 32px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+    margin-top: 32px;
+}
+
+.app-footer kbd {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    font-family: inherit;
+    box-shadow: var(--shadow-sm);
+    color: var(--text-primary);
+}
+
+/* Modal Overlay & Content */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(26, 26, 26, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 0.25s ease;
+}
+
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    padding: 36px 24px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    transform: scale(1);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.hidden .modal-content {
+    transform: scale(0.92);
+}
+
+.trophy-wrapper {
+    background-color: #fef08a;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    animation: bounce-trophy 2s infinite ease-in-out;
+}
+
+.modal-content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.modal-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: -8px;
+}
+
+.modal-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    margin: 8px 0;
+}
+
+.m-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    padding: 12px 6px;
+    border-radius: 12px;
+    background-color: var(--bg-primary);
+}
+
+.m-val {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.m-lbl {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.primary-btn {
+    background-color: var(--accent-color);
+    color: var(--card-bg);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-family: var(--font-family);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    margin-top: 8px;
+}
+
+.primary-btn:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.primary-btn:active {
+    transform: translateY(0);
+}
+
+/* Animations */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+}
+
+.shake {
+    animation: shake 0.4s ease-in-out;
+}
+
+@keyframes bounce-trophy {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes bounce-badge {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.badge-bounce {
+    animation: bounce-badge 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .app-container {
+        padding: 16px 8px;
+    }
+    
+    .card-body {
+        padding: 24px 16px;
+    }
+    
+    .letter-badge {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+
+    #guess-input {
+        padding: 14px 48px 14px 16px;
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .app-container {
+        max-width: 1000px;
+        width: 90%;
+        min-height: 85vh;
+        height: auto;
+        padding: 32px;
+        margin: auto;
+        justify-content: center;
+        gap: 32px;
+    }
+
+    .app-header {
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+    }
+
+    .game-workspace {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 32px;
+        align-items: stretch;
+        width: 100%;
+        margin: auto 0;
+    }
+
+    .sidebar-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 24px;
+        height: 100%;
+    }
+
+    .stats-bar {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .stat-item {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 16px 20px;
+        border-radius: 12px;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+
+    .stat-val {
+        font-size: 1.35rem;
+    }
+
+    .game-area {
+        height: 100%;
+        display: flex;
+        align-items: stretch;
+    }
+
+    .game-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 480px;
+    }
+
+    .card-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 48px 36px;
+        gap: 36px;
+    }
+
+    .letters-container {
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .letter-badge {
+        width: 58px;
+        height: 58px;
+        font-size: 1.6rem;
+        border-radius: 12px;
+        border-width: 2px;
+    }
+
+    #guess-input {
+        padding: 18px 64px 18px 24px;
+        font-size: 1.35rem;
+        border-radius: 14px;
+    }
+
+    .submit-btn {
+        right: 12px;
+        height: 48px;
+        width: 48px;
+        border-radius: 10px;
+    }
+
+    .feedback-msg {
+        font-size: 1.05rem;
+        padding: 10px 24px;
+    }
+
+    .card-footer {
+        padding: 8px;
+    }
+
+    .action-btn {
+        padding: 20px;
+        font-size: 0.95rem;
+    }
+
+    .multiplier-container {
+        margin-top: auto;
+        padding: 20px;
+        border: 1px solid var(--border-color);
+        background-color: var(--card-bg);
+        border-radius: 16px;
+        box-shadow: var(--shadow-sm);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .multiplier-pill {
+        font-size: 0.9rem;
+        padding: 8px 18px;
+    }
+
+    .multiplier-details {
+        font-size: 0.8rem;
+    }
+}

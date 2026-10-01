@@ -1,82 +1,322 @@
-// Function to display saved texts
-function displaySavedTexts() {
-    chrome.storage.local.get("savedTexts", (result) => {
-      const textList = result.savedTexts || [];
-      const textListDiv = document.getElementById("textList");
-      textListDiv.innerHTML = "";
-  
-      document.getElementById("itemCount").textContent = `${textList.length} item${textList.length !== 1 ? "s" : ""}`;
+// ===============================
+// Storage Helper
+// ===============================
 
-      if (textList.length === 0) {
-        textListDiv.innerHTML = "<p>No saved texts found.</p>";
-        return;
+function getStorage() {
+  if (
+    typeof chrome !== "undefined" &&
+    chrome.storage &&
+    chrome.storage.local
+  ) {
+    return {
+      get(defaults, callback) {
+        chrome.storage.local.get(defaults, callback);
+      },
+
+      set(data, callback) {
+        chrome.storage.local.set(data, callback);
       }
-  
-      textList.forEach((entry) => {
-        const entryDiv = document.createElement("div");
-        entryDiv.className = "text-entry";
-  
-        const textPara = document.createElement("p");
-        textPara.textContent = entry.text;
-        entryDiv.appendChild(textPara);
-  
-        const urlLink = document.createElement("a");
-        urlLink.href = entry.url;
-        urlLink.textContent = entry.url;
-        urlLink.className = "url";
-        urlLink.target = "_blank";
-        entryDiv.appendChild(urlLink);
-  
-        textListDiv.appendChild(entryDiv);
-      });
-    });
+    };
   }
-  
-  // Function to clear saved texts
-  function clearSavedTexts() {
-    chrome.storage.local.remove("savedTexts", () => {
-      alert("All saved texts have been cleared.");
-      displaySavedTexts();
+
+  // Fallback for normal webpages
+  return {
+    get(defaults, callback) {
+      const result = {};
+
+      Object.keys(defaults).forEach(key => {
+        try {
+          const stored = localStorage.getItem(key);
+
+          result[key] = stored
+            ? JSON.parse(stored)
+            : defaults[key];
+        } catch {
+          result[key] = defaults[key];
+        }
+      });
+
+      callback(result);
+    },
+
+    set(data, callback) {
+      Object.keys(data).forEach(key => {
+        localStorage.setItem(
+          key,
+          JSON.stringify(data[key])
+        );
+      });
+
+      if (callback) callback();
     }
-    );
-  }
-  
-  // Function to download saved texts as a file
-  function downloadSavedTexts() {
-    chrome.storage.local.get("savedTexts", (result) => {
-      const textList = result.savedTexts || [];
-      if (textList.length === 0) {
-        alert("No texts to save!");
+  };
+}
+
+const storage = getStorage();
+
+let allSavedTexts = [];
+
+// ===============================
+// Render Saved Texts
+// ===============================
+
+function render(filter = "") {
+  storage.get(
+    {
+      savedTexts: []
+    },
+    (result) => {
+      allSavedTexts = result.savedTexts || [];
+
+      const textList =
+        document.getElementById("textList");
+
+      const itemCount =
+        document.getElementById("itemCount");
+
+      if (!textList) return;
+
+      if (itemCount) {
+        itemCount.textContent =
+          `${allSavedTexts.length} item${allSavedTexts.length !== 1 ? "s" : ""}`;
+      }
+
+      const filteredTexts =
+        allSavedTexts.filter(item => {
+          const text =
+            String(item.text || "").toLowerCase();
+
+          const url =
+            String(item.url || "").toLowerCase();
+
+          const search =
+            filter.toLowerCase();
+
+          return (
+            text.includes(search) ||
+            url.includes(search)
+          );
+        });
+
+      textList.innerHTML = "";
+
+      if (filteredTexts.length === 0) {
+        textList.innerHTML = `
+          <div class="empty">
+            No saved texts found
+          </div>
+        `;
         return;
       }
-  
-      // Create the file content
-      let fileContent = "Saved Texts with URLs:\n\n";
-      textList.forEach((entry, index) => {
-        fileContent += `Entry ${index + 1}:\n`;
-        fileContent += `Text: ${entry.text}\n`;
-        fileContent += `Source: ${entry.url}\n\n`;
+
+      filteredTexts.forEach((item, index) => {
+        const div =
+          document.createElement("div");
+
+        div.className = "text-entry";
+
+        div.innerHTML = `
+  <div class="saved-text">
+    ${escapeHtml(item.text || "")}
+  </div>
+
+  <a
+    class="url"
+    href="${item.url}"
+    target="_blank"
+  >
+    🌐 ${item.url}
+  </a>
+
+  <div class="card-actions">
+    <button class="card-btn copy-btn">
+      Copy
+    </button>
+
+    <button class="card-btn delete-btn">
+      Delete
+    </button>
+  </div>
+`;
+
+        // Double-click to delete
+        div.addEventListener("dblclick", () => {
+          deleteItem(index);
+        });
+
+        textList.appendChild(div);
       });
-  
-      // Create a blob with the file content
-      const blob = new Blob([fileContent], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
-  
-      // Create a temporary anchor element to trigger the download
-      const a = document.createElement("a");
+    }
+  );
+}
+
+// ===============================
+// Delete Item
+// ===============================
+
+function deleteItem(index) {
+  const confirmed =
+    confirm("Delete this saved text?");
+
+  if (!confirmed) return;
+
+  allSavedTexts.splice(index, 1);
+
+  storage.set(
+    {
+      savedTexts: allSavedTexts
+    },
+    () => {
+      render();
+    }
+  );
+}
+
+// ===============================
+// Clear All
+// ===============================
+
+function clearAll() {
+  const confirmed =
+    confirm("Delete ALL saved texts?");
+
+  if (!confirmed) return;
+
+  storage.set(
+    {
+      savedTexts: []
+    },
+    () => {
+      render();
+    }
+  );
+}
+
+// ===============================
+// Export TXT
+// ===============================
+
+function exportTexts() {
+  storage.get(
+    {
+      savedTexts: []
+    },
+    (result) => {
+      const data =
+        result.savedTexts || [];
+
+      if (data.length === 0) {
+        alert("No saved texts available.");
+        return;
+      }
+
+      let output =
+        "===== TEXT SAVER EXPORT =====\n\n";
+
+      data.forEach((item, index) => {
+        output +=
+          `[${index + 1}]
+URL: ${item.url || ""}
+
+TEXT:
+${item.text || ""}
+
+------------------------------------
+
+`;
+      });
+
+      const blob = new Blob(
+        [output],
+        {
+          type: "text/plain"
+        }
+      );
+
+      const url =
+        URL.createObjectURL(blob);
+
+      const a =
+        document.createElement("a");
+
       a.href = url;
-      a.download = "saved_texts.txt"; // Filename for the downloaded file
+      a.download = "saved-texts.txt";
+
+      document.body.appendChild(a);
       a.click();
-  
-      // Clean up the URL object after download
+      a.remove();
+
       URL.revokeObjectURL(url);
-    });
+    }
+  );
+}
+
+// ===============================
+// Escape HTML
+// ===============================
+
+function escapeHtml(text) {
+  const div =
+    document.createElement("div");
+
+  div.textContent = text;
+
+  return div.innerHTML;
+}
+
+// ===============================
+// DOM Ready
+// ===============================
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    render();
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const clearButton =
+      document.getElementById("clearButton");
+
+    const downloadButton =
+      document.getElementById("downloadButton");
+
+    if (searchInput) {
+      searchInput.addEventListener(
+        "input",
+        (e) => {
+          render(e.target.value);
+        }
+      );
+    }
+
+    if (clearButton) {
+      clearButton.addEventListener(
+        "click",
+        clearAll
+      );
+    }
+
+    if (downloadButton) {
+      downloadButton.addEventListener(
+        "click",
+        exportTexts
+      );
+    }
   }
-  
-  // Event listeners
-  document.getElementById("downloadButton").addEventListener("click", downloadSavedTexts);
-  document.getElementById("clearButton").addEventListener("click", clearSavedTexts);
-  
-  // Run when popup opens
-  displaySavedTexts();
-  
+);
+
+const copyBtn =
+  div.querySelector(".copy-btn");
+
+const deleteBtn =
+  div.querySelector(".delete-btn");
+
+copyBtn.addEventListener("click", () => {
+  navigator.clipboard.writeText(item.text);
+});
+
+deleteBtn.addEventListener("click", () => {
+  deleteItem(index);
+});

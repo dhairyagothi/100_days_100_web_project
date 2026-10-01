@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pdf2docx.</title>
+    <meta name="description" content="Convert PDF documents to editable Word (.docx) files entirely client-side. Fast, secure, and 100% private. Your files never leave your machine.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PDF.js from cdnjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Ambient Glows -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <div class="app-container">
+        <!-- Top Navigation -->
+        <header class="navbar">
+            <div class="logo">
+                <i class="fa-solid fa-file-word icon-logo"></i>
+                <span class="logo-text">pdf2docx<span class="dot">.</span></span>
+            </div>
+            <div class="nav-actions">
+                <span class="security-badge">
+                    <i class="fa-solid fa-shield-halved"></i> 100% Private (Local)
+                </span>
+                <button id="theme-toggle" class="theme-btn" aria-label="Toggle light/dark theme">
+                    <i class="fa-solid fa-sun icon-light"></i>
+                    <i class="fa-solid fa-moon icon-dark"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Hero Header -->
+            <section class="hero">
+                <span class="pill-label">Client-Side Engine</span>
+                <h1>Convert PDF to Word. <br><span class="gradient-text">Offline. Secure. Seamless.</span></h1>
+                <p class="hero-subtitle">Transform fixed-layout PDFs into editable DOCX files. Processed completely in your browser's sandbox—no files are uploaded to any server.</p>
+            </section>
+
+            <!-- Grid Layout: Workspace Left and Settings Right -->
+            <div class="workspace-grid">
+                <!-- Left Area: Upload & Queue -->
+                <div class="workspace-left">
+                    <!-- Dropzone -->
+                    <div id="dropzone" class="dropzone">
+                        <input type="file" id="file-input" accept="application/pdf" multiple hidden>
+                        <div class="dropzone-content">
+                            <div class="icon-wrapper">
+                                <i class="fa-solid fa-cloud-arrow-up cloud-icon"></i>
+                            </div>
+                            <h3>Drag & drop PDF files</h3>
+                            <p class="dropzone-hint">or click to browse from your device</p>
+                            <span class="file-limits">Supports documents up to 50MB</span>
+                        </div>
+                    </div>
+
+                    <!-- File Queue -->
+                    <div id="queue-container" class="queue-container hidden">
+                        <div class="queue-header">
+                            <h2>Conversion Queue (<span id="queue-count">0</span>)</h2>
+                            <button id="clear-queue-btn" class="text-btn danger"><i class="fa-solid fa-trash-can"></i> Clear All</button>
+                        </div>
+                        <div id="file-queue" class="file-queue">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Area: Conversion Options -->
+                <div class="workspace-right">
+                    <div class="settings-card">
+                        <div class="settings-header">
+                            <i class="fa-solid fa-sliders"></i>
+                            <h2>Conversion Settings</h2>
+                        </div>
+                        
+                        <div class="settings-body">
+                            <!-- Conversion Mode -->
+                            <div class="setting-group">
+                                <label class="setting-label">
+                                    <span>Conversion Mode</span>
+                                    <i class="fa-solid fa-circle-info tooltip-icon" title="Flowable extracts text elements allowing text reflow, while Image Mode places pages as high-resolution images in the DOCX layout."></i>
+                                </label>
+                                <div class="segmented-control">
+                                    <input type="radio" id="mode-flow" name="conv-mode" value="flow" checked>
+                                    <label for="mode-flow" class="segment-label">
+                                        <i class="fa-solid fa-font"></i>
+                                        <span>Flowable Text</span>
+                                    </label>
+                                    
+                                    <input type="radio" id="mode-image" name="conv-mode" value="image">
+                                    <label for="mode-image" class="segment-label">
+                                        <i class="fa-solid fa-image"></i>
+                                        <span>Image Layout</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Font Setup (Flow Mode Only) -->
+                            <!-- Page Range -->
+                            <div class="setting-group">
+                                <label for="page-range" class="setting-label">
+                                    <span>Page Range</span>
+                                    <i class="fa-solid fa-circle-info tooltip-icon" title="Convert all pages or specify ranges like 1, 3-5, 8. Empty converts all."></i>
+                                </label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-hashtag input-icon"></i>
+                                    <input type="text" id="page-range" placeholder="e.g. All, 1-3, 5" value="All">
+                                </div>
+                            </div>
+
+                            <!-- Preservation Options -->
+                            <div class="setting-group" id="formatting-group">
+                                <span class="setting-label">Advanced Preservation</span>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="preserve-page-breaks" checked>
+                                    <span class="custom-checkbox"></span>
+                                    <span>Preserve Page Breaks</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="detect-headings" checked>
+                                    <span class="custom-checkbox"></span>
+                                    <span>Auto-Detect Headings & Lists</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Summary Banner -->
+            <section class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-user-shield"></i></div>
+                    <h3>100% Privacy Protection</h3>
+                    <p>No upload required. The conversion is executed in your browser's sandboxed thread. Zero data leaks.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <h3>Fast Local Processing</h3>
+                    <p>Powered by JavaScript and browser memory. Converts standard text structures instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-file-signature"></i></div>
+                    <h3>Editable Formats</h3>
+                    <p>Outputs real docx content streams with styles, ready for Microsoft Word, Google Docs, or LibreOffice.</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 pdf2docx. All rights reserved. Clean utility for modern document editing.</p>
+        </footer>
+    </div>
+
+    <!-- Slide-out Preview Drawer -->
+    <div id="preview-drawer" class="preview-drawer">
+        <div class="drawer-overlay" id="drawer-overlay"></div>
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <div>
+                    <span class="drawer-tag">Extracted Content Preview</span>
+                    <h2 id="preview-file-name">Document Title.pdf</h2>
+                </div>
+                <button id="close-drawer-btn" class="close-btn" aria-label="Close preview"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="drawer-info">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <p>This shows the structured text extracted from the PDF. Feel free to tweak the content here. Downloading the Word document will include all changes you make in this box!</p>
+            </div>
+
+            <div class="drawer-body">
+                <div id="editor-area" contenteditable="true" class="editor-area" placeholder="No text extracted. PDF might be scanned or empty.">
+                    <!-- Extracted text structure is loaded here dynamically -->
+                </div>
+            </div>
+
+            <div class="drawer-footer">
+                <span class="word-count-badge"><i class="fa-solid fa-calculator"></i> <span id="preview-word-count">0</span> words</span>
+                <div class="drawer-actions">
+                    <button id="drawer-cancel-btn" class="btn btn-secondary">Cancel</button>
+                    <button id="drawer-download-btn" class="btn btn-primary">
+                        <i class="fa-solid fa-file-arrow-down"></i>
+                        <span>Apply & Download DOCX</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast System -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Custom Script (loaded as ES Module) -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>

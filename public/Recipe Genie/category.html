@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Genie — Category Collection</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#fffaf5] text-stone-800 antialiased selection:bg-orange-100 selection:text-orange-800 min-h-screen flex flex-col">
+
+  <main class="blur-transition flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-20">
+    
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12 border-b border-stone-200/60 pb-8">
+      <div class="flex items-center space-x-4 self-start md:self-center">
+        
+        <a href="index.html" class="no-underline">
+          <button class="flex items-center justify-center w-12 h-12 rounded-full bg-white border border-stone-200 text-stone-600 hover:text-orange-500 hover:border-orange-200 shadow-sm transition-all duration-200 active:scale-95 group cursor-pointer" aria-label="Return to homepage">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 transform group-hover:-translate-x-0.5 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+          </button>
+        </a>
+
+        <div>
+          <p class="text-[10px] md:text-xs font-bold text-orange-500 uppercase tracking-wider mb-0.5">Category Collection</p>
+          <h1 id="categoryTitle" class="text-2xl md:text-5xl font-black text-stone-900 tracking-tight capitalize">
+            Loading... <span class="inline-block animate-bounce">🍽️</span>
+          </h1>
+        </div>
+      </div>
+      
+      <div id="mealsCountBadge" class="hidden bg-orange-50 border border-orange-100 text-orange-800 text-xs md:text-sm font-semibold px-4 py-2 rounded-xl shadow-sm self-start md:self-center">
+        0 Delicacies Found
+      </div>
+    </div>
+
+    <div id="mealsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
+      <div class="animate-pulse bg-white border border-stone-200/60 rounded-[2rem] h-96 w-full"></div>
+      <div class="animate-pulse bg-white border border-stone-200/60 rounded-[2rem] h-96 w-full hidden sm:block"></div>
+      <div class="animate-pulse bg-white border border-stone-200/60 rounded-[2rem] h-96 w-full hidden lg:block"></div>
+    </div>
+
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const categoryTitle = document.getElementById("categoryTitle");
+      const mealsCountBadge = document.getElementById("mealsCountBadge");
+      const mealsGrid = document.getElementById("mealsGrid");
+
+      // Extract URL Parameter target cleanly (e.g., category.html?c=Beef)
+      const urlParameters = new URLSearchParams(window.location.search);
+      const activeCategory = urlParameters.get("c") || "Beef"; 
+
+      // Initialize UI title parameters
+      categoryTitle.innerHTML = `${activeCategory} <span class="inline-block animate-bounce">🍽️</span>`;
+
+      // Fetch dynamic categorical payload data from API endpoint
+      async function loadCategoryCollection() {
+        try {
+          const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${activeCategory}`);
+          const data = await response.json();
+          const mealsList = data.meals || [];
+
+          updateBadgeState(mealsList.length);
+          renderRecipeCards(mealsList);
+        } catch (error) {
+          console.error("Error structural layout collection payload fetch:", error);
+          mealsGrid.innerHTML = `
+            <div class="col-span-full text-center py-12">
+              <p class="text-red-500 font-medium">Failed to load recipes for this collection. Please try again later.</p>
+            </div>
+          `;
+        }
+      }
+
+      function updateBadgeState(count) {
+        mealsCountBadge.textContent = `${count} Delicacies Found`;
+        mealsCountBadge.classList.remove("hidden");
+      }
+
+      function renderRecipeCards(meals) {
+        if (meals.length === 0) {
+          mealsGrid.innerHTML = `
+            <div class="col-span-full text-center py-12">
+              <p class="text-stone-400 font-medium">No recipes discovered inside this parameters collection folder.</p>
+            </div>
+          `;
+          return;
+        }
+
+        mealsGrid.innerHTML = meals.map(meal => `
+          <article class="group bg-white rounded-[2rem] overflow-hidden border border-stone-200/60 shadow-sm hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between h-full">
+            <div class="relative overflow-hidden aspect-[4/3] bg-stone-100">
+              <img 
+                src="${meal.strMealThumb}" 
+                alt="${meal.strMeal}" 
+                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-stone-950/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+            <div class="p-6 flex flex-col flex-grow justify-between">
+              <div class="flex items-start space-x-2 mb-6">
+                <span class="p-1.5 bg-orange-50 rounded-lg text-orange-500 shrink-0 mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                  </svg>
+                </span>
+                <h2 class="text-lg font-bold text-stone-900 tracking-tight group-hover:text-orange-500 transition-colors duration-200 line-clamp-2">
+                  ${meal.strMeal}
+                </h2>
+              </div>
+
+              <div class="pt-4 border-t border-stone-100">
+                <a href="meal.html?id=${meal.idMeal}" class="no-underline">
+                  <button class="w-full bg-stone-50 hover:bg-orange-500 text-stone-700 hover:text-white font-semibold rounded-xl py-3 px-4 border-none shadow-sm transition-all duration-200 text-sm flex items-center justify-center space-x-2 group/btn cursor-pointer">
+                    <span>View Full Recipe</span>
+                    <span class="transform translate-x-0 group-hover/btn:translate-x-1 transition-transform duration-150">🍴</span>
+                  </button>
+                </a>
+              </div>
+            </div>
+          </article>
+        `).join("");
+      }
+
+      loadCategoryCollection();
+    });
+  </script>
+</body>
+</html>

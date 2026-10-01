@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetMetrics - Bandwidth & Storage Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="utility-card">
+        <div class="card-header">
+            <h2>NetMetrics Dashboard</h2>
+            <button type="button" id="theme-toggle" class="theme-btn" aria-label="Toggle between dark and light theme">
+                <span class="theme-icon"></span>
+            </button>
+        </div>
+        <p class="subtitle">Analyze network download durations and map storage footprints across multiple data tiers simultaneously.</p>
+        
+        <div class="input-form">
+            <div class="input-group">
+                <label for="file-size">File/Storage Size</label>
+                <div class="input-inline">
+                    <input type="number" id="file-size" min="0" step="any" value="1.5">
+                    <select id="file-unit">
+                        <option value="TB">TB (Terabytes)</option>
+                        <option value="GB" selected>GB (Gigabytes)</option>
+                        <option value="MB">MB (Megabytes)</option>
+                        <option value="KB">KB (Kilobytes)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="network-speed">Network Bandwidth (Speed)</label>
+                <div class="input-inline">
+                    <input type="number" id="network-speed" min="0" step="any" value="100">
+                    <select id="speed-unit">
+                        <option value="Gbps">Gbps (Gigabits/s)</option>
+                        <option value="Mbps" selected>Mbps (Megabits/s)</option>
+                        <option value="Kbps">Kbps (Kilobits/s)</option>
+                        <option value="MBps">MB/s (Megabytes/s)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="display-section clock-box">
+            <h3>Estimated Download Clock</h3>
+            <div id="time-display" class="main-readout">00h 02m 02s</div>
+            <p class="matrix-note">Actual transfer speed: <span id="actual-rate">12.5 MB/s</span></p>
+        </div>
+
+        <div class="display-section matrix-box">
+            <h3>Equivalent Storage Footprint</h3>
+            <div class="matrix-grid">
+                <div class="matrix-item"><span>Terabytes</span><strong id="m-tb">0.0015 TB</strong></div>
+                <div class="matrix-item"><span>Gigabytes</span><strong id="m-gb">1.5000 GB</strong></div>
+                <div class="matrix-item"><span>Megabytes</span><strong id="m-mb">1,536.0 MB</strong></div>
+                <div class="matrix-item"><span>Kilobytes</span><strong id="m-kb">1,572,864 KB</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
