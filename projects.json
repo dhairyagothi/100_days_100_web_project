@@ -3138,5 +3138,14 @@
     ],
    "difficulty": "intermediate",
     "projectPath": "./public/WebDevQuizApp/index.html"
-  } 
+  } ,
+  {
+  "projectNo": 247,
+  "projectName": "Image Steganography Tool",
+  "projectType": "Tool",
+  "projectDesc": "A web-based tool that hides and extracts secret messages inside images using steganography techniques.",
+  "techStack": ["tool", "html", "css", "js"],
+  "difficulty": "advanced",
+  "projectPath": "./public/ImageSteganographyTool/index.html"
+ }
 ]

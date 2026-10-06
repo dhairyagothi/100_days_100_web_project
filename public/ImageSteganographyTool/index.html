@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SteganoVault – Image Steganography Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a
+      href="/"
+      class="project-back-button"
+      style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'"
+      >← Back to Home</a
+    >
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="container">
+
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🔐</span>
+                <span class="logo-text">SteganoVault</span>
+            </div>
+            <p class="tagline">Hide secrets inside images. Invisible to the eye.</p>
+        </header>
+
+        <!-- Tab Switch -->
+        <div class="tab-bar">
+            <button class="tab active" id="tab-encode" onclick="switchTab('encode')">
+                <span class="tab-icon">🖼️</span> Encode
+            </button>
+            <button class="tab" id="tab-decode" onclick="switchTab('decode')">
+                <span class="tab-icon">🔍</span> Decode
+            </button>
+        </div>
+
+        <!-- ===== ENCODE PANEL ===== -->
+        <div class="panel glass" id="panel-encode">
+
+            <div class="step-row">
+                <div class="step-badge">1</div>
+                <p class="step-label">Upload a carrier image</p>
+            </div>
+
+            <div class="upload-zone" id="encode-drop" onclick="document.getElementById('encode-img-input').click()">
+                <input type="file" id="encode-img-input" accept="image/*" hidden onchange="handleEncodeImage(event)">
+                <div class="upload-placeholder" id="encode-placeholder">
+                    <div class="upload-icon">📂</div>
+                    <p>Click or drag & drop an image</p>
+                    <span>PNG recommended · Any size</span>
+                </div>
+                <canvas id="encode-preview-canvas" style="display:none;"></canvas>
+            </div>
+
+            <div class="step-row">
+                <div class="step-badge">2</div>
+                <p class="step-label">Enter your secret message</p>
+            </div>
+
+            <div class="textarea-wrap">
+                <textarea id="secret-message" placeholder="Type your hidden message here…" maxlength="5000"></textarea>
+                <span class="char-count" id="char-count">0 / 5000</span>
+            </div>
+
+            <button class="btn btn-primary" id="encode-btn" onclick="encodeMessage()" disabled>
+                <span>🔒 Hide Message in Image</span>
+            </button>
+
+            <div class="result-box" id="encode-result" style="display:none;">
+                <p class="result-label">✅ Message hidden! Download your image below.</p>
+                <canvas id="output-canvas" style="display:none;"></canvas>
+                <button class="btn btn-download" id="download-btn" onclick="downloadImage()">
+                    ⬇️ Download Encoded Image
+                </button>
+            </div>
+
+        </div>
+
+        <!-- ===== DECODE PANEL ===== -->
+        <div class="panel glass" id="panel-decode" style="display:none;">
+
+            <div class="step-row">
+                <div class="step-badge">1</div>
+                <p class="step-label">Upload a SteganoVault encoded image</p>
+            </div>
+
+            <div class="upload-zone" id="decode-drop" onclick="document.getElementById('decode-img-input').click()">
+                <input type="file" id="decode-img-input" accept="image/*" hidden onchange="handleDecodeImage(event)">
+                <div class="upload-placeholder" id="decode-placeholder">
+                    <div class="upload-icon">🔍</div>
+                    <p>Click or drag & drop encoded image</p>
+                    <span>Must be encoded with SteganoVault</span>
+                </div>
+                <canvas id="decode-preview-canvas" style="display:none;"></canvas>
+            </div>
+
+            <button class="btn btn-primary" id="decode-btn" onclick="decodeMessage()" disabled>
+                <span>🔓 Reveal Hidden Message</span>
+            </button>
+
+            <div class="result-box" id="decode-result" style="display:none;">
+                <p class="result-label">📨 Hidden message found:</p>
+                <div class="message-output" id="decoded-text"></div>
+                <button class="btn btn-copy" onclick="copyDecoded()">📋 Copy Message</button>
+            </div>
+
+            <div class="error-box" id="decode-error" style="display:none;">
+                <p>⚠️ No hidden message found. Make sure this image was encoded with SteganoVault.</p>
+            </div>
+
+        </div>
+
+        <footer class="footer">
+            Uses <strong>LSB (Least Significant Bit)</strong> steganography — your message is woven into pixel data, invisible to the naked eye.
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
