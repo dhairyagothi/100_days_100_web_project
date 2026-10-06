@@ -3074,6 +3074,30 @@ document.addEventListener("DOMContentLoaded", () => {
       applyFilters(search, categoryFilter.value);
     });
   }
+  window.addEventListener('popstate', () => restoreStateFromURL());
+})
+document.addEventListener("DOMContentLoaded", () => {
+
+  const searchInput = document.getElementById("searchInput");
+  const clearSearch = document.getElementById("clearSearch");
+
+  if (!searchInput || !clearSearch) return;
+
+  searchInput.addEventListener("input", () => {
+    clearSearch.classList.toggle(
+      "show",
+      searchInput.value.trim() !== ""
+    );
+  });
+
+  clearSearch.addEventListener("click", () => {
+    searchInput.value = "";
+    clearSearch.classList.remove("show");
+
+    searchInput.dispatchEvent(new Event("input"));
+    searchInput.focus();
+  });
+
   window.addEventListener("popstate", () => restoreStateFromURL());
 });
 document
