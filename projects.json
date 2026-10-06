@@ -3138,5 +3138,19 @@
     ],
    "difficulty": "intermediate",
     "projectPath": "./public/WebDevQuizApp/index.html"
-  } 
+  },
+  {
+    "projectNo": 247,
+    "projectName": "Procedural Terrain Generator",
+    "projectType": "Tool",
+    "projectDesc": "A procedural terrain map generator using a custom vanilla JavaScript Simplex Noise implementation, Fractal Brownian Motion, and an island falloff map, rendered to an HTML5 canvas.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "canvas"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Procedural_Terrain_Generator/index.html"
+  }
 ]

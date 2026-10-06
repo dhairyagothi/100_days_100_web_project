@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Procedural Terrain</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="app-mode theme-dark">
+    
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-mountain-sun"></i>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" title="Home"><i class="fa-solid fa-house"></i></a>
+                <a href="generator.html" title="Generator"><i class="fa-solid fa-map-location-dot"></i></a>
+                <a href="settings.html" class="active" title="Settings"><i class="fa-solid fa-palette"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace settings-workspace">
+            
+            <header class="settings-header">
+                <h1>Biome Configuration</h1>
+                <p class="subtitle">Customize the color mapping for different elevation heights.</p>
+            </header>
+
+            <div class="settings-content">
+                
+                <div class="settings-card">
+                    <h3><i class="fa-solid fa-water"></i> Water Biomes</h3>
+                    
+                    <div class="setting-group">
+                        <label>Deep Ocean <span>(Lowest Elevation)</span></label>
+                        <input type="color" id="color-deep-ocean" value="#1E3A8A">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Ocean</label>
+                        <input type="color" id="color-ocean" value="#2563EB">
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Shallow Water</label>
+                        <input type="color" id="color-shallow" value="#60A5FA">
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h3><i class="fa-solid fa-tree"></i> Land Biomes</h3>
+                    
+                    <div class="setting-group">
+                        <label>Sand / Beach</label>
+                        <input type="color" id="color-sand" value="#FCD34D">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Grassland</label>
+                        <input type="color" id="color-grass" value="#34D399">
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Forest</label>
+                        <input type="color" id="color-forest" value="#059669">
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h3><i class="fa-solid fa-mountain"></i> Mountain Biomes</h3>
+                    
+                    <div class="setting-group">
+                        <label>Rock / Mountain</label>
+                        <input type="color" id="color-rock" value="#78716C">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Snow <span>(Highest Peak)</span></label>
+                        <input type="color" id="color-snow" value="#F8FAFC">
+                    </div>
+                </div>
+
+                <div class="settings-actions">
+                    <button id="btn-reset-colors" class="btn btn-secondary">Reset to Defaults</button>
+                </div>
+
+            </div>
+            
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procedural Terrain Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="landing-page theme-dark">
+    
+    <div class="landing-container">
+        <header class="landing-header">
+            <div class="logo-icon"><i class="fa-solid fa-mountain-sun"></i></div>
+            <h1>Procedural Terrain Generator</h1>
+            <p class="subtitle">Harness the power of mathematical noise to build infinite worlds.</p>
+        </header>
+
+        <div class="concepts-section">
+            <h2>The Mathematics of World Building</h2>
+            
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-icon"><i class="fa-solid fa-wave-square"></i></div>
+                    <h3>Simplex Noise</h3>
+                    <p>Instead of pure, chaotic random numbers (white noise), Simplex Noise generates smooth, continuous gradients. This forms the foundational rolling hills and valleys.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <h3>Fractal Brownian Motion</h3>
+                    <p>By layering multiple "octaves" of noise—each with a higher frequency and lower amplitude—we add realistic jagged details like boulders and rock faces over the smooth hills.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon"><i class="fa-solid fa-palette"></i></div>
+                    <h3>Biome Mapping</h3>
+                    <p>The math gives us a grid of numbers between 0 and 1. We map these heights to colors: low values become blue oceans, medium values become green forests, and the highest peaks become white snow.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <a href="generator.html" class="btn btn-primary btn-large">Launch Generator <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </div>
+
+</body>
+</html>
