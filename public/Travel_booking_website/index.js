@@ -1,3 +1,4 @@
+import { sanitizeHTML } from "../utils/trustedTypes.js";
 const menuBtn = document.getElementById("menu-btn");
 const navLinks = document.getElementById("nav-links");
 const menuBtnIcon = menuBtn.querySelector("i");
@@ -84,7 +85,7 @@ const chatMessages = document.getElementById("chat-messages");
 const savedChat = localStorage.getItem("travel_chat");
 
 if (savedChat) {
-  chatMessages.innerHTML = savedChat;
+  chatMessages.innerHTML = sanitizeHTML(savedChat);
 }
 
 // OPEN / CLOSE CHATBOT
@@ -140,10 +141,10 @@ async function sendMessage() {
 
   userMessage.classList.add("user-message");
 
-  userMessage.innerHTML = `
-  ${message}
-  <div class="msg-timestamp">${getTime()}</div>
-`;
+  userMessage.innerHTML = sanitizeHTML(`
+    ${message}
+    <div class="msg-timestamp">${getTime()}</div>
+  `);
 
   chatMessages.appendChild(userMessage);
   localStorage.setItem(
@@ -212,10 +213,10 @@ async function sendMessage() {
 
     botMessage.classList.add("bot-message");
 
-    botMessage.innerHTML = `
-  ${formatResponse(reply)}
-  <div class="msg-timestamp">${getTime()}</div>
-`;
+    botMessage.innerHTML = sanitizeHTML(`
+      ${formatResponse(reply)}
+      <div class="msg-timestamp">${getTime()}</div>
+    `);
 
     chatMessages.appendChild(botMessage);
     localStorage.setItem(
@@ -273,12 +274,12 @@ document
 
     if (confirm("Clear all chat history?")) {
 
-      chatMessages.innerHTML = `
-<div class="bot-message">
-  Hi! 👋<br>
-  Ask me anything about destinations, hotels, flights, or travel planning.
-</div>
-`;
+      chatMessages.innerHTML = sanitizeHTML(`
+      <div class="bot-message">
+        Hi! 👋<br>
+        Ask me anything about destinations, hotels, flights, or travel planning.
+      </div>
+      `);
 
       localStorage.removeItem("travel_chat");
     }
