@@ -1680,11 +1680,16 @@ function trackRecentProject(project) {
       timestamp: Date.now(),
     };
   }
+  projectObj.name = (projectObj.name || "").trim().toLowerCase();
 
-  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
-  recentProjects.unshift(projectObj);
+  recentProjects = recentProjects.filter((item) => {
+    const currentName = (item.name || "").trim().toLowerCase();
+    const newName = (projectObj.name || "").trim().toLowerCase();
 
-  if (recentProjects.length > 20) {
+    return currentName !== newName;
+});
+
+ if (recentProjects.length > 20) {
     recentProjects.pop();
   }
 
