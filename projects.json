@@ -2618,6 +2618,19 @@
       "js"
     ],
     "difficulty": "intermediate",
+    "projectPath": "./public/Rock_Paper_Scissors/index.html"
+  },
+  {
+  "projectNo": 209,
+  "projectName": "FlashLearn",
+  "projectPath": "./public/FlashCardLearningApp/index.html",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "intermediate",
+  "projectDesc": "Modern flashcard learning platform featuring subject-based organization, study mode, progress tracking, streaks, dark mode, JSON import/export, and local storage support."
     "projectPath": "./public/CrosswordPuzzleGame/index.html"
   },
   {
