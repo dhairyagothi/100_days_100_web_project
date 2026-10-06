@@ -194,12 +194,14 @@
   </head>
 
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
 
     <div id="navbar-container"></div>
-    <section class="hero" id="hero">
+    <main id="main-content">
+      <section class="hero" id="hero">
       <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
       <div class="hero-inner">
         <p class="hero-overline">Open Source Frontend Archive · 2026</p>
@@ -495,25 +497,17 @@
       </div>
     </section>
 
-    <section class="projects-section" id="randomProjectSection">
-      <div class="projects-inner">
-        <div class="projects-intro">
-          <p class="section-label">Need Inspiration?</p>
-          <h2 class="section-title">Can't decide what to build next?</h2>
-          <p class="hero-extra">
-            Generate a random project from the current archive.
-          </p>
-        </div>
-
-        <div class="random-project-wrapper">
-          <button id="randomProjectBtn" class="btn btn-primary">
-            🎲 Generate Random Project
-          </button>
-
-          <div id="randomProjectResult" class="project-grid"></div>
-        </div>
+    <!-- ── CTA Banner (before footer) ── -->
+    <section class="cta-banner" aria-labelledby="ctaBannerTitle">
+      <div class="cta-banner-inner">
+        <h2 id="ctaBannerTitle">Ready to start your 100-day journey?</h2>
+        <p>Track your daily progress, earn XP, and level up your developer profile. Start tracking today.</p>
+        <a href="tracker.html" class="cta-banner-btn" aria-label="Open Daily Tracker">
+          Open Daily Tracker <span aria-hidden="true">🚀</span>
+        </a>
       </div>
     </section>
+    </main>
 
     <footer class="footer homepage-footer">
       <div class="homepage-footer-shell">
