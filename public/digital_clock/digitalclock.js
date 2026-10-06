@@ -1,95 +1,52 @@
-// =========================
-// DARK MODE
-// =========================
+let alarmTriggered = false;
+const populateTimezones = () => {
+  try {
+    const timezoneSelect =
+      document.getElementById('timezone');
 
-let isDarkMode =
-  localStorage.getItem("clockDarkMode") === "true";
+    // Add Local Time option first
+    const localOption =
+      document.createElement('option');
 
-function applyDarkMode(enabled) {
-  isDarkMode = enabled;
+    localOption.value = 'local';
+    localOption.textContent = 'Local Time';
 
-  document.body.classList.toggle("dark-mode", enabled);
+    timezoneSelect.appendChild(localOption);
 
-  const btn = document.getElementById("dark-mode-toggle");
+    // Get all supported timezones
+    const timezones =
+      Intl.supportedValuesOf('timeZone');
 
-  if (btn) {
-    btn.textContent = enabled ? "☀️" : "🌙";
+    timezones.forEach((zone) => {
+      const option =
+        document.createElement('option');
+
+      option.value = zone;
+      option.textContent = zone.replaceAll('_', ' ');
+
+      timezoneSelect.appendChild(option);
+    });
+
+    // Auto select user's timezone
+    const userTimezone =
+      Intl.DateTimeFormat()
+        .resolvedOptions()
+        .timeZone;
+
+    if ([...timezoneSelect.options]
+      .some(option => option.value === userTimezone)) {
+
+      timezoneSelect.value = userTimezone;
+    }
+
+  } catch (error) {
+    console.error(
+      'Failed to load timezones:',
+      error
+    );
   }
-
-  localStorage.setItem("clockDarkMode", enabled);
-}
-
-function toggleDarkMode() {
-  applyDarkMode(!isDarkMode);
-}
-
-// =========================
-// CLOCK
-// =========================
-
-const hoursEl   = document.getElementById("hours");
-const minutesEl = document.getElementById("minutes");
-const secondsEl = document.getElementById("seconds");
-const ampmEl    = document.getElementById("ampm");
-const dayNameEl = document.getElementById("day-name");
-const fullDateEl = document.getElementById("full-date");
-const formatToggleBtn = document.getElementById("format-toggle");
-
-const minutesEl =
-  document.getElementById("minutes");
-
-const secondsEl =
-  document.getElementById("seconds");
-
-
-const ampmEl =
-  document.getElementById("ampm");
-
-const dayNameEl =
-  document.getElementById("day-name");
-
-const fullDateEl =
-  document.getElementById("full-date");
-
-    updateClock();
-    tickWorldClocks();
-  });
-document
-  .getElementById("start-stopwatch")
-  ?.addEventListener("click", startPauseStopwatch);
-
-document
-  .getElementById("lap-stopwatch")
-  ?.addEventListener("click", recordLap);
-
-document
-  .getElementById("reset-stopwatch")
-  ?.addEventListener("click", resetStopwatch);
-
-});
-
-// ================= ACCENT COLOR =================
-function setAccentColor(accent) {
-  activeAccent = accent;
-  localStorage.setItem("clockAccent", accent);
-
-  // Remove only manual accent classes, keep time-based theme class
-  document.body.classList.remove(
-    "classic-theme",
-    "modern-theme",
-    "futuristic-theme",
-    "nebula-theme",
-const formatToggleBtn =
-  document.getElementById(
-    "format-toggle"
-  );
-const days = [
-  "Sunday","Monday","Tuesday",
-  "Wednesday","Thursday","Friday","Saturday"
-];
-
-let is24HourFormat =
-  localStorage.getItem("is24HourFormat") === "true";
+};
+// Start clock
 
 function updateClock() {
   const now = new Date();
@@ -496,221 +453,7 @@ function toggleHistoryLogs() {
       : "rotate(180deg)";
   }
 }
-
-// =========================
-// INIT — single DOMContentLoaded
-// =========================
-
-document.addEventListener("DOMContentLoaded", () => {
-  // dark mode
-  applyDarkMode(isDarkMode);
-
-  // clock
-  updateClock();
-
-  // world clocks
-  renderWorldClocks();
-  updateWorldClocks();
-
-  // pomodoro
-  updatePomodoroDisplay();
-
-  // alarms
-  renderAlarmsList();
-
-      </div>
-    `
-        )
-        .join("");
-  }
-}
-/* ================= STOPWATCH ================= */
-
-let stopwatchRunning = false;
-let stopwatchStartTime = 0;
-let stopwatchElapsed = 0;
-let stopwatchAnimationFrame = null;
-let stopwatchLaps = [];
-
-function formatStopwatch(ms) {
-  const hours = Math.floor(ms / 3600000);
-  const minutes = Math.floor((ms % 3600000) / 60000);
-  const seconds = Math.floor((ms % 60000) / 1000);
-  const milliseconds = Math.floor(ms % 1000);
-
-  return (
-    String(hours).padStart(2, "0") +
-    ":" +
-    String(minutes).padStart(2, "0") +
-    ":" +
-    String(seconds).padStart(2, "0") +
-    "." +
-    String(milliseconds).padStart(3, "0")
-  );
-}
-
-function updateStopwatch() {
-  if (!stopwatchRunning) return;
-
-  stopwatchElapsed =
-    performance.now() - stopwatchStartTime;
-
-  const display =
-    document.getElementById("stopwatch-time");
-
-  if (display) {
-    display.textContent =
-      formatStopwatch(stopwatchElapsed);
-  }
-
-  stopwatchAnimationFrame =
-    requestAnimationFrame(updateStopwatch);
-}
-
-function startPauseStopwatch() {
-  const startBtn =
-    document.getElementById("start-stopwatch");
-
-  if (!stopwatchRunning) {
-    stopwatchRunning = true;
-
-    stopwatchStartTime =
-      performance.now() - stopwatchElapsed;
-
-    updateStopwatch();
-
-    if (startBtn) {
-      startBtn.textContent = "Pause";
-    }
-  } else {
-    stopwatchRunning = false;
-
-    cancelAnimationFrame(
-      stopwatchAnimationFrame
-    );
-
-    if (startBtn) {
-      startBtn.textContent = "Start";
-    }
-  }
-}
-
-function recordLap() {
-  if (!stopwatchRunning) return;
-
-  stopwatchLaps.push(stopwatchElapsed);
-
-  renderLaps();
-}
-
-function resetStopwatch() {
-  stopwatchRunning = false;
-
-  cancelAnimationFrame(
-    stopwatchAnimationFrame
-  );
-
-  stopwatchElapsed = 0;
-  stopwatchLaps = [];
-
-  const display =
-    document.getElementById("stopwatch-time");
-
-  if (display) {
-    display.textContent = "00:00:00.000";
-  }
-
-  const startBtn =
-    document.getElementById("start-stopwatch");
-
-  if (startBtn) {
-    startBtn.textContent = "Start";
-  }
-
-  renderLaps();
-}
-
-function renderLaps() {
-  const container =
-    document.getElementById("laps-container");
-
-  if (!container) return;
-
-  if (stopwatchLaps.length === 0) {
-    container.innerHTML =
-      '<p class="empty-state">No laps recorded.</p>';
-    return;
-  }
-
-  const fastest =
-    Math.min(...stopwatchLaps);
-
-  const slowest =
-    Math.max(...stopwatchLaps);
-
-  container.innerHTML = stopwatchLaps
-    .map((lap, index) => {
-      let badge = "";
-
-      if (
-        lap === fastest &&
-        stopwatchLaps.length > 1
-      ) {
-        badge = " ⭐ Fastest";
-      }
-
-      if (
-        lap === slowest &&
-        stopwatchLaps.length > 1
-      ) {
-        badge = " 🐢 Slowest";
-      }
-
-      return `
-        <div class="lap-item">
-          <span>Lap ${index + 1}${badge}</span>
-          <span>${formatStopwatch(lap)}</span>
-        </div>
-      `;
-    })
-    .reverse()
-    .join("");
-}
-
-  function toggleHistoryLogs() {
-    const logs =
-      document.getElementById(
-        "history-logs"
-      );
-
-    const chevron =
-      document.getElementById(
-        "history-chevron"
-      );
-
-    if (!logs) return;
-
-    logs.classList.toggle(
-      "hidden"
-    );
-
-    if (chevron) {
-      chevron.style.transform =
-        logs.classList.contains(
-          "hidden"
-        )
-          ? "rotate(0deg)"
-          : "rotate(180deg)";
-    }
-  }
-  // history
-  renderHistoryLogs();
-
-  // single interval for everything
-  setInterval(() => {
-    updateClock();
-    updateWorldClocks();
-    checkAlarms();
-  }, 1000);
-});
-
+populateTimezones();
+// Initial load
+updateClock();
+setInterval(updateClock, 1000);
