@@ -108,8 +108,6 @@ function toggleBookmark(topic) {
   const topicSearch = document.getElementById('topicSearch');
   const clearSearch = document.getElementById('clearSearch');
   const searchResultsInfo = document.getElementById('searchResultsInfo');
-  const menuToggle = document.getElementById('menuToggle');
-  const navButtons = document.getElementById('navButtons');
   const sidebarToggle = document.getElementById('sidebarToggle');
   const learningSidebar = document.getElementById('learningSidebar');
 
@@ -124,60 +122,7 @@ function toggleBookmark(topic) {
      MOBILE NAV MENU & SIDEBAR DRAWER TOGGLES
      ============================================================ */
   function initMobileMenu() {
-    if (menuToggle && navButtons) {
-      if (menuToggle.dataset.mobileNavBound !== 'true') {
-        menuToggle.dataset.mobileNavBound = 'true';
-
-        const closeMenu = () => {
-          menuToggle.classList.remove('active');
-          navButtons.classList.remove('active');
-          menuToggle.setAttribute('aria-expanded', 'false');
-        };
-
-        const openMenu = () => {
-          menuToggle.classList.add('active');
-          navButtons.classList.add('active');
-          menuToggle.setAttribute('aria-expanded', 'true');
-          const firstLink = navButtons.querySelector('a, button');
-          firstLink?.focus({ preventScroll: true });
-        };
-
-        menuToggle.addEventListener('click', (e) => {
-          e.stopPropagation();
-          if (navButtons.classList.contains('active')) {
-            closeMenu();
-          } else {
-            openMenu();
-          }
-        });
-
-        document.addEventListener('click', (e) => {
-          if (
-            !navButtons.contains(e.target) &&
-            !menuToggle.contains(e.target)
-          ) {
-            closeMenu();
-          }
-        });
-
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && navButtons.classList.contains('active')) {
-            closeMenu();
-            menuToggle.focus({ preventScroll: true });
-          }
-        });
-
-        navButtons.addEventListener('click', (e) => {
-          if (
-            e.target.closest('.btn') ||
-            e.target.closest('a') ||
-            e.target.closest('button')
-          ) {
-            closeMenu();
-          }
-        });
-      }
-    }
+    // The nav menu (#menuToggle) is initialized by navbar.js; this only wires the learning sidebar drawer.
 
     if (sidebarToggle && learningSidebar) {
       sidebarToggle.addEventListener('click', (e) => {
