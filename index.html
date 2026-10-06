@@ -268,6 +268,19 @@
       </div>
     </section>
 
+    <section class="projects-section" id="trending" aria-labelledby="trendingTitle">
+      <div class="projects-inner">
+        <div class="projects-intro">
+          <p class="section-label">Editor's Pick</p>
+          <div class="section-heading-row">
+            <h2 class="section-title" id="trendingTitle">Trending Projects</h2>
+            <a href="#projects" class="view-all-btn">View All</a>
+          </div>
+        </div>
+        <div class="trending-grid" id="trendingGrid"></div>
+      </div>
+    </section>
+
     <section class="projects-section">
       <div class="projects-inner">
         <div class="projects-intro">
@@ -660,5 +673,90 @@
     <script src="index.js?v=4" defer></script>
     <script src="navbar.js" defer></script>
     <script src="cursor.js" defer></script>
+    <script>
+      /* ── Trending Projects ────────────────────────────────────────
+         Curated list: diverse types, all have preview images.
+         To update, edit the TRENDING array — no other code changes needed.
+      ──────────────────────────────────────────────────────────────── */
+      const TRENDING = [
+        {
+          name: 'NeoTetris',
+          desc: 'Premium Tetris with particle effects, achievements, combo systems, daily challenges, and synthesized retro audio.',
+          type: 'Game',
+          img:  './public/NeoTetris/preview.png',
+          path: './public/NeoTetris/index.html'
+        },
+        {
+          name: 'Particle Wave Animation',
+          desc: 'Interactive particle field with wave dynamics, multiple themes, real-time mouse repulsion and FPS display.',
+          type: 'UI / Animation',
+          img:  './public/Particle Wave Animation/preview.png',
+          path: './public/Particle Wave Animation/index.html'
+        },
+        {
+          name: 'GitHub Profile Battle',
+          desc: 'Compare two GitHub profiles head-to-head using live stats, contribution graphs, and repository metrics.',
+          type: 'Tool',
+          img:  './public/Github-Profile-Battle/preview.png',
+          path: './public/Github-Profile-Battle/index.html'
+        },
+        {
+          name: 'LeetCode Progress Tracker',
+          desc: 'Track solved problems, streaks, difficulty-wise progress and coding analytics through an interactive dashboard.',
+          type: 'Tool',
+          img:  './public/leetcode-progress-tracker/preview.png',
+          path: './public/leetcode-progress-tracker/index.html'
+        },
+        {
+          name: 'Pokedex',
+          desc: 'Browse Pokémon data through a sleek interactive Pokédex — search, filter, and explore full stats.',
+          type: 'API',
+          img:  './public/Pokedex/preview.png',
+          path: './public/Pokedex/index.html'
+        },
+        {
+          name: 'YouTube Clone',
+          desc: 'Frontend recreation of YouTube with sidebar navigation, filter chips, video grid, and dark theme.',
+          type: 'Clone',
+          img:  './public/youtube clone/preview.png',
+          path: './public/youtube clone/index.html'
+        },
+        {
+          name: 'Amazon App',
+          desc: 'Feature-rich Amazon-inspired clone with product sliders, search, dark mode, cart drawer, and auth modal.',
+          type: 'Clone',
+          img:  './public/Amazon-App/preview.webp',
+          path: './public/Amazon-App/index.html'
+        },
+        {
+          name: 'FocusRoom',
+          desc: 'Productivity environment with Pomodoro timer, task list, ambient sounds, and distraction-free design.',
+          type: 'Productivity',
+          img:  './public/FocusRoom/preview.png',
+          path: './public/FocusRoom/index.html'
+        }
+      ];
+
+      (function renderTrending() {
+        const grid = document.getElementById('trendingGrid');
+        if (!grid) return;
+        grid.innerHTML = TRENDING.map((p, i) => `
+          <a class="trending-card" href="${p.path}" aria-label="Open ${p.name}">
+            ${p.img
+              ? `<img class="trending-card-img" src="${p.img}" alt="${p.name} preview" loading="lazy" onerror="this.parentElement.querySelector('.trending-card-img-placeholder').style.display='flex';this.style.display='none'">
+                 <div class="trending-card-img-placeholder" style="display:none"><i class="fas fa-code" aria-hidden="true"></i></div>`
+              : `<div class="trending-card-img-placeholder"><i class="fas fa-code" aria-hidden="true"></i></div>`
+            }
+            <div class="trending-card-body">
+              <span class="trending-card-badge">${i === 0 ? '🔥 ' : ''}${p.type}</span>
+              <p class="trending-card-name">${p.name}</p>
+              <p class="trending-card-desc">${p.desc}</p>
+              <div class="trending-card-footer">
+                <span class="trending-card-link">Open project <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+              </div>
+            </div>
+          </a>`).join('');
+      })();
+    </script>
   </body>
 </html>
