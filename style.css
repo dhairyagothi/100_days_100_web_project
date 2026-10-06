@@ -484,6 +484,15 @@ body.light-mode .navbar,
   border-color: var(--border);
 }
 
+/* Clear Recent History button spacing */
+#clearRecentBtn {
+  margin-left: 10px;
+}
+
+#clearRecentBtn i {
+  margin-right: 6px;
+}
+
 .btn-ghost:hover {
   background: var(--bg-surface);
   border-color: var(--border-hover);
