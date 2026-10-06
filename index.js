@@ -1576,10 +1576,10 @@ function toggleBookmark(project) {
     bookmarkedProjects = bookmarkedProjects.filter(
       (item) => normalizeProjectEntry(item).day !== project.day,
     );
-    showToast("Bookmark removed");
+    showToast("Bookmark removed", "warning");
   } else {
     bookmarkedProjects.push(project);
-    showToast("Project bookmarked");
+    showToast("Project bookmarked", "success");
   }
 
   updateBookmarkURL();
@@ -2045,7 +2045,7 @@ if (bookmarkToggleBtn) {
 if (copyBookmarksBtn) {
   copyBookmarksBtn.addEventListener("click", async () => {
     if (bookmarkedProjects.length === 0) {
-      showToast("No bookmarks to copy!");
+      showToast("No bookmarks to copy!", "warning");
       return;
     }
     const textToCopy = bookmarkedProjects
@@ -2061,9 +2061,9 @@ if (copyBookmarksBtn) {
 
     try {
       await navigator.clipboard.writeText(textToCopy);
-      showToast("Bookmarks copied to clipboard!");
+      showToast("Bookmarks copied to clipboard!", "success");
     } catch (err) {
-      showToast("Failed to copy bookmarks.");
+      showToast("Failed to copy bookmarks.", "error");
     }
   });
 }
@@ -2077,16 +2077,28 @@ if (recentToggleBtn) {
   });
 }
 
-function showToast(message) {
+function showToast(message, type = "info") {
   const toast = document.getElementById("toast");
   if (!toast) return;
 
-  toast.textContent = message;
+  const icons = {
+    success: '<i class="fas fa-check-circle"></i>',
+    error: '<i class="fas fa-exclamation-circle"></i>',
+    warning: '<i class="fas fa-exclamation-triangle"></i>',
+    info: '<i class="fas fa-info-circle"></i>'
+  };
+
+  const iconMarkup = icons[type] || icons.info;
+  toast.innerHTML = `${iconMarkup} <span>${message}</span>`;
+  
+  toast.className = "toast";
+  toast.classList.add(type);
   toast.classList.add("show");
 
-  setTimeout(() => {
+  window.clearTimeout(showToast.timeout);
+  showToast.timeout = window.setTimeout(() => {
     toast.classList.remove("show");
-  }, 3000);
+  }, 3200);
 }
 
 document.addEventListener("click", (e) => {
@@ -2186,7 +2198,7 @@ function resetAllFilters() {
   renderGrid();
   syncProjectCounts();
 
-  showToast("Filters cleared!");
+  showToast("Filters cleared!", "success");
 }
 
 function initClearAllFilters() {
