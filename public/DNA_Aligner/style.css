@@ -1,0 +1,241 @@
+:root {
+    --bg-darkest: #090a10;
+    --bg-panel: #131520;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --text-primary: #f8fafc;
+    --text-muted: #64748b;
+    --neon-dna: #10b981;
+    --path-active: #f59e0b;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'SF Mono', Consolas, Fira Code, monospace;
+    background-color: var(--bg-darkest);
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-layout {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    height: 100vh;
+}
+
+/* Sidebar Parameters Configuration Layout */
+.config-sidebar {
+    background-color: var(--bg-panel);
+    border-right: 1px solid var(--border-color);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.sidebar-header h2 {
+    font-size: 1.25rem;
+    color: var(--neon-dna);
+    font-weight: 700;
+}
+
+.sidebar-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-top: 4px;
+}
+
+.control-group {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.group-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.input-item {
+    margin-bottom: 12px;
+}
+
+.input-item label {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+}
+
+.input-item input[type="text"] {
+    width: 100%;
+    background: #090a10;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #00ffcc;
+    padding: 10px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    outline: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.grid-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.number-item label {
+    display: block;
+    font-size: 0.65rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+}
+
+.number-item input {
+    width: 100%;
+    background: #090a10;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 8px;
+    font-family: inherit;
+    border-radius: 4px;
+    outline: none;
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.primary-btn {
+    background: var(--neon-dna);
+    color: #090a10;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.primary-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.analytics-box {
+    margin-top: auto;
+    background: rgba(16, 185, 129, 0.02);
+    border-color: rgba(16, 185, 129, 0.1);
+}
+
+.metric-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+}
+
+.metric-line strong {
+    color: var(--neon-dna);
+}
+
+/* Main Sequence Viewport Layout */
+.matrix-viewport {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow: hidden;
+}
+
+.matrix-viewport h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #94a3b8;
+    margin-bottom: 12px;
+}
+
+.alignment-banner {
+    background: #0e111a;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.alignment-output {
+    background: #05060a;
+    padding: 16px;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    letter-spacing: 0.2em;
+    line-height: 1.4;
+    overflow-x: auto;
+}
+
+.match-line {
+    color: var(--neon-dna);
+}
+
+/* Interactive Dynamic Processing Table Grid Mapping */
+.table-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.matrix-grid {
+    flex-grow: 1;
+    display: grid;
+    background: #05060a;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: auto;
+    padding: 12px;
+}
+
+.matrix-cell {
+    min-width: 50px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    color: #475569;
+    transition: all 0.15s ease;
+}
+
+.matrix-cell.header-cell {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--neon-dna);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.matrix-cell.trace-path {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: var(--path-active);
+    color: var(--path-active);
+    font-weight: bold;
+    box-shadow: inset 0 0 8px rgba(245, 158, 11, 0.2);
+}

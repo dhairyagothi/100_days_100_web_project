@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeneAlign - Genomic Sequence Matrix Engine</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-layout">
+        <aside class="config-sidebar">
+            <header class="sidebar-header">
+                <h2>🧬 GeneAlign Engine</h2>
+                <p class="sidebar-desc">Bioinformatics compiler using the Needleman-Wunsch dynamic programming algorithm
+                    for global sequence alignments.</p>
+            </header>
+
+            <section class="control-group">
+                <label class="group-label">Genomic Sequences</label>
+                <div class="input-item">
+                    <label for="seq-a">Sequence A (Top)</label>
+                    <input type="text" id="seq-a" value="HEAGAWGHEE" placeholder="e.g. ATCG..." spellcheck="false">
+                </div>
+                <div class="input-item">
+                    <label for="seq-b">Sequence B (Left)</label>
+                    <input type="text" id="seq-b" value="PAWHEAE" placeholder="e.g. ATCG..." spellcheck="false">
+                </div>
+            </section>
+
+            <section class="control-group">
+                <label class="group-label">Scoring Metrics</label>
+                <div class="grid-inputs">
+                    <div class="number-item">
+                        <label for="score-match">Match</label>
+                        <input type="number" id="score-match" value="5">
+                    </div>
+                    <div class="number-item">
+                        <label for="score-mismatch">Mismatch</label>
+                        <input type="number" id="score-mismatch" value="-3">
+                    </div>
+                    <div class="number-item">
+                        <label for="score-gap">Gap Penalty</label>
+                        <input type="number" id="score-gap" value="-4">
+                    </div>
+                </div>
+            </section>
+
+            <button id="btn-align" class="btn primary-btn">⚡ Run Alignment</button>
+
+            <section class="control-group analytics-box">
+                <label class="group-label">Sequence Analytics</label>
+                <div class="metric-line"><span>Alignment Score:</span><strong id="metric-score">-</strong></div>
+                <div class="metric-line"><span>Sequence Identity:</span><strong id="metric-identity">-</strong></div>
+                <div class="metric-line"><span>Total Gaps Inserted:</span><strong id="metric-gaps">-</strong></div>
+            </section>
+        </aside>
+
+        <main class="matrix-viewport">
+            <section class="alignment-banner">
+                <h3>🔍 Optimal Global Alignment Path</h3>
+                <div class="alignment-output">
+                    <div id="output-seq-a" class="seq-row">---</div>
+                    <div id="output-match-line" class="seq-row match-line">---</div>
+                    <div id="output-seq-b" class="seq-row">---</div>
+                </div>
+            </section>
+
+            <section class="table-container">
+                <h3>📊 Dynamic Programming Matrix Heatmap</h3>
+                <div id="matrix-grid-wrapper" class="matrix-grid">
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
