@@ -110,6 +110,7 @@ body.light-mode {
   @keyframes flash{0%{filter:brightness(2)}100%{filter:brightness(1)}}
   @media (max-width:1024px){.main{grid-template-columns:repeat(2,1fr)}.chart-card.wide{grid-column:span 2}}
   @media (max-width:640px){.main{grid-template-columns:1fr}.chart-card,.chart-card.wide{grid-column:span 1}}
+  @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
@@ -225,16 +226,18 @@ Chart.defaults.color = '#94a3b8';
 Chart.defaults.font.family = "'Exo 2', sans-serif";
 Chart.defaults.borderColor = 'rgba(255,255,255,.06)';
 
+const chartAnimation = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? false : {duration:600};
+
 const catChart = new Chart($('catChart'), {
   type:'doughnut',
   data:{labels:[],datasets:[{data:[],backgroundColor:PALETTE,borderWidth:0}]},
-  options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:12,font:{size:11}}}},cutout:'62%',responsive:true,maintainAspectRatio:false,animation:{duration:600}}
+  options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:12,font:{size:11}}}},cutout:'62%',responsive:true,maintainAspectRatio:false,animation:chartAnimation}
 });
 
 const techChart = new Chart($('techChart'), {
   type:'bar',
   data:{labels:[],datasets:[{label:'Projects',data:[],backgroundColor:'#0ff2c8',borderRadius:6}]},
-  options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'}},y:{grid:{display:false}}},responsive:true,maintainAspectRatio:false,animation:{duration:600}}
+  options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'}},y:{grid:{display:false}}},responsive:true,maintainAspectRatio:false,animation:chartAnimation}
 });
 
 const diffChart = new Chart($('diffChart'), {
@@ -244,7 +247,7 @@ const diffChart = new Chart($('diffChart'), {
     {label:'Intermediate',data:[],borderColor:'#0ff2c8',backgroundColor:'rgba(15,242,200,.12)',tension:.35,fill:true,pointRadius:0,borderWidth:2},
     {label:'Advanced',data:[],borderColor:'#f87171',backgroundColor:'rgba(248,113,113,.12)',tension:.35,fill:true,pointRadius:0,borderWidth:2}
   ]},
-  options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:12,font:{size:11}}}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'},title:{display:true,text:'Project No.'}},y:{grid:{color:'rgba(255,255,255,.04)'},beginAtZero:true,title:{display:true,text:'Cumulative count'}}},responsive:true,maintainAspectRatio:false,animation:{duration:600}}
+  options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:12,font:{size:11}}}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'},title:{display:true,text:'Project No.'}},y:{grid:{color:'rgba(255,255,255,.04)'},beginAtZero:true,title:{display:true,text:'Cumulative count'}}},responsive:true,maintainAspectRatio:false,animation:chartAnimation}
 });
 
 /* ---------- State ---------- */
