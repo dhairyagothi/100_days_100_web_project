@@ -15,7 +15,25 @@
     <meta name="author" content="Dhairya Gothi and Contributors" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#0a0a1a" />
-    <script src="theme.js"></script>
+    <script>
+      (function () {
+        try {
+          var themes = ["dark", "light", "sepia", "cyberpunk", "nord"];
+          var stored = localStorage.getItem("theme");
+          var theme = "dark";
+          if (stored === null) {
+            theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+          } else if (themes.indexOf(stored) !== -1) {
+            theme = stored;
+          }
+          document.documentElement.setAttribute("data-theme", theme);
+          document.documentElement.style.colorScheme = theme;
+        } catch (e) {}
+      })();
+    </script>
+    <script src="theme.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <meta property="og:type" content="website" />
