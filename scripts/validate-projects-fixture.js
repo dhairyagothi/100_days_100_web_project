@@ -19,7 +19,8 @@ fs.writeFileSync(validRegistryPath, JSON.stringify([
     projectType: 'Tool',
     techStack: ['html', 'css'],
     difficulty: 'beginner',
-    projectPath: './public/valid-project/index.html'
+    projectPath: './public/valid-project/index.html',
+    contributor: 'test-user'
   },
   {
     projectNo: 2,
@@ -27,7 +28,8 @@ fs.writeFileSync(validRegistryPath, JSON.stringify([
     projectType: 'Tool',
     techStack: ['html'],
     difficulty: 'intermediate',
-    projectPath: 'https://github.com/dhairyagothi/100_days_100_web_project/blob/Main/index.html'
+    projectPath: 'https://github.com/dhairyagothi/100_days_100_web_project/blob/Main/index.html',
+    contributor: 'test-user'
   },
   {
     projectNo: 3,
@@ -35,7 +37,8 @@ fs.writeFileSync(validRegistryPath, JSON.stringify([
     projectType: 'Tool',
     techStack: ['html'],
     difficulty: 'advanced',
-    projectPath: 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public'
+    projectPath: 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public',
+    contributor: 'test-user'
   }
 ], null, 2));
 
@@ -46,7 +49,8 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
     projectType: 'Tool',
     techStack: ['html'],
     difficulty: 'beginner',
-    projectPath: './public/valid-project/index.html'
+    projectPath: './public/valid-project/index.html',
+    contributor: 'test-user'
   },
   {
     projectNo: 1,
@@ -54,7 +58,8 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
     projectType: 'Game',
     techStack: ['javascript'],
     difficulty: 'expert',
-    projectPath: 'javascript:alert(1)'
+    projectPath: 'javascript:alert(1)',
+    contributor: 'test-user'
   },
   {
     projectNo: 3,
@@ -62,7 +67,8 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
     projectType: 'UI',
     techStack: ['html'],
     difficulty: 'advanced',
-    projectPath: '../outside.html'
+    projectPath: '../outside.html',
+    contributor: 'test-user'
   },
   {
     projectNo: 4,
@@ -70,7 +76,8 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
     projectType: 'Animation',
     techStack: ['css'],
     difficulty: 'intermediate',
-    projectPath: './public/missing/index.html'
+    projectPath: './public/missing/index.html',
+    contributor: 'test-user'
   },
   {
     projectNo: 5,
@@ -78,7 +85,8 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
     projectType: 'API',
     techStack: ['html'],
     difficulty: 'advanced',
-    projectPath: 'https://github.com/octocat/Hello-World/blob/master/README'
+    projectPath: 'https://github.com/octocat/Hello-World/blob/master/README',
+    contributor: 'test-user'
   },
   {
     projectNo: 6,
@@ -86,7 +94,8 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
     projectType: 'Website',
     techStack: ['html'],
     difficulty: 'advanced',
-    projectPath: 'https://github.com/octocat/Hello-World/tree/master'
+    projectPath: 'https://github.com/octocat/Hello-World/tree/master',
+    contributor: 'test-user'
   },
   {
     projectNo: 7,
@@ -94,7 +103,8 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
     projectType: 'Web Application',
     techStack: ['html'],
     difficulty: 'beginner',
-    projectPath: './public/valid-project/index.html'
+    projectPath: './public/valid-project/index.html',
+    contributor: 'test-user'
   }
 ], null, 2));
 
