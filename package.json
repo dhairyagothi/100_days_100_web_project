@@ -6,7 +6,6 @@
   "scripts": {
     "generate-previews": "node scripts/generate-previews.js",
     "dev": "npx -y serve . -p 3000",
-    "validate:projects": "node .github/scripts/validate-projects.js",
     "validate:projects": "node scripts/validate-projects.js",
     "validate:projects-fixture": "node scripts/validate-projects-fixture.js",
     "lint": "eslint --no-config-lookup -c eslint.config.js .",
@@ -36,6 +35,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@lhci/cli": "^0.15.1",
     "ajv": "^8.17.1",
     "eslint": "^10.4.1",
     "eslint-config-prettier": "^10.1.8",
