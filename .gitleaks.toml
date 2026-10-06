@@ -1,0 +1,16 @@
+title = "Repository Gitleaks Configuration"
+
+[allowlist]
+description = "Allow documentation placeholders"
+
+paths = [
+  '''README\.md''',
+  '''docs/.*'''
+]
+
+regexes = [
+  '''YOUR_API_KEY''',
+  '''your_api_key''',
+  '''EXAMPLE_TOKEN''',
+  '''xxxxxxxx'''
+]
