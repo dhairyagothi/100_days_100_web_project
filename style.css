@@ -585,7 +585,6 @@ body.light-mode .btn-stats:hover {
 
 /* ============================================================
    MOBILE NAVBAR FINAL FIX
-============================================================ */
 
 .mobile-overlay {
   position: fixed;
@@ -616,10 +615,8 @@ body.light-mode .btn-stats:hover {
 
 /* ============================================================
    MOBILE ONLY
-============================================================ */
 /* ============================================================
    DESKTOP RESPONSIVE CONFIGURATIONS (Restored Base)
-============================================================ */
 @media (min-width: 769px) {
   .mobile-menu-header,
   .mobile-menu-close,
@@ -632,7 +629,6 @@ body.light-mode .btn-stats:hover {
 
 /* ============================================================
    MOBILE RESPONSIVE NAV DRAWER OVERRIDES (Strict Scope)
-============================================================ */
 @media (max-width: 768px) {
   /* Dynamic Background Blur Layer — Allows live scroll mechanics behind panels */
   .mobile-overlay {
@@ -913,7 +909,6 @@ body.light-mode .btn-stats:hover {
 
 /* ============================================================
    DESKTOP FIX
-============================================================ */
 
 @media (min-width: 769px) {
   .mobile-menu-header,
@@ -2506,55 +2501,42 @@ body.light-mode .footer.homepage-footer .social-btn {
 }
 
 /* ============================================================
-   SCROLL TO TOP
+   FIX #7473 — Search filter & layout stability on resize
+   Add these rules at the very bottom of style.css
    ============================================================ */
-#scrollBtn {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 48px;
-  height: 48px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  color: var(--text-muted);
-  font-size: 0.875rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transform: translateY(16px);
-  pointer-events: none;
-  transition:
-    opacity 0.3s var(--ease),
-    transform 0.3s var(--ease),
-    border-color 0.2s ease,
-    color 0.2s ease;
-  z-index: 50;
+
+/*
+  FIX: Without align-items:start, CSS Grid stretches all cards in a row
+  to the height of the tallest card. When the viewport resizes and the
+  column count changes (3→2→1), some cards temporarily overlap because
+  the stretching leaves ghost space before the grid recalculates.
+  align-items:start collapses each card to its own natural height,
+  so rows re-flow cleanly at every breakpoint.
+*/
+#projectGrid {
+  align-items: start;
 }
 
-#scrollBtn.show {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-#scrollBtn:hover {
-  border-color: var(--border-accent);
-  color: var(--accent);
-}
-
-#scrollBtn:hover .scroll-arrow {
-  transform: translateY(-2px);
-}
-
-#scrollBtn .scroll-arrow {
-  transition: transform 0.2s var(--ease);
+/*
+  FIX: On iOS Safari, rapid orientation changes can visually blank
+  <input> fields even when the JS variable still holds the value.
+  position:relative + z-index:1 ensures the input is always in its
+  own stacking context and is never obscured by a repainting layer
+  (e.g. the particle canvas or ambient blob divs) above it.
+*/
+#searchInput {
   position: relative;
   z-index: 1;
 }
 
+/*
+  FIX: Hide the × clear button by default; index.js shows it on input.
+  Previously it was always visible even when the search was empty,
+  which was confusing UX.
+*/
+#clearSearch {
+  display: none;
+}
 #scrollBtn svg.progress-ring {
   position: absolute;
   top: 0;
