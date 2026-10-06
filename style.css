@@ -1684,6 +1684,11 @@ input:focus {
   background: rgba(255, 255, 255, 0.01);
 }
 
+.chip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .chip.active {
   background: var(--accent-dim);
   border-color: var(--border-accent);
