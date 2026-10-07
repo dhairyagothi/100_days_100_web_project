@@ -893,14 +893,6 @@ function getAllTechnologies() {
 let bookmarkedProjects = [];
 let recentProjects = [];
 let comparedProjects = [];
-let completedProjects = [];
-
-try {
-  completedProjects =
-    JSON.parse(localStorage.getItem("completedProjects")) || [];
-} catch (error) {
-  console.warn("Could not load completed projects");
-}
 
 function toggleCompare(project) {
   const exists = comparedProjects.find(
