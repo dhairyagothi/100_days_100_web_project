@@ -6,8 +6,7 @@
   "scripts": {
     "generate-previews": "node scripts/generate-previews.js",
     "dev": "npx -y serve . -p 3000",
-    "validate:projects": "node .github/scripts/validate-projects.js",
-    "validate:projects": "node scripts/validate-projects.js",
+    "validate:projects": "node .github/scripts/detect-duplicates.js",
     "validate:projects-fixture": "node scripts/validate-projects-fixture.js",
     "lint": "eslint --no-config-lookup -c eslint.config.js .",
     "lint:all": "npx -y htmlhint '**/*.html' --ignore 'node_modules/**,**/node_modules/**'",
