@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game of Life - Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="app-mode theme-dark">
+    
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-border-all"></i> CGL
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" title="Home"><i class="fa-solid fa-house"></i></a>
+                <a href="simulator.html" class="active" title="Simulator"><i class="fa-solid fa-play"></i></a>
+                <a href="settings.html" title="Settings"><i class="fa-solid fa-gear"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            
+            <!-- Toolbar -->
+            <header class="toolbar">
+                <div class="toolbar-group">
+                    <button class="btn btn-icon" id="btn-play" title="Play/Pause">
+                        <i class="fa-solid fa-play" id="play-icon"></i>
+                    </button>
+                    <button class="btn btn-icon" id="btn-step" title="Step Forward (1 Generation)">
+                        <i class="fa-solid fa-forward-step"></i>
+                    </button>
+                    <button class="btn btn-icon text-danger" id="btn-clear" title="Clear Grid">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                    <button class="btn btn-icon" id="btn-randomize" title="Randomize Grid">
+                        <i class="fa-solid fa-shuffle"></i>
+                    </button>
+                </div>
+
+                <div class="toolbar-divider"></div>
+
+                <div class="toolbar-group">
+                    <div class="control-label">
+                        <span>Speed</span>
+                        <input type="range" id="speed-slider" min="1" max="60" value="15">
+                        <span id="speed-display">15 fps</span>
+                    </div>
+                </div>
+
+                <div class="toolbar-divider"></div>
+
+                <div class="toolbar-group">
+                    <div class="control-label">
+                        <span>Grid Size</span>
+                        <select id="grid-size">
+                            <option value="50">50 x 50</option>
+                            <option value="100" selected>100 x 100</option>
+                            <option value="200">200 x 200</option>
+                            <option value="300">300 x 300</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="toolbar-divider"></div>
+
+                <div class="toolbar-group">
+                    <div class="control-label">
+                        <span>Presets</span>
+                        <select id="preset-selector">
+                            <option value="none">-- Select Pattern --</option>
+                            <option value="glider">Glider</option>
+                            <option value="pulsar">Pulsar</option>
+                            <option value="gosper">Gosper Glider Gun</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div>Generation: <span id="stat-gen">0</span></div>
+                <div>Population: <span id="stat-pop">0</span></div>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="canvas-container" id="canvas-container">
+                <canvas id="grid-canvas"></canvas>
+            </div>
+            
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

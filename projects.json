@@ -3138,5 +3138,20 @@
     ],
    "difficulty": "intermediate",
     "projectPath": "./public/WebDevQuizApp/index.html"
-  } 
+  },
+  {
+    "projectNo": 247,
+    "projectName": "Conway's Game of Life",
+    "projectType": "Game",
+    "projectDesc": "A high-performance HTML5 Canvas implementation of Conway's Game of Life, featuring interactive drawing, adjustable speeds, and classic preset patterns.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "canvas",
+      "algorithms"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Game_of_Life/index.html"
+  }
 ]

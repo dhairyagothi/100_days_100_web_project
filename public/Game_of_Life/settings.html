@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game of Life - Settings</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="app-mode theme-dark">
+    
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-border-all"></i> CGL
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" title="Home"><i class="fa-solid fa-house"></i></a>
+                <a href="simulator.html" title="Simulator"><i class="fa-solid fa-play"></i></a>
+                <a href="settings.html" class="active" title="Settings"><i class="fa-solid fa-gear"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace settings-workspace">
+            
+            <header class="settings-header">
+                <h1>Settings</h1>
+            </header>
+
+            <div class="settings-content">
+                
+                <div class="settings-card">
+                    <h3><i class="fa-solid fa-palette"></i> Theme & Colors</h3>
+                    
+                    <div class="setting-group">
+                        <label>App Theme</label>
+                        <select id="setting-theme">
+                            <option value="theme-dark">Dark Mode</option>
+                            <option value="theme-light">Light Mode</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Live Cell Color</label>
+                        <input type="color" id="setting-live-color" value="#00ffcc">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Dead Cell Color (Background)</label>
+                        <input type="color" id="setting-dead-color" value="#121212">
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Grid Line Color</label>
+                        <input type="color" id="setting-grid-color" value="#2a2a2a">
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h3><i class="fa-solid fa-eye"></i> View Options</h3>
+                    
+                    <div class="setting-group">
+                        <label>Show Grid Lines</label>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-show-grid" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
