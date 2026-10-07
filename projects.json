@@ -2703,6 +2703,18 @@
   },
   {
     "projectNo": 215,
+    "projectName": "Mandala Designer",
+    "projectPath": "./public/mandala_designer/index.html",
+    "techStack": ["html", 
+                  "css", 
+                  "javascript", 
+                  "canvas"
+                 ],
+    "difficulty": "advanced",
+    "projectDesc": "A highly interactive, responsive symmetric vector geometry studio allowing users to design intricate kaleidoscope artwork. Features a multi-axis rotation engine, razor-sharp edge physics, High-DPI display scaling, and lossless canvas history state stacks."
+  },
+  {
+    "projectNo": 216,
     "projectName": "Mood-Based Music Recommender",
     "projectType": "Tool",
     "projectDesc": "An interactive web application that recommends music based on the user's current mood. Features a premium Spotify-inspired UI, smooth animations, and dynamic themes.",
@@ -2714,8 +2726,21 @@
     "difficulty": "advanced",
     "projectPath": "./public/Mood_Based_Music_Recommender/"
   },
+{
+  "projectNo": 217,
+  "projectName": "Runway Calculator",
+  "projectType": "Tool",
+  "projectDesc": "A web-based aviation utility that helps users calculate and determine runway numbers from runway headings. Features an intuitive interface, instant calculations, and responsive design for aviation enthusiasts, students, and professionals.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/Runway-Calculator/index.html"
+},
   {
-    "projectNo": 216,
+    "projectNo": 218,
     "projectName": "Runway Calculator",
     "projectType": "Tool",
     "projectDesc": "A web-based aviation utility that helps users calculate and determine runway numbers from runway headings. Features an intuitive interface, instant calculations, and responsive design for aviation enthusiasts, students, and professionals.",
@@ -2728,7 +2753,7 @@
     "projectPath": "./public/Runway-Calculator/index.html"
   },
   {
-    "projectNo": 217,
+    "projectNo": 219,
     "projectName": "Gemini Clone",
     "projectType": "AI",
     "projectDesc": "A modern clone of the Google Gemini AI chatbot interface, integrated with Google's GenAI API for generating dynamic responses.",
@@ -2744,7 +2769,7 @@
     "projectPath": "./public/Gemini/index.html"
   },
   {
-    "projectNo": 218,
+    "projectNo": 220,
     "projectName": "SkillBridge Career Roadmap Explorer",
     "projectType": "Tool",
     "projectDesc": "A Next.js career guidance platform that helps students explore technology career paths, required skills, structured learning roadmaps, recommended projects, and curated learning resources.",
@@ -2758,7 +2783,7 @@
     "projectPath": "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/SkillBridge"
   },
   {
-    "projectNo": 219,
+    "projectNo": 221,
     "projectName": "The Cube - 3D Rubik's Cube Simulator",
     "projectType": "Simulation",
     "projectDesc": "An interactive 3D Rubik's Cube simulator built with Three.js that allows users to solve, scramble, customize, and track performance across multiple cube sizes with smooth animations and touch support.",
@@ -2772,7 +2797,7 @@
     "projectPath": "./public/the_cube/index.html"
   },
   {
-    "projectNo": 220,
+    "projectNo": 222,
     "projectName": "NeoTetris - Premium Edition",
     "projectType": "Game",
     "projectDesc": "A premium Tetris experience featuring modern themes, particle effects, achievements, combo systems, daily challenges, responsive controls, synthesized retro audio, dynamic background music, and polished gameplay mechanics.",
@@ -2787,7 +2812,7 @@
     "projectPath": "./public/NeoTetris/index.html"
   },
   {
-    "projectNo": 221,
+    "projectNo": 223,
     "projectName": "AI Tools Hub",
     "projectType": "AI",
     "projectDesc": "A modern platform for discovering and exploring AI tools across coding, design, writing, productivity, presentations, and media categories.",

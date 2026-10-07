@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mandala Studio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="app-header">
+        <h1 class="app-title">MANDALA <span class="highlight">DESIGNER</span></h1>
+        <p class="app-subtitle">Symmetric Vector Geometry Studio</p>
+    </header>
+
+    <div class="app-wrapper">
+        <div class="studio-container">
+            
+            <aside class="sidebar-panel">
+                <div class="controls-wrapper">
+                    <div class="control-group">
+                        <label class="panel-label">Symmetry Segments</label>
+                        <div class="range-container">
+                            <input type="range" id="axesSlider" min="2" max="32" value="8" step="1">
+                            <span id="axesValue" class="badge">8 Axes</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="panel-label">Brush Thickness</label>
+                        <div class="range-container">
+                            <input type="range" id="sizeSlider" min="1" max="20" value="4" step="1">
+                            <span id="sizeValue" class="badge">4px</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="panel-label">Color Engine Mode</label>
+                        <div class="btn-grid">
+                            <button id="neonRainbowBtn" class="panel-btn active">🌈 Rainbow Fade</button>
+                            <div class="color-picker-row">
+                                <button id="solidColorBtn" class="panel-btn">🎨 Solid Color</button>
+                                <input type="color" id="customColorPicker" value="#00f0ff" title="Choose Solid Color">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-vertical-group">
+                    <button id="undoBtn" class="action-btn secondary-btn" title="Ctrl + Z">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7v6h6M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+                        Undo Stroke
+                    </button>
+                    <button id="clearBtn" class="action-btn danger-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                        Clear Board
+                    </button>
+                    <button id="exportBtn" class="action-btn success-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4m4-5l5 5 5-5m-5 5V3"/></svg>
+                        Export PNG
+                    </button>
+                </div>
+            </aside>
+
+            <main class="main-workspace">
+                <div class="canvas-container">
+                    <canvas id="paintCanvas"></canvas>
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <div class="shortcut-banner">
+        <div class="shortcut-item"><span class="mouse-icon">🖱️</span> Drag to Draw</div>
+        <div class="divider"></div>
+        <div class="shortcut-item"><kbd class="key-badge">Ctrl</kbd> + <kbd class="key-badge">Z</kbd> Undo</div>
+        <div class="divider"></div>
+        <div class="shortcut-item"><span class="neon-dot"></span> Studio Active</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
