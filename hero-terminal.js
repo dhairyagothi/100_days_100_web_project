@@ -91,13 +91,13 @@ function FaultyTerminal({
 
       // Gradient background matching the dark space theme
       const grad = ctx.createLinearGradient(0, 0, 0, h);
-      grad.addColorStop(0, "rgba(4,8,18,0.2)");
-      grad.addColorStop(1, "rgba(2,6,23,0.7)");
+      grad.addColorStop(0, "rgba(4,8,18,0.55)");
+      grad.addColorStop(1, "rgba(2,6,23,0.85)");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
 
       // Subtle Grid lines
-      ctx.strokeStyle = `rgba(${tr},${tg},${tb},0.035)`;
+      ctx.strokeStyle = `rgba(${tr},${tg},${tb},0.02)`;
       ctx.lineWidth = 1;
       const gs = Math.floor(h / 12);
       for (let gy = 0; gy < h; gy += gs) {
