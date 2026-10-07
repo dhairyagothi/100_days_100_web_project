@@ -118,6 +118,48 @@ function parseProjectsData(payload) {
 function loadProjects() {
   if (!projectsPromise) {
     projectsPromise = (async () => {
+      const isRoot = !window.location.pathname.includes('/contributors/');
+      const base = isRoot ? '' : '../';
+      const projectsUrl = new URL(`${base}projects.json`, window.location.href).toString();
+      const response = await fetch(projectsUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to load projects: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+
+      // Ensure root JSON data is a clean array
+      if (!Array.isArray(data)) {
+        console.error("Root projects.json structural context is completely malformed or empty!");
+        PROJECTS = [];
+        return;
+      }
+
+      PROJECTS = [];
+      data.forEach((project) => {
+        // Defensive Type-Checking Guard: Filter out malformed entries cleanly
+        if (
+          !project ||
+          typeof project !== 'object' ||
+          Array.isArray(project) ||
+          project.projectNo === undefined ||
+          !project.projectName ||
+          !project.projectPath
+        ) {
+          console.error("Skipping malformed or corrupted project entry in projects.json:", project);
+          return; // Skip data array errors without breaking the layout
+        }
+
+        // Structural defensive formatting defaults to guarantee safe down-line loops
+        PROJECTS.push([
+          `Day ${project.projectNo}`,
+          project.projectName,
+          project.projectPath,
+          Array.isArray(project.techStack) ? project.techStack : [], // Array fallbacks protect loops
+          project.difficulty || 'Beginner',
+          project.projectDesc || 'Explore this project to discover interactive functionality.'
+        ]);
+      });
       const preloadedData = getPreloadedProjectsData();
       if (preloadedData) {
         hydrateProjects(preloadedData);
@@ -581,6 +623,13 @@ function buildProjectCardHTML({
 
   const tagsArray = Array.isArray(tags)
     ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
+    : String(tags || '')
+        .split(/\s+/)
+        .filter((t) => t && t !== SOURCE_ONLY_TAG);
+  const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
+  const project = PROJECTS.find(p => p[1] === name);
+
+  const description = getProjectDescription(project);
     : String(tags || "")
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
@@ -2019,6 +2068,7 @@ function renderRecommendationsForLatestRecentProject() {
 
   const latestProject = resolveProjectRecord(validRecent[0]);
   renderRecommendationsForProject(latestProject);
+}
 }
 
 // Clean up after grid references are initialized.
