@@ -35,6 +35,11 @@
   height: 20px;
 }
 
+.youtube-logo-link {
+  display: flex;
+  align-items: center;
+}
+
 .middle-section {
   flex: 1;
   margin-left: 70px;
