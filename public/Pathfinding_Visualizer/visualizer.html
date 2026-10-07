@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizer - Pathfinding</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="app-mode theme-dark">
+    
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-route"></i>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" title="Home"><i class="fa-solid fa-house"></i></a>
+                <a href="visualizer.html" class="active" title="Visualizer"><i class="fa-solid fa-desktop"></i></a>
+                <a href="settings.html" title="Settings"><i class="fa-solid fa-gear"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            
+            <!-- Toolbar -->
+            <header class="toolbar">
+                <div class="toolbar-group">
+                    <select id="algo-selector" class="custom-select" title="Algorithm">
+                        <option value="dijkstra">Dijkstra's Algorithm</option>
+                        <option value="astar">A* Search</option>
+                        <option value="bfs">Breadth-First Search (BFS)</option>
+                    </select>
+                </div>
+                
+                <div class="toolbar-group">
+                    <button class="btn btn-primary" id="btn-visualize">
+                        <i class="fa-solid fa-play"></i> Visualize
+                    </button>
+                </div>
+
+                <div class="toolbar-divider"></div>
+
+                <div class="toolbar-group">
+                    <button class="btn btn-secondary" id="btn-clear-board">Clear Board</button>
+                    <button class="btn btn-secondary" id="btn-clear-path">Clear Path</button>
+                </div>
+
+                <div class="toolbar-divider"></div>
+                
+                <div class="toolbar-group">
+                    <div class="control-label">
+                        <span>Speed:</span>
+                        <select id="speed-selector" class="custom-select">
+                            <option value="fast">Fast</option>
+                            <option value="average">Average</option>
+                            <option value="slow">Slow</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="toolbar-flex-spacer"></div>
+                
+                <div class="toolbar-group legend">
+                    <div class="legend-item"><div class="node-legend start"></div> Start Node</div>
+                    <div class="legend-item"><div class="node-legend end"></div> Target Node</div>
+                    <div class="legend-item"><div class="node-legend wall"></div> Wall Node</div>
+                </div>
+            </header>
+
+            <!-- Grid Container -->
+            <div class="grid-container" id="grid-container">
+                <!-- Grid rows and cells injected via JS -->
+            </div>
+            
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

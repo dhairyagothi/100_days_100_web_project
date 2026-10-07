@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathfinding Algorithm Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="landing-page theme-dark">
+    
+    <div class="landing-container">
+        <header class="landing-header">
+            <div class="logo-icon"><i class="fa-solid fa-route"></i></div>
+            <h1>Pathfinding Visualizer</h1>
+            <p class="subtitle">An interactive tool to visualize graph traversal algorithms</p>
+        </header>
+
+        <div class="algorithms-section">
+            <h2>Supported Algorithms</h2>
+            
+            <div class="algo-grid">
+                <div class="algo-card">
+                    <div class="algo-icon"><i class="fa-solid fa-crown" style="color: gold;"></i></div>
+                    <h3>Dijkstra's Algorithm</h3>
+                    <p>The father of pathfinding algorithms; guarantees the shortest path.</p>
+                </div>
+                <div class="algo-card">
+                    <div class="algo-icon"><i class="fa-solid fa-star" style="color: #00ffcc;"></i></div>
+                    <h3>A* Search</h3>
+                    <p>Arguably the best pathfinding algorithm; uses heuristics to guarantee the shortest path much faster than Dijkstra's Algorithm.</p>
+                </div>
+                <div class="algo-card">
+                    <div class="algo-icon"><i class="fa-solid fa-water" style="color: #0088ff;"></i></div>
+                    <h3>Breadth-First Search</h3>
+                    <p>A great algorithm; guarantees the shortest path on an unweighted graph.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="instructions-section">
+            <h2>How to use</h2>
+            <ul class="instruction-list">
+                <li><i class="fa-solid fa-hand-pointer"></i> <strong>Drag</strong> the Start (<i class="fa-solid fa-play" style="color: var(--color-start)"></i>) and End (<i class="fa-solid fa-bullseye" style="color: var(--color-end)"></i>) nodes to move them.</li>
+                <li><i class="fa-solid fa-pen"></i> <strong>Click and drag</strong> on empty grid cells to draw walls.</li>
+                <li><i class="fa-solid fa-gears"></i> <strong>Select</strong> an algorithm from the top toolbar and hit "Visualize".</li>
+            </ul>
+        </div>
+
+        <div class="cta-section">
+            <a href="visualizer.html" class="btn btn-primary btn-large">Start Visualizing <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </div>
+
+</body>
+</html>

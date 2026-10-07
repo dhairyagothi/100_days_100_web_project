@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Pathfinding Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="app-mode theme-dark">
+    
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-route"></i>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" title="Home"><i class="fa-solid fa-house"></i></a>
+                <a href="visualizer.html" title="Visualizer"><i class="fa-solid fa-desktop"></i></a>
+                <a href="settings.html" class="active" title="Settings"><i class="fa-solid fa-gear"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace settings-workspace">
+            
+            <header class="settings-header">
+                <h1>Settings</h1>
+            </header>
+
+            <div class="settings-content">
+                
+                <div class="settings-card">
+                    <h3><i class="fa-solid fa-palette"></i> Node Colors</h3>
+                    
+                    <div class="setting-group">
+                        <label>Start Node Color</label>
+                        <input type="color" id="setting-start-color" value="#00ffcc">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Target Node Color</label>
+                        <input type="color" id="setting-end-color" value="#ff0055">
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Wall Color</label>
+                        <input type="color" id="setting-wall-color" value="#2d3748">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Path Color</label>
+                        <input type="color" id="setting-path-color" value="#ffff00">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Visited Node Color</label>
+                        <input type="color" id="setting-visited-color" value="#00a8ff">
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Animations</h3>
+                    
+                    <div class="setting-group">
+                        <label>Enable Fancy Node Animations</label>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-animations" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
