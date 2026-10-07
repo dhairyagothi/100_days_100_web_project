@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- =========================================
+       META
+  ========================================== -->
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>FocusFlow AI</title>
+
+  <!-- =========================================
+       GOOGLE FONT
+  ========================================== -->
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- =========================================
+       FONT AWESOME
+  ========================================== -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <!-- =========================================
+       STYLESHEET
+  ========================================== -->
+  <link
+    rel="stylesheet" 
+    href="/public/FocusFlow-AI/style.css" 
+  />
+</head>
+
+<body>
+  <!-- =========================================
+       MAIN APP CONTAINER
+  ========================================== -->
+  <div class="app-container">
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+    <header class="app-header">
+
+      <div class="app-logo">
+        <div class="logo-icon">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+
+        <div class="logo-text">
+          <h1>FocusFlow AI</h1>
+          <p>
+            AI-powered productivity and focus assistant
+          </p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button
+          id="themeToggle"
+          class="theme-toggle-btn"
+          aria-label="Toggle Theme"
+        >
+          🌙
+        </button>
+
+        <button
+          class="settings-btn"
+          aria-label="Open Settings"
+        >
+          <i class="fa-solid fa-gear"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- =========================================
+         HERO SECTION
+    ========================================== -->
+    <section class="hero-section">
+
+      <!-- AI PLANNER -->
+      <article class="glass-card ai-planner-card">
+
+        <h2>AI Study & Productivity Planner</h2>
+
+        <p>
+          Enter your tasks, study goals, or daily routine.
+          FocusFlow AI will generate a smart productivity
+          plan with focus strategies, time management,
+          and personalized recommendations.
+        </p>
+
+        <div class="input-group">
+
+          <textarea
+            id="taskInput"
+            placeholder="Example:
+- Complete React project
+- Study DSA for 2 hours
+- Workout at 6 PM
+- Finish UI design tasks"
+          ></textarea>
+
+          <button
+            id="generatePlanBtn"
+            class="primary-btn"
+          >
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Generate AI Plan
+          </button>
+
+        </div>
+      </article>
+
+      <!-- AI RESPONSE -->
+      <article class="glass-card ai-response-card">
+
+        <h3>
+          <i class="fa-solid fa-robot"></i>
+          AI Productivity Assistant
+        </h3>
+
+        <div
+          id="aiOutput"
+          class="ai-output"
+        >
+          Your AI-generated productivity roadmap will
+          appear here...
+        </div>
+
+      </article>
+    </section>
+
+    <!-- =========================================
+         FEATURES SECTION
+    ========================================== -->
+    <section class="features-section">
+
+      <h2 class="section-title">
+        Powerful Productivity Features
+      </h2>
+
+      <div class="features-grid">
+
+        <!-- FEATURE 1 -->
+        <article class="feature-card">
+          <div class="feature-icon">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+
+          <h3>Smart Pomodoro</h3>
+
+          <p>
+            AI-enhanced Pomodoro sessions with adaptive
+            focus intervals and break optimization.
+          </p>
+        </article>
+
+        <!-- FEATURE 2 -->
+        <article class="feature-card">
+          <div class="feature-icon">
+            <i class="fa-solid fa-calendar-days"></i>
+          </div>
+
+          <h3>Calendar Integration</h3>
+
+          <p>
+            Organize tasks, deadlines, meetings, and
+            study sessions with an interactive calendar.
+          </p>
+        </article>
+
+        <!-- FEATURE 3 -->
+        <article class="feature-card">
+          <div class="feature-icon">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+
+          <h3>Focus Analytics</h3>
+
+          <p>
+            Track productivity trends, focus scores,
+            and work consistency over time.
+          </p>
+        </article>
+
+        <!-- FEATURE 4 -->
+        <article class="feature-card">
+          <div class="feature-icon">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+
+          <h3>AI Focus Coach</h3>
+
+          <p>
+            Receive motivational suggestions and
+            personalized productivity coaching.
+          </p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- =========================================
+         CALENDAR SECTION
+    ========================================== -->
+    <section class="calendar-section">
+
+      <div class="calendar-header">
+
+        <h2>
+          <i class="fa-solid fa-calendar"></i>
+          Productivity Calendar
+        </h2>
+
+        <div class="calendar-controls">
+
+          <button id="prevMonthBtn">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+
+          <button id="currentMonthBtn">
+            July 2026
+          </button>
+
+          <button id="nextMonthBtn">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- CALENDAR GRID -->
+      <div class="calendar-grid">
+
+        <!-- DAYS -->
+        <div class="day-name">Sun</div>
+        <div class="day-name">Mon</div>
+        <div class="day-name">Tue</div>
+        <div class="day-name">Wed</div>
+        <div class="day-name">Thu</div>
+        <div class="day-name">Fri</div>
+        <div class="day-name">Sat</div>
+
+        <!-- CALENDAR DAYS -->
+        <div class="calendar-day">
+          <div class="day-number">1</div>
+        </div>
+
+        <div class="calendar-day">
+          <div class="day-number">2</div>
+          <div class="task-dot"></div>
+        </div>
+
+        <div class="calendar-day today">
+          <div class="day-number">3</div>
+          <div class="task-dot"></div>
+          <div class="task-dot"></div>
+        </div>
+
+        <div class="calendar-day">
+          <div class="day-number">4</div>
+        </div>
+
+        <div class="calendar-day">
+          <div class="day-number">5</div>
+        </div>
+
+        <div class="calendar-day">
+          <div class="day-number">6</div>
+          <div class="task-dot"></div>
+        </div>
+
+        <div class="calendar-day">
+          <div class="day-number">7</div>
+        </div>
+
+        <div class="calendar-day">
+          <div class="day-number">8</div>
+        </div>
+
+        <div class="calendar-day">
+          <div class="day-number">9</div>
+          <div class="task-dot"></div>
+        </div>
+
+        <div class="calendar-day">
+          <div class="day-number">10</div>
+        </div>
+
+        <div class="calendar-day">
+          <div class="day-number">11</div>
+        </div>
+
+        <div class="calendar-day">
+          <div class="day-number">12</div>
+          <div class="task-dot"></div>
+        </div>
+
+        <div class="calendar-day">
+          <div class="day-number">13</div>
+        </div>
+
+        <div class="calendar-day">
+          <div class="day-number">14</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================
+         AI COACH SECTION
+    ========================================== -->
+    <section class="ai-coach-section">
+
+      <div class="glass-card coach-card">
+
+        <div class="coach-content">
+
+          <h2>
+            AI Focus Coach
+          </h2>
+
+          <p>
+            Improve your focus, productivity, and daily
+            consistency with AI-powered suggestions,
+            smart reminders, and distraction management.
+          </p>
+
+        </div>
+
+        <div class="coach-actions">
+
+          <button class="primary-btn">
+            <i class="fa-solid fa-play"></i>
+            Start Focus Session
+          </button>
+
+          <button class="secondary-btn">
+            <i class="fa-solid fa-chart-pie"></i>
+            View Analytics
+          </button>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+    <footer class="app-footer">
+
+      <p>
+        Built with AI-powered productivity features for
+        students, developers, and creators.
+      </p>
+
+    </footer>
+
+  </div>
+
+  <!-- =========================================
+       SCRIPT
+  ========================================== -->
+  <script src="/public/FocusFlow-AI/script.js"></script>
+</body>
+</html>
