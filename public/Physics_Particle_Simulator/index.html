@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Physics Particle Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="ui-panel">
+        <h2>Physics Simulator</h2>
+        <p>Click and drag to spawn particles!</p>
+        
+        <div class="control-group">
+            <label for="gravity">Gravity: <span id="gravity-val">0.5</span></label>
+            <input type="range" id="gravity" min="-2" max="2" step="0.1" value="0.5">
+        </div>
+        
+        <div class="control-group">
+            <label for="friction">Friction: <span id="friction-val">0.99</span></label>
+            <input type="range" id="friction" min="0.8" max="1" step="0.01" value="0.99">
+        </div>
+        
+        <div class="control-group">
+            <label for="restitution">Bounciness: <span id="restitution-val">0.7</span></label>
+            <input type="range" id="restitution" min="0" max="1" step="0.05" value="0.7">
+        </div>
+        
+        <div class="control-group">
+            <label for="particle-size">Spawn Size: <span id="particle-size-val">15</span></label>
+            <input type="range" id="particle-size" min="5" max="50" step="1" value="15">
+        </div>
+        
+        <div class="control-group checkbox-group">
+            <label for="collisions">Enable Collisions</label>
+            <input type="checkbox" id="collisions" checked>
+        </div>
+        
+        <div class="stats">
+            Particles: <span id="particle-count">0</span>
+        </div>
+        
+        <button id="clear-btn">Clear Canvas</button>
+    </div>
+
+    <canvas id="physics-canvas"></canvas>
+    
+    <script src="script.js"></script>
+</body>
+</html>
