@@ -34,6 +34,7 @@
   let mouseX = 0, mouseY = 0;
   let outerX = 0, outerY = 0;
   let lastParticle = 0;
+  let activeParticles = []; // tracks { el, rafId } for every in-flight trail particle
 
   const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
@@ -80,6 +81,11 @@
     if (!CURSOR_STYLES.find(s => s.id === id)) id = DEFAULT_STYLE;
     activeStyle = id;
     saveStyle(id);
+
+    // Tear down any leftover trail/particle effects from the previous style
+    // before applying the new one (this is what fixes #8732 — particles no
+    // longer linger on screen after switching to Default or any other style).
+    clearActiveParticles();
 
     ensureCursorElements();
 
@@ -193,7 +199,7 @@
 
   /* ── Spawn trail particles ── */
   function spawnParticle(x, y) {
-    if (activeStyle === "default" || activeStyle === "minimal") return;
+    if (!isEnabled || activeStyle === "default" || activeStyle === "minimal") return;
 
     const el = document.createElement("div");
     let color = "#93c5fd", txt = "", sz = 5;
@@ -249,6 +255,16 @@
     let px = x, py = y, frame = 0;
     const maxFrames = dur / 16;
 
+    // Register this particle so a style switch can cancel + remove it immediately
+    const particle = { el, rafId: null };
+    activeParticles.push(particle);
+
+    function removeParticle() {
+      const idx = activeParticles.indexOf(particle);
+      if (idx !== -1) activeParticles.splice(idx, 1);
+      el.remove();
+    }
+
     function animateParticle() {
       frame++;
       px += vx;
@@ -256,17 +272,29 @@
       el.style.left = px + "px";
       el.style.top = py + "px";
       el.style.opacity = String(0.9 * (1 - frame / maxFrames));
-      if (frame < maxFrames) requestAnimationFrame(animateParticle);
-      else el.remove();
+      if (frame < maxFrames) {
+        particle.rafId = requestAnimationFrame(animateParticle);
+      } else {
+        removeParticle();
+      }
     }
-    requestAnimationFrame(animateParticle);
+    particle.rafId = requestAnimationFrame(animateParticle);
+  }
+
+  /* ── Cleanup: cancel every in-flight trail animation & strip its DOM node ── */
+  function clearActiveParticles() {
+    activeParticles.forEach((p) => {
+      if (p.rafId !== null) cancelAnimationFrame(p.rafId);
+      p.el.remove();
+    });
+    activeParticles.length = 0;
   }
 
   /* ── Animation loop ── */
   function startLoop() {
     function tick() {
       requestAnimationFrame(tick);
-      if (activeStyle === "default" || !outerEl) return;
+      if (!isEnabled || activeStyle === "default" || !outerEl) return;
 
       outerX += (mouseX - outerX) * 0.15;
       outerY += (mouseY - outerY) * 0.15;
@@ -446,6 +474,7 @@
     isEnabled = false;
     saveEnabled(false);
     document.body.style.cursor = "auto";
+    clearActiveParticles();
     if (outerEl) {
       outerEl.classList.remove("is-visible");
       outerEl.style.display = "none";
