@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Audio Synthesizer - Workspace</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="synth-body">
+
+    <nav class="navbar compact">
+        <div class="nav-brand">
+            <i class="fa-solid fa-waveform"></i>
+            <span>SynthOsc Workspace</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="synth.html" class="active">Synthesizer</a>
+            <a href="settings.html">Settings</a>
+        </div>
+    </nav>
+
+    <div class="workspace">
+        
+        <!-- Oscilloscope Canvas -->
+        <div class="visualizer-panel">
+            <div class="panel-header">
+                <h2><i class="fa-solid fa-satellite-dish"></i> Oscilloscope</h2>
+                <div class="vis-controls">
+                    <button id="btn-time" class="active">Time Domain</button>
+                    <button id="btn-freq">Frequency</button>
+                </div>
+            </div>
+            <canvas id="visualizer"></canvas>
+        </div>
+
+        <!-- Controls Rack -->
+        <div class="synth-rack">
+            
+            <!-- Oscillator Module -->
+            <div class="synth-module">
+                <h3>Oscillator</h3>
+                <div class="waveform-selector">
+                    <label>
+                        <input type="radio" name="waveform" value="sine" checked>
+                        <span class="wave-btn"><i class="fa-solid fa-wave-square" style="transform: scaleY(0.5); border-radius: 50%;"></i> Sine</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="waveform" value="square">
+                        <span class="wave-btn"><i class="fa-solid fa-wave-square"></i> Square</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="waveform" value="sawtooth">
+                        <span class="wave-btn"><i class="fa-solid fa-bolt"></i> Saw</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="waveform" value="triangle">
+                        <span class="wave-btn"><i class="fa-solid fa-play" style="transform: rotate(-90deg);"></i> Tri</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Master Volume -->
+            <div class="synth-module">
+                <h3>Master Gain</h3>
+                <div class="knob-container">
+                    <input type="range" id="master-vol" min="0" max="1" step="0.01" value="0.5">
+                    <span id="vol-display">50%</span>
+                </div>
+            </div>
+
+            <!-- Filter (Optional Extra) -->
+            <div class="synth-module">
+                <h3>Lowpass Filter</h3>
+                <div class="knob-container">
+                    <input type="range" id="filter-freq" min="100" max="10000" step="10" value="10000">
+                    <span id="filter-display">10000 Hz</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- On-Screen Piano Keyboard -->
+        <div class="keyboard-panel">
+            <div class="key-hint">Use your computer keyboard (A, W, S, E, D...) or click to play!</div>
+            <div class="piano-keys" id="piano-container">
+                <!-- Keys injected via JS -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Initialization Overlay (Browsers require user gesture to start AudioContext) -->
+    <div id="audio-overlay" class="audio-overlay">
+        <button id="init-audio-btn" class="btn btn-primary btn-large">
+            <i class="fa-solid fa-power-off"></i> Start Audio Engine
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

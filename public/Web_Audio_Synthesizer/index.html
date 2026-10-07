@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Audio Synthesizer - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="landing-body">
+    
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-waveform"></i>
+            <span>SynthOsc</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="synth.html">Synthesizer</a>
+            <a href="settings.html">Settings</a>
+        </div>
+    </nav>
+
+    <main class="landing-main">
+        <div class="hero-content">
+            <h1>Experience Sound in the Browser</h1>
+            <p>Dive into the Web Audio API with a fully functional digital synthesizer. Play notes, tweak oscillators, and watch frequencies come alive on a real-time oscilloscope canvas.</p>
+            
+            <div class="hero-actions">
+                <a href="synth.html" class="btn btn-primary"><i class="fa-solid fa-play"></i> Launch Synthesizer</a>
+                <a href="#about" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+        
+        <div class="hero-visual">
+            <!-- Simulated sine wave graphic via CSS -->
+            <div class="wave-container">
+                <div class="wave wave1"></div>
+                <div class="wave wave2"></div>
+                <div class="wave wave3"></div>
+            </div>
+        </div>
+    </main>
+
+    <section id="about" class="about-section">
+        <div class="feature-card">
+            <i class="fa-solid fa-wave-square feature-icon"></i>
+            <h3>4 Oscillators</h3>
+            <p>Generate precise waveforms including Sine, Square, Sawtooth, and Triangle using the native OscillatorNode.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fa-solid fa-chart-line feature-icon"></i>
+            <h3>Live Oscilloscope</h3>
+            <p>Extract byte time-domain data via the AnalyserNode and render the signal perfectly at 60fps on an HTML5 Canvas.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fa-regular fa-keyboard feature-icon"></i>
+            <h3>Keyboard Support</h3>
+            <p>Use your QWERTY keyboard as a piano layout to trigger ADSR envelopes with zero latency.</p>
+        </div>
+    </section>
+
+</body>
+</html>

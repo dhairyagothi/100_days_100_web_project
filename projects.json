@@ -3138,5 +3138,20 @@
     ],
    "difficulty": "intermediate",
     "projectPath": "./public/WebDevQuizApp/index.html"
-  } 
+  },
+  {
+    "projectNo": 247,
+    "projectName": "Web Audio Synthesizer",
+    "projectType": "Tool",
+    "projectDesc": "A multi-page Web Audio API Synthesizer with an interactive keyboard, real-time Canvas oscilloscope, and ADSR envelope generation.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "web-audio-api",
+      "canvas"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Web_Audio_Synthesizer/index.html"
+  }
 ]
