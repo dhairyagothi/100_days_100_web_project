@@ -53,10 +53,12 @@
             <div id="searchDropdown" class="search-dropdown" hidden></div>
           </div>
 
+          <div class="header-controls">
                 <!-- Theme Toggle -->
             <button id="themeToggle" class="icon-action" type="button"
-        title="Toggle light / dark theme"
-        aria-label="Toggle theme">
+        title="Switch to light mode"
+        data-tooltip="Switch to light mode"
+        aria-label="Switch to light mode">
 
     <!-- Moon icon (shown in light mode) -->
     <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24"
@@ -69,6 +71,7 @@
 </button>
                 <!-- Stats Button -->
                 <button id="statsBtn" class="icon-action" type="button" title="View your stats"
+                    data-tooltip="View dashboard stats"
                     aria-label="Open statistics">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -77,6 +80,7 @@
                         <line x1="6" y1="20" x2="6" y2="14" />
                     </svg>
                 </button>
+          </div>
             </div>
         </header>
 
