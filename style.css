@@ -1385,6 +1385,14 @@ body.light-mode .hero-terminal-text {
   flex-shrink: 0;
 }
 
+#sortProjects:focus-visible,
+#difficultyFilter:focus-visible,
+#techStackFilter:focus-visible {
+  outline: 3px solid #0ff26c;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
 #sortProjects option,
 #difficultyFilter option,
 #techStackFilter option {
