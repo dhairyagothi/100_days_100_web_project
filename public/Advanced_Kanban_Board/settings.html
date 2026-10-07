@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KanbanFlow - Settings</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-layer-group"></i>
+                <h2>KanbanFlow</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a href="board.html"><i class="fa-solid fa-table-columns"></i> My Board</a></li>
+                <li class="active"><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar">
+                <div class="board-header-info">
+                    <h1>Settings</h1>
+                </div>
+            </header>
+
+            <div class="settings-content">
+                
+                <section class="settings-section">
+                    <h2>Appearance</h2>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Theme</h3>
+                            <p>Toggle between Light and Dark mode.</p>
+                        </div>
+                        <div class="setting-action">
+                            <label class="switch">
+                                <input type="checkbox" id="theme-toggle">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="settings-section">
+                    <h2>Data Management</h2>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Export Data</h3>
+                            <p>Download your board data as a JSON file.</p>
+                        </div>
+                        <div class="setting-action">
+                            <button id="export-btn" class="secondary-btn"><i class="fa-solid fa-download"></i> Export JSON</button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item danger-zone">
+                        <div class="setting-info">
+                            <h3 class="danger-text">Clear All Data</h3>
+                            <p>Permanently delete all tasks and board data from this browser.</p>
+                        </div>
+                        <div class="setting-action">
+                            <button id="clear-data-btn" class="danger-btn"><i class="fa-solid fa-trash"></i> Delete Data</button>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Settings specific logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeToggle.checked = true;
+            }
+
+            themeToggle.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    document.body.classList.add('dark-mode');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+            // Export Data
+            document.getElementById('export-btn').addEventListener('click', () => {
+                const data = localStorage.getItem('kanban_data');
+                if(!data) return alert("No data to export!");
+                const blob = new Blob([data], {type: "application/json"});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "kanban_backup.json";
+                a.click();
+            });
+
+            // Clear Data
+            document.getElementById('clear-data-btn').addEventListener('click', () => {
+                if(confirm("Are you sure you want to delete all tasks? This cannot be undone.")) {
+                    localStorage.removeItem('kanban_data');
+                    alert("Data cleared successfully.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

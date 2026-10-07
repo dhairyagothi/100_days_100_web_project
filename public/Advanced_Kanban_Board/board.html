@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KanbanFlow - Main Board</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-layer-group"></i>
+                <h2>KanbanFlow</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li class="active"><a href="board.html"><i class="fa-solid fa-table-columns"></i> My Board</a></li>
+                <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar">
+                <div class="board-header-info">
+                    <h1>Main Development Board</h1>
+                    <button id="add-task-btn" class="primary-btn"><i class="fa-solid fa-plus"></i> Add Task</button>
+                </div>
+            </header>
+
+            <!-- Kanban Board -->
+            <div class="kanban-board">
+                
+                <!-- To Do Column -->
+                <div class="kanban-column" id="todo" data-column="todo">
+                    <div class="column-header">
+                        <h2>To Do</h2>
+                        <span class="task-count" id="todo-count">0</span>
+                    </div>
+                    <div class="task-list" id="todo-list">
+                        <!-- Tasks inject here -->
+                    </div>
+                </div>
+
+                <!-- In Progress Column -->
+                <div class="kanban-column" id="in-progress" data-column="inProgress">
+                    <div class="column-header">
+                        <h2>In Progress</h2>
+                        <span class="task-count" id="in-progress-count">0</span>
+                    </div>
+                    <div class="task-list" id="in-progress-list">
+                        <!-- Tasks inject here -->
+                    </div>
+                </div>
+
+                <!-- Done Column -->
+                <div class="kanban-column" id="done" data-column="done">
+                    <div class="column-header">
+                        <h2>Done</h2>
+                        <span class="task-count" id="done-count">0</span>
+                    </div>
+                    <div class="task-list" id="done-list">
+                        <!-- Tasks inject here -->
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Task</h2>
+                <span class="close-btn">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="task-form">
+                    <div class="form-group">
+                        <label for="task-title">Title</label>
+                        <input type="text" id="task-title" required placeholder="e.g., Fix navbar bug">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-desc">Description</label>
+                        <textarea id="task-desc" rows="3" placeholder="Add more details..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-priority">Priority</label>
+                            <select id="task-priority">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="task-due">Due Date</label>
+                            <input type="date" id="task-due">
+                        </div>
+                    </div>
+                    <button type="submit" class="primary-btn submit-task">Create Task</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
