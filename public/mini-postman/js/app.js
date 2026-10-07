@@ -219,6 +219,27 @@ function getAuthFieldsFromUI() {
   });
   return fields;
 }
+function sanitizeAuthFields(authType, authFields = {}) {
+  if (authType === 'basic') {
+    return { username: authFields.username || '' };
+  }
+
+  if (authType === 'api-key') {
+    return { header: authFields.header || '' };
+  }
+
+  return {};
+}
+
+function sanitizeAuthHeaders(authType, authFields, headers) {
+  const generatedHeaders = buildAuthHeaders(authType, authFields);
+
+  return headers.filter(header =>
+    !generatedHeaders.some(
+      generated => generated.key === header.key && generated.value === header.value
+    )
+  );
+}
 
 function buildAuthHeaders(authType, authFields) {
   if (authType === 'bearer' && authFields.token) {
@@ -279,7 +300,16 @@ async function sendRequest() {
     UI.showResponseResult(result);
 
     // Persist to history
-    const histEntry = { method, url, headers, body, bodyType, authType, authFields, status: result.status };
+    const histEntry = {
+      method,
+      url,
+      headers: sanitizeAuthHeaders(authType, authFields, headers),
+      body,
+      bodyType,
+      authType,
+      authFields: sanitizeAuthFields(authType, authFields),
+      status: result.status
+    };
     Storage.addHistory(histEntry);
     Storage.addUrl(url);
     CollectionsModule.renderHistory();
@@ -632,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Storage.addRequestToCollection(colId, {
       name, method: tab.method, url: tab.url,
       headers: tab.headers, body: tab.body, bodyType: tab.bodyType,
-      authType: tab.authType, authFields: tab.authFields,
+      authType: tab.authType, authFields: sanitizeAuthFields(tab.authType, tab.authFields),
     });
     CollectionsModule.renderCollections();
     closeModal('save-modal');
