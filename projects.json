@@ -3138,5 +3138,20 @@
     ],
    "difficulty": "intermediate",
     "projectPath": "./public/WebDevQuizApp/index.html"
-  } 
+  },
+  {
+    "projectNo": 247,
+    "projectName": "Real-time Markdown Editor",
+    "projectType": "Tool",
+    "projectDesc": "A multi-page Real-time Markdown Editor with a custom built Regex parser, live HTML preview, and LocalStorage document management.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "regex",
+      "localstorage"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Markdown_Editor/index.html"
+  }
 ]
