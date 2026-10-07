@@ -1,125 +1,136 @@
-# 📈 HFT Liquidity Sandbox
+HFT Order Book Liquidity Sandbox
 
-HFT Liquidity Sandbox is an interactive web-based simulation that demonstrates how High-Frequency Trading (HFT) and market liquidity behave in a simplified trading environment. The project helps users visualize order flow, liquidity changes, and market dynamics through real-time simulations.
+An interactive High-Frequency Trading (HFT) Order Book Simulator built with HTML, CSS, and JavaScript. This project visualizes market depth, liquidity, bid-ask spread, and simulated order execution in a terminal-inspired interface.
 
----
+📌 Overview
 
-## ✨ Features
+The HFT Order Book Liquidity Sandbox is an educational simulation that demonstrates the fundamentals of electronic trading and market microstructure.
 
-- 📊 High-Frequency Trading simulation
-- 💹 Liquidity visualization
-- ⚡ Real-time market updates
-- 📈 Dynamic order flow simulation
-- 🎛️ Adjustable simulation parameters
-- 🔄 Start, Pause, and Reset controls
-- 📉 Interactive charts and indicators
-- 📱 Responsive interface
+✨ Features
 
----
+Real-time market terminal dashboard
 
-## 🛠️ Technologies Used
+Live Last Price display
 
-- HTML5
-- CSS3
-- JavaScript (ES6)
-- Canvas API / SVG (if applicable)
+Bid-Ask Spread monitoring
 
----
+Total Liquidity (Order Book Depth)
 
-## 📂 Project Structure
+Simulated Matching Engine Latency
 
-```text
-hft-liquidity-sandbox/
-│
+Interactive canvas visualization
+
+Inject Sell Limit Walls
+
+Inject Buy Support Blocks
+
+Execute random Market Orders using the Spacebar
+
+Terminal-style HFT interface
+
+🛠️ Technologies Used
+
+HTML5
+
+CSS3
+
+JavaScript (ES6)
+
+Canvas API
+
+📂 Project Structure
+
+HFT-Order-Book-Liquidity-Sandbox/
 ├── index.html
-├── style.css
-├── script.js
-├── assets/
-├── images/
+├── styles.css
+├── app.js
 └── README.md
-```
 
----
+🚀 Getting Started
 
-## 🚀 Installation
+git clone https://github.com/yourusername/HFT-Order-Book-Liquidity-Sandbox.git
+cd HFT-Order-Book-Liquidity-Sandbox
 
-Clone the repository
+Open index.html in your browser.
 
-```bash
-git clone <repository-url>
-```
+🎮 Controls
 
-Navigate into the project
+Action
 
-```bash
-cd hft-liquidity-sandbox
-```
+Result
 
-Run locally
+Click Upper Half
 
-- Open `index.html`
-- OR use Live Server in Visual Studio Code
+Inject Sell Limit Wall
 
----
+Click Lower Half
 
-## ▶️ Usage
+Inject Buy Support Block
 
-1. Launch the application.
-2. Configure the simulation parameters.
-3. Start the simulation.
-4. Observe liquidity movement and order execution.
-5. Pause or reset the simulation whenever needed.
+Press Spacebar
 
----
+Execute Random Market Order
 
-## 🎛️ Simulation Controls
+📊 Metrics
 
-| Control | Description |
-|---------|-------------|
-| Start | Begins the simulation |
-| Pause | Temporarily pauses execution |
-| Reset | Restores the initial simulation state |
-| Speed | Adjusts simulation speed |
-| Liquidity | Changes available market liquidity |
+Last Price – Latest simulated traded price.
 
----
+Bid-Ask Spread – Difference between highest bid and lowest ask.
 
-## 📊 Features Demonstrated
+Total Liquidity – Current order book depth.
 
-- High-Frequency Trading Concepts
-- Market Liquidity Simulation
-- Real-Time Data Visualization
-- Interactive UI
-- JavaScript Animation
-- Responsive Design
+Matching Latency – Simulated execution speed.
 
----
+📚 Learning Objectives
 
-## 🔮 Future Enhancements
+Order Books
 
-- Multiple trading algorithms
-- Order book visualization
-- Historical market replay
-- Performance metrics dashboard
-- Risk analysis module
-- Dark mode
-- Export simulation results
-- Multi-asset support
+Market Liquidity
 
----
+Bid-Ask Spread
 
-## 🤝 Contributing
+Limit & Market Orders
 
-Contributions are welcome.
+Price Discovery
 
-1. Fork the repository.
-2. Create a new branch.
-3. Commit your changes.
-4. Push your branch.
-5. Submit a Pull Request.
+Matching Engines
 
----
+High-Frequency Trading
 
-## 📄 License
+🔮 Future Enhancements
 
-This project is part of the **100 Days 100 Web Projects** repository and is intended for educational purposes.
+Candlestick charts
+
+Order history
+
+Volume profile
+
+Liquidity heatmap
+
+Trading bots
+
+Adjustable volatility
+
+Multiple assets
+
+🤝 Contributing
+
+Fork the repository.
+
+Create a feature branch.
+
+Commit your changes.
+
+Push your branch.
+
+Open a Pull Request.
+
+📄 License
+
+MIT License
+
+👨‍💻 Author
+
+Aditya Kumar
+
+AI & Full Stack Developer
