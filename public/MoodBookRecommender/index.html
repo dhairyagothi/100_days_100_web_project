@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mood Book Recommender</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
+
+  <div class="max-w-5xl mx-auto px-4 py-10">
+
+    <header class="text-center mb-10">
+      <h1 class="text-4xl font-bold text-indigo-600">Mood Book Recommender</h1>
+      <p class="text-slate-500 mt-2">Tell us your mood, we'll tell you what to read.</p>
+    </header>
+
+    <main>
+
+      <!-- 1. Mood Picker -->
+      <section id="mood-picker" aria-label="Mood Picker" class="mb-12">
+        <h2 class="text-xl font-semibold mb-4">How are you feeling?</h2>
+
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="Search by title or author..." 
+          class="w-full sm:w-80 px-4 py-2 mb-4 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+
+        <div id="mood-buttons" class="flex flex-wrap gap-3">
+          <button class="mood-btn px-4 py-2 rounded-full bg-white border border-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-colors" data-mood="Happy">Happy</button>
+          <button class="mood-btn px-4 py-2 rounded-full bg-white border border-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-colors" data-mood="Cozy">Cozy</button>
+          <button class="mood-btn px-4 py-2 rounded-full bg-white border border-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-colors" data-mood="Mysterious">Mysterious</button>
+          <button class="mood-btn px-4 py-2 rounded-full bg-white border border-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-colors" data-mood="Adventurous">Adventurous</button>
+          <button class="mood-btn px-4 py-2 rounded-full bg-white border border-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-colors" data-mood="Romantic">Romantic</button>
+          <button class="mood-btn px-4 py-2 rounded-full bg-white border border-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-colors" data-mood="Dark">Dark</button>
+          <button class="mood-btn px-4 py-2 rounded-full bg-white border border-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-colors" data-mood="Thought-provoking">Thought-provoking</button>
+          <button class="mood-btn px-4 py-2 rounded-full bg-white border border-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-colors" data-mood="Heartbreaking">Heartbreaking</button>
+          <button class="mood-btn px-4 py-2 rounded-full bg-white border border-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-colors" data-mood="Whimsical">Whimsical</button>
+        </div>
+      </section>
+
+      <!-- 2. Results -->
+      <section id="results-section" aria-label="Book Recommendations" class="mb-12">
+        <h2 class="text-xl font-semibold mb-4">Recommended for you</h2>
+        <div id="results-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <!-- book cards will be injected here by JS -->
+        </div>
+      </section>
+
+      <!-- 3. My Shelf -->
+      <section id="shelf-section" aria-label="My Shelf">
+        <h2 class="text-xl font-semibold mb-4">My Shelf</h2>
+        <div id="shelf-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <!-- saved books will be injected here by JS -->
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

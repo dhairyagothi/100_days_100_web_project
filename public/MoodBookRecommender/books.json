@@ -1,0 +1,362 @@
+[
+  {
+    "id": 1,
+    "title": "The House in the Cerulean Sea",
+    "author": "TJ Klune",
+    "genre": "Fantasy",
+    "mood": ["Happy", "Cozy", "Whimsical"],
+    "cover": "https://covers.openlibrary.org/b/isbn/1250217288-L.jpg",
+    "description": "A caseworker is sent to investigate a magical orphanage and finds a found-family he never expected.",
+    "whyThisBook": "Warm, gentle, and quietly joyful — perfect comfort reading."
+  },
+  {
+    "id": 2,
+    "title": "Legends & Lattes",
+    "author": "Travis Baldree",
+    "genre": "Fantasy",
+    "mood": ["Happy", "Cozy", "Whimsical"],
+    "cover": "https://covers.openlibrary.org/b/isbn/1250886088-L.jpg",
+    "description": "A retired orc mercenary opens a coffee shop in a new town, one problem-solved-with-kindness at a time.",
+    "whyThisBook": "Low-stakes, high-comfort — the definition of a cozy read."
+  },
+  {
+    "id": 3,
+    "title": "Anne of Green Gables",
+    "author": "L. M. Montgomery",
+    "genre": "Classic",
+    "mood": ["Happy", "Cozy"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0553213133-L.jpg",
+    "description": "An imaginative orphan girl charms her way into a small town's heart.",
+    "whyThisBook": "Timeless warmth and small-town charm."
+  },
+  {
+    "id": 4,
+    "title": "Beach Read",
+    "author": "Emily Henry",
+    "genre": "Romance",
+    "mood": ["Happy", "Romantic"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0451491879-L.jpg",
+    "description": "Two rival writers swap genres for the summer and fall for each other along the way.",
+    "whyThisBook": "Funny, breezy, and satisfying — ideal beach-day energy."
+  },
+  {
+    "id": 5,
+    "title": "A Man Called Ove",
+    "author": "Fredrik Backman",
+    "genre": "Fiction",
+    "mood": ["Happy", "Heartbreaking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/1476738025-L.jpg",
+    "description": "A grumpy widower's rigid routine is upended by his new, chaotic neighbors.",
+    "whyThisBook": "Makes you laugh and cry, often on the same page."
+  },
+  {
+    "id": 6,
+    "title": "The Guernsey Literary and Potato Peel Pie Society",
+    "author": "Mary Ann Shaffer",
+    "genre": "Historical Fiction",
+    "mood": ["Cozy", "Romantic"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0385341004-L.jpg",
+    "description": "A writer corresponds with the quirky residents of a book club formed during WWII occupation.",
+    "whyThisBook": "Letter-format storytelling that feels like curling up with old friends."
+  },
+  {
+    "id": 7,
+    "title": "Howl's Moving Castle",
+    "author": "Diana Wynne Jones",
+    "genre": "Fantasy",
+    "mood": ["Cozy", "Whimsical", "Adventurous"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0064410973-L.jpg",
+    "description": "A young woman cursed into an old body seeks help from a vain, powerful wizard in a walking castle.",
+    "whyThisBook": "Playful magic with a cozy hearth-and-home feeling underneath."
+  },
+  {
+    "id": 8,
+    "title": "Chocolat",
+    "author": "Joanne Harris",
+    "genre": "Fiction",
+    "mood": ["Cozy"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0140280307-L.jpg",
+    "description": "A mysterious chocolatier arrives in a strict French village and quietly changes everything.",
+    "whyThisBook": "Sensory, slow, and delicious — a cozy read in the literal sense."
+  },
+  {
+    "id": 9,
+    "title": "The Silent Patient",
+    "author": "Alex Michaelides",
+    "genre": "Thriller",
+    "mood": ["Mysterious", "Dark"],
+    "cover": "https://covers.openlibrary.org/b/isbn/1250301696-L.jpg",
+    "description": "A woman stops speaking after allegedly murdering her husband; her therapist is obsessed with why.",
+    "whyThisBook": "A twist ending that recontextualizes the entire book."
+  },
+  {
+    "id": 10,
+    "title": "Gone Girl",
+    "author": "Gillian Flynn",
+    "genre": "Thriller",
+    "mood": ["Mysterious", "Dark"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0307588378-L.jpg",
+    "description": "A woman vanishes on her anniversary, and her husband becomes the prime suspect.",
+    "whyThisBook": "Unreliable narrators at their most masterful."
+  },
+  {
+    "id": 11,
+    "title": "And Then There Were None",
+    "author": "Agatha Christie",
+    "genre": "Mystery",
+    "mood": ["Mysterious", "Dark"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0062073486-L.jpg",
+    "description": "Ten strangers are lured to an island and murdered one by one.",
+    "whyThisBook": "The gold standard of the locked-room mystery."
+  },
+  {
+    "id": 12,
+    "title": "The Da Vinci Code",
+    "author": "Dan Brown",
+    "genre": "Thriller",
+    "mood": ["Mysterious", "Adventurous"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0307474275-L.jpg",
+    "description": "A symbologist races to unravel a murder tied to a centuries-old religious mystery.",
+    "whyThisBook": "Puzzle-box plotting that pulls you from city to city."
+  },
+  {
+    "id": 13,
+    "title": "The Thursday Murder Club",
+    "author": "Richard Osman",
+    "genre": "Mystery",
+    "mood": ["Mysterious", "Happy"],
+    "cover": "https://covers.openlibrary.org/b/isbn/1984880983-L.jpg",
+    "description": "Four retirees in a peaceful village investigate cold cases for fun — until a real murder happens.",
+    "whyThisBook": "Proof that a mystery can be cozy and laugh-out-loud funny too."
+  },
+  {
+    "id": 14,
+    "title": "The Hobbit",
+    "author": "J. R. R. Tolkien",
+    "genre": "Fantasy",
+    "mood": ["Adventurous", "Whimsical"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0547928227-L.jpg",
+    "description": "A reluctant hobbit is swept into a quest to reclaim a mountain of treasure from a dragon.",
+    "whyThisBook": "The original blueprint for the modern adventure fantasy."
+  },
+  {
+    "id": 15,
+    "title": "Treasure Island",
+    "author": "Robert Louis Stevenson",
+    "genre": "Adventure",
+    "mood": ["Adventurous"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0140367379-L.jpg",
+    "description": "A boy sets sail on a hunt for buried pirate gold, guided by a map and a treacherous crew.",
+    "whyThisBook": "Swashbuckling adventure that defined the pirate genre."
+  },
+  {
+    "id": 16,
+    "title": "Percy Jackson and the Lightning Thief",
+    "author": "Rick Riordan",
+    "genre": "Fantasy",
+    "mood": ["Adventurous", "Happy"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0786838655-L.jpg",
+    "description": "A modern-day demigod discovers his true parentage and is thrust into a quest across America.",
+    "whyThisBook": "Fast-paced, funny, and packed with mythology-based action."
+  },
+  {
+    "id": 17,
+    "title": "Life of Pi",
+    "author": "Yann Martel",
+    "genre": "Adventure",
+    "mood": ["Adventurous", "Thought-provoking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0156027321-L.jpg",
+    "description": "A boy survives 227 days shipwrecked on a lifeboat with a Bengal tiger.",
+    "whyThisBook": "A survival story that doubles as a meditation on belief and storytelling."
+  },
+  {
+    "id": 18,
+    "title": "The Alchemist",
+    "author": "Paulo Coelho",
+    "genre": "Fiction",
+    "mood": ["Adventurous", "Thought-provoking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0062315005-L.jpg",
+    "description": "A shepherd travels from Spain to Egypt chasing a recurring dream of treasure.",
+    "whyThisBook": "A short, parable-like read about pursuing what matters."
+  },
+  {
+    "id": 19,
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "genre": "Classic",
+    "mood": ["Romantic", "Happy"],
+    "cover": "https://covers.openlibrary.org/b/isbn/1503290565-L.jpg",
+    "description": "Elizabeth Bennet navigates love, class, and first impressions with Mr. Darcy.",
+    "whyThisBook": "The romance that basically invented the slow-burn enemies-to-lovers arc."
+  },
+  {
+    "id": 20,
+    "title": "The Notebook",
+    "author": "Nicholas Sparks",
+    "genre": "Romance",
+    "mood": ["Romantic", "Heartbreaking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0446605239-L.jpg",
+    "description": "A summer romance between two young lovers spans decades and defies every obstacle.",
+    "whyThisBook": "Unapologetically emotional, classic romantic tragedy."
+  },
+  {
+    "id": 21,
+    "title": "Me Before You",
+    "author": "Jojo Moyes",
+    "genre": "Romance",
+    "mood": ["Romantic", "Heartbreaking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0143124544-L.jpg",
+    "description": "A caregiver and her paralyzed employer form an unexpected, complicated bond.",
+    "whyThisBook": "A love story that doesn't shy away from hard questions."
+  },
+  {
+    "id": 22,
+    "title": "Outlander",
+    "author": "Diana Gabaldon",
+    "genre": "Historical Romance",
+    "mood": ["Romantic", "Adventurous"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0440212560-L.jpg",
+    "description": "A WWII nurse is mysteriously transported to 18th-century Scotland and falls for a Highland warrior.",
+    "whyThisBook": "Sweeping romance with real historical grit."
+  },
+  {
+    "id": 23,
+    "title": "Normal People",
+    "author": "Sally Rooney",
+    "genre": "Literary Fiction",
+    "mood": ["Romantic", "Heartbreaking", "Thought-provoking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/1984822179-L.jpg",
+    "description": "Two Irish teenagers move in and out of each other's lives through school and university.",
+    "whyThisBook": "A quiet, precise portrait of intimacy and miscommunication."
+  },
+  {
+    "id": 24,
+    "title": "1984",
+    "author": "George Orwell",
+    "genre": "Dystopian",
+    "mood": ["Dark", "Thought-provoking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0451524934-L.jpg",
+    "description": "A man rebels quietly against a totalitarian regime that controls even his thoughts.",
+    "whyThisBook": "The defining dystopian novel — unsettling and still relevant."
+  },
+  {
+    "id": 25,
+    "title": "We Need to Talk About Kevin",
+    "author": "Lionel Shriver",
+    "genre": "Psychological Fiction",
+    "mood": ["Dark", "Heartbreaking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0007172935-L.jpg",
+    "description": "A mother reckons with her son's violent act through a series of unflinching letters.",
+    "whyThisBook": "Bleak, brave, and impossible to put down."
+  },
+  {
+    "id": 26,
+    "title": "Blood Meridian",
+    "author": "Cormac McCarthy",
+    "genre": "Western",
+    "mood": ["Dark"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0679728759-L.jpg",
+    "description": "A young drifter joins a scalp-hunting gang on a brutal journey through the American frontier.",
+    "whyThisBook": "Unflinching, violent, and hypnotically written."
+  },
+  {
+    "id": 27,
+    "title": "Sapiens: A Brief History of Humankind",
+    "author": "Yuval Noah Harari",
+    "genre": "Nonfiction",
+    "mood": ["Thought-provoking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0062316095-L.jpg",
+    "description": "A sweeping look at how Homo sapiens came to dominate the planet.",
+    "whyThisBook": "Reframes everything you thought you knew about human history."
+  },
+  {
+    "id": 28,
+    "title": "The Midnight Library",
+    "author": "Matt Haig",
+    "genre": "Fiction",
+    "mood": ["Thought-provoking", "Heartbreaking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0525559477-L.jpg",
+    "description": "A woman between life and death explores the infinite versions of her life she could have lived.",
+    "whyThisBook": "A gentle, philosophical nudge to appreciate the life you have."
+  },
+  {
+    "id": 29,
+    "title": "Man's Search for Meaning",
+    "author": "Viktor E. Frankl",
+    "genre": "Memoir",
+    "mood": ["Thought-provoking", "Heartbreaking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/080701429X-L.jpg",
+    "description": "A psychiatrist and Holocaust survivor explores how meaning can be found even in immense suffering.",
+    "whyThisBook": "Short, profound, and genuinely life-altering for many readers."
+  },
+  {
+    "id": 30,
+    "title": "A Little Life",
+    "author": "Hanya Yanagihara",
+    "genre": "Literary Fiction",
+    "mood": ["Heartbreaking", "Dark"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0804172706-L.jpg",
+    "description": "Four college friends' lives in New York are shaped by one man's hidden, traumatic past.",
+    "whyThisBook": "Devastating and unforgettable — a book people rarely finish dry-eyed."
+  },
+  {
+    "id": 31,
+    "title": "The Kite Runner",
+    "author": "Khaled Hosseini",
+    "genre": "Historical Fiction",
+    "mood": ["Heartbreaking", "Thought-provoking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/1594631931-L.jpg",
+    "description": "A man returns to a war-torn Afghanistan to confront a betrayal from his childhood.",
+    "whyThisBook": "A story about guilt and redemption that lingers long after the last page."
+  },
+  {
+    "id": 32,
+    "title": "Never Let Me Go",
+    "author": "Kazuo Ishiguro",
+    "genre": "Dystopian",
+    "mood": ["Heartbreaking", "Dark", "Thought-provoking"],
+    "cover": "https://covers.openlibrary.org/b/isbn/1400078776-L.jpg",
+    "description": "Three friends grow up in a mysterious boarding school, slowly realizing what their lives are for.",
+    "whyThisBook": "A quiet gut-punch that reveals itself slowly."
+  },
+  {
+    "id": 33,
+    "title": "Alice's Adventures in Wonderland",
+    "author": "Lewis Carroll",
+    "genre": "Fantasy",
+    "mood": ["Whimsical", "Happy"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0141439769-L.jpg",
+    "description": "A girl falls down a rabbit hole into a nonsensical world of talking creatures and mad tea parties.",
+    "whyThisBook": "Pure, delightful nonsense that started a genre."
+  },
+  {
+    "id": 34,
+    "title": "The Night Circus",
+    "author": "Erin Morgenstern",
+    "genre": "Fantasy",
+    "mood": ["Whimsical", "Mysterious", "Romantic"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0307744434-L.jpg",
+    "description": "Two young magicians are bound in a competition staged within a magical, black-and-white circus.",
+    "whyThisBook": "Lush, dreamlike prose that makes the setting itself a character."
+  },
+  {
+    "id": 35,
+    "title": "Good Omens",
+    "author": "Terry Pratchett & Neil Gaiman",
+    "genre": "Fantasy/Comedy",
+    "mood": ["Whimsical", "Happy"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0060853980-L.jpg",
+    "description": "An angel and a demon team up to stop the apocalypse because they've both grown fond of Earth.",
+    "whyThisBook": "Witty, absurd, and endlessly quotable."
+  },
+  {
+    "id": 36,
+    "title": "The Ocean at the End of the Lane",
+    "author": "Neil Gaiman",
+    "genre": "Fantasy",
+    "mood": ["Whimsical", "Mysterious", "Dark"],
+    "cover": "https://covers.openlibrary.org/b/isbn/0062255657-L.jpg",
+    "description": "A man returns to his childhood home and recalls a strange, dangerous magic from his youth.",
+    "whyThisBook": "Fairy-tale logic with real emotional undertow."
+  }
+]
