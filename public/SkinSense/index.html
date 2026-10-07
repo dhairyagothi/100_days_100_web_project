@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>SkinSense</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- FONT AWESOME -->
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- BACKGROUND BLOBS -->
+
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+
+    <!-- NAVBAR -->
+
+    <nav>
+      <h1>SkinSense</h1>
+
+      <a href="https://100-days-100-web-project.vercel.app/" target="_blank">
+        Back to Home
+      </a>
+    </nav>
+
+    <!-- HERO -->
+
+    <section class="hero">
+      <div class="hero-content">
+        <span class="tag"> ✨ Personalized Skin Care </span>
+
+        <h2>
+          Discover Your Perfect
+          <span>Skin Routine</span>
+        </h2>
+
+        <p>
+          Analyze your skin type, hydration, and lifestyle to get personalized
+          skincare recommendations instantly.
+        </p>
+      </div>
+    </section>
+
+    <!-- FORM SECTION -->
+
+    <section class="form-section">
+      <div class="form-container">
+        <div class="section-title">
+          <h2>Skin Analysis Form</h2>
+
+          <p>Enter your details to generate your skincare recommendations.</p>
+        </div>
+
+        <form id="skinForm">
+          <div class="input-group">
+            <label>Name</label>
+
+            <input
+              type="text"
+              id="name"
+              placeholder="Enter your name"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label>Age</label>
+
+            <input
+              type="number"
+              id="age"
+              placeholder="Enter your age"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label>Skin Type</label>
+
+            <select id="skinType">
+              <option>Oily</option>
+              <option>Dry</option>
+              <option>Combination</option>
+              <option>Sensitive</option>
+              <option>Normal</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Skin Concern</label>
+
+            <select id="concern">
+              <option>Acne</option>
+              <option>Dark Spots</option>
+              <option>Pigmentation</option>
+              <option>Dryness</option>
+              <option>Dullness</option>
+              <option>Wrinkles</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Water Intake (Glasses)</label>
+
+            <input type="number" id="water" placeholder="Example: 6" />
+          </div>
+
+          <div class="input-group">
+            <label>Sleep Hours</label>
+
+            <input type="number" id="sleep" placeholder="Example: 7" />
+          </div>
+
+          <button type="submit" class="analyze-btn">Analyze My Skin</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- RESULT -->
+
+    <section class="result-section hidden" id="resultSection">
+      <div class="result-card">
+        <h2 id="greeting"></h2>
+
+        <div class="score-box">
+          <h3>Skin Health Score</h3>
+
+          <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+          </div>
+
+          <span id="scoreText"></span>
+        </div>
+
+        <div class="recommendation-grid">
+          <div class="recommendation-card">
+            <i class="fa-solid fa-sun"></i>
+
+            <h3>Morning Routine</h3>
+
+            <p id="morningRoutine"></p>
+          </div>
+
+          <div class="recommendation-card">
+            <i class="fa-solid fa-moon"></i>
+
+            <h3>Night Routine</h3>
+
+            <p id="nightRoutine"></p>
+          </div>
+
+          <div class="recommendation-card">
+            <i class="fa-solid fa-droplet"></i>
+
+            <h3>Hydration Tips</h3>
+
+            <p id="hydration"></p>
+          </div>
+
+          <div class="recommendation-card">
+            <i class="fa-solid fa-heart"></i>
+
+            <h3>Ingredients</h3>
+
+            <p id="ingredients"></p>
+          </div>
+        </div>
+
+        <button class="retry-btn" onclick="location.reload()">
+          Analyze Again
+        </button>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+      <p>© 2026 SkinSense • Personalized Skin Care</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
