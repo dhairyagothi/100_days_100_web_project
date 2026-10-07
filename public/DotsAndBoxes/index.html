@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dots & Boxes</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="start-screen" id="startScreen">
+
+  <div class="start-box">
+
+    <h1>Dots & Boxes</h1>
+
+    <input
+      type="text"
+      id="player1Name"
+      placeholder="Blue Player Name"
+      maxlength="12"
+    >
+
+    <input
+      type="text"
+      id="player2Name"
+      placeholder="Red Player Name"
+      maxlength="12"
+    >
+
+    <button id="startGameBtn">
+      Start Game
+    </button>
+
+  </div>
+
+</div>
+
+  <div class="game-container">
+
+    <h1>Dots & Boxes</h1>
+
+    <div class="top-bar">
+
+      <div class="player-card blue active" id="player1Card">
+
+  <h2 id="player1DisplayName">Blue Player</h2>
+
+  <p id="player1Score">0</p>
+
+</div>
+
+<div class="status">
+  <h2 id="turnText">Blue Player's Turn</h2>
+</div>
+
+<div class="player-card red" id="player2Card">
+
+  <h2 id="player2DisplayName">Red Player</h2>
+
+  <p id="player2Score">0</p>
+
+</div>
+
+    </div>
+
+    <div class="board" id="board"></div>
+
+    <button id="restartBtn">Restart Game</button>
+
+  </div>
+  <div class="winner-modal hidden" id="winnerModal">
+
+  <div class="winner-box">
+
+    <h1 id="winnerText">Blue Player Wins!</h1>
+
+    <button id="closeModalBtn">
+      Play Again
+    </button>
+
+  </div>
+
+</div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
