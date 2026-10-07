@@ -249,6 +249,22 @@ window.markTaskCompleted = function (id) {
   tasks = tasks.map(t =>
     t.id === id ? { ...t, status: t.status === "completed" ? "pending" : "completed" } : t
   );
+
+
+  const activeBtn = document.querySelector(
+    `[data-theme="${themeName}"]`
+  );
+
+  if (activeBtn) {
+    activeBtn.classList.add("active");
+  }
+  try { localStorage.setItem('todo-theme', themeName); } catch (e) { }
+}
+document.querySelectorAll(".theme-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    const theme = button.dataset.theme;
+    if (!theme) return;
+    applyTheme(theme);
   saveTasks();
   renderKanban();
   const t = tasks.find(t => t.id === id);
@@ -504,9 +520,11 @@ function init() {
   applyTheme(savedTheme);
   renderKanban();
 }
+}
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", init);
 } else {
   init();
 }
+
